@@ -134,8 +134,48 @@ class Solution:
 # 同向双指针-Sliding Window
 
 [121. Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)
+同向双指针,L=buy, R=sell：当buy>sell，L=R，否则移动R，同时一直更新profit
 
-
+时间：O(N)
+空间：O(1)
 ```python
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        l, r = 0, 1
+        res = 0
+        cur_profit = 0
+        
+        while r < len(prices):
+            if prices[l] > prices[r]:
+                l = r
+            else:
+                cur_profit = prices[r] - prices[l]
+                res = max(res, cur_profit)
+            r += 1
+        
+        return res
+```
 
+
+[3. Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
+用set记录当前sliding window的数据；如果s[r]在set里，移动窗口直到不在并且在set中删去
+
+时间：O(N)
+空间：O(N)
+```python
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        char_set = set()
+        l = r = 0
+        res = 0
+        
+        while r < len(s):
+            while s[r] in char_set:
+                char_set.remove(s[l])
+                l += 1
+            char_set.add(s[r])
+            res = max(res, r - l + 1)
+            r += 1
+        
+        return res
 ```
