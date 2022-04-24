@@ -74,3 +74,53 @@ class Solution:
             
         return res
 ```
+
+[36. Valid Sudoku](https://leetcode.com/problems/valid-sudoku/)
+用index标记每个九宫格，index=(r//3, c//3)；或者index=3 * (r//3) + c//3
+
+时间：O(9^2)
+空间：O(9^2)
+```py
+class Solution:
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        cols = collections.defaultdict(set)
+        rows = collections.defaultdict(set)
+        squares = collections.defaultdict(set) # key = (r//3, c//3)
+
+        for r in range(9):
+            for c in range(9):
+                if board[r][c] == ".":
+                    continue
+                if (board[r][c] in rows[r] or 
+                    board[r][c] in cols[c] or
+                    board[r][c] in squares[(r // 3, c // 3)]):
+                    return False
+                rows[r].add(board[r][c])
+                cols[c].add(board[r][c])
+                squares[(r // 3, c // 3)].add(board[r][c])
+        
+        return True
+
+```
+
+[128. Longest Consecutive Sequence](https://leetcode.com/problems/longest-consecutive-sequence/)
+存成set，对每个数，看是否是start of array:查看是否有左边neighbor。如果没有左边的数就开始看右边neighbor来计算length
+
+时间：O(N)
+空间：O(N)
+
+```py
+class Solution:
+    def longestConsecutive(self, nums: List[int]) -> int:
+        numSet = set(nums)
+        num_set = 0
+
+        for n in nums:
+            if (n - 1) not in num_set:
+                length = 1
+                while (n + length) in num_set:
+                    length += 1
+                longest = max(length, longest)
+        return longest
+
+```

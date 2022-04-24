@@ -179,3 +179,11 @@ class Solution:
         
         return res
 ```
+
+[424. Longest Repeating Character Replacement](https://leetcode.com/problems/longest-repeating-character-replacement/)
+windowLen - count[letter]
+
+```py
+
+
+```
