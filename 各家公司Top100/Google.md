@@ -202,3 +202,34 @@ class Solution:
         return res
 ```
 
+
+[670. Maximum Swap](https://leetcode.com/problems/maximum-swap/)
+
+先把num变成一个list，从后往前，i是index，如果这个值更小，就说明可以和max_idx互换，就把他们换一下；如果这个值更大，就说明更新max_idx；最后把list转换成num；num变成list：num = [int(x) for x in str(num)]；list变num：int("".join([str(x) for x in num])
+
+时间：O(N)
+空间：O(N)
+
+```python
+class Solution:
+    def maximumSwap(self, num: int) -> int:
+        num = [int(x) for x in str(num)]
+        max_idx = len(num) - 1
+        
+        x_min = 0
+        x_max = 0
+        
+        # 从后往前，i是index，如果这个值更小，就说明可以和max_idx互换，就把他们换一下；如果这个值更大，就说明更新max_idx
+        for i in range(len(num) - 1, -1, -1):
+            # 如果这个值更大，就更新max的idx
+            if num[i] > num[max_idx]:
+                max_idx = i
+            # 如果这个值更小，就说明可以和max_idx互换，就把他们换一下
+            elif num[i] < num[max_idx]:
+                x_min = i
+                x_max = max_idx
+        
+        num[x_min], num[x_max] = num[x_max], num[x_min]
+        
+        return int("".join([str(x) for x in num]))
+```

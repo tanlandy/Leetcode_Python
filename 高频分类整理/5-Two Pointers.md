@@ -181,9 +181,50 @@ class Solution:
 ```
 
 [424. Longest Repeating Character Replacement](https://leetcode.com/problems/longest-repeating-character-replacement/)
-windowLen - count[letter]
+windowLen - max(count[letter]) <= k, valid就移动r，直到不valid就停止
+
+时间：O(26N)或者O(N)
+空间：O(N)
+```py
+class Solution:
+    def characterReplacement(self, s: str, k: int) -> int:
+        count = collections.defaultdict(int)
+        res = 0
+
+        l = r = 0
+
+        while r < len(s):
+            count[s[r]] += 1
+
+            while (r - l + 1) - max(count.values()) > k:
+                count[s[l]] -= 1
+                l += 1
+
+            res = max(res, r - l + 1)
+            r += 1
+            
+        return res
+
+```
 
 ```py
+class Solution:
+    def characterReplacement(self, s: str, k: int) -> int:
+        count = collections.defaultdict(int)
+        res = 0
 
+        l = r = 0
+        maxf = 0
+        while r < len(s):
+            count[s[r]] += 1
+            maxf = max(maxf, count[s[r]])
+
+            while (r - l + 1) - maxf > k:
+                count[s[l]] -= 1
+                l += 1
+
+            res = max(res, r - l + 1)
+            r += 1
+        return res
 
 ```
