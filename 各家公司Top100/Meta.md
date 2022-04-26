@@ -4141,6 +4141,32 @@ https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-ii/discuss
 
 
 # my own: OA1
+[moving average]
+```py
+def movingAve(nums, window_size):
+    if window_size <= 0 or window_size > len(nums):
+        return []
+        
+    l = r = 0
+    res = []
+    window_sum = 0
+
+    while r < len(nums):
+        window_sum += nums[r]
+        r += 1
+
+        if r - l == window_size:
+            res.append(window_sum / window_size)
+            window_sum -= nums[l]
+            l += 1
+    
+    return res
+
+nums = [1,2,3,4,5]
+window_size = 3
+
+print(movingAve(nums, window_size))
+```
 [735. Asteroid Collision](https://leetcode.com/problems/asteroid-collision/)
 
 # OA2

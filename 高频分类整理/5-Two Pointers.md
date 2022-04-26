@@ -133,6 +133,15 @@ class Solution:
 
 # 同向双指针-Sliding Window
 
+-> 扩大的条件和结果；缩小的条件和结果；更新res的条件和结果
+1、当移动right扩大窗口，即加入字符时，应该更新哪些数据？
+
+2、什么条件下，窗口应该暂停扩大，开始移动left缩小窗口？
+
+3、当移动left缩小窗口，即移出字符时，应该更新哪些数据？
+
+4、我们要的结果应该在扩大窗口时还是缩小窗口时进行更新？
+
 [121. Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)
 同向双指针,L=buy, R=sell：当buy>sell，L=R，否则移动R，同时一直更新profit
 
@@ -227,4 +236,98 @@ class Solution:
             r += 1
         return res
 
+```
+
+[76. Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring/)
+
+
+```py
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        countMap = collections.Counter(t)
+        
+        l = r = 0
+        minStart = 0
+        minLen = float("inf")
+        counter = len(t)
+        
+        while r < len(s):
+            # 扩大窗口
+            ch = s[r]
+            if countMap[ch] > 0:
+                counter -= 1
+            countMap[ch] -= 1 # 扩大的结果
+            r += 1
+            
+            # 缩小窗口
+            while counter == 0: # 缩小的条件
+                if minLen > r - l: # 更新res
+                    minStart = l
+                    minLen = r - l
+                ch2 = s[l] # 缩小的结果
+                countMap[ch2] += 1 # 相互对称，先扩大一个再更新窗口
+                if countMap[ch2] > 0:
+                    counter += 1
+                l += 1
+        
+        return s[minStart: minStart + minLen] if minLen != float("inf") else ""
+```
+
+[567. Permutation in String](https://leetcode.com/problems/permutation-in-string/)
+
+
+```python
+class Solution:
+    def checkInclusion(self, s1: str, s2: str) -> bool:
+        counter = collections.Counter(s1)
+        l = r = 0
+        count = len(s1)
+        
+        while r < len(s2):
+            c1 = s2[r]
+            if counter[c1] > 0:
+                count -= 1
+            counter[c1] -= 1
+            r += 1
+            
+            if (r - l == len(s1)):
+                if count == 0:
+                    return True
+                
+                c2 = s2[l]
+                counter[c2] += 1
+                if counter[c2] > 0:
+                    count += 1
+                l += 1
+        
+        return False
+```                
+
+[239. Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/)
+用monotonic decreasing queue
+
+时间：O(N)
+空间：O(N)
+
+```py
+class Solution:
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        res = []
+        l = r = 0
+        queue = collections.deque() # store index
+
+        while r < len(nums):
+            while queue and nums[queue[-1]] < nums[r]:
+                queue.pop()
+            queue.append(r)
+
+            if l > queue[0]:
+                queue.popleft()
+
+            if r + 1 - l == k:
+                res.append(nums[queue[0]])
+                l += 1
+            r += 1
+
+        return res
 ```
