@@ -183,3 +183,47 @@ class Solution:
         
         return res    
 ```
+
+[853. Car Fleet](https://leetcode.com/problems/car-fleet/)
+计算出每辆车到达所需要的时间，按照position从后往前来比较，如果下一辆车所需时间更短，就说明会相撞并形成一个车队，然后一直和那个position最后的比较。因为总是和上一个比较，所以使用stack。最后的解说就是stack的大小
+
+```py
+class Solution:
+    def carFleet(self, target: int, position: List[int], speed: List[int]) -> int:
+        pair = [[p, s] for p, s in zip(position, speed)]
+
+        stack = []
+        for p, s in sorted(pair)[::-1]: # reverse sorted order
+            stack.append((target - p) / s)
+            if len(stack) >= 2 and stack[-1] <= stack[-2]:
+                stack.pop()
+        
+        return len(stack)
+```
+
+
+[84. Largest Rectangle in Histogram](https://leetcode.com/problems/largest-rectangle-in-histogram/)
+stack存idx和height
+
+时间：O(N)
+空间：O(N)
+```py
+class Solution:
+    def largestRectangleArea(self, heights: List[int]) -> int:
+        max_area = 0
+        stack = [] # pair: (idx, height)
+
+        for i, h in enumerate(heights):
+            start = i
+            while stack and stack[-1][1] > h:
+                index, height = stack.pop()
+                max_area = max(max_area, height * (i - index))
+                start = index
+            stack.append((start, h))
+        
+        for i, h in stack:
+            max_area = max(max_area, h * (len(heights) - i))
+
+        return max_area
+
+```
