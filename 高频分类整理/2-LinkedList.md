@@ -115,7 +115,7 @@ class Solution:
             first = pre.next
             second = pre.next.next # 取得接下来的2个数
             
-            first.next = second.next # 1->3
+            first.next = second.next # 1->3 # 这里的second.next相当于pre.next.next.next
             second.next = first # 2->1
             
             pre.next = second # pre_group_end->2
@@ -124,17 +124,35 @@ class Solution:
         return dummy.next
 ```
 
+[328. Odd Even Linked List](https://leetcode.com/problems/odd-even-linked-list/)
+
+```py
+class Solution:
+    def oddEvenList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if not head:
+            return head
+        
+        odd = head
+        even = head.next
+        even_head = even
+        
+        while even and even.next: # 需要even.next; 因为odd.next = even.next，同时even.next = odd.next，也就是说
+            odd.next = even.next # 1->3
+            odd = odd.next # odd is 3, 3->4->5
+            
+            even.next = odd.next # 2->4 这里的odd.next相当于even.next.next
+            even = even.next
+        
+        odd.next = even_head
+        
+        return head
+```
 
 
 [21. Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/)
 
 
 ```py
-# Definition for singly-linked list.
-# class ListNode:
-#     def __init__(self, val=0, next=None):
-#         self.val = val
-#         self.next = next
 class Solution:
     def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
         dummy = ListNode(-1)
@@ -166,11 +184,6 @@ Output: [1,5,2,4,3]
 时间：O(N)
 空间：O(1)
 ```py
-# Definition for singly-linked list.
-# class ListNode:
-#     def __init__(self, val=0, next=None):
-#         self.val = val
-#         self.next = next
 class Solution:
     def reorderList(self, head: Optional[ListNode]) -> None:
         # find middle
@@ -260,3 +273,100 @@ class Solution:
         return oldToCopy[head]
 ```
 
+# 成环问题Floyd's
+
+[141. Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/)
+用快慢指针找到相遇的点，相遇了就说明有环
+
+```py
+class Solution:
+    def hasCycle(self, head: Optional[ListNode]) -> bool:
+        slow = fast = head
+        
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+            if slow == fast:
+                return True
+        
+        return False
+```
+
+[142. Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/)
+先用快慢指针找到相遇的点。然后利用Floyd's算法找到成环的点；Floyd's算法是head.next和快慢指针相遇点.next往后走，彼此相遇的点就是成环的点
+
+```py
+class Solution:
+    def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        slow = fast = head
+        
+        # 快慢指针找相遇点，如果fast.next为空，就说明没有环
+        while slow and fast:
+            if not fast.next or not fast.next.next: # 最下面用到了slow.next相当于是fast.next.next.next，所以要not fast.next.next
+                return None
+            
+            slow = slow.next
+            fast = fast.next.next # 这里用到了fast.next.next，所以条件要有not fast.next
+            if slow == fast:
+                break
+
+        cur = head        
+        while cur:
+            if cur == slow:
+                return cur
+            
+            cur = cur.next
+            slow = slow.next
+```
+
+[287. Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/)
+
+```py
+class Solution:
+    def findDuplicate(self, nums: List[int]) -> int:
+        slow, fast = 0, 0
+        # 找到相遇的节点
+        while True:
+            slow = nums[slow]
+            fast = nums[nums[fast]]
+            if slow == fast:
+                break
+        
+        # 找到cycle的起点
+        slow2 = 0
+        while True:
+            slow = nums[slow]
+            slow2 = nums[slow2]
+            if slow == slow2:
+                return slow
+```
+
+[2. Add Two Numbers](https://leetcode.com/problems/add-two-numbers/)
+计算出来每次的数字，然后相加，最后更新指针；注意while循环的条件
+
+时间：O(max(l1, l2))
+空间：O(max(l1, l2))
+```py
+class Solution:
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        dummy = ListNode(-1) # edge case when insert into LinkedList
+        cur = dummy
+
+        carry = 0
+        while l1 or l2 or carry: # 这个条件非常重要
+            v1 = l1.val if l1 else 0
+            v2 = l2.val if l2 else 0
+            
+            num = (carry + v1 + v2) % 10
+            carry = (carry + v1 + v2) // 10
+            
+            cur.next = ListNode(num) # 形成LinkedList
+            
+            # 更新指针
+            cur = cur.next
+            l1 = l1.next if l1 else None
+            l2 = l2.next if l2 else None
+        
+        return dummy.next
+
+```
