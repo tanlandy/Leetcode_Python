@@ -98,7 +98,37 @@ class Solution:
             second.next = tmp1
             first = tmp1
             second = tmp2
+```
 
+[19. Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)
+走两遍，第一遍计算出来总长度，第二遍就走到对应的位置再删除就可以。因为要删除，所以要用dummy node
 
+```py
+class Solution:
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        dummy = ListNode(-1)
+        length = 0
+        dummy.next = head
+        cur = dummy
+        
+        while cur:
+            cur = cur.next
+            length += 1
+
+        target = length - n - 1
+        
+        cur = dummy
+        while target > 0:
+            cur = cur.next
+            target -= 1
+        
+        cur.next = cur.next.next
+        
+        return dummy.next
 
 ```
+
+[138. Copy List with Random Pointer](https://leetcode.com/problems/copy-list-with-random-pointer/)
+
+
+

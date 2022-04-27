@@ -227,3 +227,88 @@ class Solution:
         return max_area
 
 ```
+
+[2. Add Two Numbers](https://leetcode.com/problems/add-two-numbers/)
+计算出来每次的数字，然后相加，最后更新指针；注意while循环的条件
+
+时间：O(max(l1, l2))
+空间：O(max(l1, l2))
+```py
+class Solution:
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        dummy = ListNode(-1) # edge case when insert into LinkedList
+        cur = dummy
+
+        carry = 0
+        while l1 or l2 or carry: # 这个条件非常重要
+            v1 = l1.val if l1 else 0
+            v2 = l2.val if l2 else 0
+            
+            num = (carry + v1 + v2) % 10
+            carry = (carry + v1 + v2) // 10
+            
+            cur.next = ListNode(num) # 形成LinkedList
+            
+            # 更新指针
+            cur = cur.next
+            l1 = l1.next if l1 else None
+            l2 = l2.next if l2 else None
+        
+        return dummy.next
+
+```
+
+[141. Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/)
+
+while里面用到了fast.next.next所以条件是fast and fast.next
+
+时间：O(N)
+空间：O(1)
+```py
+class Solution:
+    def hasCycle(self, head: Optional[ListNode]) -> bool:
+        slow = fast = head
+        
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+            if slow == fast:
+                return True
+        
+        return False
+```
+
+
+[287. Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/)
+Floyd's algo：先找到相遇的节点，再找cycle起点
+
+时间：O(N)
+空间：O(1)
+
+```py
+class Solution:
+    def findDuplicate(self, nums: List[int]) -> int:
+        slow, fast = 0, 0
+        # 找到相遇的节点
+        while True:
+            slow = nums[slow]
+            fast = nums[nums[fast]]
+            if slow == fast:
+                break
+        
+        # 找到cycle的起点
+        slow2 = 0
+        while True:
+            slow = nums[slow]
+            slow2 = nums[slow2]
+            if slow == slow2:
+                return slow
+```
+
+[25. Reverse Nodes in k-Group](https://www.youtube.com/watch?v=1UOPsfP85V4)
+
+
+```py
+
+
+```
