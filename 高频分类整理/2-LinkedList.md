@@ -148,6 +148,48 @@ class Solution:
         return head
 ```
 
+[234. Palindrome Linked List](https://leetcode.com/problems/palindrome-linked-list/)
+
+```py
+class Solution:
+    def isPalindrome(self, head: Optional[ListNode]) -> bool:
+        """
+        find mid, reverse second half, and compare one by one
+        """
+        
+        # find mid
+        slow = fast = head
+        
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+        # 这个时候slow就是中间的点
+        
+        # reverse second half
+        pre = None
+        cur = slow
+        
+        while cur:
+            nxt = cur.next
+            cur.next = pre
+            pre = cur
+            cur = nxt
+        # 这个时候cur走到了None，pre指向原list的最后一个点，也就是reversed second half的起点
+
+        # compare
+        first = head
+        second = pre
+        
+        while second:
+            if first.val != second.val:
+                return False
+            first = first.next
+            second = second.next
+        
+        return True
+```
+
+
 
 [21. Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/)
 
