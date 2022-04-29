@@ -51,6 +51,21 @@ class Solution:
         return res.values()
 ```
 
+时间复杂度更高：把每个string排序，按照这个排序来加到map中
+```py
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        res = collections.defaultdict(list)
+        for entry in strs:
+            anagram_id = "".join(sorted(entry))
+            res[anagram_id].append(entry)
+        sorted(res.items(), key = lambda item:item[1])
+        return res.values()
+
+
+```
+
+
 [238. Product of Array Except Self](https://leetcode.com/problems/product-of-array-except-self/)
 
 走左右两遍
@@ -123,4 +138,31 @@ class Solution:
                 longest = max(length, longest)
         return longest
 
+```
+
+[205. Isomorphic Strings](https://leetcode.com/problems/isomorphic-strings/)
+用map记录映射关系，用set保证只有映射是唯一的
+
+时间：O(N)
+空间：O(1) 最多就是26个字母
+```py
+class Solution:
+    def isIsomorphic(self, s: str, t: str) -> bool:
+        if len(s) != len(t):
+            return False
+        
+        s_map = {}
+        used = set()
+        
+        for c1, c2 in zip(s, t):
+            if c1 in s_map:
+                if s_map[c1] != c2:
+                    return False
+            else:
+                if c2 in used:
+                    return False
+                s_map[c1] = c2
+                used.add(c2)
+        
+        return True
 ```
