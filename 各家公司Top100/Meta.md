@@ -1268,7 +1268,6 @@ class Solution:
                 return nums[p]
 
         return select(0, len(nums) - 1)
-
 ```
 
 [71. Simplify Path](https://leetcode.com/problems/simplify-path/)
