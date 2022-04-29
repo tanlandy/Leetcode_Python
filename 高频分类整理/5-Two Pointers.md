@@ -331,3 +331,24 @@ class Solution:
 
         return res
 ```
+
+[53. Maximum Subarray](https://leetcode.com/problems/maximum-subarray/)
+Sliding window一直计算当前的window_sum，当<0的时候就清零
+
+```py
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        cur_sum = 0
+        r = 0
+        res = float("-inf")
+        
+        while r < len(nums):
+            cur_sum += nums[r]
+            res = max(res, cur_sum)
+            r += 1
+            
+            if cur_sum < 0:
+                cur_sum = 0
+        
+        return res
+```
