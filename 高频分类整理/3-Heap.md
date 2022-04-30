@@ -170,4 +170,34 @@ class Solution:
                 return nums[p]
 
         return select(0, len(nums) - 1)
-```$$
+```
+
+[621. Task Scheduler](https://leetcode.com/problems/task-scheduler/)
+每次都先处理max_freq的task：每次都要最大值->maxHeap；另外用一个queue存
+
+时间：O(N*M) N is len(tasks), M is idleTime
+空间：
+```py
+class Solution:
+    def leastInterval(self, tasks: List[str], n: int) -> int:
+        count = collections.Counter(tasks)
+        maxHeap = [-cnt for cnt in count.values()]
+        heapq.heapify(maxHeap)
+
+        time = 0
+        queue = deque() # pairs of [-cnt, idleTime]
+
+        while maxHeap or queue:
+            time += 1
+
+            if maxHeap:
+                cnt = heapq.heappop(maxHeap) + 1
+                if cnt:
+                    queue.append([cnt, time + n])
+            
+            if queue and queue[0][1] == time:
+                heapq.heappush(maxHeap, queue.popleft()[0])
+
+        return time
+
+```
