@@ -80,3 +80,32 @@ def timeConversion(s):
         else:
             return str(int(s[0:2]) + 12) + s[2:-2]
 ```
+
+
+[14. Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/)
+先找到最短的字符串，然后依次和其他比较，比较时候发现不相同就返回那个长度，最后返回最短的字符串（只有一个字符串的情况）；本题要点是min(strs, key = len)的使用方法
+
+时间：O(N*S) 
+空间：O(min(len(s)))
+```py
+class Solution:
+    def longestCommonPrefix(self, strs):
+        """
+        :type strs: List[str]
+        :rtype: str
+        """
+        if not strs:
+            return ""
+        
+        shortest = min(strs, key = len)
+        
+        for idx, c in enumerate(shortest):
+            for other in strs:
+                if other[idx] != c:
+                    return shortest[:idx]
+        
+        return shortest
+```
+
+
+
