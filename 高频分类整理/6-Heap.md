@@ -201,3 +201,77 @@ class Solution:
         return time
 
 ```
+
+[295. Find Median from Data Stream](https://leetcode.com/problems/find-median-from-data-stream/)
+用两个size最多差1的Heap，每次新数字先加到minHeap，然后pop minHeap到maxHeap，最后永远保证minHeap的大小比maxHeap大于等于1；找数的时候，要么直接看minHeap，要么就是看二者的平均数
+
+时间：addNum: O(logN)，找数O(1)
+空间：O(N)
+```py
+class MedianFinder:
+
+    def __init__(self):
+        # all nums in small < all nums in large
+        # small is a maxHeap, large is a minHeap
+        self.small, self.large = [], []
+
+    def addNum(self, num: int) -> None:
+        # add each element to minHeap first
+        # pop minHeap and add it to maxHeap 
+        # balance the size 
+        # In this case, all nums in small < large
+        heapq.heappush(self.small, -heapq.heappushpop(self.large, num))
+        
+        if len(self.small) > len(self.large):
+            heapq.heappush(self.large, -heapq.heappop(self.small))
+        
+    def findMedian(self) -> float:
+        if len(self.small) < len(self.large):
+            return self.large[0]
+        else:
+            return (self.large[0] - self.small[0]) / 2
+
+
+# Your MedianFinder object will be instantiated and called as such:
+# obj = MedianFinder()
+# obj.addNum(num)
+# param_2 = obj.findMedian()
+```
+
+
+
+
+
+
+
+
+
+
+[355. Design Twitter](https://leetcode.com/problems/design-twitter/)
+
+```py
+class Twitter:
+
+    def __init__(self):
+        
+
+    def postTweet(self, userId: int, tweetId: int) -> None:
+        
+
+    def getNewsFeed(self, userId: int) -> List[int]:
+        
+
+    def follow(self, followerId: int, followeeId: int) -> None:
+        
+
+    def unfollow(self, followerId: int, followeeId: int) -> None:
+        
+
+
+# Your Twitter object will be instantiated and called as such:
+# obj = Twitter()
+# obj.postTweet(userId,tweetId)
+# param_2 = obj.getNewsFeed(userId)
+# obj.follow(followerId,followeeId)
+# obj.unfollow(followerId,followeeId)
+```
