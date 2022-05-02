@@ -3,6 +3,41 @@
 
 
 # 相向双指针
+[905. Sort Array By Parity](https://leetcode.com/problems/sort-array-by-parity/)
+
+Two pass
+时间：O(N)
+空间：O(N)
+
+```py
+class Solution:
+    def sortArrayByParity(self, nums: List[int]) -> List[int]:
+        return [x for x in nums if x % 2 == 0] + [x for x in nums if x % 2 == 1]
+```
+
+Two pointers
+时间：O(N)
+空间：O(1)
+
+```py
+class Solution:
+    def sortArrayByParity(self, nums: List[int]) -> List[int]:
+        i = 0
+        j = len(nums) - 1
+        
+        while i < j:
+            if nums[i] % 2 > nums[j] % 2:
+                nums[i], nums[j] = nums[j], nums[i]
+            
+            if nums[i] % 2 == 0:
+                i += 1
+            
+            if nums[j] % 2 == 1:
+                j -= 1
+        
+        return nums
+```
+
 [125. Valid Palindrome](https://leetcode.com/problems/valid-palindrome/)
 用相向two pointer，当不是char时候就比较; s[i].isalnum() 看是否是string或者num; s[i].lower() 返回一个小写
 

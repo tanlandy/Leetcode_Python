@@ -107,5 +107,17 @@ class Solution:
         return shortest
 ```
 
+[171. Excel Sheet Column Number](https://leetcode.com/problems/excel-sheet-column-number/)
+学会使用ord("A")，以及递归的思路
 
-
+```py
+class Solution:
+    def titleToNumber(self, columnTitle: str) -> int:
+        res = 0
+        
+        for c in columnTitle:
+            res = res * 26
+            res += (ord(c) - ord("A") + 1)
+        
+        return res
+```
