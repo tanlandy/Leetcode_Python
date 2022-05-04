@@ -401,7 +401,6 @@ class Solution:
 
 [131. Palindrome Partitioning](https://leetcode.com/problems/palindrome-partitioning/)
 
-
 ```py
 class Solution:
     def partition(self, s: str) -> List[List[str]]:
@@ -430,4 +429,97 @@ class Solution:
         
         backtrack(0)
         return res
+```
+
+[17. Letter Combinations of a Phone Number](https://www.youtube.com/watch?v=0snEunUacZY)
+
+时间：N*4^N, N is len(input):共4^N种组合，每组的长度为N
+空间：
+
+```py
+class Solution:
+    def letterCombinations(self, digits: str) -> List[str]:
+        if not digits:
+            return []
+        res = []
+        digit_to_char = { 
+            "2": "abc",
+            "3": "def",
+            "4": "ghi",
+            "5": "jkl",
+            "6": "mno",
+            "7": "qprs",
+            "8": "tuv",
+            "9": "wxyz" 
+        } 
+
+        one_res = []
+        def backtrack(i): # tell what idx we are at
+            if len(one_res) == len(digits):
+                res.append("".join(one_res))
+                return
+            
+            for c in digit_to_char[digits[i]]:
+                one_res.append(c)
+                backtrack(i + 1)
+                one_res.pop()
+
+        
+        backtrack(0)
+        return res
+
+```
+
+
+[51. N-Queens](https://leetcode.com/problems/n-queens/)
+
+
+```py
+class Solution:
+    def solveNQueens(self, n: int) -> List[List[str]]:
+        """
+        第一行，把第一个Queen放在每一个位置，这样一共就走N次
+        Need to keep track: Queen的cols, pos_diag, neg_diag
+        for the same neg_diag: (r - c) stays the same
+        for the same pos_diag: (r + c) stays the same
+
+                r
+         /    /   \    \
+        0,0  0,1  0,2  0,3
+ /    /   \  \
+1,0 1,1  1,2 1,3
+        """
+        col = set()
+        pos_diag = set()
+        neg_diag = set()
+
+        res = []
+        board = [["."] * n for i in range(n)]
+
+        def backtrack(r): # go by row by row
+            # base case
+            if r == n:
+                copy = ["".join(row) for row in board]
+                res.append(copy)
+                return 
+
+            for c in range(n):
+                if c in col or (r + c) in pos_diag or (r - c) in neg_diag:
+                    continue
+                
+                col.add(c)
+                pos_diag.add(r + c)
+                neg_diag.add(r - c)
+                board[r][c] = "Q"
+
+                backtrack(r + 1)
+
+                col.remove(c)
+                pos_diag.remove(r + c)
+                neg_diag.remove(r - c)
+                board[r][c] = "."     
+
+        backtrack(0)
+        return res          
+
 ```
