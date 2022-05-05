@@ -165,3 +165,49 @@ class Solution:
         
         return (self.sameTree(p.left, q.left) and self.sameTree(p.right, q.right))
 ```
+
+
+[235. Lowest Common Ancestor of a Binary Search Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)
+
+时间：O(logN) 每一层只用看一个点
+空间：O(1)
+```py
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        """
+        从root开始看(root肯定是一个common ancestor，但不一定是LCA)，如果p, q都比这个节点大，那就在右边找，如果都小在左边找，否则自己这个节点就是LCA
+        
+        """
+        cur = root
+
+        while cur:
+            if p.val > cur.val and q.val > cur.val:
+                cur = cur.right
+            elif p.val < cur.val and q.val < cur.val:
+                cur = cur.left
+            else:
+                return cur
+```
+
+[1448. Count Good Nodes in Binary Tree](https://leetcode.com/problems/count-good-nodes-in-binary-tree/)
+
+时间：O(N)
+空间：O(H)
+```py
+class Solution:
+    def goodNodes(self, root: TreeNode) -> int:
+        """
+        Preorder遍历，每次往下走需要把当前的最大值传下去
+        """        
+        def dfs(node, max_val): # 判断这个节点是否是good node，返回个数
+            if not node:
+                return 0
+
+            res = 1 if node.val >= max_val else 0
+            max_val = max(node.val, max_val)
+            res += dfs(node.left, max_val)
+            res += dfs(node.right, max_val)
+            return res
+        
+        return dfs(root, root.val)
+```
