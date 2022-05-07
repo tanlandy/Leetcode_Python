@@ -121,3 +121,47 @@ class Solution:
         
         return res
 ```
+
+
+
+[1047. Remove All Adjacent Duplicates In String](https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/)
+
+```py
+class Solution:
+    def removeDuplicates(self, s: str) -> str:
+        """
+        用stack，每次遇到新的就比较一下是否和top相同，相同就弹栈，不同就加进来
+        """
+        stack = []
+        
+        for c in s:
+            if stack and c == stack[-1]:
+                stack.pop()
+            else:
+                stack.append(c)
+        
+        return "".join(stack)
+```
+
+
+
+[1209. Remove All Adjacent Duplicates in String II](https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string-ii/)
+
+```py
+class Solution:
+    def removeDuplicates(self, s: str, k: int) -> str:
+        """
+        用stack同时存这个char和出现的次数，一旦出先次数达到k就pop，最后decode到需要的大小
+        """
+        stack = [["#", 0]]
+        
+        for c in s:
+            if stack[-1][0] == c:
+                stack[-1][1] += 1
+                if stack[-1][1] == k:
+                    stack.pop()
+            else:
+                stack.append([c, 1])
+        
+        return "".join(c * n for c, n in stack)
+```

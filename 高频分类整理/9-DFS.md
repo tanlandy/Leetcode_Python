@@ -211,3 +211,35 @@ class Solution:
         
         return dfs(root, root.val)
 ```
+
+[98. Validate Binary Search Tree](https://leetcode.com/problems/validate-binary-search-tree/)
+
+
+```py
+class Solution:
+    def isValidBST(self, root: Optional[TreeNode]) -> bool:
+        """
+        因为是BST，所以不能只比较当前节点和两个子节点的大小，而是要把之前一层的值也传进来比较，所以需要一个helper function：往右走就update左边界，往左走就update右边界
+
+        时间：O(N): visit each node exactly once
+        空间：O(N): keep up to entire tree
+        """
+        def valid(node, left, right):
+            """
+            left, right分别是当前的左右边界
+            一直走到底再return True，中间只关心是否return False
+            """
+            if not node:
+                return True
+            
+            if not (left < node.val and node.val < right):
+                return False
+            
+            return (valid(node.left, left, node.val) and valid(node.right, node.val, right))
+        
+        return valid(root, float("-inf"), float("inf"))
+        
+```
+
+[230. Kth Smallest Element in a BST](https://leetcode.com/problems/kth-smallest-element-in-a-bst/)
+
