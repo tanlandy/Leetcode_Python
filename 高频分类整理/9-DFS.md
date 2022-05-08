@@ -243,3 +243,80 @@ class Solution:
 
 [230. Kth Smallest Element in a BST](https://leetcode.com/problems/kth-smallest-element-in-a-bst/)
 
+
+```py
+class Solution:
+    def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
+        """
+        inorder iterativly遍历，这样一旦达到k就可以return
+        当然也可以递归遍历，但就没有那么那么快了
+
+        时间：O(H+K)
+        空间：O(H) to keep the stack，对于BST平均时间就是O(logN)，最坏时间就是O(N)
+        """
+        n = 0
+        stack = []
+        cur = root
+
+        while cur or stack:
+            while cur:
+                stack.append(cur)
+                cur = cur.left
+            cur = stack.pop()
+            n += 1
+            if n == k:
+                return cur.val
+            cur = cur.right
+            
+```
+
+[105. Construct Binary Tree from Preorder and Inorder Traversal](https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
+
+```py
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        """
+        Preorder的第一个是root，第二个数是左子树的root
+        Inorder的root左边的值都在左子树，root右边的都是右子树
+        时间：O(N)
+        空间：O(N)
+        """
+        # base case
+        if not preorder or not inorder:
+            return None
+        
+        root = TreeNode(preorder[0])
+        mid = inorder.index(preorder[0]) #找到root在inorder的index
+
+        # inorder的root左边都是左子树，右边都是右子树
+        # preorder：根据左子树的数量，root之后[1:mid+1]左闭右开都是左子树，[mid+1:]都是右子树
+        root.left = self.buildTree(preorder[1:mid + 1], inorder[:mid]) # 右开
+        root.right = self.buildTree(preorder[mid+1:], inorder[mid:])
+
+        return root
+```
+
+[124. Binary Tree Maximum Path Sum](https://leetcode.com/problems/binary-tree-maximum-path-sum/)
+
+```py
+class Solution:
+    def maxPathSum(self, root: TreeNode) -> int:
+        res = [root.val]
+        
+        # return max path sum without split
+        def dfs(root):
+            if not root:
+                return 0
+            
+            leftMax = dfs(root.left)
+            rightMax = dfs(root.right)
+            leftMax = max(leftMax, 0)
+            rightMax = max(rightMax, 0)
+            
+            # compute max path sum WITH split
+            res[0] = max(res[0], root.val + leftMax + rightMax)
+            return root.val + max(leftMax, rightMax)
+        
+        dfs(root)
+        return res[0]
+```
