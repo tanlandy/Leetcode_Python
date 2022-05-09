@@ -368,3 +368,92 @@ class Solution:
             for c in range(cols):
                 if board[r][c] == "T":
                     board[r][c] = "O"
+```
+
+
+# 成环问题
+
+[207. Course Schedule](https://leetcode.com/problems/course-schedule/)
+
+```py
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        """
+        就是看是否会成环
+        用adjcent list存[course:[prereq_courses]]
+        从0到n-1，按adj list跑到底，看这个course能否上掉
+        用visit set来记录是否已经走过
+
+        时间：O(V + E)
+        空间：O(V + E)
+        """        
+        graph = [[] for _ in range(numCourses)]
+        for course, pre in prerequisites:
+            graph[course].append(pre)
+        
+        # visit = all courses along the curr DFS path
+        visit = set()
+
+        def hasCycle(course):
+            # base case
+            if course in visit: # already processed: detect a loop
+                return True
+            if graph[course] == []:
+                return False
+            
+            visit.add(course)
+            for pre in graph[course]: # 对于每个点，走到底
+                if hasCycle(pre): # 发现一个是False，就返回False
+                    return True
+            
+            visit.remove(course)
+            graph[course] = []
+            return False
+        
+        for course in range(numCourses): # graph可能不是fully connected，所以要从每个点开始走
+            if hasCycle(course):
+                return False
+        
+        return True
+
+```
+
+
+[261. Graph Valid Tree](https://leetcode.com/problems/graph-valid-tree/)
+
+```py
+class Solution:
+    def validTree(self, n: int, edges: List[List[int]]) -> bool:
+        """
+        构建adjList
+        然后DFS，最后看visit过的是否和n相同
+        dfs: 用prev来记录入边，这样就避免false positive的hasCycle
+
+        时间：O(V+E)
+        空间：O(V+E)
+        """       
+        if not n:
+            return True
+        
+        graph = [[] for _ in range(n)]
+        for n1, n2 in edges:
+            graph[n1].append(n2)
+            graph[n2].append(n1)
+        
+        visit = set()
+        def hasCycle(i, prev):
+            if i in visit: # detect a loop
+                return True
+
+            visit.add(i)
+            for j in graph[i]:
+                if j == prev:
+                    continue
+                if hasCycle(j, i):
+                    return True
+            
+            return False
+        
+        return not hasCycle(0, -1) and n == len(visit)
+
+```
