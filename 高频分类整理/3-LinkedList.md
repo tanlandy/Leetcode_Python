@@ -217,6 +217,91 @@ class Solution:
         return dummy.next
 ```
 
+[23. Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/)
+```py
+class Solution:
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        """
+        Heap：先把所有list的第一个node放进minHeap，然后一个一个形成res。每从minHeap弹出一个当前的最小值，就把该list的下一个值放进minHeap里
+
+        时间：O(NlogK), N is # of final nodes, K is len(lists)
+        空间：O(N) for creating final result; O(K) for creating minHeap
+        """
+        dummy = ListNode(-1)
+        cur = dummy
+        minHeap = []
+        
+        # add the first node of each list into the minHeap
+        for i in range(len(lists)):
+            if lists[i]:
+                heapq.heappush(minHeap, (lists[i].val, i))
+                lists[i] = lists[i].next # 每个list指向第二个节点
+        
+        # add to res one by one
+        while minHeap: 
+            val, i = heapq.heappop(minHeap) # 取出来最小值
+            cur.next = ListNode(val) # 新建node并连接到当前的node
+            cur = cur.next # 移动ptr
+            if lists[i]: # 把更新后的点加进minHeap
+                heapq.heappush(minHeap, (lists[i].val, i))
+                lists[i] = lists[i].next # 处理的list指向下一个节点
+        
+        return dummy.next
+
+```
+
+
+
+```py
+class Solution:
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        """
+        Divide and conquer
+
+        Time: O(NlogK) N is len(one_list), K is num of lists
+        Space: O(N) in total: one_merge take O(N); O(1) for merge_two()
+        """
+        # edge case
+        if not lists or len(lists) == 0:
+            return None
+        
+        while len(lists) > 1:
+            one_merge = []
+            
+            for i in range(0, len(lists), 2): # each time the step is 2
+                l1 = lists[i]
+                l2 = lists[i + 1] if (i + 1) < len(lists) else None # check for the odd condition
+                one_merge.append(self.merge_two(l1, l2))
+                
+            lists = one_merge
+        
+        return lists[0]
+    
+    def merge_two(self, l1, l2):
+        """
+        Same as Leetcode Q21
+        """
+        dummy = ListNode(-1) # dummy node to avoid empty ptr
+        pre = dummy
+        
+        while l1 and l2:
+            if l1.val <= l2.val:
+                pre.next = l1
+                l1 = l1.next
+            else:
+                pre.next = l2
+                l2 = l2.next
+            pre = pre.next # don't forget to move ptr
+        
+        # append the remaining nodes in l1 or l2
+        if l1:
+            pre.next = l1
+        elif l2:
+            pre.next = l2
+        
+        return dummy.next
+```
+
 [143. Reorder List](https://leetcode.com/problems/reorder-list/)
 Input: head = [1,2,3,4,5]
 Output: [1,5,2,4,3]
@@ -259,11 +344,46 @@ class Solution:
 ```
 
 [19. Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)
-走两遍，第一遍计算出来总长度，第二遍就走到对应的位置再删除就可以。因为要删除，所以要用dummy node
 
 ```py
 class Solution:
     def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        """
+        One pass
+        ptr1 move k times, then ptr2 start from the beginning.
+        When moving together, ptr1 moves n-k to the end, so ptr2 moves n-k times
+
+        Time: O(N)
+        Space: O(1)
+        """
+        dummy = ListNode(-1)
+        dummy.next = head
+        ptr1 = ptr2 = dummy
+        
+        while n > 0: 
+            ptr1 = ptr1.next
+            n -= 1
+        
+        ptr1 = ptr1.next # ptr1多走一步，从而之后ptr2就刚好在要移除的节点的前一个
+        while ptr1:
+            ptr1 = ptr1.next
+            ptr2 = ptr2.next
+        
+        ptr2.next = ptr2.next.next
+        
+        return dummy.next
+```
+
+```py
+class Solution:
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        """
+        Two Pass
+        走两遍，第一遍计算出来总长度，第二遍就走到对应的位置再删除就可以。因为要删除，所以要用dummy node
+
+        时间：O(N)
+        空间：O(1)
+        """
         dummy = ListNode(-1)
         length = 0
         dummy.next = head
@@ -335,11 +455,18 @@ class Solution:
 ```
 
 [142. Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/)
-先用快慢指针找到相遇的点。然后利用Floyd's算法找到成环的点；Floyd's算法是head.next和快慢指针相遇点.next往后走，彼此相遇的点就是成环的点
+
 
 ```py
 class Solution:
     def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        """
+        先用快慢指针找到相遇的点。
+        然后利用Floyd's算法找到成环的点；Floyd's算法是head和快慢指针相遇点往后走，彼此相遇的点就是成环的点
+
+        时间：O(N)
+        空间：O(1)
+        """
         slow = fast = head
         
         # 快慢指针找相遇点，如果fast.next为空，就说明没有环

@@ -457,3 +457,31 @@ class Solution:
         return not hasCycle(0, -1) and n == len(visit)
 
 ```
+
+# 图遍历
+[797. All Paths From Source to Target](https://leetcode.com/problems/all-paths-from-source-to-target/)
+
+```py
+class Solution:
+    def allPathsSourceTarget(self, graph: List[List[int]]) -> List[List[int]]:
+        """
+        traverse the graph from graph[0], while maintaining an one_res path, the base case is reaching the end of the graph
+        """
+        res = []
+        
+        def dfs(cur_node, one_res):
+            # base case
+            if cur_node == len(graph)-1:
+                res.append(one_res.copy())
+                return
+            
+            # traverse neighbors
+            for node in graph[cur_node]:
+                one_res.append(node)
+                dfs(node, one_res) 
+                one_res.pop()
+        
+        # initiate one_res with [0], as the first element is not added from dfs()：only added 0'neighbors at the beginning
+        dfs(0, [0])
+        return res
+```
