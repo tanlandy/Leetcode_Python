@@ -1,3 +1,36 @@
+[26. Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/)
+
+```py
+class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        """
+        快慢指针，快指针在前面走，当找到一个不同的数的时候，慢指针走一步并更新
+        """
+        slow = fast = 0
+        while fast < len(nums):
+            if nums[slow] != nums[fast]:
+                slow += 1
+                nums[slow] = nums[fast]
+            fast += 1
+        
+        return slow + 1
+```
+
+[27. Remove Element](https://leetcode.com/problems/remove-element/)
+
+```py
+class Solution:
+    def removeElement(self, nums: List[int], val: int) -> int:
+        slow = fast = 0
+        while fast < len(nums):
+            if nums[fast] != val:
+                nums[slow] = nums[fast]
+                slow += 1
+            fast += 1
+        return slow
+```
+
+
 [271. Encode and Decode Strings](https://leetcode.com/problems/encode-and-decode-strings/)
 组合大文字的时候用数字+特殊字符来连接，decode时候就需要找到数字大小
 
@@ -122,8 +155,6 @@ class Solution:
         return res
 ```
 
-
-
 [1047. Remove All Adjacent Duplicates In String](https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/)
 
 ```py
@@ -165,3 +196,35 @@ class Solution:
         
         return "".join(c * n for c, n in stack)
 ```
+
+[5. Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/)
+
+```py
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        """
+        从头到尾，依次遍历可能的回文字符，每次遍历之后都更新潜在的最大值
+        """
+        res = ""
+        
+        def findPalindrome(l, r):
+            while l >= 0 and r < len(s) and s[l] == s[r]:
+                l -= 1 # 从中间往两边走
+                r += 1
+            return s[l + 1: r] # 多走了一步，所以要返回之前的一步
+        
+        for i in range(len(s)):
+            # odd length
+            s1 = findPalindrome(i, i)
+            
+            # even length
+            s2 = findPalindrome(i, i + 1)
+            
+            if len(s1) > len(s):
+                res = s1
+            if len(s2) > len(s):
+                res = s2
+                
+        return res
+```
+https://leetcode.com/problems/longest-palindromic-substring/discuss/2030458/Python

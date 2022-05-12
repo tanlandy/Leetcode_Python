@@ -485,3 +485,73 @@ class Solution:
         dfs(0, [0])
         return res
 ```
+
+[785. Is Graph Bipartite?](https://leetcode.com/problems/is-graph-bipartite/)
+
+```py
+class Solution(object):
+    def isBipartite(self, graph):
+        """
+        遍历一遍图，一边遍历一边染色，看看能不能用两种颜色给所有节点染色，且相邻节点的颜色都不相同。
+
+        时间：O(V+E)
+        空间：O(V) 用来存visit
+        """
+
+        def traverse(v, color):
+            # base case 已经走过
+            if v in visit:
+                return visit[v] == color: # 判断颜色是否相同
+
+            # 没有走过
+            visit[v] = color
+            for nei in graph[v]:
+                if not traverse(nei, -color): # 给nei涂上不同的颜色
+                    return False
+            return True
+
+        visit = {} # {visited vertex: color}既能确认是否visited，又能比较color
+
+        # 对每一个点都要遍历
+        for i in range(len(graph)):
+            if i not in visit: # 对于没有走过的点，都作为起点，来检查是否分别是二分图
+                if not traverse(i, 1): # 有一个不是二分图，就return False
+                    return False
+        return True
+```
+
+
+[886. Possible Bipartition](https://leetcode.com/problems/possible-bipartition/)
+
+```py
+class Solution:
+    def possibleBipartition(self, N: int, dislikes: List[List[int]]) -> bool:
+        """
+        与LC785一样，只是多了一个建图的过程
+        
+        时间：O(V+E)
+        空间：O(V) 用来存visit
+        """
+        def traverse(v, color):                
+            if v in visit:
+                return visit[v] == color
+            
+            visit[v] = color        
+            for nei in graph[v]:                
+                if not traverse(nei, -color):
+                    return False
+            return True
+        
+        graph = collections.defaultdict(list)
+        visit = {}      
+
+        for a,b in dislikes: 
+            graph[a].append(b)
+            graph[b].append(a)
+        
+        for i in range(1,N+1):            
+            if i not in visit:
+                if not traverse(i, 1):
+                    return False
+        return True
+```

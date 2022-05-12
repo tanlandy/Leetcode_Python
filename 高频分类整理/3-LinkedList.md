@@ -1,3 +1,26 @@
+[83. Remove Duplicates from Sorted List](https://leetcode.com/problems/remove-duplicates-from-sorted-list/)
+
+```py
+class Solution:
+    def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        """
+        类似LC26，快慢指针，当不一样的时候就可以加进来
+        """
+        if not head:
+            return head
+        
+        slow = fast = head
+        while fast:
+            if slow.val != fast.val:
+                slow.next = fast
+                slow = fast
+            fast = fast.next
+        slow.next = None # 别忘了断开后面的连接
+        return head
+                
+```
+
+
 [206. Reverse Linked List](https://leetcode.com/problems/reverse-linked-list/)
 两个指针，一个一个得修改指向
 
