@@ -1,3 +1,33 @@
+# Tree
+
+```py
+class Solution:
+    def connect(self, root: 'Node') -> 'Node':
+        """
+        完全理解BFS的实现过程的好题
+        """
+        if not root:
+            return root
+        
+        queue = collections.deque([root])
+        
+        while queue:
+            size = len(queue)
+            
+            for i in range(size):
+                node = queue.popleft()
+                
+                if i < size - 1: # 点睛之笔，每次要链接的，其实就是把刚popleft出来的连接到[0]
+                    node.next = queue[0]
+                
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+        
+        return root
+```
+
 # 2D Grid
 
 [994. Rotting Oranges](https://leetcode.com/problems/rotting-oranges/)
