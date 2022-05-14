@@ -177,10 +177,9 @@ Output: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
 class Solution:
     def permute(self, nums: List[int]) -> List[List[int]]:
         res = []
-        one_res = []
         used = [False] * len(nums)
 
-        def backtrack():
+        def backtrack(one_res):
             # 添加条件： 长度
             if len(one_res) == len(nums):
                 res.append(one_res.copy())
@@ -194,11 +193,11 @@ class Solution:
                 
                 used[i] = True
                 one_res.append(nums[i])
-                backtrack()
+                backtrack(one_res)
                 one_res.pop()
                 used[i] = False
         
-        backtrack()
+        backtrack([])
         return res
 ```
 
