@@ -5,7 +5,7 @@
 """子集问题 LC77, 78, 90""" 
 for i in range(start, len(nums)):
     one_res.append(nums[i])
-    backtrack(i + 1)
+    backtrack(i + 1, one_res)
     one_res.pop()
 
 """排列问题 LC46"""
@@ -14,8 +14,8 @@ for i in range(len(nums)):
         continue
     
     used[i] = True
-    one_res.append(nums[i]
-    backtrack()
+    one_res.append(nums[i])
+    backtrack(one_res)
     one_res.pop()
     used[i] = False
 ```
@@ -29,7 +29,7 @@ for i in range(start, len(nums)):
         continue
     
     one_res.append(nums[i])
-    backtrack(i + 1)
+    backtrack(i + 1, one_res)
     one_res.pop()
 
 """排列问题 LC47"""
@@ -38,12 +38,12 @@ for i in range(len(nums)):
     if used[i]:
         continue
     
-    if i > start and nums[i] == nums[i - 1] and not used[i - 1]:
+    if i > start and nums[i] == nums[i - 1] and not used[i - 1]: # not used[i-1]保证了元素的相对位置的统一，永远都是2->2'->2"
         continue
 
     used[i] = True
     one_res.append(nums[i]
-    backtrack()s
+    backtrack(one_res)
     one_res.pop()
     used[i] = False
 ```
@@ -53,13 +53,13 @@ for i in range(len(nums)):
 """子集问题 LC39"""
 for i in range(start, len(nums)):
     one_res.append(nums[i])
-    backtrack(i) # 注意这里是i
+    backtrack(i, one_res) # 注意这里是i
     one_res.pop()
 
-"""排序问题"""
+"""排列问题"""
 for i in range(len(nums)):
     one_res.append(nums[i])
-    backtrack()
+    backtrack(one_res)
     one_res.pop()
 
 ```
@@ -103,16 +103,20 @@ Given an integer array nums of unique elements, return all possible subsets (the
 Input: nums = [1,2,3]
 Output: [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]   
 
-时间：O(N*2^N) generate all subsets and copy them
-空间：O(N) use O(N) for one_res
+
 ```py
 class Solution:
     def subsets(self, nums: List[int]) -> List[List[int]]:
-        """通过保证元素之间的相对顺序不变来防⽌出现重复的⼦集"""
-        one_res = []
+        """
+        通过保证元素之间的相对顺序不变来防⽌出现重复的⼦集
+        并不是满树，所以利用start来控制树的遍历
+
+        时间：O(N*2^N) generate all subsets and copy them
+        空间：O(N) use O(N) for one_res
+        """
         res = []
         
-        def backtrack(start):
+        def backtrack(start, one_res):
             # 添加条件：每个中间结果都是最终结果
             res.append(one_res.copy())
             
@@ -120,10 +124,10 @@ class Solution:
             # 通过 start 参数控制树枝的遍历，避免产生重复的子集            
             for i in range(start, len(nums)):
                 one_res.append(nums[i]) # 做选择
-                backtrack(i+1)
+                backtrack(i+1, one_res)
                 one_res.pop() # 撤销选择
         
-        backtrack(0)
+        backtrack(0, [])
         return res
 ```
 
@@ -146,10 +150,13 @@ Output:
 ```py
 class Solution:
     def combine(self, n: int, k: int) -> List[List[int]]:
-        one_res = []
+        """
+        不是满树，使用start来控制树的遍历
+        backtrack从1开始，到n+1为止（左闭右开）
+        """
         res = []
 
-        def backtrack(start):
+        def backtrack(start, one_res):
             # 添加条件：长度是k
             if len(one_res) == k: 
                 res.append(one_res.copy())
@@ -157,12 +164,12 @@ class Solution:
 
             # 子集问题：i从start开始
             # 通过 start 参数控制树枝的遍历，避免产生重复的子集
-            for i in range(start, n + 1):
+            for i in range(start, n + 1): # 左闭右开区间，所以要n+1
                 one_res.append(i)
-                backtrack(i+1)
+                backtrack(i+1, one_res)
                 one_res.pop()
             
-        backtrack(1)
+        backtrack(1, []) # 从1开始
         return res
 ```
 
@@ -176,6 +183,9 @@ Output: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
 ```py
 class Solution:
     def permute(self, nums: List[int]) -> List[List[int]]:
+        """
+        满树问题，剪枝条件是跳过重复使用的值：可以用used[]来记录使用过的值，也可以每次判断nums[i] in one_res
+        """
         res = []
         used = [False] * len(nums)
 
@@ -214,23 +224,22 @@ class Solution:
     def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
         """需要先进行排序，让相同的元素靠在一起，如果发现nums[i] == nums[i-1]，则跳过"""
         nums.sort()
-        oneRes = []
         res = []
         
-        def backtrack(start):
+        def backtrack(start, one_res):
             # 添加条件：每个中间结果都是最终结果
-            res.append(oneRes.copy())
+            res.append(one_res.copy())
             
             # 子集问题：i从start开始
             for i in range(start, len(nums)):
                 # 跳过不合法选择，否则有最终结果有两个[1,2]
                 if i > start and nums[i] == nums[i-1]:
                     continue
-                oneRes.append(nums[i])
-                backtrack(i+1)
-                oneRes.pop()
+                one_res.append(nums[i])
+                backtrack(i+1, one_res)
+                one_res.pop()
         
-        backtrack(0)
+        backtrack(0, [])
         return res
 ```
 
@@ -342,8 +351,9 @@ class Solution:
                 
                 if visit[i]:
                     continue
-            # 新添加的剪枝逻辑，固定相同的元素在排列中的相对位置
-            # not visited[i - 1]保证相同元素在排列中的相对位置保持不变。
+                    
+                # 新添加的剪枝逻辑，固定相同的元素在排列中的相对位置
+                # not visited[i - 1]保证相同元素在排列中的相对位置保持不变。
                 if i > 0 and nums[i] == nums[i - 1] and not visit[i - 1]:
                     continue
                     
