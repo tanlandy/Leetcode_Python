@@ -1,34 +1,7 @@
-def solveNQueens(n: int):
-    col = set()
-    pos_diag = set()
-    neg_diag = set()
-    
-    res = []
-    board = [["."] * n for i in range(n)]
-    
-    def backtrack(r):
-        if r == n:
-            one_res = ["".join(row) for row in board]
-            res.append(one_res)
-            return
-        
-        for c in range(n):
-            if c in col or (r + c) in pos_diag or (r - c) in neg_diag:
-                continue
-            
-            col.add(c)
-            pos_diag.add(r + c)
-            neg_diag.add(r - c)
-            board[r][c] = "Q"
-            
-            backtrack(r + 1)
-            
-            col.remove(c)
-            pos_diag.remove(r + c)
-            neg_diag.remove(r - c)
-            board[r][c] = "."
-    
-    backtrack(0)
-    return len(res)
+nums = [4,4,6,2,3,8,10,2,10,7]
 
-print(solveNQueens(12))
+total_sum = sum(nums)
+one_sum = total_sum // 4
+print(one_sum)
+nums.sort()
+print(nums)

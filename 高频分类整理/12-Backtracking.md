@@ -532,3 +532,42 @@ class Solution:
         return res          
 
 ```
+
+[698. Partition to K Equal Sum Subsets](https://leetcode.com/problems/partition-to-k-equal-sum-subsets/)
+
+```py
+class Solution:
+    def canPartitionKSubsets(self, nums: List[int], k: int) -> bool:
+        """
+        可能是TLE，但是好理解：
+        每次都找数往bucket里放，直到k==0就返回
+        时间：O(k * 2^N) 一个数的时间是2^N，找到一个数之后在这树下会还有k-1颗数
+        """
+        if sum(nums) % k:
+            return False
+
+        nums.sort(reverse=True)
+        target = sum(nums) / k
+        used = [False] * len(nums)
+
+        def backtrack(i, k, cur_sum): # how many k are left
+            if k == 0: # ultimate base case
+                return True
+            
+            if cur_sum == target: # base case
+                return backtrack(0, k - 1, 0) # 从idx0开始找
+            
+            for j in range(i, len(nums)):
+                if used[j] or cur_sum + nums[j] > target:
+                    continue
+                    
+                used[j] = True
+                cur_sum += nums[j]
+                if backtrack(j + 1, k, cur_sum):
+                    return True
+                cur_sum -= nums[j]
+                used[j] = False
+            return False
+        
+        return backtrack(0, k, 0)
+```
