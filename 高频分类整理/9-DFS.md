@@ -39,7 +39,7 @@ class Solution:
         return False
 ```
 
-Tree
+# Tree
 
 [226. Invert Binary Tree](https://leetcode.com/problems/invert-binary-tree/)
 每走到一个节点，看一下他的两个子节点，然后swap子节点的位置
@@ -323,8 +323,295 @@ class Solution:
 
 # 2D Grid遍历
 
-[130. Surrounded Regions](https://leetcode.com/problems/surrounded-regions/)
+[200. Number of Islands](https://leetcode.com/problems/number-of-islands/)
 
+BFS
+```py
+class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        """
+        Time：O(M*N)
+        Space：O(min(M,N))
+        """
+
+        if not grid:
+            return 0
+        
+        rows, cols = len(grid), len(grid[0])
+        visit = set()
+        count = 0
+
+        def bfs(r, c):
+            queue = collections.deque()
+            visit.add((r, c)) # add the current (r, c)
+            queue.append((r,c))
+
+            while queue:
+                row, col = queue.popleft()
+                directions = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+
+                for dr, dc in directions: # go to four directions 
+                    r, c = row + dr, col + dc
+                    if (r in range(rows) and
+                        c in range(cols) and
+                        grid[r][c] == "1" and
+                        (r, c) not in visit):
+                        queue.append((r, c))
+                        visit.add((r, c))
+
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == "1" and (r, c) not in visit:
+                    bfs(r, c)
+                    count += 1
+        return count
+```
+
+DFS
+```py
+class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        """
+        Time：O(M*N)
+        Space：O(M*N)
+        """
+        rows, cols = len(grid), len(grid[0])
+        visit = set()
+        
+        def dfs(r, c):
+            if (r < 0 or r == rows or c < 0 or c == cols or (r, c) in visit or grid[r][c] != "1"):
+                return
+            
+            visit.add((r, c)) # can also flood fill to "0"
+            dfs(r + 1, c)
+            dfs(r - 1, c)
+            dfs(r, c + 1)
+            dfs(r, c - 1)
+            
+        
+        count = 0
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == "1" and (r, c) not in visit:
+                    count += 1
+                    dfs(r, c)      
+        return count
+
+```
+
+[1254. Number of Closed Islands](https://leetcode.com/problems/number-of-closed-islands/)
+
+```py
+class Solution:
+    def closedIsland(self, grid: List[List[int]]) -> int:
+        """
+        step1: flood or visit all the islands that in the boarder
+        step2: count the num of islands
+
+        Time: O(M*N)
+        Space: O(M*N)
+        """
+        
+        rows, cols = len(grid), len(grid[0])
+        
+        visit = set()
+        
+        def dfs(r, c):
+            if r < 0 or r == rows or c < 0 or c == cols or grid[r][c] != 0 or (r, c) in visit:
+                return
+            
+            visit.add((r, c))
+            dfs(r + 1, c)
+            dfs(r - 1, c)            
+            dfs(r, c + 1)            
+            dfs(r, c - 1)
+        
+        # step1
+        for r in range(rows):
+            dfs(r, 0)
+            dfs(r, cols - 1)
+        
+        for c in range(cols):
+            dfs(0, c)
+            dfs(rows - 1, c)
+        
+        # step2
+        count = 0
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == 0 and (r, c) not in visit:
+                    dfs(r, c)
+                    count += 1
+        
+        return count
+```
+
+[1020. Number of Enclaves](https://leetcode.com/problems/number-of-enclaves/)
+
+```py
+class Solution:
+    def numEnclaves(self, grid: List[List[int]]) -> int:
+        """
+        The same as LC1254
+        
+        Step1: visit all the cells that can walk off the boundary
+        Step2: count the remaining cells
+        
+        Time: O(M*N)
+        Space: O(M*N)
+        """
+        
+        rows, cols = len(grid), len(grid[0])
+        
+        visit = set()
+        
+        def dfs(r, c):
+            if r < 0 or r == rows or c < 0 or c == cols or (r, c) in visit or grid[r][c] != 1:
+                return
+            
+            visit.add((r, c))
+            dfs(r + 1, c)
+            dfs(r - 1, c)            
+            dfs(r, c + 1)            
+            dfs(r, c - 1)
+            
+        # step1
+        for r in range(rows):
+            dfs(r, 0)
+            dfs(r, cols - 1)
+        
+        for c in range(cols):
+            dfs(0, c)
+            dfs(rows - 1, c)
+        
+        # step2
+        count = 0
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == 1 and (r, c) not in visit:
+                    count += 1
+        
+        return count
+```
+
+[695. Max Area of Island](https://leetcode.com/problems/max-area-of-island/)
+
+```py
+class Solution:
+    def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+        """
+        the dfs() returns the current area while traversing the island
+        Time: O(M*N)
+        Space: O(M*N)
+        """
+        rows, cols = len(grid), len(grid[0])
+        visit = set()
+        
+        def dfs(r, c): # return the current area while traversing the island
+            if (r < 0 or r == rows or c < 0 or c == cols or grid[r][c] != 1 or (r, c) in visit):
+                return 0 # reach the end, the current area is 0
+            
+            visit.add((r, c))
+            return (1 +  # 1 is the current area
+                   dfs(r+1, c) + # add the possible adjcent area
+                   dfs(r-1, c) +
+                   dfs(r, c+1) +
+                   dfs(r, c-1) 
+                   )
+            
+        
+        area = 0
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == 1 and (r, c) not in visit:
+                    area = max(area, dfs(r, c)) # compare the area of different islands
+        return area                 
+```
+
+[1905. Count Sub Islands](https://leetcode.com/problems/count-sub-islands/)
+
+```py
+class Solution:
+    def countSubIslands(self, grid1: List[List[int]], grid2: List[List[int]]) -> int:
+        """
+        Step1: iterate through all islands in grid2, if any cell is not island in grid1, flood or visit the entire island of grid2
+        Step2: count the num of islands in grid2
+        
+        Time: O(M*N)
+        Space: O(M*N)
+        """
+        rows, cols = len(grid1), len(grid1[0])
+        
+        visit = set()
+        
+        def dfs(r, c):
+            if r < 0 or r == rows or c < 0 or c == cols or (r, c) in visit or grid2[r][c] != 1:
+                return
+            
+            visit.add((r, c))
+            dfs(r + 1, c)
+            dfs(r - 1, c)
+            dfs(r, c + 1)
+            dfs(r, c - 1)
+            
+        
+        # step1
+        for r in range(rows):
+            for c in range(cols):
+                if grid2[r][c] == 1 and grid1[r][c] == 0 and (r, c) not in visit:
+                    dfs(r, c)
+        
+        # step2
+        count = 0
+        for r in range(rows):
+            for c in range(cols):
+                if grid2[r][c] == 1 and (r, c) not in visit:
+                    dfs(r, c)
+                    count += 1
+            
+        return count
+```
+
+[694. Number of Distinct Islands](https://leetcode.com/problems/number-of-distinct-islands/)
+
+```py
+class Solution:
+    def numDistinctIslands(self, grid: List[List[int]]) -> int:
+        """
+        dfs() returns the current path of the island
+        
+        Time: O(M*N)
+        Space: O(M*N)
+        """
+        rows, cols = len(grid), len(grid[0])
+        visit = set()
+        
+        def dfs(r, c, path):
+            if r < 0 or r == rows or c < 0 or c == cols or (r, c) in visit or grid[r][c] == 0:
+                return "0"
+            
+            visit.add((r, c)) # enter the traverse
+            d = dfs(r + 1, c, path)
+            u = dfs(r - 1, c, path)            
+            right = dfs(r, c + 1, path)            
+            l = dfs(r, c - 1, path)            
+            path = d + u + right + l + "1" # exit the traverse
+            
+            return path
+        
+        count = set()
+        
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == 1 and (r, c) not in visit:
+                    one_path = dfs(r, c, "o")
+                    count.add(one_path)
+        
+        return len(count)
+```
+
+
+[130. Surrounded Regions](https://leetcode.com/problems/surrounded-regions/)
 
 ```py
 class Solution:
