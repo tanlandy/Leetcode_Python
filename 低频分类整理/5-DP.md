@@ -268,3 +268,70 @@ class Solution:
         return dp[amount] if dp[amount] != float("inf") else -1
 
 ```
+
+[152. Maximum Product Subarray](https://leetcode.com/problems/maximum-product-subarray/)
+
+```py
+class Solution:
+    def maxProduct(self, nums: List[int]) -> int:
+        """
+        BF: find all the products-> O(N^2)
+        DP: 
+        all positive: product increasing
+        all negative: odd products smaller; even products larger: the sign is alternating
+        subproblem is to find the max and min of the previous several elements
+        when see 0, reset max and min to 1 to ignore 0
+
+        Time: O(N)
+        Space: O(1)
+        """
+        res = max(nums) # cannot as 0, as the input can be  [-1]
+        cur_min, cur_max = 1, 1
+
+        for n in nums:
+            if n == 0: # 这个判断也可以不要，因为这样的话下次默认就是cur_max = cur_min = n
+                cur_min, cur_max = 1, 1
+                continue
+            tmp = cur_max * n
+            cur_max = max(n * cur_max, n * cur_min, n) # three senarios: [1,2,3], [1,-2,-3], [-1, -2, 3]
+            cur_min = min(tmp, n * cur_min, n)
+            res = max(cur_max, cur_min, res)
+        
+        return res
+```
+
+index of the maxProduct
+```py
+class Solution:
+    def maxProduct(self, nums: List[int]) -> int:
+        """
+        first find the end index, then go from right to left to find the beginning
+
+        Time: O(N)
+        Space: O(1)
+        """
+        cur_min, cur_max = nums[0], nums[0]
+        res = nums[0] # cannot be max(nums), as the max(nums) can be result and in this case the index is missed
+        end_idx = 0
+
+        # get the end_idx
+        for i in range(1, len(nums)): # use i to get the index
+            cur = nums[i]
+            tmp = cur_max * cur
+            cur_max = max(cur_max * cur, cur_min * cur, cur)
+            cur_min = max(tmp, cur_min * cur, cur)
+            if cur_max > res:
+                res = cur_max
+                end_idx = i 
+        
+        # get the begin_idx
+        prod = nums[end_idx]
+        begin_idx = end_idx - 1
+        while prod != res and begin_idx >= 0:
+            prod *= nums[begin_idx]
+            begin_idx -= 1
+        
+        print(nums[begin_idx + 1: end_idx + 1])
+        return res
+
+```
