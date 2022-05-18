@@ -843,3 +843,5 @@ class Solution:
         return True
 ```
 
+
+https://leetcode.com/problems/critical-connections-in-a-network/discuss/382638/DFS-detailed-explanation-O(orEor)-solution 
