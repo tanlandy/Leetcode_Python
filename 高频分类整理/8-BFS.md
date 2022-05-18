@@ -85,6 +85,46 @@ class Solution:
         return root
 ```
 
+[752. Open the Lock](https://leetcode.com/problems/open-the-lock/)
+
+```py
+class Solution:
+    def openLock(self, deadends: List[str], target: str) -> int:
+        """
+        BFS templete, trick point is to find the adjcent wheels each time
+        """
+        # edge case
+        if "0000" in deadends:
+            return -1
+        
+        # find the adjacent locks
+        def children(wheel):
+            res = []
+            for i in range(4): # 8 adjcents in toal
+                digit = str((int(wheel[i]) + 1) % 10) # up 1
+                res.append(wheel[:i] + digit + wheel[i+1:])
+                digit = str((int(wheel[i]) + 10 - 1) % 10) # down 1
+                res.append(wheel[:i] + digit + wheel[i+1:])
+            return res    
+        
+        # BFS structrue
+        queue = collections.deque()
+        visit = set(deadends)
+        queue.append(["0000", 0]) # queue stores both [wheel, turns]
+        while queue:
+            wheel, turns = queue.popleft()
+            # target to return
+            if wheel == target:
+                return turns
+            
+            # traverse other
+            for child in children(wheel):
+                if child not in visit:
+                    visit.add(child)
+                    queue.append([child, turns + 1])
+        return -1 
+```
+
 # 2D Grid
 
 [994. Rotting Oranges](https://leetcode.com/problems/rotting-oranges/)
