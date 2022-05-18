@@ -2,6 +2,61 @@
 
 # Tree
 
+## 模板
+```py
+def BFS(root):
+    if not root:
+        return root
+
+    queue = collections.deque([root]) # initate queue and add root
+    visit = set()  # use a set to keep track of visited node, no need for traversing a tree
+    visit.add((root))
+    step = 0 # depends on the target
+
+    while queue:
+        size = len(queue)
+        for i in range(size):
+            node = queue.popleft()
+            if node is target: # depends on the target
+                return
+            for nei in node.adj(): # traverse the graph or the tree
+                if nei not in visit: # no cycle
+                    queue.append(nei)
+                    visit.add(nei)
+        step += 1
+
+```
+
+[111. Minimum Depth of Binary Tree](https://leetcode.com/problems/minimum-depth-of-binary-tree/)
+
+```py
+class Solution:
+    def minDepth(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        queue = collections.deque([root])
+        step = 1
+        
+        while queue:
+            size = len(queue)
+            for i in range(size):
+                node = queue.popleft()
+                
+                # case that meet the target
+                if not node.left and not node.right:
+                    return step
+                
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+            
+            # after the level, update the step
+            step += 1
+        
+        return step
+```
+
 ```py
 class Solution:
     def connect(self, root: 'Node') -> 'Node':
