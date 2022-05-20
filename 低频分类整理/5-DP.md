@@ -1,3 +1,4 @@
+# 1D DP
 [70. Climbing Stairs](https://leetcode.com/problems/climbing-stairs/)
 
 ```py
@@ -335,3 +336,65 @@ class Solution:
         return res
 
 ```
+
+[139. Word Break](https://leetcode.com/problems/word-break/)
+
+```py
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        """
+        dp[] stores given index is true or false
+
+        Time: O(N*M*N), N is len(s), M is len(wordDict)
+        Space: O(N+M)
+        """
+        
+        dp = [False] * (len(s) + 1)
+        dp[len(s)] = True
+        
+        for i in range(len(s) - 1, -1, -1):
+            for w in wordDict:
+                if (i + len(w) <= len(s)) and s[i:i + len(w)] == w:
+                    dp[i] = dp[i + len(w)] # at idx i, dp[i] determines at dp[i+len(w)] if s[i:i+len(w)] == w
+                if dp[i]:
+                    break
+        return dp[0]
+```
+
+[300. Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/)
+
+```py
+class Solution:
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        """
+        BF: generate all subsequences: for each value: 2 choices: include or not include -> 2^N all sequencies
+        -> draw a decision tree and memorize the
+        DP: right to left: dp[i] stores the LIS starting at index i
+        dp[i] = max(1, 1+dp[i+1], 1+dp[i+2], ...), depends on whether dp[i] < dp[i+1}
+
+        Time: O(N^2)
+        Space: O(N)
+        """
+        LIS = [1] * len(nums) # base case
+
+        for i in range(len(nums) - 1, -1, -1): 
+            for j in range(i + 1, len(nums)):
+                if nums[i] < nums[j]: 
+                    LIS[i] = max(LIS[i], 1 + LIS[j]) # transition of the given state
+        
+        return max(LIS)
+
+```
+
+[416. Partition Equal Subset Sum](https://leetcode.com/problems/partition-equal-subset-sum/)
+
+```py
+class Solution:
+    def canPartition(self, nums: List[int]) -> bool:
+        
+
+
+```
+
+# 2D DP
+
