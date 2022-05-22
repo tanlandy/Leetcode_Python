@@ -1,7 +1,9 @@
-nums = [4,4,6,2,3,8,10,2,10,7]
+nums = [2,45,5,5,3,133,5,8]
 
-total_sum = sum(nums)
-one_sum = total_sum // 4
-print(one_sum)
-nums.sort()
+nums = [str(n) for n in nums]
+
 print(nums)
+
+res = "".join(nums)
+ans = int(res)
+print(ans)

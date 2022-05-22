@@ -21,3 +21,5 @@ print(s[0:2]) # s[0:2]左闭右开
 output: 12
 
 
+Todo
+2-sorted: LC4: neetcode.io then understand that
