@@ -1,37 +1,16 @@
-[83. Remove Duplicates from Sorted List](https://leetcode.com/problems/remove-duplicates-from-sorted-list/)
-
-```py
-class Solution:
-    def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        """
-        类似LC26，快慢指针，当不一样的时候就可以加进来
-        """
-        if not head:
-            return head
-        
-        slow = fast = head
-        while fast:
-            if slow.val != fast.val:
-                slow.next = fast
-                slow = fast
-            fast = fast.next
-        slow.next = None # 别忘了断开后面的连接
-        return head
-                
-```
-
-
+# 基础题目
 [206. Reverse Linked List](https://leetcode.com/problems/reverse-linked-list/)
-两个指针，一个一个得修改指向
 
-时间：O(N)
-空间：O(1)
 ```py
-"""
-[1,2,3,4,5] -> [5,4,3,2,1]
-"""
 class Solution:
     def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        """
+        [1,2,3,4,5] -> [5,4,3,2,1]
+        Use two ptrs. each time assign the cur.next to prev ptr, then move both cur and pre to their next node
+
+        Time: O(N)
+        Space: O(1)
+        """
         prev, cur = None, head
 
         while cur:
@@ -41,18 +20,167 @@ class Solution:
             cur = nxt
         
         return prev
+```
+
+[876. Middle of the Linked List](https://leetcode.com/problems/middle-of-the-linked-list/)
+
+```py
+class Solution:
+    def middleNode(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        """
+        slow and fast pointers
+        Time: O(N)
+        Space: O(1)
+        """
+        slow = fast = head
+        
+        while fast and fast.next: # inside the while function, there is a fast.next.next, so have to check fast.next
+            fast = fast.next.next
+            slow = slow.next
+        
+        return slow
+```
+
+# 进阶题目
+
+[160. Intersection of Two Linked Lists](https://leetcode.com/problems/intersection-of-two-linked-lists/)
+
+```py
+class Solution:
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> Optional[ListNode]:
+        """
+        Use two pointers, let them traverse at most the length of M+N when they interact at the end
+        
+        Time: O(M+N)
+        Space: O(1)
+        """
+        pA, pB = headA, headB
+        
+        while pA != pB:
+            pA = headB if pA is None else pA.next
+            pB = headA if pB is None else pB.next
+        
+        return pA
+```
+
+
+
+## 成环问题Floyd's
+
+[141. Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/)
+
+```py
+class Solution:
+    def hasCycle(self, head: Optional[ListNode]) -> bool:
+        """用快慢指针找到相遇的点，相遇了就说明有环"""
+        slow = fast = head
+        
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+            if slow == fast:
+                return True
+        
+        return False
+```
+
+[142. Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/)
+
+
+```py
+class Solution:
+    def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        """
+        先用快慢指针找到相遇的点。
+        然后利用Floyd's算法找到成环的点；Floyd's算法是head和快慢指针相遇点往后走，彼此相遇的点就是成环的点
+
+        时间：O(N)
+        空间：O(1)
+        """
+        slow = fast = head
+        
+        # 快慢指针找相遇点，如果fast.next为空，就说明没有环
+        while slow and fast:
+            if not fast.next or not fast.next.next: # 最下面用到了slow.next相当于是fast.next.next.next，所以要not fast.next.next
+                return None
+            
+            slow = slow.next
+            fast = fast.next.next # 这里用到了fast.next.next，所以条件要有not fast.next
+            if slow == fast:
+                break
+
+        cur = head        
+        while cur:
+            if cur == slow:
+                return cur
+            
+            cur = cur.next
+            slow = slow.next
+```
+
+[287. Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/)
+
+```py
+class Solution:
+    def findDuplicate(self, nums: List[int]) -> int:
+        slow, fast = 0, 0
+        # 找到相遇的节点
+        while True:
+            slow = nums[slow]
+            fast = nums[nums[fast]]
+            if slow == fast:
+                break
+        
+        # 找到cycle的起点
+        slow2 = 0
+        while True:
+            slow = nums[slow]
+            slow2 = nums[slow2]
+            if slow == slow2:
+                return slow
+```
+
+[2. Add Two Numbers](https://leetcode.com/problems/add-two-numbers/)
+计算出来每次的数字，然后相加，最后更新指针；注意while循环的条件
+
+时间：O(max(l1, l2))
+空间：O(max(l1, l2))
+```py
+class Solution:
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        dummy = ListNode(-1) # edge case when insert into LinkedList
+        cur = dummy
+
+        carry = 0
+        while l1 or l2 or carry: # 这个条件非常重要
+            v1 = l1.val if l1 else 0
+            v2 = l2.val if l2 else 0
+            
+            num = (carry + v1 + v2) % 10
+            carry = (carry + v1 + v2) // 10
+            
+            cur.next = ListNode(num) # 形成LinkedList
+            
+            # 更新指针
+            cur = cur.next
+            l1 = l1.next if l1 else None
+            l2 = l2.next if l2 else None
+        
+        return dummy.next
 
 ```
+
 
 [92. Reverse Linked List II](https://leetcode.com/problems/reverse-linked-list-ii/)
 
 ```py
-"""
-[1,2,3,4,5], left = 2, right = 4
--> [1,4,3,2,5]
-"""
+
 class Solution:
     def reverseBetween(self, head: Optional[ListNode], left: int, right: int) -> Optional[ListNode]:
+        """
+        [1,2,3,4,5], left = 2, right = 4
+        -> [1,4,3,2,5]
+        """
         if not head:
             return head
         
@@ -82,8 +210,37 @@ class Solution:
 
 ```
 
-[25. Reverse Nodes in k-Group](https://leetcode.com/problems/reverse-nodes-in-k-group/)
+[328. Odd Even Linked List](https://leetcode.com/problems/odd-even-linked-list/)
 
+```py
+class Solution:
+    def oddEvenList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        """
+        create odd and even lists seperately
+        link the end of odd list to the beginning of even list
+        """
+        if not head:
+            return head
+        
+        odd = head
+        even = head.next
+        even_head = even
+        
+        while even and even.next: # 需要even.next; 因为odd.next = even.next，同时even.next = odd.next，也就是说
+            odd.next = even.next # 1->3
+            odd = odd.next # odd is 3, 3->4->5
+            
+            even.next = odd.next # 2->4 这里的odd.next相当于even.next.next
+            even = even.next
+        
+        odd.next = even_head
+        
+        return head
+```
+
+# Other problems
+
+[25. Reverse Nodes in k-Group](https://leetcode.com/problems/reverse-nodes-in-k-group/)
 
 ```py
 class Solution:
@@ -125,11 +282,11 @@ class Solution:
 [24. Swap Nodes in Pairs](https://leetcode.com/problems/swap-nodes-in-pairs/)
 
 ```py
-"""
-[1,2,3,4,5] -> [2,1,4,3,5]
-"""
 class Solution:
     def swapPairs(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        """
+        [1,2,3,4,5] -> [2,1,4,3,5]
+        """
         dummy = ListNode(-1)
         dummy.next = head
         pre = dummy
@@ -145,30 +302,6 @@ class Solution:
             pre = first # pre站到1(接下来两个是3,4)
         
         return dummy.next
-```
-
-[328. Odd Even Linked List](https://leetcode.com/problems/odd-even-linked-list/)
-
-```py
-class Solution:
-    def oddEvenList(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        if not head:
-            return head
-        
-        odd = head
-        even = head.next
-        even_head = even
-        
-        while even and even.next: # 需要even.next; 因为odd.next = even.next，同时even.next = odd.next，也就是说
-            odd.next = even.next # 1->3
-            odd = odd.next # odd is 3, 3->4->5
-            
-            even.next = odd.next # 2->4 这里的odd.next相当于even.next.next
-            even = even.next
-        
-        odd.next = even_head
-        
-        return head
 ```
 
 [234. Palindrome Linked List](https://leetcode.com/problems/palindrome-linked-list/)
@@ -212,10 +345,7 @@ class Solution:
         return True
 ```
 
-
-
 [21. Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/)
-
 
 ```py
 class Solution:
@@ -241,6 +371,7 @@ class Solution:
 ```
 
 [23. Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/)
+
 ```py
 class Solution:
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
@@ -272,7 +403,6 @@ class Solution:
         return dummy.next
 
 ```
-
 
 
 ```py
@@ -329,7 +459,7 @@ class Solution:
 Input: head = [1,2,3,4,5]
 Output: [1,5,2,4,3]
 
-分两半，把第二部分reverse，然后一个一个相互练到一起
+分两半，把第二部分reverse，然后一个一个相互连到一起
 
 时间：O(N)
 空间：O(1)
@@ -458,107 +588,23 @@ class Solution:
         return oldToCopy[head]
 ```
 
-# 成环问题Floyd's
-
-[141. Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/)
-用快慢指针找到相遇的点，相遇了就说明有环
+[83. Remove Duplicates from Sorted List](https://leetcode.com/problems/remove-duplicates-from-sorted-list/)
 
 ```py
 class Solution:
-    def hasCycle(self, head: Optional[ListNode]) -> bool:
-        slow = fast = head
-        
-        while fast and fast.next:
-            slow = slow.next
-            fast = fast.next.next
-            if slow == fast:
-                return True
-        
-        return False
-```
-
-[142. Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/)
-
-
-```py
-class Solution:
-    def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+    def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
         """
-        先用快慢指针找到相遇的点。
-        然后利用Floyd's算法找到成环的点；Floyd's算法是head和快慢指针相遇点往后走，彼此相遇的点就是成环的点
-
-        时间：O(N)
-        空间：O(1)
+        类似LC26，快慢指针，当不一样的时候就可以加进来
         """
+        if not head:
+            return head
+        
         slow = fast = head
-        
-        # 快慢指针找相遇点，如果fast.next为空，就说明没有环
-        while slow and fast:
-            if not fast.next or not fast.next.next: # 最下面用到了slow.next相当于是fast.next.next.next，所以要not fast.next.next
-                return None
-            
-            slow = slow.next
-            fast = fast.next.next # 这里用到了fast.next.next，所以条件要有not fast.next
-            if slow == fast:
-                break
-
-        cur = head        
-        while cur:
-            if cur == slow:
-                return cur
-            
-            cur = cur.next
-            slow = slow.next
-```
-
-[287. Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/)
-
-```py
-class Solution:
-    def findDuplicate(self, nums: List[int]) -> int:
-        slow, fast = 0, 0
-        # 找到相遇的节点
-        while True:
-            slow = nums[slow]
-            fast = nums[nums[fast]]
-            if slow == fast:
-                break
-        
-        # 找到cycle的起点
-        slow2 = 0
-        while True:
-            slow = nums[slow]
-            slow2 = nums[slow2]
-            if slow == slow2:
-                return slow
-```
-
-[2. Add Two Numbers](https://leetcode.com/problems/add-two-numbers/)
-计算出来每次的数字，然后相加，最后更新指针；注意while循环的条件
-
-时间：O(max(l1, l2))
-空间：O(max(l1, l2))
-```py
-class Solution:
-    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
-        dummy = ListNode(-1) # edge case when insert into LinkedList
-        cur = dummy
-
-        carry = 0
-        while l1 or l2 or carry: # 这个条件非常重要
-            v1 = l1.val if l1 else 0
-            v2 = l2.val if l2 else 0
-            
-            num = (carry + v1 + v2) % 10
-            carry = (carry + v1 + v2) // 10
-            
-            cur.next = ListNode(num) # 形成LinkedList
-            
-            # 更新指针
-            cur = cur.next
-            l1 = l1.next if l1 else None
-            l2 = l2.next if l2 else None
-        
-        return dummy.next
-
+        while fast:
+            if slow.val != fast.val:
+                slow.next = fast
+                slow = fast
+            fast = fast.next
+        slow.next = None # 别忘了断开后面的连接
+        return head         
 ```
