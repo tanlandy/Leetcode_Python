@@ -1,3 +1,122 @@
+# Hashtable
+
+[1. Two Sum](https://leetcode.com/problems/two-sum/)
+
+```py
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        """map: {num: idx}
+        each time check if the complement is in the map, if it is, return
+        """
+        hashmap = {}
+        for i in range(len(nums)):
+            complement = target - nums[i]
+            if complement in hashmap:
+                return [i, hashmap[complement]]
+            hashmap[nums[i]] = i
+```
+
+
+[146. LRU Cache](https://leetcode.com/problems/lru-cache/)
+
+```py
+"""
+OrderedDict: keeps track of the order of the keys as they are added 
+OrderDicts have two new methods in Python 3: popitem() and move_to_end() 
+popitem() will return and remove a (key, item) pair. 
+move_to_end() will move an existing key to either end of the OrderedDict. The item will be moved right end if the last argument for OrderedDict is set to True (which is the default), or to the beginning if it is False.
+
+"""
+from collections import OrderedDict
+class LRUCache:
+    def __init__(self, Capacity):
+        self.size = Capacity
+        self.cache = OrderedDict()
+
+    def get(self, key):
+        if key not in self.cache: 
+            return -1
+        val = self.cache[key]
+        self.cache.move_to_end(key) # move to end
+        return val
+
+    def put(self, key, val):
+        if key in self.cache: 
+            del self.cache[key]
+        self.cache[key] = val
+        if len(self.cache) > self.size:
+            self.cache.popitem(last = False) # FIFO order like a queue
+```
+
+
+```py
+"""
+需要记录的：capacity;Node: key, val, pre, next; LRU class: cap, left, right, cache还要把left, right连起来 ;如果要get在O(1)：HashMap：{val: pointer to the node}；用left, right pointer来记录LRU和Most freqently used：double linkedlist;当第三个node来了：更新hashMap， 更新left, right pointer，更新第二使用的node和这个node的双向链接；每次get: 删除，添加操作；每次put：如果存在要删除，总要添加操作，如果大小不够，就找到lru(最左），然后删除
+"""
+class Node:
+    def __init__(self, key, val):
+        self.key = key
+        self.val = val
+        self.prev = self.next = None
+
+
+class LRUCache:
+
+    def __init__(self, capacity: int):
+        self.cap = capacity
+        self.cache = {} # map key to node
+
+        self.left, self.right = Node(0, 0), Node(0, 0)
+        self.left.next, self.right.prev = self.right, self.left # left = LRU, right = most recent
+
+    # remove from the linkedlist
+    def remove(self, node):
+        prev, next = node.prev, node.next
+        prev.next, next.prev = next, prev
+
+    # insert node at right
+    def insert(self, node):
+        # insert at the right most position, before the right pointer
+        prev, next = self.right.prev, self.right
+        prev.next = next.prev = node
+        node.next, node.prev = next, prev
+
+    def get(self, key: int) -> int:
+        if key in self.cache:
+            # remove + insert为了更新顺序
+            self.remove(self.cache[key])
+            self.insert(self.cache[key])
+            return self.cache[key].val
+        return -1
+
+    def put(self, key: int, value: int) -> None:
+        if key in self.cache:
+            self.remove(self.cache[key]
+        node = Node(key, value)
+        self.cache[key] = node
+        self.insert(node)
+
+        if len(self.cache) > self.cap:
+            # remove from the list and delete the LRU from the hashmap
+            lru = self.left.next
+            self.remove(lru)
+            del self.cache[lru.key]
+
+
+
+# Your LRUCache object will be instantiated and called as such:
+# obj = LRUCache(capacity)
+# param_1 = obj.get(key)
+# obj.put(key,value)
+```
+
+
+
+
+# Heap
+
+
+
 [535. Encode and Decode TinyURL](https://leetcode.com/problems/encode-and-decode-tinyurl/)
 两个字典，分别存{long:short}和{short:long}
 
