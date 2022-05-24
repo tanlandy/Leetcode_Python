@@ -100,14 +100,17 @@ I'll leave it to you to think how you can extend this to fewer columns.
 
 [346. Moving Average from Data Stream](https://leetcode.com/problems/moving-average-from-data-stream/)
 
-用queue，每次记录当前的windowSum，如果size满足的话，来一个新数字就弹出末尾的，同时加进来新的，最后返回windowSum/len即可：python用deque: from collections import deque；queue删除头部: queue.popleft()；queue加数字: queue.append(val)
-
-时间：O(1)
-空间：O(N)N is the size of window
 ```python
 from collections import deque
 
 class MovingAverage:
+    """
+    用queue，每次记录当前的windowSum，如果size满足的话，来一个新数字就弹出末尾的，同时加进来新的，最后返回windowSum/len即可
+    queue删除头部: queue.popleft()；queue加数字: queue.append(val)
+
+    时间：O(1)
+    空间：O(N)N is the size of window
+    """
 
     def __init__(self, size: int):
         self.size = size
@@ -130,7 +133,6 @@ param_5 = obj.next(2)
 param_6 = obj.next(3)
 
 print(param_3)
-
 
 # Your MovingAverage object will be instantiated and called as such:
 # obj = MovingAverage(size)

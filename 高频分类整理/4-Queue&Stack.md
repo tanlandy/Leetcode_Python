@@ -36,6 +36,202 @@ class MyStack:
 # param_4 = obj.empty()
 ```
 
+[346. Moving Average from Data Stream](https://leetcode.com/problems/moving-average-from-data-stream/)
+
+
+```python
+from collections import deque
+
+class MovingAverage:
+    """
+    用queue，每次记录当前的windowSum，如果size满足的话，来一个新数字就弹出末尾的，同时加进来新的，最后返回windowSum/len即可
+    queue删除头部: queue.popleft()；queue加数字: queue.append(val)
+
+    时间：O(1)
+    空间：O(N)N is the size of window
+    """
+
+    def __init__(self, size: int):
+        self.size = size
+        self.queue = deque()
+        self.windowSum = 0
+
+    def next(self, val: int) -> float:
+        if len(self.queue) == self.size:
+            self.windowSum -= self.queue.popleft()
+        self.queue.append(val)
+        self.windowSum += val
+        return self.windowSum / len(self.queue)
+
+obj = MovingAverage(2)
+param_1 = obj.next(3)
+param_2 = obj.next(5)
+param_3 = obj.next(9)
+param_4 = obj.next(1)
+param_5 = obj.next(2)
+param_6 = obj.next(3)
+
+print(param_3)
+
+# Your MovingAverage object will be instantiated and called as such:
+# obj = MovingAverage(size)
+# param_1 = obj.next(val)
+```
+
+[281. Zigzag Iterator](https://leetcode.com/problems/zigzag-iterator/)
+
+```py
+class ZigzagIterator:
+    def __init__(self, v1, v2):
+        """
+        keep a queue of pointers to the input vectors
+        v1 = [1,2], v2 = [3,5,6]
+        queue: [[1,2], [3,5,6]]
+        """
+        self.queue = collections.deque([_ for _ in (v1,v2) if _])
+
+    def next(self):
+        v = self.queue.popleft() # pop out a pointer from the queue
+        res = v.pop(0) # the result is the element from the chosen vector
+        if v: # if the vector is not empty, add it to the end, make it zigzag 
+            self.queue.append(v)
+        return res
+
+    def hasNext(self):
+        if self.queue: 
+            return True
+        return False
+        
+
+# Your ZigzagIterator object will be instantiated and called as such:
+# i, v = ZigzagIterator(v1, v2), []
+# while i.hasNext(): v.append(i.next())
+```
+
+[1429. First Unique Number](https://leetcode.com/problems/first-unique-number/)
+
+
+## Spiral Matrix 
+
+[48. Rotate Image](https://leetcode.com/problems/rotate-image/)
+
+```py
+class Solution:
+    def rotate(self, matrix: List[List[int]]) -> None:
+        """
+        for each row, store the topleft first
+        技巧是先把四个角交换的写出来，然后再把i加进去
+
+        Time: O(N^2)
+        Space: O(1)
+        """
+        l, r = 0, len(matrix) - 1
+        while l < r:
+            for i in range(r - l): # each time, solve the outer boundary, 一轮只rotate了col-row次
+                top, bottom = l, r # two more pointers
+
+                top_left = matrix[top][l + i] # save topleft从后往前得处理，避免要存好几个tmp
+
+                matrix[top][l + i] = matrix[bottom - i][l] # 先让左上角等于左下角，然后左下角等于右下角， etc
+                matrix[bottom - i][l] = matrix[bottom][r - i]
+                matrix[bottom][r - i] = matrix[top + i][r]
+                matrix[top + i][r] = top_left
+            
+            r -= 1
+            l += 1
+
+```
+
+[54. Spiral Matrix](https://leetcode.com/problems/spiral-matrix/)
+
+```py
+class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        """
+        maintain the boundary using four pointers; each time finish one way, shift that boundary
+
+        Time: O(M*N)
+        Space: O(1), if doesn't consider output as extra memory
+        """
+        res = []
+        l, r = 0, len(matrix[0]) # r out of the bound, l and r col
+        top, bottom = 0, len(matrix) # bottom out of the bound
+
+        while l < r and top < bottom:
+            # top row
+            for i in range(l, r):
+                res.append(matrix[top][i]) # we are in the top row
+            top += 1 # shift top row down by 1
+
+            # right most col
+            for i in range(top, bottom):
+                res.append(matrix[i][r - 1])
+            r -= 1
+
+            # has to check in the middle, as just updated top and r
+            if not (l < r and top < bottom): 
+                break
+
+            # bottom row
+            for i in range(r - 1, l - 1, -1): # l is not inclusive, so one step forward by l-1
+                res.append(matrix[bottom - 1][i])
+            bottom -= 1 # shift upwards
+
+            # left most col
+            for i in range(bottom - 1, top - 1, -1):
+                res.append(matrix[i][l])
+            l += 1
+        
+        return res
+```
+
+[59. Spiral Matrix II](https://leetcode.com/problems/spiral-matrix-ii/)
+
+```py
+class Solution:
+    def generateMatrix(self, n: int) -> List[List[int]]:
+        """
+        Same as LC54
+        A = [0] * 2 => [0,0]
+        A = [[0] * 2 for _ in range(2)] => [[0,0], [0,0]]
+        """
+        A = [[0] * n for _ in range(n)] # initiate matirx A filling with 0
+        
+        l, r = 0, n
+        top, bottom = 0, n
+        
+        num = 1 # start with 1
+        
+        while l < r and top < bottom:
+            for i in range(l, r):
+                A[top][i] = num
+                num += 1
+            top += 1
+            
+            for i in range(top, bottom):
+                A[i][r - 1] = num
+                num += 1
+            r -= 1
+            
+            if not (l < r and top < bottom):
+                return A
+            
+            for i in range(r - 1, l - 1, -1):
+                A[bottom - 1][i] = num
+                num += 1
+            bottom -= 1
+            
+            for i in range(bottom - 1, top - 1, -1):
+                A[i][l] = num
+                num += 1
+            l += 1
+        
+        return A
+        
+```
+
+
+
 
 [20. Valid Parentheses](https://leetcode.com/problems/valid-parentheses/)
 
