@@ -1,3 +1,4 @@
+# Queue
 [225. Implement Stack using Queues](https://leetcode.com/problems/implement-stack-using-queues/)
 
 ```py
@@ -232,32 +233,13 @@ class Solution:
 
 
 
-
-[20. Valid Parentheses](https://leetcode.com/problems/valid-parentheses/)
-
-
-```py
-class Solution:
-    def isValid(self, s: str) -> bool:
-        stack = []
-        closeToOpen = { ")":"(", "]":"[", "}":"{" }
-
-        for c in s:
-            if c in "({[":
-                stack.append(c)
-            elif stack and stack[-1] == closeToOpen[c]:
-                stack.pop()
-            else:
-                return False
-        
-        return stack == []
-```
+# Stack
         
 [155. Min Stack](https://leetcode.com/problems/min-stack/)
-用两个stack就可以，重点是min_stack的插入数据方式：先找到最小值，然后放入
 
 ```py
 class MinStack:
+    """用两个stack就可以，重点是min_stack的插入数据方式：先找到最小值，然后放入"""
 
     def __init__(self):
         self.stack = []
@@ -265,8 +247,8 @@ class MinStack:
 
     def push(self, val: int) -> None:
         self.stack.append(val)
-        val = min(val, self.min_stack[-1] if self.min_stack else val)
-        self.min_stack.append(val)
+        val = min(val, self.min_stack[-1] if self.min_stack else val) # check if min_stack is empty
+        self.min_stack.append(val) # each time add the minimum value into min_stack
 
     def pop(self) -> None:
         self.stack.pop()
@@ -289,10 +271,13 @@ class MinStack:
 ```
 
 [716. Max Stack](https://leetcode.com/problems/max-stack/)
-和min stack的区别是，用一个buffer来存删除过的数字，最后再加回来
 
 ```py
 class MaxStack:
+    """
+    和min stack的区别是，用一个buffer来存删除过的数字，最后再加回来
+    删除时候一起删，buffer是存stack的值，最后再一起push回两个stack中
+    """
 
     def __init__(self):
         self.stack = []
@@ -337,12 +322,45 @@ class MaxStack:
 # param_5 = obj.popMax()
 ```
 
+[232. Implement Queue using Stacks](https://leetcode.com/problems/implement-queue-using-stacks/)
+
+```py
+class MyQueue:
+
+    def __init__(self):
+        self.stack1 = []
+        self.stack2 = []
+
+    def push(self, x: int) -> None:
+        """when push, only push into stack1"""
+        self.stack1.append(x)
+
+    def pop(self) -> int:
+        """when pop, get from stack2; if empty, push stack1 into stack2"""
+        if not self.stack2:
+            while self.stack1:
+                self.stack2.append(self.stack1.pop())
+        return self.stack2.pop()
+
+    def peek(self) -> int:
+        """when pop, get from stack2; if empty, push stack1 into stack2"""
+        if not self.stack2:
+            while self.stack1:
+                self.stack2.append(self.stack1.pop())
+        return self.stack2[-1]
+
+    def empty(self) -> bool:
+        if self.stack1 or self.stack2:
+            return False
+        return True
+```
+
 [150. Evaluate Reverse Polish Notation](https://leetcode.com/problems/evaluate-reverse-polish-notation/)
-用stack存所有的数字即可
 
 ```py
 class Solution:
     def evalRPN(self, tokens: List[str]) -> int:
+        """用stack存所有的数字即可"""
         stack = []
         
         for c in tokens:
@@ -355,12 +373,245 @@ class Solution:
                 stack.append(stack.pop() * stack.pop())
             elif c == "/":
                 a, b = stack.pop(), stack.pop()
-                stack.append(int(b / a))
+                stack.append(int(b / a)) # a, b = 3, 11, -11: b/a = 3.666,  int(b/a)=3, int(c/a) = -3
             else:
-                stack.append(int(c))
+                stack.append(int(c)) # convert data type to int
         
         return stack[0]
 ```
+
+
+
+
+[227. Basic Calculator II](https://leetcode.com/problems/basic-calculator-ii/)
+
+用Stack存数字，每次如果是+-就直接压进去，如果是*/就压进去相对应的数，最后弹栈相加；-3//2地板除会得到-2而不是想要的-1，所以用int(-3/2)这样就可以得到-1;检查是否是数字: s[i].isdigit()；把长串string转成对应的数字num=num*10+int(s[i]);如果是"+-*/": if s[i] in "+-*/"；sign的条件：如果是sign或者走到最后一位；相加stack的所有数字：sum(stack)；每次检查完sign之后要更新num和sign；最后还有把最后的数放进stack里
+时间：O(N)
+空间：O(N)
+
+```python
+class Solution:
+    def calculate(self, s):
+        def update(sign, num):
+            if sign == "+":
+                stack.append(num)
+            elif sign == "-":
+                    stack.append(-num)
+            elif sign == "*":
+                stack.append(stack.pop()*num)
+            else:
+                stack.append(int(stack.pop()/num))
+
+        idx, num, stack, sign = 0, 0, [], "+"
+        while idx < len(s):
+            if s[idx].isdigit():
+                num = num * 10 + int(s[idx])
+            elif s[idx] in "+-*/":
+                update(sign, num)
+                num = 0
+                sign = s[idx]
+            idx += 1
+        update(sign, num)
+        return sum(stack)
+```
+
+[224. Basic Calculator](https://leetcode.com/problems/basic-calculator/)
+
+当看到"("就从下一位call自己，看到")"就返回"()"之间的值
+
+```python
+class Solution:
+    def calculate(self, s):
+        def update(sign, num):
+            if sign == "+":
+                stack.append(num)
+            elif sign == "-":
+                stack.append(-num)
+        
+        idx, num, stack, sign = 0, 0, [], "+"
+        while idx < len(s):
+            if s[idx].isdigit():
+                num = num * 10 + int(s[idx])
+            elif s[idx] in "+-":
+                update(sign, num)
+                num = 0
+                sign = s[idx]
+            elif s[idx] == "(":
+                num, j = self.calculate(s[idx + 1:]) # 需要返回（）内部的值和当前的idx位置
+                idx = idx + j
+            elif s[idx] == ")":
+                update(sign, num)
+                return sum(stack), idx + 1 # 看到了“）”，返回（）里面的值和idx的位置
+            idx += 1                       # 别忘了idx += 1
+        update(sign, num)                  # 别忘了最后一个数的处理
+        return sum(stack)
+```
+
+[772. Basic Calculator III](https://leetcode.com/problems/basic-calculator-iii/)
+
+```python
+class Solution:
+    def calculate(self, s: str) -> int:
+        def update(sign, num):
+            if sign == "+":
+                stack.append(num)
+            elif sign == "-":
+                stack.append(-num)
+            elif sign == "*": # BC II,III
+                stack.append(stack.pop() * num)
+            elif sign == "/": # BC II,III
+                stack.append(int(stack.pop() / num))
+        
+        idx, num, stack, sign = 0, 0, [], "+"
+        
+        while idx < len(s):
+            if s[idx].isdigit():
+                num = num * 10 + int(s[idx])
+            elif s[idx] in "+-*/":
+                update(sign, num)
+                sign = s[idx]
+                num = 0
+            elif s[idx] == "(": # BC I,III
+                num, j = self.calculate(s[idx+1:])
+                idx += j
+            elif s[idx] == ")": # BC I,III
+                update(sign, num)
+                return sum(stack), idx + 1
+            idx += 1
+        update(sign, num)
+        return sum(stack)
+```
+
+[20. Valid Parentheses](https://leetcode.com/problems/valid-parentheses/)
+
+```py
+class Solution:
+    def isValid(self, s: str) -> bool:
+        """
+        when open: append to stack
+        when close: use a dictionary to map close to open, and check if new one matches the top, if so pop the old
+        """
+        stack = []
+        closeToOpen = { ")":"(", "]":"[", "}":"{" }
+
+        for c in s:
+            if c in "({[":
+                stack.append(c)
+            elif stack and stack[-1] == closeToOpen[c]:
+                stack.pop()
+            else:
+                return False
+        
+        return stack == []
+```
+
+[1472. Design Browser History](https://leetcode.com/problems/design-browser-history/)
+
+```py
+class BrowserHistory:
+    """
+    two stacks:
+    when visit: append to history, and clear future
+    when back: append the history to future, while making sure always one in history
+    when forward: append the future to history
+    """
+
+    def __init__(self, homepage: str):
+        self.history = []
+        self.future = []
+        self.history.append(homepage)
+
+    def visit(self, url: str) -> None:
+        self.history.append(url)
+        self.future = []
+
+    def back(self, steps: int) -> str:
+        while steps > 0 and len(self.history) > 1: # when go back, must have one website in the history
+            self.future.append(self.history.pop())
+            steps -= 1
+        return self.history[-1]
+
+    def forward(self, steps: int) -> str:
+        while steps > 0 and self.future:
+            self.history.append(self.future.pop())
+            steps -= 1
+        return self.history[-1]
+    
+```
+
+
+[1209. Remove All Adjacent Duplicates in String II](https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string-ii/)
+
+```py
+class Solution:
+    def removeDuplicates(self, s: str, k: int) -> str:
+        """
+        用stack同时存这个char和出现的次数，一旦出先次数达到k就pop，最后decode到需要的大小
+        """
+        stack = [["#", 0]] # 初始值用[[“#”， 0]], is a list of list
+        
+        for c in s:
+            if stack[-1][0] == c:
+                stack[-1][1] += 1
+                if stack[-1][1] == k:
+                    stack.pop()
+            else:
+                stack.append([c, 1])
+        
+        return "".join(c * n for c, n in stack)
+```
+
+[1249. Minimum Remove to Make Valid Parentheses](https://leetcode.com/problems/minimum-remove-to-make-valid-parentheses/)
+
+```python
+class Solution:
+    def minRemoveToMakeValid(self, s: str) -> str:
+        """
+        先把s变成list，用stack存inValid的'(',')'的index; 
+        如何判断inValid：每次看到(就压栈，看到)要么弹，空栈就要直接换成""
+        最后把s导出成string：list变成str: "".join(s)
+
+        时间：O(N)
+        空间：O(N)
+        """
+        s = list(s)
+        stack = []
+        for index, ch in enumerate(s):
+            if ch == "(":
+                stack.append(index)
+            elif ch == ")":
+                if stack:
+                    stack.pop()
+                else:
+                    s[index] = ""
+        while stack:
+            s[stack.pop()] = ""
+            
+        return "".join(s)
+```
+
+[735. Asteroid Collision](https://leetcode.com/problems/asteroid-collision/)
+
+```py
+class Solution:
+    def asteroidCollision(self, asteroids: List[int]) -> List[int]:
+        stack = []
+        
+        for a in asteroids:
+            while stack and a < 0 < stack[-1]: # 条件是a是负数，同时stack[-1]是正数
+                if stack[-1] < -a:
+                    stack.pop()
+                    continue # 只有这时候才继续跳入下一个while中
+                elif stack[-1] == -a: # 不用改变状态，直接跳出break
+                    stack.pop()
+                break # 其他条件也是直接break
+            else:
+                stack.append(a)
+        
+        return stack
+```
+
+# Other
 
 [22. Generate Parentheses](https://leetcode.com/problems/generate-parentheses/)
 添加close的条件：close<open
