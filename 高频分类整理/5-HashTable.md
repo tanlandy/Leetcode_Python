@@ -110,12 +110,272 @@ class LRUCache:
 # obj.put(key,value)
 ```
 
+[128. Longest Consecutive Sequence](https://leetcode.com/problems/longest-consecutive-sequence/)
+```py
+class Solution:
+    def longestConsecutive(self, nums: List[int]) -> int:
+        """
+        Use a hashset to find element in O(1)
+        for each num, check if (num-1) in set or not: if not in, reset and count
+        
+        Time: O(N) tricky: for[1,2,3,4,5,6] only 1 is valid for the loop
+        Space: O(N)
+        """
+        
+        longest = 0
+        nums_set = set(nums)
+        
+        for n in nums:
+            if (n - 1) not in nums_set:
+                cur = 1
+                while (n + cur) in nums_set:
+                    cur += 1
+                longest = max(longest, cur)
+        
+        return longest
+```
+
+[73. Set Matrix Zeroes](https://leetcode.com/problems/set-matrix-zeroes/)
+```py
+class Solution:
+    def setZeroes(self, matrix: List[List[int]]) -> None:
+        """
+        O(M+N) memory: use two sets, one for rows and one for cols to keep track of those who have zeroes 
+        O(1) memory: use the first row and col to keep track of those who have zeroes. if see a zero in the middle of matrix, set the corresponding first row and col to 0, to avoid making first row and col be 0, we need to use two bool to store whether should the first row and col to be zero
+        
+        Time: O(M*N)
+        Space: O(1)
+        """
+        
+        rows, cols = len(matrix), len(matrix[0])
+        first_row_zero = first_col_zero = False
+        
+        for r in range(rows):
+            for c in range(cols):
+                # mark place that has zero
+                if matrix[r][c] == 0:
+                    if r == 0:
+                        first_row_zero = True
+                    if c == 0:
+                        first_col_zero = True
+                    matrix[r][0] = 0
+                    matrix[0][c] = 0
+        
+        # set other place
+        for r in range(1, rows):
+            for c in range(1, cols):
+                if matrix[r][0] == 0 or matrix[0][c] == 0:
+                    matrix[r][c] = 0
+        
+        # set first row
+        if first_row_zero:
+            for c in range(cols):
+                matrix[0][c] = 0
+        
+        # set first col
+        if first_col_zero:
+            for r in range(rows):
+                matrix[r][0] = 0
+```
+
+[380. Insert Delete GetRandom O(1)](https://leetcode.com/problems/insert-delete-getrandom-o1/)
+
+```py
+class RandomizedSet:
+
+    def __init__(self):
+        self.list = []
+        self.map = {}
+        
+
+    def insert(self, val: int) -> bool:
+        if val in self.map:
+            return False
+        self.map[val] = len(self.list)
+        self.list.append(val)
+        return True
+
+    def remove(self, val: int) -> bool:
+        if val not in self.map:
+            return False
+        
+        last_elem = self.list[-1]
+        idx = self.map[val]
+        # move the last element to the place of the one to be removed
+        self.list[idx], self.map[last_elem] = self.list[-1], idx
+        self.list.pop()
+        del self.map[val]
+        return True
+
+    def getRandom(self) -> int:
+        # use random.randint(), to generate random number
+        rand_idx = random.randint(0, len(self.list) - 1)
+        return self.list[rand_idx]
+
+```
+
+
+[49. Group Anagrams](https://leetcode.com/problems/group-anagrams/)
+
+```python
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        """
+        用一个count记录每个string中的字母出现次数，然后res的values存最后的结果
+        res = {
+            (2, 1, 0, 0, ..., 0): ["aab", "aba", "baa"]
+            (1, 2, 3, 0, 0, ..., 0): ["abbccc"]
+        }
+
+        时间：O(M*N), M is len(strs), N is average len(one string)
+        空间：O(M*N)
+        """
+        # {charCount: oneRes}
+        res = collections.defaultdict(list) 
+        
+        for s in strs:
+            count = [0] * 26
+            for c in s:
+                count[ord(c) - ord("a")] += 1
+            res[tuple(count)].append(s) # have to put as tuple
+        
+        return res.values() # type: dict.values(), or use list(res.values()), which type is list
+```
+
+[350. Intersection of Two Arrays II](https://leetcode.com/problems/intersection-of-two-arrays-ii/)
+
+```py
+class Solution:
+    def intersect(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        """
+        use a counter to track the count for number in nums1
+        iterate along the second array, if the count of the number is positive, then add it to result and decrease its count in the counter
+        
+        Time: O(M+N)
+        Space: O(min(M, N))
+        """
+        if len(nums1) > len(nums2):
+            return self.intersect(nums2, nums1)
+        
+        counter = collections.Counter(nums1)
+        res = []
+        
+        for n in nums2:
+            if counter[n] > 0:
+                res.append(n)
+                counter[n] -= 1
+        
+        return res
+```
+
+If the two arrays are sorted:
+
+```py
+class Solution:
+    def intersect(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        """
+        if the input arrays are sorted: use two pointers
+        
+        Time: O(min(M, N)), without counting the sorting time
+        Space: O(1), without counting the sorting time
+        """
+        nums1.sort()
+        nums2.sort()
+        i, j = 0, 0 # used to compare nums1 and nums2
+        k = 0 # used to update result
+        
+        while i < len(nums1) and j < len(nums2):
+            if nums1[i] < nums2[j]:
+                i += 1
+            elif nums1[i] > nums2[j]:
+                j += 1
+            else:
+                nums1[k] = nums1[i]:
+                i += 1
+                j += 1
+                k += 1
+        
+        return nums1[:k]
+```
+
+[299. Bulls and Cows](https://leetcode.com/problems/bulls-and-cows/)
+
+```py
+class Solution:
+    def getHint(self, secret: str, guess: str) -> str:
+        """
+        first pass to find the bulls and build two maps: {num: counter}
+        iterate the secret map, if also in the guess map, update the cows with the smaller counter
+        
+        Time: O(N)
+        Space: O(1), the map contains at most 10 elements
+        """
+        secret_dict = collections.defaultdict(int)
+        guess_dict = collections.defaultdict(int)
+        
+        cows = bulls = 0
+        
+        for i in range(len(secret)):
+            if secret[i] == guess[i]:
+                bulls += 1
+            else:
+                secret_dict[secret[i]] += 1
+                guess_dict[guess[i]] += 1
+    
+        for n in secret_dict:
+            if n in guess_dict:
+                cows += min(secret_dict[n], guess_dict[n])
+        
+        return "{0}A{1}B".format(bulls, cows)
+```
+
+
+```py
+class Solution:
+    def getHint(self, secret: str, guess: str) -> str:
+        h = defaultdict(int)
+        bulls = cows = 0
+
+        for idx, s in enumerate(secret):
+            g = guess[idx]
+            if s == g: 
+                bulls += 1
+            else:
+                # secret gives a postition contribution, guess a negative contribution
+                cows += int(h[s] < 0) + int(h[g] > 0)
+                h[s] += 1
+                h[g] -= 1
+                
+        return "{}A{}B".format(bulls, cows)
+```
 
 
 
-# Heap
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# HashSet
 
 [535. Encode and Decode TinyURL](https://leetcode.com/problems/encode-and-decode-tinyurl/)
 两个字典，分别存{long:short}和{short:long}
@@ -147,42 +407,6 @@ class Codec:
 
 ```
 
-
-[49. Group Anagrams](https://leetcode.com/problems/group-anagrams/)
-
-用一个count记录每个string的字母出现次数，然后res的values存最后的结果
-
-时间：O(M*N), M is len(strs), N is average len(one string)
-空间：O(M*N)
-
-```python
-class Solution:
-    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
-        # {charCount: oneRes}
-        res = collections.defaultdict(list) 
-        
-        for s in strs:
-            count = [0] * 26
-            for c in s:
-                count[ord(c) - ord("a")] += 1
-            res[tuple(count)].append(s)
-        
-        return res.values()
-```
-
-时间复杂度更高：把每个string排序，按照这个排序来加到map中
-```py
-class Solution:
-    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
-        res = collections.defaultdict(list)
-        for entry in strs:
-            anagram_id = "".join(sorted(entry))
-            res[anagram_id].append(entry)
-        sorted(res.items(), key = lambda item:item[1])
-        return res.values()
-
-
-```
 
 
 [238. Product of Array Except Self](https://leetcode.com/problems/product-of-array-except-self/)
