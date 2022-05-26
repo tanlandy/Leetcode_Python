@@ -349,6 +349,41 @@ class Solution:
         return "{}A{}B".format(bulls, cows)
 ```
 
+[348. Design Tic-Tac-Toe](https://leetcode.com/problems/design-tic-tac-toe/)
+
+```py
+class TicTacToe:
+
+    def __init__(self, n: int):
+        self.n = n
+        self.hori = [0] * n
+        self.ver = [0] * n
+        self.diag1 = 0
+        self.diag2 = 0
+
+    def move(self, row: int, col: int, player: int) -> int:
+        n = self.n
+        move = 1
+        if player == 2:
+            move = -1
+        
+        self.hori[col] += move
+        self.ver[row] += move
+        
+        if col == row:
+            self.diag1 += move
+        if row + col == (n-1): # for points in the same diag, they have the same (r + c)
+            self.diag2 += move
+
+        if abs(self.hori[col]) == n or abs(self.ver[row]) == n or abs(self.diag1) == n or abs(self.diag2) == n:
+            return player
+        
+        return 0
+        
+# Your TicTacToe object will be instantiated and called as such:
+# obj = TicTacToe(n)
+# param_1 = obj.move(row,col,player)
+```
 
 
 
@@ -374,8 +409,7 @@ class Solution:
 
 
 
-
-# HashSet
+# Others
 
 [535. Encode and Decode TinyURL](https://leetcode.com/problems/encode-and-decode-tinyurl/)
 两个字典，分别存{long:short}和{short:long}
