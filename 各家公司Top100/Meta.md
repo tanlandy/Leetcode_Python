@@ -947,6 +947,7 @@ class Solution:
         return res
 ```
 
+
 [347. Top K Frequent Elements](https://leetcode.com/problems/top-k-frequent-elements/) 之后要看看heap的方法
 bucket sort
 i(count)  0 |  1  | 2  | 3 | 4 | 5 | ... | len(input) 

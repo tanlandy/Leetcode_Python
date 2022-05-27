@@ -1,57 +1,3 @@
-[703. Kth Largest Element in a Stream](https://leetcode.com/problems/kth-largest-element-in-a-stream/)
-minHeap of size K
-add/pop: O(logN)
-get min: O(1)
-
-
-```py
-class KthLargest:
-
-    def __init__(self, k: int, nums: List[int]):
-        """
-        先形成一个minHeap(nums) -> O(n)
-        然后一直pop直到len(minHeap)为k -> O((n-k)logN)
-        最后Kth largest就是minHeap里最小的值 -> O(1)
-        """
-        self.minHeap, self.k  = nums, k
-        heapq.heapify(self.minHeap)
-        while len(self.minHeap) > k:
-            heapq.heappop(self.minHeap)
-
-    def add(self, val: int) -> int:
-        """
-        加进来，然后一直pop直到len(minHeap)为k -> O(logN)
-        最后返回minHeap[0]
-        """
-        heapq.heappush(self.minHeap, val)
-        if len(self.minHeap) > self.k:
-            heapq.heappop(self.minHeap)
-        return self.minHeap[0]
-
-# Your KthLargest object will be instantiated and called as such:
-# obj = KthLargest(k, nums)
-# param_1 = obj.add(val)
-```
-
-[1046. Last Stone Weight](https://leetcode.com/problems/last-stone-weight/)
-用一个maxHeap。每次先取出来2个数，然后如果不同就加进来他们的差，最后要注意为空的情况
-
-```py
-class Solution:
-    def lastStoneWeight(self, stones: List[int]) -> int:
-        maxHeap = [-x for x in stones]
-        heapq.heapify(maxHeap)
-        
-        while len(maxHeap) > 1:
-            largest = heapq.heappop(maxHeap)
-            second = heapq.heappop(maxHeap)
-            if largest < second:
-                diff = largest - second
-                heapq.heappush(maxHeap, diff)
-                
-        maxHeap.append(0) # 处理input=[2,2]的情况
-        return abs(maxHeap[0])  
-```
 
 [973. K Closest Points to Origin](https://leetcode.com/problems/k-closest-points-to-origin/)
 
@@ -115,6 +61,225 @@ class Solution:
         
         return select(0, len(points) - 1)
 ```
+
+
+[347. Top K Frequent Elements](https://leetcode.com/problems/top-k-frequent-elements/)
+
+```python
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        """
+        bucket sort
+        i(count)  0 |  1  | 2  | 3 | 4 | 5 | ... | len(input) 
+        values       [100]     [1,2]
+
+        用map来记录num: count的数量，之后构建一个count:values的array，；最后array从后往前往res里加，直到len(res) == k；构建array: freq = [[] for i in range(len(nums) + 1)]; 从后往前遍历: for i in range(len(freq) -1, 0, -1)
+        时间：O(N)
+        空间：O(N)
+        """
+        # count: {each num:freq}
+        count = collections.Counter(nums)
+        # freq: [freq:[nums have same freq]]
+        freq = [[] for i in range(len(nums) + 1)] # 大小是len(nums) + 1，注意如何构建values是list的list
+
+        for n, count in count.items():
+            freq[count].append(n)
+
+        res = []
+        for i in range(len(freq) -1, 0, -1): # 注意如何从后往前遍历
+            for n in freq[i]:
+                res.append(n)
+                if len(res) == k:
+                    return res 
+```
+
+
+```python
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        """
+        maxHeap: {count: key}
+        O(KlogN)
+        """
+        # count: {each num:freq}
+        count = collections.Counter(nums)
+        
+        maxHeap = []
+        
+        for key in count:
+            heapq.heappush(maxHeap, (-count[key], key))
+        
+        res = []
+        while k > 0:
+            value, key = heapq.heappop(maxHeap)
+            res.append(key)
+            k -= 1
+        return res
+```
+
+[23. Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/)
+
+```py
+class Solution:
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        """
+        Heap
+        """
+        dummy = ListNode(-1)
+        cur = dummy
+        minHeap = []
+        
+        # add the first node of each list into the minHeap
+        for i in range(len(lists)):
+            if lists[i]:
+                heapq.heappush(minHeap, (lists[i].val, i))
+                lists[i] = lists[i].next # 每个list指向第二个节点
+        
+        while minHeap: 
+            val, i = heapq.heappop(minHeap) # 取出来最小值
+            cur.next = ListNode(val) # 新建node并连接到当前的node
+            cur = cur.next # 移动ptr
+            if lists[i]: # 把更新后的点加进minHeap
+                heapq.heappush(minHeap, (lists[i].val, i))
+                lists[i] = lists[i].next
+        
+        return dummy.next
+```
+
+```py
+class Solution:
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        """
+        Divide and conquer
+
+        Time: O(NlogK) N is len(one_list), K is num of lists
+        Space: O(N) for one_merge, O(1) for merge_two()
+        """
+        # edge case
+        if not lists or len(lists) == 0:
+            return None
+        
+        while len(lists) > 1:
+            one_merge = []
+            
+            for i in range(0, len(lists), 2): # each time the step is 2
+                l1 = lists[i]
+                l2 = lists[i + 1] if (i + 1) < len(lists) else None # check for the odd condition
+                one_merge.append(self.merge_two(l1, l2))
+                
+            lists = one_merge
+        
+        return lists[0]
+    
+    def merge_two(self, l1, l2):
+        """
+        Same as Leetcode Q21
+        """
+        dummy = ListNode(-1) # dummy node to avoid empty ptr
+        pre = dummy
+        
+        while l1 and l2:
+            if l1.val <= l2.val:
+                pre.next = l1
+                l1 = l1.next
+            else:
+                pre.next = l2
+                l2 = l2.next
+            pre = pre.next # don't forget to move ptr
+        
+        # append the remaining nodes in l1 or l2
+        if l1:
+            pre.next = l1
+        elif l2:
+            pre.next = l2
+        
+        return dummy.next
+```
+
+[264. Ugly Number II](https://leetcode.com/problems/ugly-number-ii/)
+
+
+
+[1086. High Five](https://leetcode.com/problems/high-five/)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Others
+
+[703. Kth Largest Element in a Stream](https://leetcode.com/problems/kth-largest-element-in-a-stream/)
+minHeap of size K
+add/pop: O(logN)
+get min: O(1)
+
+
+```py
+class KthLargest:
+
+    def __init__(self, k: int, nums: List[int]):
+        """
+        先形成一个minHeap(nums) -> O(n)
+        然后一直pop直到len(minHeap)为k -> O((n-k)logN)
+        最后Kth largest就是minHeap里最小的值 -> O(1)
+        """
+        self.minHeap, self.k  = nums, k
+        heapq.heapify(self.minHeap)
+        while len(self.minHeap) > k:
+            heapq.heappop(self.minHeap)
+
+    def add(self, val: int) -> int:
+        """
+        加进来，然后一直pop直到len(minHeap)为k -> O(logN)
+        最后返回minHeap[0]
+        """
+        heapq.heappush(self.minHeap, val)
+        if len(self.minHeap) > self.k:
+            heapq.heappop(self.minHeap)
+        return self.minHeap[0]
+
+# Your KthLargest object will be instantiated and called as such:
+# obj = KthLargest(k, nums)
+# param_1 = obj.add(val)
+```
+
+[1046. Last Stone Weight](https://leetcode.com/problems/last-stone-weight/)
+用一个maxHeap。每次先取出来2个数，然后如果不同就加进来他们的差，最后要注意为空的情况
+
+```py
+class Solution:
+    def lastStoneWeight(self, stones: List[int]) -> int:
+        maxHeap = [-x for x in stones]
+        heapq.heapify(maxHeap)
+        
+        while len(maxHeap) > 1:
+            largest = heapq.heappop(maxHeap)
+            second = heapq.heappop(maxHeap)
+            if largest < second:
+                diff = largest - second
+                heapq.heappush(maxHeap, diff)
+                
+        maxHeap.append(0) # 处理input=[2,2]的情况
+        return abs(maxHeap[0])  
+```
+
 
 [215. Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/)
 
