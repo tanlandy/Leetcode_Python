@@ -1,3 +1,44 @@
+# Recap
+Priority Queue is an Abstract Data Type, and Heap is the concrete data structure we use to implement a priority queue.
+Criteria: Complete Binary Tree + parent nodes are smaller or larger than children
+Insertion of an element into the Heap has a time complexity of O(logN);
+Deletion of an element from the Heap has a time complexity of O(logN);
+The maximum/minimum value in the Heap can be obtained with O(1) time complexity.
+
+The number in each node is *key*, not value(similar to tree node). We use the *key* to sort the nodes, and values are the data we want the heap to store
+There is no comparable relationsihp across a level of a heap
+
+because only nodes in a root-to-leaf path are sorted (nodes in the same level are not sorted), when we add/remove a node, we only have to fix the order in the vertical path the node is in. This makes inserting and deleting O(log(N)) too.
+
+For node i, its children are stored at 2i+1 and 2i+2, and its parent is at floor((i-1)/2). So instead of node.left we'd do 2*i+1.
+
+
+```py
+import heapq
+
+# Construct a Heap -> O(N)
+minHeap = [12,3,132]
+heapq.heapify(minHeap)
+maxHeap = [-x for x in minHeap]
+heapq.heapify(maxHeap)
+
+# Insert an element: 5 -> O(logN)
+heapq.heappush(minHeap, 5)
+heapq.heappush(maxHeap, -1 * 5) 
+
+# Get the top element -> O(1)
+top = minHeap[0]
+top = -1 * maxHeap[0]
+
+# Delete the top element -> O(logN)
+heapq.heappop(minHeap)
+heapq.heappop(maxHeap)
+
+# Get the size -> O(1)
+len(minHeap)
+```
+
+# Categorized
 
 [973. K Closest Points to Origin](https://leetcode.com/problems/k-closest-points-to-origin/)
 
