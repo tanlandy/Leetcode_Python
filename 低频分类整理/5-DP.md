@@ -1,3 +1,61 @@
+# Explore
+
+## What is DP
+
+1. The problem can be broken down into `"overlapping subproblems"` - smaller versions of the original problem that are re-used multiple times. -> subproblems are dependent
+2. The problem has an `"optimal substructure"` - an optimal solution can be formed from optimal solutions to the overlapping subproblems of the original problem.
+
+## Top-down and Bottom-up
+### Bottom-up -> runtime is faster
+implemented with iteration and starts at the base case
+
+### Top-down -> easier to write 想象决策树
+implemented with recursion and made efficient with memoization -> recursion tree
+> memoizing a result means to store the result of a function call, usually in a hashmap or an array, so that when the same function call is made again, we can simply return the memoized result instead of recalculating the result. 
+
+## When to use
+1. Ask for the optimum value (maximum or minimum) of something, or the number of ways there are to do somethings
+2. Future decisions depend on earlier decision
+   - House Robber
+   - LIS
+
+## Framework for DP problems
+State. In a DP problem, a state is a set of variables that can `sufficiently` describe a scenario. These variables are called state variables
+
+Climbing Stairs, there is `only` 1 relevant state variable, the current step we are on. We can denote this with an integer \text{i}i. If \text{i = 6}i = 6, that means that we are describing the state of being on the 6th step. Every unique value of \text{i}i represents a unique state.
+
+### Framework
+1. a function or data structure that will compute/contain the answer to the problem for every given state
+for Climbing Stairs, we have a function dp where dp[i] returns the number of ways to climb to the ith step. Solving the original problem would be to return dp[n] - literally the original problem, but generalized for a given state.
+> Typically, top-down is implemented with a recursive function and hash map, whereas bottom-up is implemented with nested for loops and an array. When designing this function or array, we also need to decide on state variables to pass as arguments. 
+
+2. A recurrence relation to transition between states
+`finding the recurrence relation is the most difficult part of solving a DP problem`
+
+3. Bases cases
+What state(s) can I find the answer to without using dynamic programming? 
+
+memoization means caching results from function calls and then referring to those results in the future instead of recalculating them. This is usually done with a hashmap or an array.
+
+
+```py
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        def dp(i):
+            if i <= 2: 
+                return i
+            if i not in memo:
+                # Instead of just returning dp(i - 1) + dp(i - 2), calculate it once and then
+                # store the result inside a hashmap to refer to in the future.
+                memo[i] = dp(i - 1) + dp(i - 2)
+            
+            return memo[i]
+        
+        memo = {}
+        return dp(n)
+```
+
+
 # 1D DP
 [70. Climbing Stairs](https://leetcode.com/problems/climbing-stairs/)
 
@@ -10,10 +68,10 @@ class Solution:
         if n == 1:
             return 1
         dp = [0] * (n + 1)
-        dp[1] = 1
-        dp[2] = 2
+        dp[1] = 1 # base case
+        dp[2] = 2 # base case
         for i in range(3, n + 1):
-            dp[i] = dp[i-1] + dp[i-2]            
+            dp[i] = dp[i-1] + dp[i-2] # recurrence relation          
         
         return dp[n]
 ```

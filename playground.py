@@ -1,9 +1,19 @@
-import collections
+nums = [1,2,3,4,5,6]
+window_size = 3
 
+def movingAverage(nums, window_size):
+    res = []
+    left = right = 0
+    cur_sum = 0
 
-h = collections.defaultdict(int)
-h[9] = 5
-bulls = 0
-bulls += int(h[9] > 0)
-res = int(True)
-print(res)
+    while right < len(nums):
+        cur_sum += nums[right]
+        right += 1
+        if right - left == window_size:
+            res.append(cur_sum / window_size)
+            cur_sum -= nums[left]
+            left += 1        
+    
+    return res
+
+print(movingAverage(nums, 0))
