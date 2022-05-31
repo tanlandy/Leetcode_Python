@@ -449,10 +449,68 @@ class Solution:
 ```py
 class Solution:
     def canPartition(self, nums: List[int]) -> bool:
-        
+        """
+        for every element, include or not include -> decision tree -> 2^n
+        Time: O(N*Sum(nums))
+        Space: 
+        """
 
+        if sum(nums) % 2 == 1:
+            return False
+        
+        dp = set()
+        dp.add(0)
+        target = sum(nums) // 2
+        for i in range(len(nums) - 1, -1, -1):
+            newDP = set()
+            for t in dp:
+                newDP.add(t + nums[i])
+                newDP.add(t)
+            dp = newDP
+        return True if target in dp else False
 
 ```
 
 # 2D DP
 
+[62. Unique Paths](https://leetcode.com/problems/unique-paths/)
+```py
+class Solution:
+    def uniquePaths(self, m: int, n: int) -> int:
+        """
+        dp[r][c] = right + down, each one stores the number of unique paths
+
+        Time: O(M*N)
+        Space: O(N)
+        """
+        row = [1] * n
+        
+        for i in range(m - 1): # wait until first row
+            newRow = [1] * n 
+            # out of range
+            for j in range(n - 2, -1, -1):
+                newRow[j] = newRow[j + 1] + row[j]
+            row = newRow
+        
+        return row[0]
+        
+```
+
+
+[1143. Longest Common Subsequence](https://leetcode.com/problems/longest-common-subsequence/)
+
+```py
+class Solution:
+    def longestCommonSubsequence(self, text1: str, text2: str) -> int:
+        dp = [[0 for j in range(len(text2) + 1)] for i in range(len(text1) + 1)]
+        
+        for i in range(len(text1) - 1, -1, -1):
+            for j in range(len(text2) - 1, -1, -1):
+                if text1[i] == text2[j]:
+                    dp[i][j] = 1 + dp[i + 1][j + 1]
+                else:
+                    dp[i][j] = max(dp[i][j + 1], dp[i + 1][j])
+        
+        return dp[0][0]   
+
+```
