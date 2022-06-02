@@ -1,5 +1,89 @@
 [toc]
 
+# 基础知识
+
+# Graph
+def: A graph is a data structure consists of finite set of vertecies and finite set of edges
+
+| application | vertices | edges |
+| :----- | :----- | :--- |
+| maps | 交叉口 | roads |
+| social networks | people | friendship status |
+| contact tracing | people | with people |
+
+G = (V, E)
+dense graph: E ~ V^2 -> interactions at family dinner
+sparse graph: E ~ V -> facebooks
+important to think about the type of graph
+
+3 variants of graph
+1. undirected: (u, v) = (v, u) -> facebook -> V = {1,2,3}, E = {(1,2)(2,1)(1,3)(3,1)(2,3)(3,2)}
+2. directed: (u, v) from u to v -> instagram
+3. weighted: 
+
+def of adjacency: given vertex u, and vertex v, vertex u is adjacent to v iff (u, v) in E
+
+store graph: depends on the basic desired operations on the graph: search, edit, calculation, time, space
+| type | general space | dense: E=V^2 | sparse: E=V | Does an edge (i,j) exist? |
+| --- | --- | --- | --- | --- |
+| adjacency list | V + E | V + V^2 | V + V ✅ | O(V): Read entire adj[i] |
+| adjacency matrix | V^2 | V^2 ✅ | V^2 | O(1) |
+
+Adjacency list: 
+build: for every vertex v, adj[v] = {vertecies adj to v}; space: V+E for both undirected and directed graph. but could be written as 2E for undirected graph when consider graph to be unique
+
+Adjacency matrix:
+matrix be a V*V matrix, aij = 1 iff (i, j) in E; space: V^2
+
+## Path
+a path in G(V, E) from u to v is a sequence of vertecies from u to v
+v and v are connected if there is a path
+
+## Connected component
+C is a connected component in G(V, E) iff C 里面的点 are connected & C不和外面的点 connected
+
+# BFS
+input: G(V, E), and source vertex s
+output: d[v] btw source s and all other nodes in graph
+queue.append(x) // put x as last element in queue
+queue.popleft() // return and remove the first element in queue
+
+basic idea:
+1. discover all vertices at distance k from s before discovering vertices at distance k+1 from s
+2. expand a fronter greedly one edge distance at a time
+
+BFS(G, s): 
+    for each v in (V - s): // if they are not connected, the distance is infinity
+        d[v] = float("inf")
+    d[s] = 0
+    queue = empty
+    queue.append(s)
+    while queue is not empty:
+        u = queue.popleft()
+        for each v in adj[u]:
+            if d[v] = inf:
+                d[v] = d[u] + 1
+                queue.append(v)
+
+Runtime: each node enter queue only once: O(V), each edge only checked once: O(V+E)
+Space: graph space: Adjlist: O(V+E)
+queue: O(V)
+distance array: O(V)
+
+# Shortest path problem
+input: directed weighted graph G(V,E,W)
+output: w(path) that is minimum
+
+# Single-source-shortest path(SSSP)
+find shortest path from a given vertex to every vertex in G
+看到10:48 https://drive.google.com/file/d/1IlP2GGIWKSCqqPWjr0Cg2D2pS5-s9KfT/view 
+
+# Dijkstra
+https://drive.google.com/file/d/132coUDlgMPxWDnasb5fGmGc82FY6cmSX/view 
+
+# All pairs shortest path
+https://drive.google.com/file/d/15qvHyzaqKg6Xgd6nApiex6BAMon0cwhj/view 
+
 # Tree
 
 ## 模板

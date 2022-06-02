@@ -1,3 +1,37 @@
+# 基础知识
+DFS:
+1. capture cycles
+2. identify connected components
+
+input: G(V, E)
+output: two timestamps for every v in V, d[v]=time you first enter or discover a node, f[v]=time finish with that node, classification of edges
+
+idea:
+go as deep as you can and then backup
+
+dfs(G):
+    for each v in V:
+        if v not visited:
+            dfsVisit(v)
+
+dfsVisit(v):
+    for each u in adj[v]:
+        if u not visited:
+            dfsVisit(u)
+    u is now visited
+
+
+Time: O(V+E): only visit vertex and edges once
+
+## classify edges
+1. Tree edges
+2. Back edge: descendant going to ancestor
+3. Foward edge: from ancestor to desendant
+4. Cross edge: any edge btw subtrees or trees 
+
+
+
+# 题目
 [79. Word Search](https://leetcode.com/problems/word-search/)
 dfs(r, c, i)同时传入一个idx
 
