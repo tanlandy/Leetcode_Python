@@ -1,7 +1,9 @@
 # 排序基础知识
+
 A stable sorting algorithm means that when two elements have the same value, their relative order is maintained. 
 
 ## Insertion sort
+
 从idx=0开始形成一个有序数列，每次把新的一个数插入进来，直到这个有序数列和最开始的一样大
 It is a stable algorithm because later elements will not swap with earlier elements unless the later element is smaller,
 
@@ -16,10 +18,10 @@ def insertionSort(nums):
             nums[cur-1], nums[cur] = nums[cur], nums[cur - 1]
             cur -= 1
     return nums
-
 ```
 
 ## Selection sort
+
 每次找到剩余序列里面最小的值，然后放到剩余序列的开头
 This algorithm is not stable because an earlier element can jump after an element of the same value during a swap
 
@@ -34,12 +36,12 @@ def selectionSort(nums):
             if nums[j] < nums[min_idx]:
                 min_idx = j
         nums[min_idx], nums[i] = nums[i], nums[min_idx] # 最小的值放到剩余序列的开头
-    
-    return nums
 
+    return nums
 ```
 
 ## Bubble sort
+
 每次走一遍都是前后两两比较，把大的放到后面，走完一遍之后能保证最后的几个是有序的，直到不再需要swap说明排好序了
 It is a stable algorithm because a swap cannot cause an element to move past another one with the same value
 
@@ -55,15 +57,15 @@ def bubbleSort(nums):
             if nums[j - 1] > nums[j]:
                 nums[j - 1], nums[j] = nums[j], nums[j - 1]
                 swapped = True
-            
+
         if not swapped: # 提前退出
             return nums
-    
-    return nums
 
+    return nums
 ```
 
 ## Merge sort
+
 分而治之
 
 时间：O(NlogN)
@@ -101,6 +103,7 @@ def merge(left, right):
 ```
 
 ## Quick sort
+
 This algorithm is not stable, as each swap skips a lot of values.
 
 时间：O(NlogN)
@@ -122,11 +125,10 @@ def partition(nums, l, r):
         if nums[i] <= pivot:
             nums[i], nums[p] = nums[p], nums[i]
             p += 1
-    
-    nums[p], nums[r] = nums[r], nums[p]
-    
-    return p
 
+    nums[p], nums[r] = nums[r], nums[p]
+
+    return p
 ```
 
 [148. Sort List](https://leetcode.com/problems/sort-list/)
@@ -141,7 +143,7 @@ class Solution:
     def sortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
         """
         Top down Mergesort: divide into subproblems, solve each, then merge together
-        
+
         Time: O(NlogN)
         Space: O(NlogN)
         """
@@ -153,7 +155,7 @@ class Solution:
             mid = slow.next #  move one more
             slow.next = None # cut the rest
             return mid
-        
+
         def merge(l, r):
             """Merge two lists"""
             if not l or not r:
@@ -169,10 +171,10 @@ class Solution:
                 p = p.next
             p.next = l or r
             return dummy.next
-        
+
         if not head or not head.next:
             return head
-        
+
         mid = getMid(head)
         left = self.sortList(head)
         right = self.sortList(mid)
@@ -194,7 +196,7 @@ class Solution:
                 res[-1][1] = max(lastEnd, end)
             else:
                 res.append([start, end])
-        
+
         return res 
 ```
 
@@ -228,7 +230,7 @@ class Solution:
         Time: O(NlogN)
         Space: O(N)
         """
-        
+
         def cmp_func(x, y):
             """
             Sorted by value of concatenated string increasingly.
@@ -240,13 +242,13 @@ class Solution:
                 return 0
             else:
                 return -1
-            
+
         # Build nums contains all numbers in the String format.
         nums = [str(num) for num in nums]
-        
+
         # Sort nums by cmp_func decreasingly.
         nums.sort(key = cmp_to_key(cmp_func), reverse = True)
-        
+
         res = "0" if nums[0] == "0" else "".join(nums)
         return res
 ```
@@ -258,7 +260,7 @@ class Solution:
     def sortColors(self, nums: List[int]) -> None:
         """
         Count sort: find out the number of 0, 1, 2, then build the res
-        
+
         Time: O(N)
         Space: O(1)
         """
@@ -270,7 +272,7 @@ class Solution:
                 c1 += 1
             else:
                 c2 += 1
-        
+
         nums[:c0] = [0] * c0
         nums[c0: c0 + c1] = [1] * c1
         nums[c0 + c1:] = [2] * c2
@@ -285,13 +287,13 @@ class Solution:
         p0, p2 record the position of "0" and "2" respectively
         for a new number n, if n == 0: swap it with p0, move both pointers forward: make sure p0 always "0"
         if n == 2: swap it with p2, move p2 left
-        
+
         Time: O(N)
         Space: O(1)
         """
         p0 = cur = 0
         p2 = len(nums) - 1
-        
+
         while cur <= p2:
             if nums[cur] == 0:
                 nums[p0], nums[cur] = nums[cur], nums[p0]
@@ -302,10 +304,9 @@ class Solution:
                 p2 -= 1
             else:
                 cur += 1
-        
+
         return nums
 ```
-
 
 [215. Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/)
 
@@ -322,16 +323,16 @@ class Solution:
         minHeap = []
         for n in nums:
             minHeap.append(n)
-        
+
         heapq.heapify(minHeap) # time: O(n)
-        
+
         # 第2大，一共6个数字，就是第5小
         k = len(nums) + 1 - k
-        
+
         while k > 1:
             heapq.heappop(minHeap)
             k -= 1
-        
+
         return minHeap[0]    
 ```
 
@@ -345,17 +346,15 @@ class Solution:
         maxHeap = []
         for n in nums:
             maxHeap.append(n)
-        
+
         heapq._heapify_max(maxHeap) # time: O(n)
-        
+
         while k > 1:
             heapq._heappop_max(maxHeap)
             k -= 1
-        
-        return maxHeap[0]
-        
-```
 
+        return maxHeap[0]
+```
 
 ```python
 class Solution:
@@ -378,7 +377,7 @@ class Solution:
                 if nums[i] <= pivot: # 如果当前这个数<=pivot，就放到左边
                     nums[p], nums[i] = nums[i], nums[p] # python不用一个swap()
                     p += 1
-                    
+
             # nums before < nums[r] < nums after
             nums[p], nums[r] = nums[r], nums[p]
             return p
@@ -387,7 +386,7 @@ class Solution:
             if l > r:
                 return
             p = partition(l, r)
-            
+
             if k < p: 
                 return select(l, p - 1)
             elif k > p:
@@ -399,4 +398,3 @@ class Solution:
 ```
 
 [4. Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/)
-
