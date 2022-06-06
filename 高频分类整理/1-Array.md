@@ -12,7 +12,7 @@ class Solution:
                 slow += 1
                 nums[slow] = nums[fast]
             fast += 1
-        
+
         return slow + 1
 ```
 
@@ -30,7 +30,6 @@ class Solution:
         return slow
 ```
 
-
 [271. Encode and Decode Strings](https://leetcode.com/problems/encode-and-decode-strings/)
 组合大文字的时候用数字+特殊字符来连接，decode时候就需要找到数字大小
 
@@ -47,14 +46,14 @@ class Codec:
         for s in strs:
             res += str(len(s)) + "#" + s
         return res
-        
+
 
     def decode(self, s: str) -> List[str]:
         """Decodes a single string to a list of strings.
         """
         res = []
         i = 0
-        
+
         while i < len(s):
             j = i
             while s[j] != "#":
@@ -62,9 +61,9 @@ class Codec:
             length = int(s[i : j])
             res.append(s[j + 1: j + 1 + length])
             i = j + 1 + length
-        
+
         return res
-        
+
 # Your Codec object will be instantiated and called as such:
 # codec = Codec()
 # codec.decode(codec.encode(strs))
@@ -106,7 +105,7 @@ def timeConversion(s):
             return "00" + s[2:-2]
         else:
             return str(s[:-2])
-        
+
     elif s[-2:] == "PM":
         if s[0:2] == "12":
             return str(s[:-2])
@@ -114,12 +113,12 @@ def timeConversion(s):
             return str(int(s[0:2]) + 12) + s[2:-2]
 ```
 
-
 [14. Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/)
 先找到最短的字符串，然后依次和其他比较，比较时候发现不相同就返回那个长度，最后返回最短的字符串（只有一个字符串的情况）；本题要点是min(strs, key = len)的使用方法
 
 时间：O(N*S) 
 空间：O(min(len(s)))
+
 ```py
 class Solution:
     def longestCommonPrefix(self, strs):
@@ -129,14 +128,14 @@ class Solution:
         """
         if not strs:
             return ""
-        
+
         shortest = min(strs, key = len)
-        
+
         for idx, c in enumerate(shortest):
             for other in strs:
                 if other[idx] != c:
                     return shortest[:idx]
-        
+
         return shortest
 ```
 
@@ -147,11 +146,11 @@ class Solution:
 class Solution:
     def titleToNumber(self, columnTitle: str) -> int:
         res = 0
-        
+
         for c in columnTitle:
             res = res * 26
             res += (ord(c) - ord("A") + 1)
-        
+
         return res
 ```
 
@@ -164,17 +163,15 @@ class Solution:
         用stack，每次遇到新的就比较一下是否和top相同，相同就弹栈，不同就加进来
         """
         stack = []
-        
+
         for c in s:
             if stack and c == stack[-1]:
                 stack.pop()
             else:
                 stack.append(c)
-        
+
         return "".join(stack)
 ```
-
-
 
 [1209. Remove All Adjacent Duplicates in String II](https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string-ii/)
 
@@ -185,7 +182,7 @@ class Solution:
         用stack同时存这个char和出现的次数，一旦出先次数达到k就pop，最后decode到需要的大小
         """
         stack = [["#", 0]]
-        
+
         for c in s:
             if stack[-1][0] == c:
                 stack[-1][1] += 1
@@ -193,7 +190,7 @@ class Solution:
                     stack.pop()
             else:
                 stack.append([c, 1])
-        
+
         return "".join(c * n for c, n in stack)
 ```
 
@@ -206,25 +203,26 @@ class Solution:
         从头到尾，依次遍历可能的回文字符，每次遍历之后都更新潜在的最大值
         """
         res = ""
-        
+
         def findPalindrome(l, r):
             while l >= 0 and r < len(s) and s[l] == s[r]:
                 l -= 1 # 从中间往两边走
                 r += 1
             return s[l + 1: r] # 多走了一步，所以要返回之前的一步
-        
+
         for i in range(len(s)):
             # odd length
             s1 = findPalindrome(i, i)
-            
+
             # even length
             s2 = findPalindrome(i, i + 1)
-            
+
             if len(s1) > len(s):
                 res = s1
             if len(s2) > len(s):
                 res = s2
-                
+
         return res
 ```
+
 https://leetcode.com/problems/longest-palindromic-substring/discuss/2030458/Python

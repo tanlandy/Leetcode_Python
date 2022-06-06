@@ -1,10 +1,10 @@
 def movingAverage(nums, window_size):
     if window_size <= 0:
-        print("Error, window size should be > 0")
+        print("Error: the window size should be larger than 0!")
         return []
-
-    res = []
+    
     left = right = 0
+    res = []
     cur_sum = 0
 
     while right < len(nums):
@@ -17,5 +17,5 @@ def movingAverage(nums, window_size):
     
     return res
 
-nums = [1,2,3,4,5,6]
-print(movingAverage(nums, 1))
+nums = [1,2,3,4,5]
+print(movingAverage(nums, 3))

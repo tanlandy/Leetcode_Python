@@ -1,22 +1,22 @@
-[toc]
-
 # 基础知识
 
 # Graph
+
 def: A graph is a data structure consists of finite set of vertecies and finite set of edges
 
-| application | vertices | edges |
-| :----- | :----- | :--- |
-| maps | 交叉口 | roads |
-| social networks | people | friendship status |
-| contact tracing | people | with people |
+| application     | vertices | edges             |
+|:--------------- |:-------- |:----------------- |
+| maps            | 交叉口      | roads             |
+| social networks | people   | friendship status |
+| contact tracing | people   | with people       |
 
 G = (V, E)
-dense graph: E ~ V^2 -> interactions at family dinner
+dense graph: E ~ $V^2$ -> interactions at family dinner
 sparse graph: E ~ V -> facebooks
 important to think about the type of graph
 
 3 variants of graph
+
 1. undirected: (u, v) = (v, u) -> facebook -> V = {1,2,3}, E = {(1,2)(2,1)(1,3)(3,1)(2,3)(3,2)}
 2. directed: (u, v) from u to v -> instagram
 3. weighted: 
@@ -24,69 +24,180 @@ important to think about the type of graph
 def of adjacency: given vertex u, and vertex v, vertex u is adjacent to v iff (u, v) in E
 
 store graph: depends on the basic desired operations on the graph: search, edit, calculation, time, space
-| type | general space | dense: E=V^2 | sparse: E=V | Does an edge (i,j) exist? |
-| --- | --- | --- | --- | --- |
-| adjacency list | V + E | V + V^2 | V + V ✅ | O(V): Read entire adj[i] |
-| adjacency matrix | V^2 | V^2 ✅ | V^2 | O(1) |
+
+| type             | general space | dense: E=$V^2$ | sparse: E=V | Does an edge (i,j) exist? |
+| ---------------- | ------------- | -------------- | ----------- | ------------------------- |
+| adjacency list   | V + E         | V + $V^2$      | V + V ✅     | O(V): Read entire adj[i]  |
+| adjacency matrix | $V^2$         | $V^2$ ✅        | $V^2$       | O(1)                      |
 
 Adjacency list: 
 build: for every vertex v, adj[v] = {vertecies adj to v}; space: V+E for both undirected and directed graph. but could be written as 2E for undirected graph when consider graph to be unique
 
 Adjacency matrix:
-matrix be a V*V matrix, aij = 1 iff (i, j) in E; space: V^2
+matrix be a V*V matrix, aij = 1 iff (i, j) in E; space: $V^2$
 
 ## Path
+
 a path in G(V, E) from u to v is a sequence of vertecies from u to v
 v and v are connected if there is a path
 
 ## Connected component
+
 C is a connected component in G(V, E) iff C 里面的点 are connected & C不和外面的点 connected
 
 # BFS
+
 input: G(V, E), and source vertex s
 output: d[v] btw source s and all other nodes in graph
 queue.append(x) // put x as last element in queue
 queue.popleft() // return and remove the first element in queue
 
 basic idea:
+
 1. discover all vertices at distance k from s before discovering vertices at distance k+1 from s
 2. expand a fronter greedly one edge distance at a time
 
+```shell
 BFS(G, s): 
-    for each v in (V - s): // if they are not connected, the distance is infinity
-        d[v] = float("inf")
-    d[s] = 0
-    queue = empty
-    queue.append(s)
-    while queue is not empty:
-        u = queue.popleft()
-        for each v in adj[u]:
-            if d[v] = inf:
-                d[v] = d[u] + 1
-                queue.append(v)
+for each v in (V - s): // if they are not connected, the distance is infinity
+ d[v] = float("inf")
+ d[s] = 0
+ queue = empty
+ queue.append(s)
+ while queue is not empty:
+ u = queue.popleft()
+ for each v in adj[u]:
+ if d[v] = inf:
+ d[v] = d[u] + 1
+ queue.append(v)
+```
 
 Runtime: each node enter queue only once: O(V), each edge only checked once: O(V+E)
 Space: graph space: Adjlist: O(V+E)
 queue: O(V)
 distance array: O(V)
 
-# Shortest path problem
-input: directed weighted graph G(V,E,W)
-output: w(path) that is minimum
+Shortest Path Problem
 
-# Single-source-shortest path(SSSP)
-find shortest path from a given vertex to every vertex in G
-看到10:48 https://drive.google.com/file/d/1IlP2GGIWKSCqqPWjr0Cg2D2pS5-s9KfT/view 
+> given a graph, want to find the path btw u to w with min cost
+> 
+> well-defined shorted path:
+> 
+> 1. negative weight edges are OK
+> 
+> 2. negative cycles are not
+
+Input: Directed weighted graph G(V, E, W)
+
+Output: W(p), where the weight is minimum. If there's no path: inf
+
+1. single source shortest path
+
+2. single destination
+
+3. single pair: single source and single destination -> SFO to JFK
+
+4. All pairs:
+   
+   1. Run BFS on every node: $O(V(V+E)) -> V^2 + VE$
+
+## Single source shortest path(SSSP)
+
+1. unweighted/weight of all edges is 1 -> BFS
+
+2. negative/positive all reals -> Bellman-ford
+
+```shell
+for every vertex in V: => O(V)
+    d[v] = inf
+    pre[v] = null
+d[s] = 0
+# relaxing that try to go from s to v
+d[v] = estimate so far how to get to v
+if d[u] + w(u, v) < d[v]:
+    d[v] = d[u] + w(u, v)
+```
 
 # Dijkstra
-https://drive.google.com/file/d/132coUDlgMPxWDnasb5fGmGc82FY6cmSX/view 
+
+two version: Priority queue & array
+
+|             | PQ      | Array                 |
+| ----------- | ------- | --------------------- |
+| extract min | O(logn) | O(n)                  |
+| update-key  | O(logn) | O(1), if have the idx |
+
+## PQ
+
+```shell
+Dijkstra_algo(G(V, E, W), s) { -> return d[] pre[c]
+    for v in V:
+        d[v] = inf
+        pre[v] = null
+    d[s] = 0
+    minHeap = V # PQ with d[v] as key -> O(V) in total from line0
+    while minHeap: # -> O(V+E)
+        u = minHeap.popleft() # finalize the distance to vertex u->VO(logV)
+        for v in adj[u]:
+            if d[v] > d[u] + w(u, v):
+                d[v] = d[u] + w(u, v) # update key: EO(logV)
+                pre[v] = u
+}
+```
+
+In total: O(VlogV + ElogV) -> O(ElogV)
+
+## Array
+
+```shell
+Dijkstra_algo(G(V, E, W), s) { -> return d[] pre[c]
+    for v in V:
+        d[v] = inf
+        pre[v] = null
+    d[s] = 0
+    vertex = V # PQ with d[v] as key -> O(V)
+    while vertex: # O(V+E)
+        u = min(vertex) # finalize the distance to vertex u->VO(V)
+        for v in adj[u]:
+            if d[v] > d[u] + w(u, v):
+                d[v] = d[u] + w(u, v) # EO(1)
+                pre[v] = u
+}
+```
+
+In total: $V+E+V^2+E -> O(V^2)$
+
+|         | V(extract_min) | E(update_keys) | Total | Sparse(E=V) | Dense(E=$V^2$) |
+| ------- | -------------- | -------------- | ----- | ----------- | -------------- |
+| PQ      | VlogV          | ElogV          | ElogV | VlogV       | V^2logV        |
+| Array   | V*V            | E              | $V^2$ | $V^2$       | $V^2$          |
+| Bellman |                |                | EV    | $V^2$       | $V^3$          |
 
 # All pairs shortest path
-https://drive.google.com/file/d/15qvHyzaqKg6Xgd6nApiex6BAMon0cwhj/view 
+
+input: G(V, E, W)
+
+output: min weight of path btw every two nodes
+
+|                 | solution          | Time                                   | Dense($E=V^2$)                      |
+| --------------- | ----------------- | -------------------------------------- | ----------------------------------- |
+| no edge weight  | BFS on every node | V*O(BFS)=V(V+E)                        | $V^3$                               |
+| all are positve | Dijkstra          | minHeap:V*(ElogV)<br/>Array: V*($V^2$) | minHeap: $V^3logV$<br/>Array: $V^3$ |
+| have negative   | Bellman           | V*O(VE) = $V^2E$                       | $V^4$                               |
+| any pos/neg     | Floyd-warshall    | $O(V^3)$                               | $V^3$                               |
+
+[1334. Find the City With the Smallest Number of Neighbors at a Threshold Distance]([Loading...](https://leetcode.com/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/))
+
+
+
+
+
+
 
 # Tree
 
 ## 模板
+
 ```py
 def BFS(root):
     if not root:
@@ -108,7 +219,6 @@ def BFS(root):
                     queue.append(nei)
                     visit.add(nei)
         step += 1
-
 ```
 
 [111. Minimum Depth of Binary Tree](https://leetcode.com/problems/minimum-depth-of-binary-tree/)
@@ -120,24 +230,24 @@ class Solution:
             return 0
         queue = collections.deque([root])
         step = 1
-        
+
         while queue:
             size = len(queue)
             for i in range(size):
                 node = queue.popleft()
-                
+
                 # case that meet the target
                 if not node.left and not node.right:
                     return step
-                
+
                 if node.left:
                     queue.append(node.left)
                 if node.right:
                     queue.append(node.right)
-            
+
             # after the level, update the step
             step += 1
-        
+
         return step
 ```
 
@@ -149,23 +259,23 @@ class Solution:
         """
         if not root:
             return root
-        
+
         queue = collections.deque([root])
-        
+
         while queue:
             size = len(queue)
-            
+
             for i in range(size):
                 node = queue.popleft()
-                
+
                 if i < size - 1: # 点睛之笔，每次要链接的，其实就是把刚popleft出来的连接到[0]
                     node.next = queue[0]
-                
+
                 if node.left:
                     queue.append(node.left)
                 if node.right:
                     queue.append(node.right)
-        
+
         return root
 ```
 
@@ -180,7 +290,7 @@ class Solution:
         # edge case
         if "0000" in deadends:
             return -1
-        
+
         # find the adjacent locks
         def children(wheel):
             res = []
@@ -190,7 +300,7 @@ class Solution:
                 digit = str((int(wheel[i]) + 10 - 1) % 10) # down 1
                 res.append(wheel[:i] + digit + wheel[i+1:])
             return res    
-        
+
         # BFS structrue
         queue = collections.deque()
         visit = set(deadends)
@@ -200,7 +310,7 @@ class Solution:
             # target to return
             if wheel == target:
                 return turns
-            
+
             # traverse other
             for child in children(wheel):
                 if child not in visit:
@@ -243,7 +353,7 @@ class Solution:
         while queue and fresh > 0:
             for i in range(len(queue)):
                 r, c = queue.popleft()
-        
+
                 for dr, dc in dirs:
                     row, col = r + dr, c + dc
                     # if in bounds and fresh, make it rotten
@@ -251,11 +361,10 @@ class Solution:
                         grid[row][col] = 2
                         queue.append((row, col))
                         fresh -= 1
-            
-            time += 1
-        
-        return time if fresh == 0 else -1
 
+            time += 1
+
+        return time if fresh == 0 else -1
 ```
 
 # 拓扑排序
@@ -266,6 +375,7 @@ Step2: 因为这些节点没有任何的父节点。所以可以把与这些节�
 Step3: 再次寻找图中的入度为零的节点。对于新找到的这些入度为零的节点来说，他们的父节点已经都在L中了，所以也可以放入L。
 Step4: 重复上述操作，直到找不到入度为零的节点。
 Step5: 如果此时L中的元素个数和节点总数相同，说明排序完成；如果L中的元素个数和节点总数不同，说明原图中存在环，无法进行拓扑排序。
+
 ```code
 L ← 包含已排序的元素的列表，目前为空
 S ← 入度为零的节点的集合
@@ -279,7 +389,6 @@ S ← 入度为零的节点的集合
 否则： 
     return L   (L为图的拓扑排序)
 ```
-
 
 [207. Course Schedule](https://leetcode.com/problems/course-schedule/)
 
@@ -303,7 +412,7 @@ class Solution:
         for v in range(numCourses):
             if indegree[v] == 0:
                 queue.append(v)
-        
+
         # step3: 进行拓扑排序
         count = 0 # 记录走过的数量
         order = [] # 可以用来记录topo_order
@@ -339,7 +448,7 @@ class Solution:
         for v in range(numCourses):
             if indegree[v] == 0:
                 queue.append(v)
-        
+
         # step3: 进行拓扑排序
         count = 0 # 记录走过的数量
         order = [] # 可以用来记录topo_order
@@ -362,7 +471,7 @@ class Solution:
     def validTree(self, n: int, edges: List[List[int]]) -> bool:
     """
     构建adjList
-    
+
     """        
 ```
 

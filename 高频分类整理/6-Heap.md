@@ -1,5 +1,9 @@
 # Recap
+
 Priority Queue is an Abstract Data Type, and Heap is the concrete data structure we use to implement a priority queue.
+
+## Operation
+
 Criteria: Complete Binary Tree + parent nodes are smaller or larger than children
 Insertion of an element into the Heap has a time complexity of O(logN);
 Deletion of an element from the Heap has a time complexity of O(logN);
@@ -9,9 +13,6 @@ The number in each node is *key*, not value(similar to tree node). We use the *k
 There is no comparable relationsihp across a level of a heap
 
 because only nodes in a root-to-leaf path are sorted (nodes in the same level are not sorted), when we add/remove a node, we only have to fix the order in the vertical path the node is in. This makes inserting and deleting O(log(N)) too.
-
-For node i, its children are stored at 2i+1 and 2i+2, and its parent is at floor((i-1)/2). So instead of node.left we'd do 2*i+1.
-
 
 ```py
 import heapq
@@ -44,23 +45,24 @@ len(minHeap)
 
 方法一：minHeap
 先形成一个minHeap, key是dist，另外还要保存x,y用来之后导出，然后根据要求取数字
+
 ```py
 class Solution:
     def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
         minHeap = []
-        
+
         for x, y in points:
             dist = x * x + y * y
             minHeap.append([dist, x, y])
-        
+
         heapq.heapify(minHeap)
-        
+
         res = []
         while k > 0:
             dist, x, y = heapq.heappop(minHeap)
             res.append([x, y])
             k -= 1
-        
+
         return res
 ```
 
@@ -69,25 +71,25 @@ class Solution:
 ```python
 class Solution:
     def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
-        
+
         def get_dist(point):
             return point[0] ** 2 + point[1] ** 2
-        
+
         # return p, p is pth smallest in points
         def partition(l, r):
             pivot = points[r]
             p = l
             pivot_dist = get_dist(pivot)
-            
+
             for i in range(l, r):
                 if get_dist(points[i]) <= pivot_dist:
                     points[i], points[p] = points[p], points[i]
                     p += 1
-            
+
             # before < get_dist(points[r]) < after
             points[r], points[p] = points[p], points[r]
             return p
-        
+
         def select(l, r):
             if l > r:
                 return points
@@ -99,10 +101,9 @@ class Solution:
                 return select(p + 1, r)
             else:
                 return points[:k]
-        
+
         return select(0, len(points) - 1)
 ```
-
 
 [347. Top K Frequent Elements](https://leetcode.com/problems/top-k-frequent-elements/)
 
@@ -134,7 +135,6 @@ class Solution:
                     return res 
 ```
 
-
 ```python
 class Solution:
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
@@ -144,12 +144,12 @@ class Solution:
         """
         # count: {each num:freq}
         count = collections.Counter(nums)
-        
+
         maxHeap = []
-        
+
         for key in count:
             heapq.heappush(maxHeap, (-count[key], key))
-        
+
         res = []
         while k > 0:
             value, key = heapq.heappop(maxHeap)
@@ -169,13 +169,13 @@ class Solution:
         dummy = ListNode(-1)
         cur = dummy
         minHeap = []
-        
+
         # add the first node of each list into the minHeap
         for i in range(len(lists)):
             if lists[i]:
                 heapq.heappush(minHeap, (lists[i].val, i))
                 lists[i] = lists[i].next # 每个list指向第二个节点
-        
+
         while minHeap: 
             val, i = heapq.heappop(minHeap) # 取出来最小值
             cur.next = ListNode(val) # 新建node并连接到当前的node
@@ -183,7 +183,7 @@ class Solution:
             if lists[i]: # 把更新后的点加进minHeap
                 heapq.heappush(minHeap, (lists[i].val, i))
                 lists[i] = lists[i].next
-        
+
         return dummy.next
 ```
 
@@ -199,26 +199,26 @@ class Solution:
         # edge case
         if not lists or len(lists) == 0:
             return None
-        
+
         while len(lists) > 1:
             one_merge = []
-            
+
             for i in range(0, len(lists), 2): # each time the step is 2
                 l1 = lists[i]
                 l2 = lists[i + 1] if (i + 1) < len(lists) else None # check for the odd condition
                 one_merge.append(self.merge_two(l1, l2))
-                
+
             lists = one_merge
-        
+
         return lists[0]
-    
+
     def merge_two(self, l1, l2):
         """
         Same as Leetcode Q21
         """
         dummy = ListNode(-1) # dummy node to avoid empty ptr
         pre = dummy
-        
+
         while l1 and l2:
             if l1.val <= l2.val:
                 pre.next = l1
@@ -227,50 +227,334 @@ class Solution:
                 pre.next = l2
                 l2 = l2.next
             pre = pre.next # don't forget to move ptr
-        
+
         # append the remaining nodes in l1 or l2
         if l1:
             pre.next = l1
         elif l2:
             pre.next = l2
-        
+
         return dummy.next
 ```
 
 [264. Ugly Number II](https://leetcode.com/problems/ugly-number-ii/)
 
+```py
+class Solution:
+    def nthUglyNumber(self, n: int) -> int:
+        """
+        starting from 1, in each cycle, pop the top of the heap and insert back that number multiplied by 2, 3, 5 into the heap (if that number wasn't in the heap already)
+        """
+        primes = (2, 3, 5)
+        minHeap = [1]
+        used = set([1])
+
+        for i in range(n - 1):
+            val = heapq.heappop(minHeap)
+            for prime in primes:
+                new_ugly = prime * val
+                if new_ugly not in used:
+                    heapq.heappush(minHeap, new_ugly)
+                    used.add(new_ugly)
+
+        return minHeap[0]
+```
+
+```py
+class Solution:
+
+    def nthUglyNumber(self, n):
+        """
+        use three pointers, each time only moves the smallest one, generate all ugly nunmbers
+
+        Time: O(N)
+        Space: O(N)
+        """
+        ugly = [1]
+        i2, i3, i5 = 0, 0, 0
+        while n > 1:
+            u2, u3, u5 = 2 * ugly[i2], 3 * ugly[i3], 5 * ugly[i5]
+            umin = min((u2, u3, u5))
+            if umin == u2:
+                i2 += 1
+            if umin == u3:
+                i3 += 1
+            if umin == u5:
+                i5 += 1
+            ugly.append(umin)
+            n -= 1
+        return ugly[-1]
+```
+
+[1086. High Five](https://leetcode.com/problems/high-five)
+
+```py
+class Solution:
+    def highFive(self, items: List[List[int]]) -> List[List[int]]:
+        """
+        for each student, create a maxHeap of their score
+        then, calculate their average score and add it to result
+
+        Time: O(NlogN) sort at the end
+        Space: O(N)
+        """
+        students = collections.defaultdict(list)
+
+        for idx, val in items:
+            heapq.heappush(students[idx], val)
+
+            # keep the size of heap to 5: pop the smallest when size is larger than 5
+            if len(students[idx]) > 5:
+                heapq.heappop(students[idx])
+
+        res = [[i, sum(students[i]) // len(students[i])] for i in sorted(students)]
+
+        return res
+```
+
+[88. Merge Sorted Array](https://leetcode.com/problems/merge-sorted-array/)
+
+```py
+class Solution:
+    def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+        """
+        edit nums1 in-place using two pointers
+        at the end, what left in nums2 should be added to nums1
+
+        Time: O(M+N)
+        Space: O(1)
+        """
+        while m > 0 and n > 0:
+            if nums1[m - 1] > nums2[n - 1]:
+                nums1[m + n - 1] = nums1[m - 1]
+                m -= 1
+            else:
+                nums1[m + n - 1] = nums2[n - 1]
+                n -= 1
+
+        nums1[:n] = nums2[:n]
+```
+
+[692. Top K Frequent Words]([Loading...](https://leetcode.com/problems/top-k-frequent-words/))
+
+```py
+class Solution:
+    def topKFrequent(self, words: 'List[str]', k: 'int') -> 'List[str]':
+        class Solution:
+    def topKFrequent(self, words: 'List[str]', k: 'int') -> 'List[str]':
+        """
+        heapq.nsmallest(n, iterable, key=None): Return a list with the n smallest elements from the dataset defined by iterable. key, if provided 
+
+        Time: O(NlogK) -> Heapq will build the heap for the first t elements, then later on it will iterate over the remaining elements by pushing and popping the elements from the heap (maintaining the t elements in the heap).
+        Space: O(N)
+        """
+        counts = collections.Counter(words)
+        return heapq.nsmallest(k, counts,
+            key=lambda word:(-counts[word], word)
+        )
+# -Freqs[words] means 'rank the frequencies of words in descending order' (the first sorting criteria in lambda function);
+# word means 'rank the words with the highest frequencies in their alphabetical order' (the second sorting criteria in lambda function).
+# Finally, nsmallest() returns the [:k] of the result.
+```
+
+```py
+class Element:
+    def __init__(self, count, word):
+        self.count = count
+        self.word = word
+
+    def __lt__(self, other): # less than
+        if self.count == other.count:
+            return self.word > other.word
+        return self.count < other.count
+
+    def __eq__(self, other): # equal
+        return self.count == other.count and self.word == other.word
+
+class Solution(object):
+    def topKFrequent(self, words, k):
+        counts = collections.Counter(words)   
+
+        freqs = []
+        heapq.heapify(freqs)
+        for word, count in counts.items():
+            # presonal comparator
+            heapq.heappush(freqs, (Element(count, word), word))
+            if len(freqs) > k:
+                heapq.heappop(freqs)
+
+        res = []
+        for _ in range(k):
+            res.append(heapq.heappop(freqs)[1])
+        return res[::-1]
+```
+
+```py
+class Solution:
+    def topKFrequent(self, words, k):
+        """
+        Time: O(NlogN)
+        Space: O(N)
+        """
+        counts = collections.Counter(words)
+        items = list(counts.items())
+        # sort first based on pref, then on words
+        items.sort(key=lambda item:(-item[1],item[0]))
+        return [item[0] for item in items[0:k]]
+```
+
+[378. Kth Smallest Element in a Sorted Matrix](https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/) 
+
+```py
+class Solution:  # 204 ms, faster than 54.32%
+    def kthSmallest(self, matrix: List[List[int]], k: int) -> int:
+        """
+        add the first col into the heap, then process one by one. once pop a new item out of heap, push the neighbor into it.
+
+        Time: Klog(min(K, N))
+        Space: O(min(K, N))
+        """
+        rows, cols = len(matrix), len(matrix[0])  # For general, the matrix need not be a square
+
+        minHeap = []  # val, r, c
+        # add first col
+        for r in range(min(k, rows)):
+            heappush(minHeap, (matrix[r][0], r, 0))
+
+        res = 0  # any dummy value
+        for i in range(k):
+            res, r, c = heappop(minHeap)
+            # once get the number, add the next one in the row
+            if c + 1 < cols: 
+                heappush(minHeap, (matrix[r][c + 1], r, c + 1))
+        return res
+```
+
+[295. Find Median from Data Stream](https://leetcode.com/problems/find-median-from-data-stream/) 
+
+```py
+class MedianFinder:
+"""
+用两个size最多差1的Heap，每次新数字先加到minHeap，然后pop minHeap到maxHeap，最后永远保证minHeap的大小比maxHeap大于等于1；找数的时候，要么直接看minHeap，要么就是看二者的平均数
+
+时间：addNum: O(logN)，找数O(1)
+空间：O(N)
+"""
+
+    def __init__(self):
+        # all nums in small < all nums in large
+        # small is a maxHeap, large is a minHeap
+        self.maxHeap, self.minHeap = [], []
+
+    def addNum(self, num: int) -> None:
+        # add each element to minHeap first
+        # pop minHeap and add it to maxHeap 
+        # balance the size 
+        # In this case, all nums in small < large
+        heapq.heappush(self.maxHeap, -heapq.heappushpop(self.minHeap, num))
+
+        if len(self.maxHeap) > len(self.minHeap):
+            heapq.heappush(self.minHeap, -heapq.heappop(self.maxHeap))
+
+    def findMedian(self) -> float:
+        if len(self.maxHeap) < len(self.minHeap):
+            return self.minHeap[0]
+        else:
+            return (self.minHeap[0] - self.small[0]) / 2
 
 
-[1086. High Five](https://leetcode.com/problems/high-five/)
+# Your MedianFinder object will be instantiated and called as such:
+# obj = MedianFinder()
+# obj.addNum(num)
+# param_2 = obj.findMedian()
+```
 
+[767. Reorganize String]([Loading...](https://leetcode.com/problems/reorganize-string/))
 
+```py
+class Solution:
+    def reorganizeString(self, s: str) -> str:
+        """
+        use maxHeap to always get the largest counted chars
+        build the oven idx first, and then odd idx
 
+        Time: O(NlogN)
+        Space: O(N)
+        """
+        n = len(s)
+        str_count = collections.Counter(s)
+        maxHeap = [(-count, char) for char, count in str_count.items()]
+        heapq.heapify(maxHeap)
 
+        if -maxHeap[0][0] > (n + 1) // 2:
+            return ""
 
+        res = [None] * n
+        ptr = 0
+        while maxHeap:
+            count, char = heapq.heappop(maxHeap)
+            count = -count
+            for i in range(count): # build the res, each time forward 2
+                res[ptr] = char
+                ptr += 2
+                if ptr >= n: # when reach to the end, start from 1
+                    ptr = 1
 
+        return "".join(res)
+```
 
+[1438. Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit]([Loading...](https://leetcode.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/))
 
+```py
+class Solution:
+    def longestSubarray(self, A, limit):
+        maxq, minq = [], []
+        res = i = 0
+        for j, a in enumerate(A):
+            heapq.heappush(maxq, [-a, j])
+            heapq.heappush(minq, [a, j])
+            while -maxq[0][0] - minq[0][0] > limit:
+                i = min(maxq[0][1], minq[0][1]) + 1
+                while maxq[0][1] < i: heapq.heappop(maxq)
+                while minq[0][1] < i: heapq.heappop(minq)
+            res = max(res, j - i + 1)
+        return res
+```
 
+[895. Maximum Frequency Stack]([Loading...](https://leetcode.com/problems/maximum-frequency-stack/))
 
+```py
+class FreqStack:
+    """
+    use two hashmap: 
+    1. counter: {one num: its freq}
+    2. group: {1 to maxCount: a list of all nums with that freq}
+    """
 
+    def __init__(self):
+        self.count = collections.defaultdict(int)
+        self.maxCount = 0
+        self.group = collections.defaultdict(list)
 
+    def push(self, val: int) -> None:
+        valCount = self.count[val] + 1 # update one nums's count
+        self.count[val] = valCount
+        if valCount > self.maxCount: # update the maxCount
+            self.maxCount = valCount
+        self.group[valCount].append(val) # update the group
 
+    def pop(self) -> int:
+        num = self.group[self.maxCount].pop()
+        self.count[num] -= 1
+        if not self.group[self.maxCount]:
+            self.maxCount -= 1
 
-
-
-
-
-
-
-
+        return num
+```
 
 # Others
 
 [703. Kth Largest Element in a Stream](https://leetcode.com/problems/kth-largest-element-in-a-stream/)
-minHeap of size K
-add/pop: O(logN)
-get min: O(1)
-
 
 ```py
 class KthLargest:
@@ -280,6 +564,10 @@ class KthLargest:
         先形成一个minHeap(nums) -> O(n)
         然后一直pop直到len(minHeap)为k -> O((n-k)logN)
         最后Kth largest就是minHeap里最小的值 -> O(1)
+
+        minHeap of size K
+        add/pop: O(logN)
+        get min: O(1)
         """
         self.minHeap, self.k  = nums, k
         heapq.heapify(self.minHeap)
@@ -309,18 +597,17 @@ class Solution:
     def lastStoneWeight(self, stones: List[int]) -> int:
         maxHeap = [-x for x in stones]
         heapq.heapify(maxHeap)
-        
+
         while len(maxHeap) > 1:
             largest = heapq.heappop(maxHeap)
             second = heapq.heappop(maxHeap)
             if largest < second:
                 diff = largest - second
                 heapq.heappush(maxHeap, diff)
-                
+
         maxHeap.append(0) # 处理input=[2,2]的情况
         return abs(maxHeap[0])  
 ```
-
 
 [215. Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/)
 
@@ -333,11 +620,11 @@ class Solution:
     def findKthLargest(self, nums: List[int], k: int) -> int:
         maxHeap = [-x for x in nums]
         heapq.heapify(maxHeap)
-        
+
         while k > 0:
             res = heapq.heappop(maxHeap)
             k -= 1
-        
+
         return -res
 ```
 
@@ -346,6 +633,7 @@ partition: cut to two halves，左边的数都比右边的小，pivot就选最�
 
 时间 O(N)；如果每次的pivot都刚好是最大值，那每次都需要走一遍，所以那就是O(N^2)
 空间 O(1)
+
 ```python
 class Solution:
     def findKthLargest(self, nums: List[int], k: int) -> int:
@@ -360,14 +648,14 @@ class Solution:
                 if nums[i] <= pivot: # 如果当前这个数<=pivot，就放到左边
                     nums[p], nums[i] = nums[i], nums[p] # python不用一个swap()
                     p += 1
-                    
+
             # nums before < nums[r] < nums after
             nums[p], nums[r] = nums[r], nums[p]
             return p
 
         def select(l, r): # l, r告诉跑quickSelect的范围
             p = partition(l, r)
-            
+
             if k < p: 
                 return select(l, p - 1)
             elif k > p:
@@ -383,6 +671,7 @@ class Solution:
 
 时间：O(N*M) N is len(tasks), M is idleTime
 空间：
+
 ```py
 class Solution:
     def leastInterval(self, tasks: List[str], n: int) -> int:
@@ -400,50 +689,12 @@ class Solution:
                 cnt = heapq.heappop(maxHeap) + 1
                 if cnt:
                     queue.append([cnt, time + n])
-            
+
             if queue and queue[0][1] == time:
                 heapq.heappush(maxHeap, queue.popleft()[0])
 
         return time
-
 ```
-
-[295. Find Median from Data Stream](https://leetcode.com/problems/find-median-from-data-stream/)
-用两个size最多差1的Heap，每次新数字先加到minHeap，然后pop minHeap到maxHeap，最后永远保证minHeap的大小比maxHeap大于等于1；找数的时候，要么直接看minHeap，要么就是看二者的平均数
-
-时间：addNum: O(logN)，找数O(1)
-空间：O(N)
-```py
-class MedianFinder:
-
-    def __init__(self):
-        # all nums in small < all nums in large
-        # small is a maxHeap, large is a minHeap
-        self.small, self.large = [], []
-
-    def addNum(self, num: int) -> None:
-        # add each element to minHeap first
-        # pop minHeap and add it to maxHeap 
-        # balance the size 
-        # In this case, all nums in small < large
-        heapq.heappush(self.small, -heapq.heappushpop(self.large, num))
-        
-        if len(self.small) > len(self.large):
-            heapq.heappush(self.large, -heapq.heappop(self.small))
-        
-    def findMedian(self) -> float:
-        if len(self.small) < len(self.large):
-            return self.large[0]
-        else:
-            return (self.large[0] - self.small[0]) / 2
-
-
-# Your MedianFinder object will be instantiated and called as such:
-# obj = MedianFinder()
-# obj.addNum(num)
-# param_2 = obj.findMedian()
-```
-
 
 [355. Design Twitter](https://leetcode.com/problems/design-twitter/)
 
@@ -454,7 +705,7 @@ class Twitter:
         self.count = 0
         self.tweetMap = defaultdict(list)  # userId -> list of [count, tweetIds]
         self.followMap = defaultdict(set)  # userId -> set of followeeId
-         
+
     def postTweet(self, userId: int, tweetId: int) -> None:
         self.tweetMap[userId].append([self.count, tweetId])
         self.count -= 1
@@ -462,7 +713,7 @@ class Twitter:
     def getNewsFeed(self, userId: int) -> List[int]:
         res = []
         minHeap = [] 
-        
+
         self.followMap[userId].add(userId)
         for followeeId in self.followMap[userId]:
             if followeeId in self.tweetMap:
@@ -484,4 +735,10 @@ class Twitter:
     def unfollow(self, followerId: int, followeeId: int) -> None:
         if followeeId in self.followMap[followerId]:
             self.followMap[followerId].remove(followeeId)
+```
+
+[1337. The K Weakest Rows in a Matrix]([Loading...](https://leetcode.com/problems/the-k-weakest-rows-in-a-matrix/))
+
+```py
+
 ```
