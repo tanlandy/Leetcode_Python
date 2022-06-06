@@ -22,26 +22,6 @@ print(isPalindrome("dafsad"))
 
 ```
 
-```python
-class IsValid:
-    def isPalindrome(self, s: str) -> bool:
-        i, j = 0, len(s) - 1
-        while i < j:
-            while i < j and not s[i].isalnum():
-                i += 1
-            while i < j and not s[j].isalnum():
-                j -= 1
-            if s[i].lower() != s[j].lower():
-                return False
-            i += 1
-            j -= 1
-        return True
-
-te = IsValid()
-print(te.isPalindrome("dafsas"))
-```
-
-
 [1047. Remove All Adjacent Duplicates In String](https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/)
 用Stack，如果相同就pop，不同就放进来，最后转换成string
 

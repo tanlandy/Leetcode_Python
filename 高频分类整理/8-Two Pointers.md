@@ -1,6 +1,199 @@
 # 背向双指针
+[409. Longest Palindrome](https://leetcode.com/problems/longest-palindrome/)
+```py
+class Solution:
+    def longestPalindrome(self, s: str) -> int:
+        """
+        the char appears odd times must be removed 1 time
+        
+        Time: O(N)
+        Space: O(1), as the size of s is fixed
+        """
+        counts = collections.Counter(s)
+        odd = 0
+        
+        for count in counts.values():
+            if count % 2:
+                odd += 1
+        
+        return len(s) if odd <= 1 else len(s) - odd + 1
+```
+
+[125. Valid Palindrome](https://leetcode.com/problems/valid-palindrome/)
+```python
+def isPalindrome(s: str) -> bool:
+    """
+    用相向two pointer，当不是char时候就比较; s[i].isalnum() 看是否是string或者num; s[i].lower() 返回一个小写
+    isalnum(): check if alphanumeric: (a-z) and (0-9)
+
+    时间：O(N)
+    空间：O(1)
+    """
+    l, r = 0, len(s) - 1
+    
+    while l < r:
+        while l < r and not s[l].isalnum():
+            l += 1
+        while l < r and not s[r].isalnum():
+            r -= 1
+        if s[l].lower() != s[r].lower():
+            return False
+        l += 1
+        r -= 1
+    
+    return True
+```
+
+[5. Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/)
+
+```py
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        """
+        从中间往两边扩散，同时要看以自己为中心和以自己为左半边出发的情况。最后要注意成功时候的index
+        时间：O(N^2)
+        空间：O(1)
+        """
+        res = ""
+        
+        def findPalindrome(l, r):
+            while l >= 0 and r < len(s) and s[l] == s[r]:
+                l -= 1
+                r += 1
+            
+            return s[l + 1: r]
+    
+        for i in range(len(s)):
+            s1 = findPalindrome(i, i)
+            s2 = findPalindrome(i, i + 1)            
+            
+            if len(s1) > len(res):
+                res = s1
+            if len(s2) > len(res):
+                res = s2
+        
+        return res
+```
+
+[647. Palindromic Substrings](https://leetcode.com/problems/palindromic-substrings/)
+```py
+class Solution:
+    def countSubstrings(self, s: str) -> int:
+        """
+        Expand Around Possible Centers: use a helper function to find the palindromic substrings
+        check one by one
+        
+        Time: O(N^2)
+        Space: O(1)
+        """
+        
+        def countPalind(l, r):
+            one_res = 0
+            while l >= 0 and r < len(s) and s[l] == s[r]:
+                one_res += 1
+                l -= 1
+                r += 1
+            return one_res
+        
+        res = 0
+        for i in range(len(s)):
+            res += countPalind(i, i)
+            res += countPalind(i, i + 1)      
+        
+        return res
+```
 
 # 相向双指针
+
+[167. Two Sum II - Input Array Is Sorted](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/)
+```py
+class Solution:
+    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        l, r = 0, len(numbers) - 1
+        
+        while l < r:
+            cur_sum = numbers[l] + numbers[r]
+            if cur_sum == target:
+                l += 1
+                r += 1
+                return [l, r]
+            elif cur_sum < target:
+                l += 1
+            else:
+                r -= 1
+```
+
+[15. 3Sum](https://leetcode.com/problems/3sum/)
+```py
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        """
+        Time: O(N^2)
+        Space: O(logN), depending on how to sort
+        """
+        res = []
+        nums.sort()
+        
+        for i, n in enumerate(nums):
+            if i > 0 and nums[i-1] == nums[i]: # avoid duplicate
+                continue
+            
+            l, r = i + 1, len(nums) - 1
+            while l < r:
+                cur_sum = n + nums[l] + nums[r]
+                if cur_sum < 0:
+                    l += 1
+                elif cur_sum > 0:
+                    r -= 1
+                else:
+                    res.append([n, nums[l], nums[r]])
+                    # keep moving to find other possibilities
+                    l += 1
+                    r -= 1
+                    while l < r and nums[l] == nums[l - 1]: # avoid duplicate triplets
+                        l += 1
+        
+        return res
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 [905. Sort Array By Parity](https://leetcode.com/problems/sort-array-by-parity/)
 
