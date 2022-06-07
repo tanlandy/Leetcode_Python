@@ -1,3 +1,43 @@
+[981. Time Based Key-Value Store](https://leetcode.com/problems/time-based-key-value-store/)
+```py
+class TimeMap:
+
+    def __init__(self):
+        """
+        dic: {key: list of [timestamp, value]}
+        """
+        self.dic = collections.defaultdict(list)
+
+    def set(self, key: str, value: str, timestamp: int) -> None:
+        self.dic[key].append([timestamp, value])
+
+    def get(self, key: str, timestamp: int) -> str:
+        """
+        as return the pre_time <= timestamp: has to use binary search to find the pre_time to return
+
+        Time: O(logN)
+        Space: O(logN)
+        """
+        arr = self.dic[key]
+        l, r = 0, len(arr) - 1
+        while l <= r:
+            mid = (l + r) // 2
+            if arr[mid][0] <= timestamp:
+                l = mid + 1
+            else:
+                r = mid - 1
+        
+        return "" if r == -1 else arr[r][1]
+
+
+# Your TimeMap object will be instantiated and called as such:
+# obj = TimeMap()
+# obj.set(key,value,timestamp)
+# param_2 = obj.get(key,timestamp)
+```
+
+follow-up
+```py
 """
 Implement a Map interface, allowing us to put a key-value pair, and retieve it with get(Key) to get lastest, and get(key, time) to get the value at the exact time it was inserted.
 
@@ -18,7 +58,9 @@ class TimeMap:
         self.time = 0
     
     def put(self, key, value):
-        # print("called put()")
+        """
+        use a map of map, map the time to the value, map the key to the dict that stores the time:value pair
+        """
         self.last_dic[key] = value
         self.time += 1
         if key not in self.timed_dic:
@@ -26,14 +68,16 @@ class TimeMap:
         self.timed_dic[key][self.time] = value
     
     def get(self, key, timestamp=None):
-        # print("called get()")
+        """
+        Time: O(1)
+        """
         if timestamp is None:
             print(self.last_dic[key])
             return
         if timestamp < 1:
             print("")
             return
-        print(self.timed_dic[key])
+        print(self.timed_dic[key][timestamp])
 
 obj = TimeMap()
 
@@ -51,3 +95,4 @@ obj.get("fruit", 4) # => "pear"
 obj.get("fruit", 3) # => "orange"
 obj.get("fruit", 5) # => "melon"
 
+```
