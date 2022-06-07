@@ -1,21 +1,29 @@
-def movingAverage(nums, window_size):
-    if window_size <= 0:
-        print("Error: the window size should be larger than 0!")
-        return []
-    
-    left = right = 0
-    res = []
-    cur_sum = 0
+import collections
+from multiprocessing.sharedctypes import Value
 
-    while right < len(nums):
-        cur_sum += nums[right]
-        right += 1
-        if right - left == window_size:
-            res.append(cur_sum / window_size)
-            cur_sum -= nums[left]
-            left += 1
-    
-    return res
 
-nums = [1,2,3,4,5]
-print(movingAverage(nums, 3))
+class TimeMap:
+    last_dict = {}
+    timed_dict = {}
+
+    def put(self, key, value):
+        self.last_dict[key] = value
+        if key not in self.timed_dict:
+            self.timed_dict[key] = {}
+
+        self.map[key].append(value)
+
+    def get(self, key, time = 0):
+        arr = map[key]
+        idx = int(time) - 1
+        return arr[idx]
+
+
+obj = TimeMap()
+
+obj.put("fruit", "banana") # at time 1
+obj.put("fruit", "apple") # at time 2
+obj.put("fruit", "orange") # at time 3
+
+print(obj.get("fruit")) #=> "orange"
+print(obj.get("fruit", "2")) # => apple
