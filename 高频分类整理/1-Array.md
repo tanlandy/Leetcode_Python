@@ -225,4 +225,38 @@ class Solution:
         return res
 ```
 
+[1332. Remove Palindromic Subsequences](https://leetcode.com/problems/remove-palindromic-subsequences/)
+```py
+class Solution:
+    def removePalindromeSub(self, s: str) -> int:
+        """
+        Asked for subsequency instead of substring
+        """
+        if not s:
+            return 0
+        
+        if s == s[::-1]:
+            return 1
+        
+        return 2
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 https://leetcode.com/problems/longest-palindromic-substring/discuss/2030458/Python
+
