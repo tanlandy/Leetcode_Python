@@ -409,3 +409,32 @@ class Solution:
         return l
 ```
 
+[744. Find Smallest Letter Greater Than Target](https://leetcode.com/problems/find-smallest-letter-greater-than-target/)
+
+```py
+class Solution:
+    def nextGreatestLetter(self, letters: List[str], target: str) -> str:
+        """
+        binary search: 右边都满足，找最左侧的边界
+        
+        Time: O(logN)
+        Space: O(1)
+        """
+        # if the number is out of bound
+        if target >= letters[-1] or target < letters[0]:
+            return letters[0]
+        
+        l, r = 0, len(letters) - 1
+        
+        while l <= r:
+            mid = (l + r) // 2
+            
+            if  target > letters[mid]:
+                l = mid + 1
+            elif target < letters[mid]:
+                r = mid - 1
+            else:
+                l = mid + 1
+                
+        return letters[l]
+```

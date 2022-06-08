@@ -4149,6 +4149,21 @@ window_size = 3
 
 print(movingAve(nums, window_size))
 ```
+
+```py
+def movingAverage(nums, window):
+    res = []
+    cur_sum = sum(nums[: window])
+    res.append(cur_sum / window)
+
+    for i in range(window, len(nums)):
+        cur_sum += nums[i] - nums[i - window]
+        res.append(cur_sum / window)
+
+    return res
+```
+
+
 [735. Asteroid Collision](https://leetcode.com/problems/asteroid-collision/)
 
 # OA2
