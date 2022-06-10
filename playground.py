@@ -1,10 +1,29 @@
-def movingAverage(nums, window):
-    res = []
-    cur_sum = sum(nums[: window])
-    res.append(cur_sum / window)
+import collections
+class Product:
+    def __init__(self, k):
+        self.queue = collections.deque([1])
+        self.k = k
 
-    for i in range(window, len(nums)):
-        cur_sum += nums[i] - nums[i - window]
-        res.append(cur_sum / window)
+    def add(self, n):    
+        if n == 0:
+            for i in range(len(self.queue)):
+                self.queue[i] = 1
+            return
+        else:
+            if len(self.queue) > self.k:
+                self.queue.popleft()
+            self.queue.append(n * self.queue[-1])
 
-    return res
+    def get(self):
+        if self.k > len(self.queue):
+            return self.queue[-1]
+        return self.queue[-1] // self.queue[-1 - self.k]
+
+if __name__ == "__main__":
+    obj = Product(4)
+    obj.add(3)
+    obj.add(0)
+    obj.add(5)
+    obj.add(2)
+    obj.add(4)
+    print(obj.get())
