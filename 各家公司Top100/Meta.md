@@ -4120,8 +4120,6 @@ https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-ii/discuss
 
 
 
-
-
 # my own: OA1
 [moving average]
 ```py

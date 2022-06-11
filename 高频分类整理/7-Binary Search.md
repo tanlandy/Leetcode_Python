@@ -348,6 +348,30 @@ class Solution:
         return nums[l]
 ```
 
+[154. Find Minimum in Rotated Sorted Array II](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array-ii/)
+
+```py
+class Solution():
+    def findMin(self, nums):
+        """
+        Time: O(N) in the worst case where the array contains identical elements, when the algorigthm would iterate each element
+        Space: O(1)
+        
+        """
+        l, r = 0, len(nums) - 1
+        while l <= r:
+            mid = (l + r) // 2
+            if nums[mid] < nums[r]: # the mid resides in the same half as the upper bound element -> the target reside to its left-hand side
+                r = mid
+            elif nums[mid] > nums[r]: # the target reside to its right-hand side
+                l = mid + 1
+            else: # not sure which side of the mid that the target would reside
+                r -= 1
+        
+        return nums[l]
+```
+
+
 [4. Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/)
 
 时间：O(log(min(m, n)))看到log就要想到binary search
@@ -437,4 +461,42 @@ class Solution:
                 l = mid + 1
                 
         return letters[l]
+```
+
+
+[1011. Capacity To Ship Packages Within D Days](https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/)
+
+l=max(weights), r=sum(weights),最后返回的是最左侧边界l；isValid: r = mid - 1；计算isValid：用一个cur，每次cur+=w，先检查是否cur+w>cap，是的话就days_need+=1, cur = 0
+
+时间：O(logN)
+空间：O(1)
+
+```python
+class Solution:
+    def shipWithinDays(self, weights: List[int], days: int) -> int:
+        # capacity is res, res+1, res+2, ..., 
+        # binary search from max(weights) to be able to carry the biggest package, to sum(weights) as it'd take only 1 day to ship.
+        # if valid, r = mid - 1
+        l, r = max(weights), sum(weights)
+        
+        def isvalid(cap): # 注意如何计算满足
+            day_need = 1
+            cur = 0
+            for w in weights:
+                if cur + w > cap: # 每次更新现有的，直到大于cap
+                    day_need += 1
+                    cur = 0
+                cur += w
+            
+            return day_need <= days
+        
+        while l <= r:
+            mid = l + (r - l) // 2
+            if isvalid(mid):
+                r = mid - 1
+            else:
+                l = mid + 1
+        
+        return l
+        
 ```
