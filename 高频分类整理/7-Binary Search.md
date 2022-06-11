@@ -500,3 +500,41 @@ class Solution:
         return l
         
 ```
+
+[4. Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/)
+
+[719. Find K-th Smallest Pair Distance](https://leetcode.com/problems/find-k-th-smallest-pair-distance/)
+
+[410. Split Array Largest Sum](https://leetcode.com/problems/split-array-largest-sum/)
+
+[981. Time Based Key-Value Store](https://leetcode.com/problems/time-based-key-value-store/)
+```py
+class TimeMap:
+
+    def __init__(self):
+        """
+        dic: {key: list of [timestamp, value]}
+        """
+        self.dic = collections.defaultdict(list)
+
+    def set(self, key: str, value: str, timestamp: int) -> None:
+        self.dic[key].append([timestamp, value])
+
+    def get(self, key: str, timestamp: int) -> str:
+        arr = self.dic[key]
+        l, r = 0, len(arr) - 1
+        while l <= r:
+            mid = (l + r) // 2
+            if arr[mid][0] <= timestamp:
+                l = mid + 1
+            else:
+                r = mid - 1
+        
+        return "" if r == -1 else arr[r][1]
+
+
+# Your TimeMap object will be instantiated and called as such:
+# obj = TimeMap()
+# obj.set(key,value,timestamp)
+# param_2 = obj.get(key,timestamp)
+```
