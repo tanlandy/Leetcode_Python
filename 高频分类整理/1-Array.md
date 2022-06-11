@@ -241,8 +241,10 @@ class Solution:
         return 2
 ```
 
+[287. Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/)
 
 
+[41. First Missing Positive](https://leetcode.com/problems/first-missing-positive/)
 
 
 
@@ -259,4 +261,5 @@ class Solution:
 
 
 https://leetcode.com/problems/longest-palindromic-substring/discuss/2030458/Python
+
 
