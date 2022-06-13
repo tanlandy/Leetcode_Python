@@ -36,6 +36,22 @@ DFS is essentially pre-order tree traversal.
 - Traverse and find/create/modify/delete node
 - Traverse with return value (finding max subtree, detect balanced tree)
 
+### Think like a node
+when you are a node, only things you know are:
+1. your value
+2. how to get to your children
+
+### Defining the recursive function
+two things needed
+1. Return value (Passing value up from child to parent)
+   - Ask what information we need at the current node to make a decision 
+2. Identify states (Passing value down from parent to child)
+   - what states do we need to maintain to compute the return value for the current node
+
+### Pre-order, In-order, and Post-order
+1. Pre-order: make the decision before looking at your children
+2. Post-order: make the dicision after collecting information on children
+
 ### Combinatorial problems
 DFS/backtracking and combinatorial problems are a match made in heaven (or silver bullet and werewolf 😅). As we will see in the Combinatorial Search module, combinatorial search problems boil down to searching in trees.
 
@@ -55,6 +71,100 @@ Trees are special graphs that have no cycle. We can still use DFS in graphs with
 
 
 # 题目
+## Algo Monster
+[104. Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
+
+```py
+class Node:
+    def __init__(self, val, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def tree_max_depth(root: Node) -> int:
+    """
+    1. Return value: return the depth for the current subtree after we visit a node
+    2. Identify states: to decide the depth of current node, we only need depth from its children, don't need info from parents
+
+    """
+    if not root:
+        return 0
+    return max(tree_max_depth(root.left), tree_max_depth(root.right)) + 1
+    
+
+def build_tree(nodes, f):
+    val = next(nodes)
+    if val == 'x': return None
+    left = build_tree(nodes, f)
+    right = build_tree(nodes, f)
+    return Node(f(val), left, right)
+
+tree = [5, 4, 3, "x", "x", 8, "x", "x", 6, "x", "x"]
+
+if __name__ == '__main__':
+    root = build_tree(iter(tree), int)
+    res = tree_max_depth(root)
+    print(res)
+```
+
+Iterative Solution:
+```py
+class Solution:
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        
+        stack = [[root, 1]]
+        res = 1
+        
+        while stack:
+            node, depth = stack.pop()
+            if node:
+                res = max(res, depth)
+                stack.append([node.left, depth + 1])
+                stack.append([node.right, depth + 1])
+        
+        return res
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 [79. Word Search](https://leetcode.com/problems/word-search/)
 dfs(r, c, i)同时传入一个idx
 
