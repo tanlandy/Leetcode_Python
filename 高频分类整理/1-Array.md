@@ -191,6 +191,41 @@ def timeConversion(s):
             return str(int(s[0:2]) + 12) + s[2:-2]
 ```
 
+[681. Next Closest Time](https://leetcode.com/problems/next-closest-time/)
+```py
+class Solution(object):
+    def nextClosestTime(self, time):
+        """
+        Generate all possible 2 digit values, then check minute and hour
+        
+        for 19:34 as input
+        we get twoDigits array as
+        ['11', '13', '14', '19', '31', '33', '34', '39', '41', '43', '44', '49', '91', '93', '94', '99']
+
+        Time: O(1)
+        Space: O(1)
+        """
+        hour, minute = time.split(":")
+        
+        # Generate all possible 2 digit values
+        # There are at most 16 sorted values here
+        nums = sorted(set(hour + minute))
+        two_digit_values = [a+b for a in nums for b in nums]
+
+        # Check if the next valid minute is within the hour
+        i = two_digit_values.index(minute)
+        if i + 1 < len(two_digit_values) and two_digit_values[i+1] < "60":
+            return hour + ":" + two_digit_values[i+1]
+
+        # Check if the next valid hour is within the day
+        i = two_digit_values.index(hour)
+        if i + 1 < len(two_digit_values) and two_digit_values[i+1] < "24":
+            return two_digit_values[i+1] + ":" + two_digit_values[0]
+        
+        # Return the earliest time of the next day
+        return two_digit_values[0] + ":" + two_digit_values[0]
+```
+
 [14. Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/)
 先找到最短的字符串，然后依次和其他比较，比较时候发现不相同就返回那个长度，最后返回最短的字符串（只有一个字符串的情况）；本题要点是min(strs, key = len)的使用方法
 
@@ -318,6 +353,34 @@ class Solution:
         
         return 2
 ```
+
+[2239. Find Closest Number to Zero](https://leetcode.com/problems/find-closest-number-to-zero/)
+```py
+class Solution:
+    def findClosestNumber(self, nums: List[int]) -> int:
+        """
+        make (-abs(a), a) tuples, get the maxmium -abs(a), return the second index
+        """
+        return max([(-abs(a), a) for a in nums])[1]
+```
+
+[1362. Closest Divisors](https://leetcode.com/problems/closest-divisors/)
+```py
+class Solution:
+    def closestDivisors(self, num: int) -> List[int]:
+        """
+        Greedy check from sqrt(x+2) to 1, if can be divided by that number, then return 
+        
+        Time: O(sqrt(num))
+        Space: O(1)
+        """
+        for n in range(int((num + 2) ** 0.5), 0, -1):
+            if (num + 1) % n == 0:
+                return [n, (num + 1) // n]
+            if (num + 2) % n == 0:
+                return [n, (num + 2) // n]
+```
+
 
 [287. Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/)
 
