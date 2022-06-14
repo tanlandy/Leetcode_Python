@@ -1,3 +1,6 @@
+
+# 知乎
+
 [26. Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/)
 
 ```py
@@ -69,7 +72,82 @@ class Codec:
 # codec.decode(codec.encode(strs))
 ```
 
-# Time 相关
+# Others
+[189. Rotate Array](https://leetcode.com/problems/rotate-array/)
+Given an array, rotate the array to the right by k steps, where k is non-negative.
+```py
+class Solution:
+    def rotate(self, nums: List[int], k: int) -> None:
+        """
+        Place every element of the array at its correct position
+
+        Time: O(N)
+        Space: O(N)
+        """
+        n = len(nums)
+        a = [0] * n
+        
+        for i in range(n):
+            a[(i + k) % n] = nums[i]
+        
+        nums[:] = a
+```
+
+```py
+class Solution:
+    def rotate(self, nums, k) -> None:
+        """
+        reverse three times: reverse all + reverse first k + reverse last n-k
+
+        n = 7, k = 3
+        Original List                   : 1 2 3 4 5 6 7
+        After reversing all numbers     : 7 6 5 4 3 2 1
+        After reversing first k numbers : 5 6 7 4 3 2 1
+        After revering last n-k numbers : 5 6 7 1 2 3 4 --> Result
+
+        Time: O(N)
+        Space: O(1)
+        """
+        k %= len(nums)
+        self.reverse(nums, 0, len(nums)-1)
+        self.reverse(nums, 0, k-1)
+        self.reverse(nums, k, len(nums)-1)
+
+    def reverse(self, nums, start, end) -> None:
+        while start < end: 
+            nums[start], nums[end] = nums[end], nums[start]
+            start += 1
+            end -= 1
+```
+
+```py
+class Solution:
+    def rotate(self, nums: List[int], k: int) -> None:
+        """
+        Cyclic Replacement
+        
+        Time: O(N)
+        Space: O(1)
+        """
+        n = len(nums)
+        k %= n
+        
+        start = count = 0
+        while count < n:
+            current, prev = start, nums[start]
+            while True:
+                next_idx = (current + k) % n
+                nums[next_idx], prev = prev, nums[next_idx]
+                current = next_idx
+                count += 1
+                
+                if start == current:
+                    break
+            start += 1
+```
+
+
+## Time 相关
 
 [2224. Minimum Number of Operations to Convert Time](https://leetcode.com/problems/minimum-number-of-operations-to-convert-time/)
 
