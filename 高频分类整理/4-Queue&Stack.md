@@ -1,3 +1,11 @@
+# Comparation
+| Aspects | Arrays | Linked Lists |
+| --- | --- | --- |
+| Insertion/Deletion at the beginning | O(N) | O(1) |
+| Access Element | O(1) | O(N) |
+| Contiguous Memory | Yes | No |
+
+
 # Queue
 [225. Implement Stack using Queues](https://leetcode.com/problems/implement-stack-using-queues/)
 
