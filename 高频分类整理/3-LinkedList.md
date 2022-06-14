@@ -1,5 +1,5 @@
 # Educative
-Implementation
+## Linked List
 ```py
 class Node:
   def __init__(self, data):
@@ -53,10 +53,59 @@ llist.insert_after_node(llist.head.next, "D")
 
 llist.print_list()  
 ```
+
 1. Swap nodes in pairs
 2. Reverse
 3. Merge Two Sorted Linked Lists
 4. Remove duplicates
+
+## Doubly Linked List
+Implementation
+```py
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+        self.prev = None
+
+
+class DoublyLinkedList:
+    def __init__(self):
+        self.head = None
+
+    def append(self, data):
+        if self.head is None:
+            new_node = Node(data)
+            self.head = new_node
+        else:
+            new_node = Node(data)
+            cur = self.head
+            while cur.next:
+                cur = cur.next
+            cur.next = new_node
+            new_node.prev = cur
+
+    def prepend(self, data):
+        if self.head is None:
+            new_node = Node(data)
+            self.head = new_node
+        else:
+            new_node = Node(data)
+            self.head.prev = new_node
+            new_node.next = self.head
+            self.head = new_node
+
+    def print_list(self):
+        cur = self.head
+        while cur:
+            print(cur.data)
+            cur = cur.next
+
+
+
+```
+
+
 
 # 基础题目
 [206. Reverse Linked List](https://leetcode.com/problems/reverse-linked-list/)
