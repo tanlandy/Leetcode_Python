@@ -1,11 +1,12 @@
 # 整理的结构
 一级标题：
-1. Educative
+1. Educative（基础知识）
 2. Labulado
 3. Algo
 4. Explore
 5. 知乎
 6. Others
+
 
 
 # Leetcode_Python

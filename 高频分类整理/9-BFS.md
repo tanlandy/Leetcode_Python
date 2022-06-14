@@ -1,6 +1,48 @@
-# 基础知识
+# Educative基础知识
 
-# Graph
+## Tree
+### Terminology
+1. Depth of Node: depth of root node is 0
+2. Height of Node: 
+   - height of leaf node is 0
+   - height of a tree = height of the root node
+3. Complete Binary Tree
+   - every level except possibly the last, is completed filled. 
+   - all nodes in the last level are as far left as possible
+4. Full Binary Tree: every node has either 0 or 2 children
+5. Binary Search Trees
+   - The value of the left child of any node in a binary search tree will be less than whatever value we have in that node, and the value of the right child of a node will be greater than the value in that node.
+   - AVL tree: a kind of BST, that rebalances the nodes so that we won't get a linear BST
+
+| BST | Average | Worst |
+| --- | --- | --- | 
+| Search | O(logN) | O(N) |
+| Insert | O(logN) | O(N) |
+| Delete | O(logN) | O(N) |
+
+implementation in python
+```py
+class Node(object):
+  def __init__(self, value):
+    self.value = value
+    self.left = None
+    self.right = None
+    
+class BinaryTree(object):
+  def __init__(self, root):
+    self.root = Node(root)
+
+
+tree = BinaryTree(1)
+tree.root.left = Node(2)
+tree.root.right = Node(3)
+tree.root.left.left = Node(4)
+tree.root.left.right = Node(5)
+tree.root.right.left = Node(6)
+tree.root.right.right = Node(7)
+```
+
+## Graph
 
 def: A graph is a data structure consists of finite set of vertecies and finite set of edges
 
@@ -45,7 +87,7 @@ v and v are connected if there is a path
 
 C is a connected component in G(V, E) iff C 里面的点 are connected & C不和外面的点 connected
 
-# BFS
+## BFS
 
 input: G(V, E), and source vertex s
 output: d[v] btw source s and all other nodes in graph
@@ -101,7 +143,7 @@ Output: W(p), where the weight is minimum. If there's no path: inf
    
    1. Run BFS on every node: $O(V(V+E)) -> V^2 + VE$
 
-## Single source shortest path(SSSP)
+### Single source shortest path(SSSP)
 
 1. unweighted/weight of all edges is 1 -> BFS
 
@@ -118,7 +160,7 @@ if d[u] + w(u, v) < d[v]:
     d[v] = d[u] + w(u, v)
 ```
 
-# Dijkstra
+## Dijkstra
 
 two version: Priority queue & array
 
@@ -127,7 +169,7 @@ two version: Priority queue & array
 | extract min | O(logn) | O(n)                  |
 | update-key  | O(logn) | O(1), if have the idx |
 
-## PQ
+### PQ
 
 ```shell
 Dijkstra_algo(G(V, E, W), s) { -> return d[] pre[c]
@@ -147,7 +189,7 @@ Dijkstra_algo(G(V, E, W), s) { -> return d[] pre[c]
 
 In total: O(VlogV + ElogV) -> O(ElogV)
 
-## Array
+### Array
 
 ```shell
 Dijkstra_algo(G(V, E, W), s) { -> return d[] pre[c]
@@ -173,7 +215,7 @@ In total: $V+E+V^2+E -> O(V^2)$
 | Array   | V*V            | E              | $V^2$ | $V^2$       | $V^2$          |
 | Bellman |                |                | EV    | $V^2$       | $V^3$          |
 
-# All pairs shortest path
+## All pairs shortest path
 
 input: G(V, E, W)
 
