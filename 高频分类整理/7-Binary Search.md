@@ -1,3 +1,105 @@
+# Educative
+Find the Closest Number
+Input :arr[] = {2, 5, 6, 7, 8, 8, 9};
+Target number = 4
+Output : 5
+```py
+A1 = [1, 2, 4, 5, 6, 6, 8, 9]
+A2 = [2, 5, 6, 7, 8, 8, 9]
+
+
+def find_closest_num(A, target):
+    min_diff = min_diff_left = min_diff_right = float("inf")
+    low = 0
+    high = len(A) - 1
+    closest_num = None
+
+    # Edge cases for empty list of list
+    # with only one element:
+    if len(A) == 0:
+        return None
+    if len(A) == 1:
+        return A[0]
+
+    while low <= high:
+        mid = (low + high)//2
+
+        # Calc the min_diff_left and min_diff_right
+        if mid + 1 < len(A):
+            min_diff_right = abs(A[mid + 1] - target)
+        if mid > 0:
+            min_diff_left = abs(A[mid - 1] - target)
+
+        # Check if the absolute value between left and right elements 
+        # are smaller than any seen prior.
+        if min_diff_left < min_diff:
+            min_diff = min_diff_left
+            closest_num = A[mid - 1]
+
+        if min_diff_right < min_diff:
+            min_diff = min_diff_right
+            closest_num = A[mid + 1]
+
+        # Move the mid-point appropriately as is done via binary search.
+        if A[mid] < target:
+            low = mid + 1
+        elif A[mid] > target:
+            high = mid - 1
+        else:
+            return A[mid]
+    return closest_num
+
+
+print(find_closest_num(A1, 11))
+print(find_closest_num(A2, 8))
+```
+
+
+
+Find Bitonic Peak
+input: [1, 2, 3, 4, 5, 4, 3, 2, 1]
+output: 5
+
+```py
+def find_highest_number(A):
+    low = 0
+    high = len(A) - 1
+
+    # Require at least 3 elements for a bitonic sequence.
+    if len(A) < 3:
+        return None
+
+    while low <= high:
+        mid = (low + high)//2
+
+        mid_left = A[mid - 1] if mid - 1 >=0 else float("-inf")
+        mid_right = A[mid + 1] if mid + 1 < len(A) else float("inf")
+
+        if mid_left < A[mid] and mid_right > A[mid]:
+            low = mid + 1
+        elif mid_left > A[mid] and mid_right < A[mid]:
+            high = mid - 1
+        elif mid_left < A[mid] and mid_right < A[mid]:
+            return A[mid]
+    return None
+```
+
+### Bisect
+```py
+import bisect
+
+A = [-14, -10, 2, 108, 108, 243, 285, 285, 285, 401]
+
+# first 108 is at index 3
+print(bisect.bisect_left(A, 108))
+
+bisect_right() # 相当于 bisect()
+
+bisect.insort_left(A, 108) # insert at the first index
+print(A)
+```
+
+# 知乎
 
 [34. Find First and Last Position of Element in Sorted Array](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/)
 

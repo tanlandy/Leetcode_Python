@@ -1,29 +1,48 @@
-import collections
-class Product:
-    def __init__(self, k):
-        self.queue = collections.deque([1])
-        self.k = k
+A1 = [1, 2, 4, 5, 6, 6, 8, 9]
+A2 = [2, 5, 6, 7, 8, 8, 9]
 
-    def add(self, n):    
-        if n == 0:
-            for i in range(len(self.queue)):
-                self.queue[i] = 1
-            return
+
+def find_closest_num(A, target):
+    min_diff = min_diff_left = min_diff_right = float("inf")
+    low = 0
+    high = len(A) - 1
+    closest_num = None
+
+    # Edge cases for empty list of list
+    # with only one element:
+    if len(A) == 0:
+        return None
+    if len(A) == 1:
+        return A[0]
+
+    while low <= high:
+        mid = (low + high)//2
+
+        # Calc the min_diff_left and min_diff_right
+        if mid + 1 < len(A):
+            min_diff_right = abs(A[mid + 1] - target)
+        if mid > 0:
+            min_diff_left = abs(A[mid - 1] - target)
+
+        # Check if the absolute value between left and right elements 
+        # are smaller than any seen prior.
+        if min_diff_left < min_diff:
+            min_diff = min_diff_left
+            closest_num = A[mid - 1]
+
+        if min_diff_right < min_diff:
+            min_diff = min_diff_right
+            closest_num = A[mid + 1]
+
+        # Move the mid-point appropriately as is done via binary search.
+        if A[mid] < target:
+            low = mid + 1
+        elif A[mid] > target:
+            high = mid - 1
         else:
-            if len(self.queue) > self.k:
-                self.queue.popleft()
-            self.queue.append(n * self.queue[-1])
+            return A[mid]
+    return closest_num
 
-    def get(self):
-        if self.k > len(self.queue):
-            return self.queue[-1]
-        return self.queue[-1] // self.queue[-1 - self.k]
 
-if __name__ == "__main__":
-    obj = Product(4)
-    obj.add(3)
-    obj.add(0)
-    obj.add(5)
-    obj.add(2)
-    obj.add(4)
-    print(obj.get())
+print(find_closest_num(A1, 11))
+print(find_closest_num(A2, 8))
