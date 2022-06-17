@@ -86,10 +86,14 @@ def tree_max_depth(root: Node) -> int:
     1. Return value: return the depth for the current subtree after we visit a node
     2. Identify states: to decide the depth of current node, we only need depth from its children, don't need info from parents
 
+    Time: O(N)
+    Space: O(N)
     """
     if not root:
         return 0
-    return max(tree_max_depth(root.left), tree_max_depth(root.right)) + 1
+    left_max = tree_max_depth(root.left)
+    right_max = tree_max_depth(root.right)
+    return max(left_max, right_max) + 1
     
 
 def build_tree(nodes, f):
@@ -126,29 +130,6 @@ class Solution:
         
         return res
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -205,6 +186,183 @@ class Solution:
         
         return False
 ```
+
+
+## 算法笔记
+
+### 解题过程
+1、是否可以通过遍历一遍二叉树得到答案？如果可以，用一个 traverse 函数配合外部变量来实现。
+
+2、是否可以定义一个递归函数，通过子问题（子树）的答案推导出原问题的答案？如果可以，写出这个递归函数的定义，并充分利用这个函数的返回值。
+    - 一旦你发现题目和子树有关，那大概率要给函数设置合理的定义和返回值，在后序位置写代码了 -> 后序位置才能收到子树的信息
+
+无论使用哪一种思维模式，你都要明白二叉树的每一个节点需要做什么，需要在什么时候（前中后序）做。
+
+[543. Diameter of Binary Tree](https://leetcode.com/problems/diameter-of-binary-tree/)
+```py
+class Solution:
+    def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
+        """
+        每一条二叉树的「直径」长度，就是一个节点的左右子树的最大深度之和
+        遇到子树问题，首先想到的是给函数设置返回值，然后在后序位置做文章
+        
+        Time: O(N)
+        Space: O(N)
+        """
+        res = [0]
+        def dfs(root): # 返回该节点最大深度
+            if not root:
+                return 0
+            left = dfs(root.left) # 左子树最大深度
+            right = dfs(root.right) # 右子树最大深度
+            cur_max = left + right
+            res[0] = max(res[0], cur_max)
+            
+            return 1 + max(left, right)
+        
+        dfs(root)
+        return res[0]
+```
+
+
+[226. Invert Binary Tree](https://leetcode.com/problems/invert-binary-tree/)
+```py
+class Solution:
+    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        """
+        traversely solve: 前序遍历每个节点，每个节点交换左右子节点
+        """
+        
+        def traverse(root):
+            if not root:
+                return
+            root.left, root.right = root.right, root.left
+            traverse(root.left)
+            traverse(root.right)
+            
+        traverse(root)
+        return root
+```
+
+```py
+class Solution:
+    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        """
+        recursively solve: 分治：定义一个递归函数，通过子问题（子树）的答案推导出原问题的答案
+        invertTree(): 将以 root 为根的这棵二叉树翻转，返回翻转后的二叉树的根节点
+        """
+        if not root:
+            return
+        
+        left = self.invertTree(root.left) # 把root的左子树反转
+        right = self.invertTree(root.right) # 把root的右子树反转
+        
+        root.left, root.right = root.right, root.left # 反转root自己的左右子树
+        
+        return root
+```
+
+[116. Populating Next Right Pointers in Each Node](https://leetcode.com/problems/populating-next-right-pointers-in-each-node/)
+```py
+class Solution:
+    def connect(self, root: 'Optional[Node]') -> 'Optional[Node]':
+        """
+        遍历的方法：前序遍历每个节点，每个节点给连接到右边
+        """
+        if not root:
+            return
+        
+        def traverse(node1, node2):
+            if not node1 or not node2:
+                return
+            node1.next = node2
+            
+            traverse(node1.left, node1.right) # 连接相同父节点的
+            traverse(node2.left, node2.right)
+            traverse(node1.right, node2.left) # 连接不同父节点的
+        
+        traverse(root.left, root.right)
+        return root
+```            
+
+
+```py
+class Solution:
+    def connect(self, root: 'Optional[Node]') -> 'Optional[Node]':
+        """
+        level order traversal
+        when i < size - 1, connect the node with the next one
+
+        Time: O(N)
+        Space: O(N)
+        """
+        if not root:
+            return
+        queue = collections.deque([root])
+        
+        while queue:
+            size = len(queue)
+            for i in range(size):
+                node = queue.popleft()
+                if i < size - 1:
+                    node.next = queue[0]
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+        
+        return root
+```
+
+```py
+class Solution:
+    def connect(self, root: 'Optional[Node]') -> 'Optional[Node]':
+        """
+        Use previously established next pointers
+        站在n层来连接n+1层的节点
+        
+        Time: O(N)
+        Space: O(1)
+        """
+        if not root:
+            return root
+        
+        left_most = root
+        
+        while left_most.left:
+            node = left_most
+            while node: # 把这一层走完
+                # connection 1
+                node.left.next = node.right
+                
+                # connection 2
+                if node.next:
+                    node.right.next = node.next.left
+                
+                node = node.next # 把这一层走完
+                
+            left_most = left_most.left # 这一层结束，走下一层
+        
+        return root
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Tree
 
@@ -486,6 +644,41 @@ class Solution:
         
         dfs(root)
         return res[0]
+```
+
+## other
+
+[1367. Linked List in Binary Tree](https://leetcode.com/problems/linked-list-in-binary-tree/)
+```py
+class Solution:
+    def isSubPath(self, head: Optional[ListNode], root: Optional[TreeNode]) -> bool:
+        """
+        遍历：遍历这棵树，看该节点是否和head相同，再在满足的每个节点遍历剩下的值，看能否嵌入链表
+        
+        Time: O(N * min(N, H))
+        Space: O(H)
+        """
+        if not head:
+            return True
+        if not root:
+            return False
+        
+        if head.val == root.val:
+            if self.checkPath(head, root):
+                return True
+        
+        return self.isSubPath(head, root.left) or self.isSubPath(head, root.right)
+
+    def checkPath(self, head, root):
+        if not head:
+            return True
+        if not root:
+            return False
+        
+        if head.val == root.val:
+            return self.checkPath(head.next, root.left) or self.checkPath(head.next, root.right)
+        
+        return False
 ```
 
 # 2D Grid遍历

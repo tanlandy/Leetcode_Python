@@ -1,5 +1,6 @@
 # Educative基础知识
 
+
 ## Tree
 ### Terminology
 1. Depth of Node: depth of root node is 0
@@ -234,6 +235,15 @@ output: min weight of path btw every two nodes
 
 
 
+
+
+
+
+# 算法笔记
+
+
+
+## 例题
 
 
 # Tree
