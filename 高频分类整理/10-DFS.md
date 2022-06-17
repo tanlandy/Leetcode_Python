@@ -198,6 +198,10 @@ class Solution:
 
 无论使用哪一种思维模式，你都要明白二叉树的每一个节点需要做什么，需要在什么时候（前中后序）做。
 
+### 例题
+
+
+#### 思路
 [543. Diameter of Binary Tree](https://leetcode.com/problems/diameter-of-binary-tree/)
 ```py
 class Solution:
@@ -345,6 +349,192 @@ class Solution:
         
         return root
 ```
+
+#### 构造
+
+[654. Maximum Binary Tree](https://leetcode.com/problems/maximum-binary-tree/)
+
+```py
+class Solution:
+    def constructMaximumBinaryTree(self, nums: List[int]) -> Optional[TreeNode]:
+        """
+        分解：这个函数就返回构造好的树的根节点，对于每个节点，只需要找到当前范围的最大值，然后构造根节点，最后把左右接上
+        
+        Time: O(NLogN)
+        Space: O(N)
+        """
+        if not nums:
+            return None
+        
+        max_val = max(nums)
+        max_idx = nums.index(max_val)
+        pivot = TreeNode(max_val)
+        pivot.left = self.constructMaximumBinaryTree(nums[: max_idx])       
+        pivot.right = self.constructMaximumBinaryTree(nums[max_idx + 1:])
+        
+        return pivot
+```
+
+```py
+class Solution:
+    def constructMaximumBinaryTree(self, nums: List[int]) -> Optional[TreeNode]:
+        """
+        单调递减栈：[]存node；对新node，如果比栈顶大，就一直pop，同时把pop的节点变成其左子节点，直到找到比他大的节点；如果比栈顶小，那栈顶的右子节点就暂时是他
+        
+        Time: O(N)
+        Space: O(N)
+        """
+        
+        stack = []
+        
+        for val in nums:
+            node = TreeNode(val)
+            
+            # 新node如果比栈顶大，就一直pop，同时pop的节点是新node的左子节点
+            while stack and stack[-1].val < val:
+                node.left = stack.pop()
+            
+            # 新node如果比栈顶小，就是栈顶node的右子节点；直到之后遇到更大的节点，就会被pop出来变成更大节点的左子节点
+            if stack:
+                stack[-1].right = node
+            
+            # 放入新node，栈内node的值单调递减
+            stack.append(node)
+        
+        return stack[0]
+```
+[105. Construct Binary Tree from Preorder and Inorder Traversal](https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
+
+先找到根节点位置，然后分治左右
+
+![前序中序遍历效果图](https://labuladong.github.io/algo/images/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%B3%BB%E5%88%972/1.jpeg)
+
+
+```py
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        """
+        Preorder的第一个是root，第二个数是左子树的root
+        Inorder的root左边的值都在左子树，root右边的都是右子树
+        时间：O(N)
+        空间：O(N)
+        """
+        # base case
+        if not preorder or not inorder:
+            return None
+        
+        root = TreeNode(preorder[0])
+        mid = inorder.index(preorder[0]) #找到root在inorder的index
+
+        # inorder的root左边都是左子树，右边都是右子树
+        # preorder：根据左子树的数量，root之后[1:mid+1]左闭右开都是左子树，[mid+1:]都是右子树
+        root.left = self.buildTree(preorder[1:mid + 1], inorder[:mid]) # 右开
+        root.right = self.buildTree(preorder[mid+1:], inorder[mid:])
+
+        return root
+```
+
+[106. Construct Binary Tree from Inorder and Postorder Traversal](https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)
+
+先找到根节点位置，然后分治左右
+
+![后序中序遍历效果图](https://labuladong.github.io/algo/images/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%B3%BB%E5%88%972/5.jpeg)
+
+```py
+class Solution:
+    def buildTree(self, inorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
+        """
+        通过postorder找到root的大小
+        然后通过inorder的root位置来确定接下来的范围
+        """
+        if not inorder or not postorder:
+            return None
+        
+        root = TreeNode(postorder[-1])
+        pivot = inorder.index(root.val)
+        
+        root.left = self.buildTree(inorder[:pivot], postorder[:pivot])
+        root.right = self.buildTree(inorder[pivot + 1:], postorder[pivot: -1])
+        
+        return root
+```
+
+[889. Construct Binary Tree from Preorder and Postorder Traversal](https://leetcode.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/)
+
+```py
+class Solution:
+    def constructFromPrePost(self, preorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
+        """
+        通过preorder[0]找到root大小
+        postorder倒数第二个数，是root的右子树
+        利用这个值在preorder的位置，从而确定接下来的范围
+        """
+        if not preorder or not postorder:
+            return None
+        
+        root = TreeNode(preorder[0])
+
+        # 因为用到了postorder[-2]，所以要检查一下长度
+        if len(postorder) == 1:
+            return root
+        # The second to last of "post" should be the value of right child of the root.
+        idx = preorder.index(postorder[-2])
+        root.left = self.constructFromPrePost(preorder[1:idx], postorder[: idx - 1])
+        root.right = self.constructFromPrePost(preorder[idx:], postorder[idx-1:-1])
+        
+        return root
+
+
+```
+
+
+[297. Serialize and Deserialize Binary Tree](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/)
+
+preorder遍历
+
+时间：O(N)
+空间：
+
+```python
+class Codec:
+
+    def serialize(self, root):
+        """
+        """
+        res = []
+
+        def dfs(node):
+            if not node:
+                res.append("N")
+                return
+            res.append(str(node.val))
+            dfs(node.left)
+            dfs(node.right)
+        
+        dfs(root)
+        return ",".join(res)
+
+    def deserialize(self, data):
+        """
+        """
+        vals = data.split(",")
+        self.i = 0
+
+        def dfs():
+            if vals[self.i] == "N":
+                self.i += 1
+                return None
+            node = TreeNode(int(vals[self.i]))
+            self.i += 1
+            node.left = dfs()
+            node.right = dfs()
+            return node
+        
+        return dfs()
+
+```
+
+
 
 
 
@@ -595,31 +785,7 @@ class Solution:
             
 ```
 
-[105. Construct Binary Tree from Preorder and Inorder Traversal](https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
 
-```py
-class Solution:
-    def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
-        """
-        Preorder的第一个是root，第二个数是左子树的root
-        Inorder的root左边的值都在左子树，root右边的都是右子树
-        时间：O(N)
-        空间：O(N)
-        """
-        # base case
-        if not preorder or not inorder:
-            return None
-        
-        root = TreeNode(preorder[0])
-        mid = inorder.index(preorder[0]) #找到root在inorder的index
-
-        # inorder的root左边都是左子树，右边都是右子树
-        # preorder：根据左子树的数量，root之后[1:mid+1]左闭右开都是左子树，[mid+1:]都是右子树
-        root.left = self.buildTree(preorder[1:mid + 1], inorder[:mid]) # 右开
-        root.right = self.buildTree(preorder[mid+1:], inorder[mid:])
-
-        return root
-```
 
 [124. Binary Tree Maximum Path Sum](https://leetcode.com/problems/binary-tree-maximum-path-sum/)
 
