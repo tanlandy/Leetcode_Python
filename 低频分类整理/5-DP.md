@@ -1,3 +1,162 @@
+# 算法笔记
+## 框架
+动态规划的一般形式就是求最值，求最值的核心就是穷举
+-> 列出正确的**状态转移方程**，从而正确地穷举
+-> 利用**最优子结构**，通过子问题的最值得到原问题的最值
+-> 利用DP Table，优化**重叠子问题**的穷举过程
+
+框架：
+```py
+# 自顶向下递归的动态规划
+def dp(状态1, 状态2, ...):
+    for 选择 in 所有可能的选择:
+        # 此时的状态已经因为做了选择而改变
+        result = 求最值(result, dp(状态1, 状态2, ...))
+    return result
+
+# 自底向上迭代的动态规划
+# 初始化 base case
+dp[0][0][...] = base case
+# 进行状态转移
+for 状态1 in 状态1的所有取值：
+    for 状态2 in 状态2的所有取值：
+        for ...
+            dp[状态1][状态2][...] = 求最值(选择1，选择2...)
+```
+
+[509. Fibonacci Number](https://leetcode.com/problems/fibonacci-number/)
+
+```py
+class Solution:
+    def fib(self, n: int) -> int:
+        """
+        暴力解法存在大量的重叠子问题
+        dp[i] = dp[i-1] + dp[i-2]
+        
+        Time: O(N)
+        Space: O(N)
+        """
+        if n == 0:
+            return 0
+        if n == 1:
+            return 1
+        dp = [0] * (n + 1)
+        dp[0] = 0
+        dp[1] = 1
+        
+        for i in range(2, n+1):
+            dp[i] = dp[i - 1] + dp[i - 2]
+        
+        return dp[n]
+```
+
+```py
+class Solution:
+    def fib(self, n: int) -> int:
+        """
+        只用三个数来代替整个table
+        
+        时间：O(N)
+        空间：O(1)
+        """
+        if n <= 1:
+            return n
+        
+        cur = 0
+        prev1 = 1
+        prev2 = 0
+        
+        for i in range(2, n + 1):
+            cur = prev1 + prev2
+            prev2 = prev1
+            prev1 = cur
+        
+        return cur
+```
+
+[322. Coin Change](https://leetcode.com/problems/coin-change/)
+
+```py
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        """
+        具有最优子结构，子问题相互独立 -> 确定是动态规划问题
+
+        1. 确定base case：amount是0
+        2. 确定状态：原问题和子问题的变化的量：目标金额amount
+        3. 确定选择：导致状态发生变化的行为
+        4. DP数组的定义
+
+        cannot be greedy: choose from the largest to the smallest as the total count is not guaranteed to be smallest
+        BF: backtracking using desicion tree
+        DP bottom-up: DP[i] = min number of coins it takes to count to i
+        DP[i] = min( one_coin_used + DP[i - value_one_coin_used])
+        
+        [1,3,4,5]
+        DP[7] = min(1 + DP[6], 1 + DP[4], 1 + DP[3], 1 + DP[2])
+
+        Time: O(amount * len(coins))
+        Space: O(amount)
+        """
+        dp = [float("inf")] * (amount + 1) # go from 0 to amount
+
+        dp[0] = 0 # base case
+
+        for i in range(1, amount + 1): # need to calc dp[amnout], so range(1, amount + 1)
+            for c in coins:
+                if i - c >= 0:
+                    dp[i] = min(dp[i], 1 + dp[i - c])
+        
+        return dp[amount] if dp[amount] != float("inf") else -1
+
+```
+
+
+[300. Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/)
+
+```py
+class Solution:
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        """
+        BF: generate all subsequences: for each value: 2 choices: include or not include -> 2^N all sequencies
+        -> draw a decision tree and memorize the
+        DP: right to left: dp[i] stores the LIS starting at index i
+        dp[i] = max(1, 1+dp[i+1], 1+dp[i+2], ...), depends on whether dp[i] < dp[i+1}
+
+        Time: O(N^2)
+        Space: O(N)
+        """
+        LIS = [1] * len(nums) # base case
+
+        for i in range(len(nums) - 1, -1, -1): 
+            for j in range(i + 1, len(nums)):
+                if nums[i] < nums[j]: 
+                    LIS[i] = max(LIS[i], 1 + LIS[j]) # transition of the given state
+        
+        return max(LIS)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Explore
 
 ## What is DP
@@ -55,8 +214,10 @@ class Solution:
         return dp(n)
 ```
 
+# 题目
 
-# 1D DP
+## Neetcode.io
+### 1D DP
 [70. Climbing Stairs](https://leetcode.com/problems/climbing-stairs/)
 
 ```py
@@ -298,35 +459,8 @@ class Solution:
         return dp[0]
 ```
 
-[322. Coin Change](https://leetcode.com/problems/coin-change/)
+[322. Coin Change](https://leetcode.com/problems/coin-change/) 前有
 
-```py
-class Solution:
-    def coinChange(self, coins: List[int], amount: int) -> int:
-        """
-        cannot be greedy: choose from the largest to the smallest as the total count is not guaranteed to be smallest
-        BF: backtracking using desicion tree
-        DP bottom-up: DP[i] = min number of coins it takes to count to i
-        DP[i] = min(one_coin + DP[i-one_coin])
-        
-        [1,3,4,5]
-        DP[7] = min(1 + DP[6], 1 + DP[4], 1 + DP[3], 1 + DP[2])
-
-        Time: O(amount * len(coins))
-        Space: O(amount)
-        """
-        dp = [float("inf")] * (amount + 1) # go from 0 to amount
-
-        dp[0] = 0 # base case
-
-        for i in range(1, amount + 1): # need to calc dp[amnout], so range(1, amount + 1)
-            for c in coins:
-                if i - c >= 0:
-                    dp[i] = min(dp[i], 1 + dp[i - c])
-        
-        return dp[amount] if dp[amount] != float("inf") else -1
-
-```
 
 [152. Maximum Product Subarray](https://leetcode.com/problems/maximum-product-subarray/)
 
@@ -419,30 +553,8 @@ class Solution:
         return dp[0]
 ```
 
-[300. Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/)
+[300. Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/) 前面出现
 
-```py
-class Solution:
-    def lengthOfLIS(self, nums: List[int]) -> int:
-        """
-        BF: generate all subsequences: for each value: 2 choices: include or not include -> 2^N all sequencies
-        -> draw a decision tree and memorize the
-        DP: right to left: dp[i] stores the LIS starting at index i
-        dp[i] = max(1, 1+dp[i+1], 1+dp[i+2], ...), depends on whether dp[i] < dp[i+1}
-
-        Time: O(N^2)
-        Space: O(N)
-        """
-        LIS = [1] * len(nums) # base case
-
-        for i in range(len(nums) - 1, -1, -1): 
-            for j in range(i + 1, len(nums)):
-                if nums[i] < nums[j]: 
-                    LIS[i] = max(LIS[i], 1 + LIS[j]) # transition of the given state
-        
-        return max(LIS)
-
-```
 
 [416. Partition Equal Subset Sum](https://leetcode.com/problems/partition-equal-subset-sum/)
 
@@ -471,7 +583,7 @@ class Solution:
 
 ```
 
-# 2D DP
+### 2D DP
 
 [62. Unique Paths](https://leetcode.com/problems/unique-paths/)
 ```py
