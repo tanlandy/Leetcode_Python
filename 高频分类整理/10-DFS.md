@@ -191,12 +191,13 @@ class Solution:
 ## 算法笔记
 
 ### 解题过程
+首先思考二叉树的每一个节点需要做什么，需要在什么时候（前中后序）做。
+接下来二选一：
 1、是否可以通过遍历一遍二叉树得到答案？如果可以，用一个 traverse 函数配合外部变量来实现。
 
 2、是否可以定义一个递归函数，通过子问题（子树）的答案推导出原问题的答案？如果可以，写出这个递归函数的定义，并充分利用这个函数的返回值。
     - 一旦你发现题目和子树有关，那大概率要给函数设置合理的定义和返回值，在后序位置写代码了 -> 后序位置才能收到子树的信息
 
-无论使用哪一种思维模式，你都要明白二叉树的每一个节点需要做什么，需要在什么时候（前中后序）做。
 
 ### 例题
 
@@ -492,17 +493,14 @@ class Solution:
 
 preorder遍历
 
-时间：O(N)
-空间：
-
 ```python
 class Codec:
 
     def serialize(self, root):
         """
+        用一个list记录，最后转为string导出：前序遍历，空节点计作N，然后用,连接
         """
         res = []
-
         def dfs(node):
             if not node:
                 res.append("N")
@@ -516,10 +514,11 @@ class Codec:
 
     def deserialize(self, data):
         """
+        先确定根节点 root，然后遵循前序遍历的规则，递归生成左右子树
         """
         vals = data.split(",")
         self.i = 0
-
+        
         def dfs():
             if vals[self.i] == "N":
                 self.i += 1
@@ -531,11 +530,87 @@ class Codec:
             return node
         
         return dfs()
-
 ```
 
+```py
 
+class Codec:
 
+    def serialize(self, root):
+        if not root:
+            return ""
+        res = []
+        queue = collections.deque()
+        queue.append(root)
+        while queue:
+            node = queue.popleft()
+            if not node:
+                res.append("N")
+                continue
+            res.append(str(node.val))
+            queue.append(node.left)
+            queue.append(node.right)
+        
+        return ",".join(res)
+        
+
+    def deserialize(self, data):
+        if not data:
+            return None
+        vals = data.split(",")
+        root = TreeNode(int(vals[0]))
+        queue = collections.deque()
+        queue.append(root)
+        i = 1
+        while queue and i < len(vals):
+            node = queue.popleft()
+            if vals[i] != "N":
+                left = TreeNode(int(vals[i]))
+                node.left = left
+                queue.append(left)
+            i += 1
+            if vals[i] != "N":
+                right = TreeNode(int(vals[i]))
+                node.right = right
+                queue.append(right)
+            i += 1
+        
+        return root
+```
+
+[652. Find Duplicate Subtrees](https://leetcode.com/problems/find-duplicate-subtrees/)
+
+每个节点要做什么：
+1. 我为根的子树什么样子 -> 后序遍历，返回一个序列化字符串
+2. 其他节点为根的子树什么样子 -> 用HashMap，存子树及其数量
+
+```py
+class Solution:
+    def findDuplicateSubtrees(self, root: Optional[TreeNode]) -> List[Optional[TreeNode]]:
+        """
+        对每个节点，序列化得到以自己为根的子树，并且添加到hashmap中
+        hashmap{tree:count}，当count==2导出
+        """
+        counter = collections.defaultdict(int)
+        res = []
+        
+        # 返回以node为根的序列化子树
+        def dfs(node):
+            if not node:
+                return "N"
+            left = dfs(node.left)
+            right = dfs(node.right)
+            tree = str(node.val) + "," + left + "," + right
+            
+            counter[tree] += 1
+            if counter[tree] == 2: # 导出这棵树
+                res.append(node)
+            
+            return tree
+        
+        dfs(root)
+        return res
+```
 
 
 
