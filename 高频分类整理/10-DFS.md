@@ -514,6 +514,7 @@ class Codec:
 
     def deserialize(self, data):
         """
+        转化为list，然后用i遍历
         先确定根节点 root，然后遵循前序遍历的规则，递归生成左右子树
         """
         vals = data.split(",")
@@ -537,6 +538,9 @@ class Codec:
 class Codec:
 
     def serialize(self, root):
+        """
+        用queue，把root添加进来，如果有值就加入res[]，并且更新左右子树，如果是空就跳过。
+        """
         if not root:
             return ""
         res = []
@@ -594,7 +598,7 @@ class Solution:
         counter = collections.defaultdict(int)
         res = []
         
-        # 返回以node为根的序列化子树
+        # dfs(node)返回以node为根的序列化子树
         def dfs(node):
             if not node:
                 return "N"
