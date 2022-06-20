@@ -795,6 +795,190 @@ class Solution:
         return 1 + self.countNodes(root.left) + self.countNodes(root.right)
 ```
 
+#### 公共祖先
+[236. Lowest Common Ancestor of a Binary Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/)
+
+```python
+
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        """
+        解题思路：每个节点要知道什么、做什么：什么时候做
+        遍历or递归
+        要知道自己的子树里是否有这两个数字->递归
+        要做什么：返回自己子树是否有这两个数字->递归
+        什么时候做：后序遍历，传递子树信息
+
+        自下而上，这个函数就返回自己左右子树满足条件的node：返回自己或者不为None的一边。base case就是找到了
+        如果一个节点能够在它的左右子树中分别找到 p 和 q，则该节点为 LCA 节点。
+
+        时间：O(N)
+        空间：O(N)
+        """
+        if root is None: # base case
+            return root
+
+        left = self.lowestCommonAncestor(root.left, p, q)
+        right = self.lowestCommonAncestor(root.right, p, q)
+        
+        # 后序遍历
+        if root == p or root == q: # Case 1：公共祖先就是我自己，也可以放在前序位置（要确保p,q在树中）
+            return root
+        
+        if left and right: # Case 2：自己子树包含这两个数
+            return root
+        else:
+            return left or right # Case 3：
+```
+
+[1676. Lowest Common Ancestor of a Binary Tree IV](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iv/)
+
+```py
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', nodes: 'List[TreeNode]') -> 'TreeNode':
+        """
+        和LC236类似，只是检查公共祖先就是我自己的时候有变化
+
+        Time: O(N)
+        Space: O(N)
+        """
+        nodes_set = set(nodes)
+        
+        def dfs(node):
+            if node is None:
+                return None
+            if node in nodes_set: # 可在前序位置，也可后
+                return node
+            
+            left = dfs(node.left)
+            right = dfs(node.right)
+            
+            if left and right:
+                return node
+            else:
+                return left or right
+        
+        return dfs(root)
+```
+
+
+[1644. Lowest Common Ancestor of a Binary Tree II](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-ii/)
+
+```py
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        """
+        Node不一定在树里，当root == p or root == q必须后序遍历判断
+        dfs() 除了返回当前节点外，还返回是否存在
+        
+        Time: O(N)
+        Space: O(N)
+        """
+        def dfs(root):
+            if not root:
+                return None, False
+            
+            left, l_exist = dfs(root.left)
+            right, r_exist = dfs(root.right)
+            
+            if root == p or root == q:
+                return root, left or right
+            
+            if left and right:
+                return root, True
+            else:
+                if left:
+                    return left, l_exist
+                else:
+                    return right, r_exist
+                 
+        lca, exist = dfs(root)
+        if not exist:
+            return None
+        return lca
+```
+
+
+[235. Lowest Common Ancestor of a Binary Search Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)
+
+```py
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        """
+        不需要去遍历子树，由于 BST 左小右大的性质，将当前节点的值与 val1 和 val2 作对比即可判断当前节点是不是 LCA
+
+        Time: O(H)
+        Space: O(1)
+        """
+        cur = root
+        
+        while cur:
+            # cur太小就往右
+            if p.val > cur.val and q.val > cur.val:
+                cur = cur.right
+            # cur太大就往左
+            elif p.val < cur.val and q.val < cur.val:
+                cur = cur.left
+            else: # p.val <= cur.val <= q.val
+                return cur
+```
+
+[1650. Lowest Common Ancestor of a Binary Tree III](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iii/)
+
+```python
+    def lowestCommonAncestor(self, p: 'Node', q: 'Node') -> 'Node':
+        """
+        先求各自深度，再把深的往上走直到当前深度相同，最后一起往上走找parent；注意找深度是while p；深度就是层数root的深度是1
+
+        时间：O(H)
+        空间：O(1)
+        """
+
+        # get_depth(p) 返回节点p的深度
+        def get_depth(p):
+            depth = 0
+            while p:
+                p = p.parent
+                depth += 1
+            return depth
+    
+        d1 = get_depth(p)
+        d2 = get_depth(q)
+        
+        # 把更深的往上走，直到相同深度
+        while d1 > d2:
+            p = p.parent
+            d1 -= 1
+                
+        while d1 < d2:
+            q = q.parent
+            d2 -= 1
+        
+        # 现在在相同深度，一起往上走找LCA
+        while p != q:
+            p = p.parent
+            q = q.parent
+        
+        return p      
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
