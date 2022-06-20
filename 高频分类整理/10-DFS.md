@@ -202,7 +202,7 @@ class Solution:
 ### 例题
 
 
-#### 思路
+#### Tree
 [543. Diameter of Binary Tree](https://leetcode.com/problems/diameter-of-binary-tree/)
 ```py
 class Solution:
@@ -350,8 +350,6 @@ class Solution:
         
         return root
 ```
-
-#### 构造
 
 [654. Maximum Binary Tree](https://leetcode.com/problems/maximum-binary-tree/)
 
@@ -615,6 +613,208 @@ class Solution:
         dfs(root)
         return res
 ```
+#### BST
+
+基本性质：对于每个node，左子树节点的值都更小，右子树节点的值都更大；中序遍历结果是有序的
+
+
+[230. Kth Smallest Element in a BST](https://leetcode.com/problems/kth-smallest-element-in-a-bst/)
+
+```py
+class Solution:
+    def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
+        """
+        inorder iterativly遍历，这样一旦达到k就可以return
+        当然也可以递归遍历，但就没有那么那么快了
+
+        时间：O(H+K)
+        空间：O(H) to keep the stack，对于BST平均时间就是O(logN)，最坏时间就是O(N)
+        """
+        n = 0
+        stack = []
+        cur = root
+
+        while cur or stack:
+            while cur:
+                stack.append(cur)
+                cur = cur.left
+            cur = stack.pop()
+            n += 1
+            if n == k:
+                return cur.val
+            cur = cur.right      
+```
+
+[538. Convert BST to Greater Tree](https://leetcode.com/problems/convert-bst-to-greater-tree/)
+```py
+class Solution:
+    def convertBST(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        """
+        倒过来的中序遍历，形成递减排列的数组，计算出来大小并加进来
+        """
+        if not root:
+            return root
+        
+        suf_sum = [0]
+        
+        def inorder(node):
+            if not node:
+                return
+            
+            inorder(node.right)
+            suf_sum[0] += node.val
+            node.val = suf_sum[0]
+            inorder(node.left)
+        
+        inorder(root)
+        return root
+```
+
+[98. Validate Binary Search Tree](https://leetcode.com/problems/validate-binary-search-tree/)
+
+```py
+class Solution:
+    def isValidBST(self, root: Optional[TreeNode]) -> bool:
+        """
+        因为是BST，所以不能只比较当前节点和两个子节点的大小，而是要把之前一层的值也传进来比较，所以需要一个helper function：往右走就update左边界，往左走就update右边界
+
+        时间：O(N): visit each node exactly once
+        空间：O(N): keep up to entire tree
+        """
+        def valid(node, left, right):
+            """
+            left, right分别是当前的左右边界
+            一直走到底再return True，中间只关心是否return False
+            """
+            if not node:
+                return True
+            
+            if not (left < node.val and node.val < right):
+                return False
+            
+            return (valid(node.left, left, node.val) and valid(node.right, node.val, right))
+        
+        return valid(root, float("-inf"), float("inf"))
+        
+```
+
+[700. Search in a Binary Search Tree](https://leetcode.com/problems/search-in-a-binary-search-tree/)
+```py
+    def searchBST(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
+        
+        while root is not None and root.val != val:
+            if root.val < val:
+                root = root.right
+            else:
+                root = root.left
+        
+        return root # 要么是找到了，要么是就没有
+```
+
+[701. Insert into a Binary Search Tree](https://leetcode.com/problems/insert-into-a-binary-search-tree/)
+```py
+class Solution:
+    def insertIntoBST(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
+        """
+        如果加入的值更大，就一直往右走，直到走到空，就作为最大值的右边的值
+        """
+        node = root
+        while node:
+            if val > node.val:
+                if not node.right:
+                    node.right = TreeNode(val)
+                    return root
+                else:
+                    node = node.right
+            else:
+                if not node.left:
+                    node.left = TreeNode(val)
+                    return root
+                else:
+                    node = node.left
+        
+        return TreeNode(val)
+```
+
+[450. Delete Node in a BST](https://leetcode.com/problems/delete-node-in-a-bst/)
+```py
+class Solution:
+    def deleteNode(self, root: Optional[TreeNode], key: int) -> Optional[TreeNode]:
+        """
+        一共三种情况：key是叶子，key只有一个node，key有2个nodes
+        如果有2个nodes，就找到key的successor并相互交换，然后删掉successor就可以了
+
+        Time: O(H)
+        Space: O(H)
+        """
+        if not root:
+            return None
+        
+        if root.val > key:
+            root.left = self.deleteNode(root.left, key)
+        elif root.val < key:
+            root.right = self.deleteNode(root.right, key)
+        else:
+            # has single node, or is a leaf
+            if not root.right:
+                return root.left
+            if not root.left:
+                return root.right
+            # has two nodes
+            if root.left and root.right:
+                # find the successor, replace the root with successor, delete the duplicate successor
+                successor = root.right
+                while successor.left:
+                    successor = successor.left # found the successor
+                root.val = successor.val # replace
+                root.right = self.deleteNode(root.right, successor.val) # delete
+        
+        return root
+```
+
+[222. Count Complete Tree Nodes](https://leetcode.com/problems/count-complete-tree-nodes/)
+```py
+class Solution:
+    def countNodes(self, root: Optional[TreeNode]) -> int:
+        l = r = root
+        l_height = r_height = 0
+        
+        # 沿着最左侧和最右侧计算高度
+        while l:
+            l = l.left
+            l_height += 1
+        
+        while r:
+            r = r.right
+            r_height += 1
+        
+        if l_height == r_height: # Perfect Binary Tree
+            return 2 ** l_height - 1
+        
+        # 高度不同，那么普通二叉树的逻辑计算
+        return 1 + self.countNodes(root.left) + self.countNodes(root.right)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -806,63 +1006,11 @@ class Solution:
         return dfs(root, root.val)
 ```
 
-[98. Validate Binary Search Tree](https://leetcode.com/problems/validate-binary-search-tree/)
 
 
-```py
-class Solution:
-    def isValidBST(self, root: Optional[TreeNode]) -> bool:
-        """
-        因为是BST，所以不能只比较当前节点和两个子节点的大小，而是要把之前一层的值也传进来比较，所以需要一个helper function：往右走就update左边界，往左走就update右边界
-
-        时间：O(N): visit each node exactly once
-        空间：O(N): keep up to entire tree
-        """
-        def valid(node, left, right):
-            """
-            left, right分别是当前的左右边界
-            一直走到底再return True，中间只关心是否return False
-            """
-            if not node:
-                return True
-            
-            if not (left < node.val and node.val < right):
-                return False
-            
-            return (valid(node.left, left, node.val) and valid(node.right, node.val, right))
-        
-        return valid(root, float("-inf"), float("inf"))
-        
-```
-
-[230. Kth Smallest Element in a BST](https://leetcode.com/problems/kth-smallest-element-in-a-bst/)
+[230. Kth Smallest Element in a BST](https://leetcode.com/problems/kth-smallest-element-in-a-bst/) 上面有
 
 
-```py
-class Solution:
-    def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
-        """
-        inorder iterativly遍历，这样一旦达到k就可以return
-        当然也可以递归遍历，但就没有那么那么快了
-
-        时间：O(H+K)
-        空间：O(H) to keep the stack，对于BST平均时间就是O(logN)，最坏时间就是O(N)
-        """
-        n = 0
-        stack = []
-        cur = root
-
-        while cur or stack:
-            while cur:
-                stack.append(cur)
-                cur = cur.left
-            cur = stack.pop()
-            n += 1
-            if n == k:
-                return cur.val
-            cur = cur.right
-            
-```
 
 
 

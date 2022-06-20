@@ -160,3 +160,24 @@ class Solution:
         return list(res)
 
 ```
+
+[820. Short Encoding of Words](https://leetcode.com/problems/short-encoding-of-words/)
+```py
+class Solution:
+    def minimumLengthEncoding(self, words: List[str]) -> int:
+        """
+        倒着构建Trie Tree，构建好之后可以直接返回深度，也可以把叶子放进一个array里，然后就
+        """
+        root = dict()
+        leaves = []
+        for word in set(words):
+            cur = root
+            for i in word[::-1]:
+                next_node = cur.get(i, dict()) 
+                cur[i] = next_node
+                cur = next_node
+            leaves.append((cur, len(word) + 1))
+        return sum(depth for node, depth in leaves if len(node) == 0)
+
+
+```
