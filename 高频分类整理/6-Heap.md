@@ -742,3 +742,108 @@ class Twitter:
 ```py
 
 ```
+
+
+
+
+
+
+
+[1642. Furthest Building You Can Reach](https://leetcode.com/problems/furthest-building-you-can-reach/)
+
+```py
+class Solution:
+    def furthestBuilding(self, heights: List[int], bricks: int, ladders: int) -> int:
+        """
+        尽可能让gap大的时候用ladder，其他时候用bricks
+        思路：用minHeap，每次有gap的时候就放进来，当len(minHeap) > gap的时候就pop出来最小的消耗bricks，直到bricks < 0
+
+        Time: O(NlogN)
+        Space: O(N)
+        """
+        minHeap = []
+        
+        for i in range(len(heights) - 1):
+            gap = heights[i + 1] - heights[i]
+            
+            if gap <= 0:
+                continue
+            
+            heapq.heappush(minHeap, gap)
+            
+            if len(minHeap) <= ladders:
+                continue
+            
+            bricks -= heapq.heappop(minHeap)
+            
+            if bricks < 0:
+                return i
+        
+        return len(heights) - 1
+```
+
+```py
+class Solution:
+    def furthestBuilding(self, heights: List[int], bricks: int, ladders: int) -> int:
+        """
+        类似第一个方法，只是先尽可能用bricks，然后当有梯子并且bricks<0的时候，把用过的最大的gap加到bricks
+
+        """
+        maxHeap = []
+        
+        for i in range(len(heights) - 1):
+            gap = heights[i + 1] - heights[i]
+            
+            if gap < 0:
+                continue
+            
+            heapq.heappush(maxHeap, -gap)
+            
+            bricks -= gap
+
+            if bricks < 0 and ladders == 0:
+                return i
+            
+            if bricks < 0:
+                for_ladder = -heapq.heappop(maxHeap)
+                bricks += for_ladder
+                ladders -= 1
+        
+        return len(heights) - 1
+```
+
+```py
+class Solution:
+    def furthestBuilding(self, heights: List[int], bricks: int, ladders: int) -> int:
+        """
+        二分查找：找最右满足的边界
+        每次判断是否满足：穷举出来所有gaps，然后排序，把小的给bricks用，大的给ladders
+
+        """
+        def is_reachable(mid):
+            gaps = []
+            for h1, h2 in zip(heights[:mid], heights[1:mid + 1]):
+                if h2 - h1 > 0:
+                    gaps.append(h2 - h1)
+            gaps.sort()
+            b_remain = bricks
+            l_remain = ladders
+            for gap in gaps:
+                if gap <= b_remain:
+                    b_remain -= gap
+                elif l_remain > 0:
+                    l_remain -= 1
+                else:
+                    return False
+            return True
+        
+        l, r = 0, len(heights) - 1
+        while l <= r:
+            mid = (l + r) // 2
+            if is_reachable(mid):
+                l = mid + 1
+            else:
+                r = mid - 1
+        
+        return r
+```
