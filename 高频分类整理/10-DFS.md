@@ -1137,9 +1137,101 @@ class Solution:
         return (self.sameTree(p.left, q.left) and self.sameTree(p.right, q.right))
 ```
 
+[863. All Nodes Distance K in Binary Tree](https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/)
 
 
+[1110. Delete Nodes And Return Forest](https://leetcode.com/problems/delete-nodes-and-return-forest/)
 
+```py
+class Solution:
+    def delNodes(self, root: Optional[TreeNode], to_delete: List[int]) -> List[TreeNode]:
+        """
+        在这个节点：如果父节点被删了，那就要添加到res。
+        遍历的同时，把要删除的节点变成None
+        """
+        to_delete = set(to_delete)
+        res = []
+        
+        def dfs(root, parent_exist):
+            if not root:
+                return None
+            
+            if root.val in to_delete:
+                root.left = dfs(root.left, False)
+                root.right = dfs(root.right, False)
+                return None # root.left/right = None这个节点删除掉了
+            else:
+                if not parent_exist:
+                    res.append(root)
+                root.left = dfs(root.left, True)
+                root.right = dfs(root.right, True)
+                return root
+        
+        dfs(root, False)
+        return res
+```
+
+[270. Closest Binary Search Tree Value](https://leetcode.com/problems/closest-binary-search-tree-value/)
+
+```py
+class Solution:
+    def closestValue(self, root: Optional[TreeNode], target: float) -> int:
+        """
+        站在每个节点：更新res，然后往左或者右走
+        不需要知道子树信息：直接中序遍历
+        
+        Time: O(H)
+        Space: O(H)
+        """
+        res = [root.val]
+        def dfs(node):
+            if not node:
+                return
+            
+            if abs(node.val - target) < abs(res[0] - target):
+                res[0] = node.val
+            
+            if target < node.val:
+                dfs(node.left)
+            else:
+                dfs(node.right)
+        
+        dfs(root)
+        return res[0]
+```
+
+[669. Trim a Binary Search Tree](https://leetcode.com/problems/trim-a-binary-search-tree/)
+
+```py
+class Solution:
+    def trimBST(self, root: Optional[TreeNode], low: int, high: int) -> Optional[TreeNode]:
+        """
+        站在一个节点：通过自己和range的大小比较，知道自己是否要被trim。还要只要子树是否被trim
+        需要子树信息->递归->返回满足条件的root
+        
+        Time: O(N)
+        Space: O(H)
+        """
+        
+        
+        # trim()返回满足条件的root
+        def trim(node):
+            if not node:
+                return None
+            
+            if node.val > high: # 自己要被trim，返回比自己小的左子树
+                return trim(node.left)
+            elif node.val < low:
+                return trim(node.right)
+            else:
+                node.left = trim(node.left) # 左边接上满足条件的节点
+                node.right = trim(node.right) # 右边接上满足条件的节点
+                return node
+        
+        return trim(root)
+```
+
+[333. Largest BST Subtree](https://leetcode.com/problems/largest-bst-subtree/)
 
 
 
