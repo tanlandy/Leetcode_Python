@@ -249,7 +249,7 @@ output: min weight of path btw every two nodes
 # Tree
 
 ## 模板
-
+BFS搜索模板
 ```py
 def BFS(root):
     if not root:
@@ -273,6 +273,7 @@ def BFS(root):
         step += 1
 ```
 
+## 题目
 [111. Minimum Depth of Binary Tree](https://leetcode.com/problems/minimum-depth-of-binary-tree/)
 
 ```py
@@ -528,3 +529,18 @@ class Solution:
 ```
 
 # Dijkstra
+类似于BFS，但是要去掉while中的for循环：
+对于加权图，for循环遍历帮助维护depth层数，但是在Dijkstra中层数无意义，要考虑的是路径的权重和
+-> 去掉for循环，在queue中存[node, depth]
+
+## 例题
+
+[743. Network Delay Time](https://leetcode.com/problems/network-delay-time/)
+
+
+[1514. Path with Maximum Probability](https://leetcode.com/problems/path-with-maximum-probability/)
+
+
+[1631. Path With Minimum Effort](https://leetcode.com/problems/path-with-minimum-effort/)
+
+

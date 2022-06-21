@@ -277,7 +277,10 @@ print(int(convert_int_to_bin(56),2)==56)
 
 ```py
 class MinStack:
-    """用两个stack就可以，重点是min_stack的插入数据方式：先找到最小值，然后放入"""
+    """
+    用两个stack就可以，重点是min_stack的插入数据方式：每次先找到最小值，然后放入
+    删除时候都删
+    """
 
     def __init__(self):
         self.stack = []
@@ -298,14 +301,33 @@ class MinStack:
 
     def getMin(self) -> int:
         return self.min_stack[-1]
+```
 
+```py
+    """
+    另一种方式，min_stack只放最小值，删除时候如果相等才删min_stack
+    """
+    def __init__(self):
+        self.stack = []
+        self.min_stack = []
 
-# Your MinStack object will be instantiated and called as such:
-# obj = MinStack()
-# obj.push(val)
-# obj.pop()
-# param_3 = obj.top()
-# param_4 = obj.getMin()
+    def push(self, val: int) -> None:
+        self.stack.append(val)
+        if not self.min_stack or val <= self.min_stack[-1]:
+            self.min_stack.append(val)
+
+    def pop(self) -> None:
+        if self.stack[-1] == self.min_stack[-1]:
+            self.min_stack.pop()
+        self.stack.pop()
+
+    def top(self) -> int:
+        if self.stack:
+            return self.stack[-1]
+
+    def getMin(self) -> int:
+        if self.min_stack:
+            return self.min_stack[-1]
 ```
 
 [716. Max Stack](https://leetcode.com/problems/max-stack/)

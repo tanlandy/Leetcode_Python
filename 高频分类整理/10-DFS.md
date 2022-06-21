@@ -131,8 +131,56 @@ class Solution:
         return res
 ```
 
+[1448. Count Good Nodes in Binary Tree](https://leetcode.com/problems/count-good-nodes-in-binary-tree/)
+```py
+class Solution:
+    def goodNodes(self, root: TreeNode) -> int:
+        """
+        只需要遍历一遍
+        """
+        res = [0]
+        def dfs(root, path_max):
+            if not root:
+                return
+            if root.val >= path_max:
+                res[0] += 1
+            path_max = max(root.val, path_max)
+            dfs(root.left, path_max)
+            dfs(root.right, path_max)
+        dfs(root, float("-inf"))
+        return res[0]
+```
 
+[110. Balanced Binary Tree](https://www.youtube.com/watch?v=QfJsau0ItOY)
 
+```py
+class Solution:
+    def isBalanced(self, root: Optional[TreeNode]) -> bool:
+        """
+        站在每个节点：知道两边子树的高度差，并比较；
+        返回什么：要返回当前节点的高度
+        -> 后序遍历，返回当前高度
+
+        时间：O(N)
+        空间：O(N)
+        """
+        def node_height(node):
+            if not node:
+                return 0
+            left_h = node_height(node.left)
+            right_h = node.height(node.right)
+
+            if left_h == -1 or right_h == -1:
+                return -1
+
+            if abs(left_h - right_h) > 1:
+                return -1
+            
+            return 1 + max(left_h, right_h)
+        
+        return node_height(root) != -1
+
+```
 
 
 
@@ -187,6 +235,16 @@ class Solution:
         return False
 ```
 
+
+### BST
+BST is often used to look up the existence of certain objects. Compared to sorted arrays, the insertion has way lower time complexity, so it's good for dynamic insertion of items. If you don't need to dynamically insert new items, then you can simply sort the collection first and use binary search to look up.
+
+However, most modern languages offers hash tables, which is another way of looking up the existence of an object in a collection. Most implementations are dynamically sized, which can cause the lookup and insertion of items to approach O(1), so usually hash tables are preferred over BST. Nevertheless, there are some advantages to using a BST over a hash table.
+
+Hash tables are unsorted, while BSTs are. If you want to constantly maintain a sorted order while inserting, using a BST is more efficient than a hash table or a sorted list.
+It's easy to look up the first element in the BST that is greater/smaller than a lookup value than a hash table.
+It's easy to find the k-th largest/smallest element.
+Dynamic hash tables usually have a lot of unused memory in order to make the insertion/deletion time approach O(1), whereas BST uses all the memory they requested.
 
 ## 算法笔记
 
@@ -962,161 +1020,96 @@ class Solution:
         return p      
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Tree
 
-[226. Invert Binary Tree](https://leetcode.com/problems/invert-binary-tree/)
-每走到一个节点，看一下他的两个子节点，然后swap子节点的位置
+[101. Symmetric Tree](https://leetcode.com/problems/symmetric-tree/)
 
-时间：O(N)
-空间：O(N)
 ```py
 class Solution:
-    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+    def isSymmetric(self, root: Optional[TreeNode]) -> bool:
+        """
+        对于每个节点来说：看自己的左右节点是否对称，看自己的子树是否对称->返回自己是否满足对称
+        遍历一遍不可以，需要知道自己的子节点是否对称这一信息
+        -> 递归，同时看两个节点，然后左左右右，左右右左看对称
+        """
         if not root:
-            return None
-        
-        # swap the children
-        root.left, root.right = root.right, root.left
-        
-        self.invertTree(root.left)
-        self.invertTree(root.right)
-        
-        return root
-```        
-
-[110. Balanced Binary Tree](https://www.youtube.com/watch?v=QfJsau0ItOY)
-每走到一个节点，问左右子树是否balanced，再问左右子树是否balanced直到叶子节点，然后从下到上来看各个节点是否balance：先计算出来每个子节点的height，再比较是否balanced
-
-时间：O(N)
-空间：O(N)
-```py
-# Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
-class Solution:
-    def isBalanced(self, root: Optional[TreeNode]) -> bool:
-        
-        def dfs(root):
-            """
-            Return T/F and its height
-            """
-            # base case
-            if not root: # empty tree
-                return [True, 0]
-            
-            left, right = dfs(root.left), dfs(root.right) # 看左右子树是否balance
-            balanced = left[0] and right[0] and abs(left[1] - right[1]) <= 1 # 自己这个节点是否balance
-
-            return [balanced, 1 + max(left[1], right[1])]]
-
-        balan, height = dfs(root)
-        return balan 
-```
-
-[100. Same Tree](https://www.youtube.com/watch?v=vRbbcKXCxOw)
-每到一个节点，看这个节点的数是否相同
-
-时间：O(p+q)
-空间：P(p+q)
-
-```py
-# Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
-class Solution:
-    def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
-        if not p and not q:
             return True
         
-        if not p or not q:
-            return False
-
-        if p.val != q.val:
-            return False
+        def dfs(left, right):
+            if not left and not right:
+                return True
+            
+            if not left or not right:
+                return False
+                
+            if left.val == right.val:
+                return dfs(left.left, right.right) and dfs(left.right , right.left)
+            else:
+                return False
         
-        return (self.isSameTree(p.left, q.left) and 
-                self.isSameTree(p.right, q.right))
+        return dfs(root, root)
+```
+
+```py
+class Solution:
+    def isSymmetric(self, root):
+        if not root:
+            return True
+        
+        queue = collections.deque([root.left, root.right])
+      
+        while queue:
+            t1, t2 = queue.popleft(), queue.popleft()
+
+            if not t1 and not t2:
+                continue
+            elif (not t1 or not t2) or (t1.val != t2.val):
+                return False
+            
+            queue.extend([t1.left, t2.right, t1.right, t2.left])
+        return True
+```
+
+[951. Flip Equivalent Binary Trees](https://leetcode.com/problems/flip-equivalent-binary-trees/)
+
+```py
+class Solution:
+    def flipEquiv(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> bool:
+        """
+        在每个节点：看左右子树是否相同，相同就继续往下看，不相同就flip一下再检查是否相同，如果还不相同说明不满足条件
+        节点需要告诉父节点自己是否满足条件 -> 递归
+
+        Time: O(min(N1, N2))
+        Space: O(min(N1, N2))
+        """
+        def dfs(node1, node2):
+            if not node1 and not node2:
+                return True
+            if not node1 or not node2:
+                return False
+            
+            if node1.val != node2.val:
+                return False
+            
+            return (dfs(node1.left, node2.left) and dfs(node1.right, node2.right)) or 
+                    (dfs(node1.left, node2.right) and dfs(node1.right, node2.left))
+                
+        
+        return dfs(root1, root2)
 ```
 
 
 [572. Subtree of Another Tree](https://leetcode.com/problems/subtree-of-another-tree/)
 
-
-时间：O(M*N) M is len(root), N is len(subRoot)
-空间：O(M*N)
 ```py
-# Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
 class Solution:
     def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
         """
         从左边树的每一个节点来看，这个节点对应的树是否和另一个树相同
         走每一个节点是用的isSubtree
+        
+        时间：O(M*N) M is len(root), N is len(subRoot)
+        空间：O(M*N)
         """        
         if not subRoot:
             return True
@@ -1145,26 +1138,73 @@ class Solution:
 ```
 
 
-[235. Lowest Common Ancestor of a Binary Search Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)
 
-时间：O(logN) 每一层只用看一个点
-空间：O(1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[100. Same Tree](https://www.youtube.com/watch?v=vRbbcKXCxOw)
+每到一个节点，看这个节点的数是否相同
+
+时间：O(p+q)
+空间：P(p+q)
+
 ```py
 class Solution:
-    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
-        """
-        从root开始看(root肯定是一个common ancestor，但不一定是LCA)，如果p, q都比这个节点大，那就在右边找，如果都小在左边找，否则自己这个节点就是LCA
+    def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
+        if not p and not q:
+            return True
         
-        """
-        cur = root
+        if not p or not q:
+            return False
 
-        while cur:
-            if p.val > cur.val and q.val > cur.val:
-                cur = cur.right
-            elif p.val < cur.val and q.val < cur.val:
-                cur = cur.left
-            else:
-                return cur
+        if p.val != q.val:
+            return False
+        
+        return (self.isSameTree(p.left, q.left) and 
+                self.isSameTree(p.right, q.right))
 ```
 
 [1448. Count Good Nodes in Binary Tree](https://leetcode.com/problems/count-good-nodes-in-binary-tree/)
@@ -1203,6 +1243,13 @@ class Solution:
 ```py
 class Solution:
     def maxPathSum(self, root: TreeNode) -> int:
+        """
+        站在每个节点：更新最大sum，返回从这个节点开始的max path sum
+        更新最大sum: 自己 + 左节点max path sum + 右节点max path sum
+
+        Time: O(N)
+        Space: O(H)
+        """
         res = [root.val]
         
         # return max path sum without split
@@ -1212,7 +1259,7 @@ class Solution:
             
             leftMax = dfs(root.left)
             rightMax = dfs(root.right)
-            leftMax = max(leftMax, 0)
+            leftMax = max(leftMax, 0) # for those negative, doesn't need to look
             rightMax = max(rightMax, 0)
             
             # compute max path sum WITH split
