@@ -233,3 +233,103 @@ class Solution:
         
         return int("".join([str(x) for x in num]))
 ```
+
+# Top 200
+
+[366. Find Leaves of Binary Tree](https://leetcode.com/problems/find-leaves-of-binary-tree/)
+
+```py
+class Solution:
+    def findLeaves(self, root: Optional[TreeNode]) -> List[List[int]]:
+        """
+        站在每个节点：要知道自己的层数，然后把自己加到和自己层数相同的列表里
+        知道层数：从子树返回高度->递归
+
+        Time: O(N)
+        Space: O(N)
+        """
+        res = collections.defaultdict(list)
+        
+        def dfs(node, height):
+            if not node:
+                return 0
+            left = dfs(node.left, height)
+            right = dfs(node.right, height)       
+            height = max(left, right)
+            res[height].append(node.val)
+            return height + 1
+        
+        dfs(root, 0)
+        return res.values()
+```
+
+[2096. Step-By-Step Directions From a Binary Tree Node to Another](https://leetcode.com/problems/step-by-step-directions-from-a-binary-tree-node-to-another/)
+
+```py
+class Solution:
+    def getDirections(self, root: Optional[TreeNode], startValue: int, destValue: int) -> str:
+        """
+        Find LCA of inputs
+        get paths from LCA to start and destination
+        convert LCA_start path to "U" and then concatenate with the other path
+        """
+        def LCA(node, p, q):
+            if not node:
+                return node
+            if node.val == p or node.val == q:
+                return node
+            left = LCA(node.left, p, q)
+            right = LCA(node.right, p, q)
+            if left and right:
+                return node
+            else:
+                return left or right
+        
+        lca = LCA(root, startValue, destValue)
+
+        self.ps = self.pd = ""
+
+        # backtracking
+        def dfs(node, path):
+            if not node or (self.ps and self.pd):
+                return
+            
+            if node.val == startValue:
+                self.ps = "U" * len(path)
+            if node.val == destValue:
+                self.pd = "".join(path)
+            
+            if node.left:
+                path.append("L")
+                dfs(node.left, path)
+                path.pop()
+            if node.right:
+                path.append("R")
+                dfs(node.right, path)
+                path.pop()
+        
+        dfs(lca, [])
+        return self.ps + self.pd
+```
+
+
+[250. Count Univalue Subtrees](https://leetcode.com/problems/count-univalue-subtrees/)
+```py
+class Solution:
+    def countUnivalSubtrees(self, root):
+        """
+        需要知道子树信息
+        dfs(node)返回boolean: 该节点和父亲节点相同，且自己的两个子节点也都满足，才返回True
+        """
+        res = [0]
+        def dfs(node, parent):
+            if not node:
+                return True
+            left = dfs(node.left, node.val)
+            right = dfs(node.right, node.val)
+            if left and right:
+                res[0] += 1
+            return left and right and node.val == parent
+        dfs(root, None)
+        return res[0]
+```
