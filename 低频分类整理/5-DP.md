@@ -1,5 +1,57 @@
-# 算法笔记
-## 框架
+# 基础知识
+
+## Intro
+Dynamic programming is an algorithmic optimization technique that breaks down a complicated problem into smaller overlapping subproblems in a recursive manner and use solutions to the subproblems to construct solution to the original problem.
+
+-> It is a simple concept of solving bigger problems using smaller problems while saving results to avoid repeated calculations. 
+
+1. The problem can be broken down into `"overlapping subproblems"` - smaller versions of the original problem that are re-used multiple times. -> subproblems are dependent
+2. The problem has an `"optimal substructure"` - an optimal solution can be formed from optimal solutions to the overlapping subproblems of the original problem.
+
+
+### Characteristics of DP
+1. Optimal substructure: the problem can be divided into subproblems. And its optimal solution can be constructed from optimal solutions of the subproblems
+2. The subproblems overlap
+
+
+
+
+### Greedy vs DP
+In greedy, we always want to choose the best answer
+DP: is not always necessarily the best answer for every state
+
+## When to use
+DP is an **optimization** method on one or more **sequences**.
+1. The problem asks for the maximum/longest, minimal/shortest value/cost/profit you can get from doing operations on a sequence.
+2. You've tried greedy but it sometimes gives the wrong solution. This often means you have to consider subproblems for an optimal solution.
+3. The problem asks for how many ways there are to do something. This can often be solved by DFS + memoization, i.e. top-down dynamic programming.
+4. Partition a string/array into sub-sequences so that a certain condition is met. This is often well-suited for top-down dynamic programming.
+5. The problem is about the optimal way to play a game.
+6. Future decisions depend on earlier decision
+   - House Robber
+   - LIS
+
+## How to use
+1. Top-down: DFS + Memorization: split large problems and recursively solve smaller subproblems
+   - draw the tree
+   - identify states
+    1. 站在节点：需要什么来解决问题，如何解决
+    2. 站在节点：需要什么信息来确定如何往下走
+   - DFS + Memoization
+     - memoizing a result means to store the result of a function call, usually in a hashmap or an array,
+2. Bottom-up: solve subproblmes first, and then use their solution to find the solutions to bigger subproblems -> normally done in a tabular form -> start at the base case
+    - 找到recurrence relation，例如dp[i] = dp[i-1] + dp[i-2]
+
+不论top-down还是bottom-up，都要思考
+1. A function or data structure that will compute/contain the answer to the problem for every given state
+
+2. A recurrence relation to transition between states: A state is a set of variables that can `sufficiently` describe a scenario. These variables are called state variables
+`finding the recurrence relation is the most difficult part of solving a DP problem`
+
+3. Bases cases
+What state(s) can I find the answer to without using dynamic programming? 
+
+
 动态规划的一般形式就是求最值，求最值的核心就是穷举
 -> 列出正确的**状态转移方程**，从而正确地穷举
 -> 利用**最优子结构**，通过子问题的最值得到原问题的最值
@@ -23,6 +75,233 @@ for 状态1 in 状态1的所有取值：
         for ...
             dp[状态1][状态2][...] = 求最值(选择1，选择2...)
 ```
+
+# Problems
+
+## Sequence
+dp[i] normally means max/min/best value of the sequnce ending at index i
+
+### Algo
+[198. House Robber](https://leetcode.com/problems/house-robber/)
+
+```py
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        """
+        dp[i] means the max value we can get using elements from idx 0 up to i
+        dp[i] = max(dp[i-2]+nums[i], dp[i-1]): the current dp[i] is determined by whether add this nums[i] or not
+
+        Time: O(N)
+        Space: O(N)
+        """
+        if len(nums) == 1:
+            return nums[0]
+        dp = [0] * len(nums)
+        
+        dp[0] = nums[0]
+        dp[1] = max(nums[0], nums[1])
+        
+        for i in range(2, len(nums)):
+            dp[i] = max(dp[i-2] + nums[i], dp[i-1])
+        
+        return dp[-1]
+```
+
+```py
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        """
+        BF: list all combinations using decision tree
+        Identify subproblems: if choose nums[0], then find the max from nums[2] to the end; else, find the max from nums[1:]
+        rob = max(nums[0] + rob[2:], rob[1:])
+        dp from the beginning to the end, each time only consider the larger one using two variables
+
+        Time: O(N)
+        Space: O(1)
+        """
+        rob1, rob2 = 0, 0
+
+        # [rob1, rob2, n, n + 1, ...]
+        for n in nums:
+            # calc the max up until n
+            tmp = max(n + rob1, rob2)
+            rob1 = rob2
+            rob2 = tmp
+        
+        return rob2
+
+```
+
+[322. Coin Change](https://leetcode.com/problems/coin-change/)
+
+```py
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        """
+        具有最优子结构，子问题相互独立 -> 确定是动态规划问题
+
+        1. 确定base case：amount是0
+        2. 确定状态：原问题和子问题的变化的量：目标金额amount
+        3. 确定选择：导致状态发生变化的行为
+        4. DP数组的定义
+
+        cannot be greedy: choose from the largest to the smallest as the total count is not guaranteed to be smallest
+        BF: backtracking using desicion tree
+        DP bottom-up:
+        DP[i] = min number of coins needed to count to i
+        dp[i] = min(1 + dp[i - each_coin])
+        dp[amount] is return value
+
+        [1,3,4,5]
+        DP[7] = min(1 + DP[6], 1 + DP[4], 1 + DP[3], 1 + DP[2])
+
+        Time: O(amount * len(coins))
+        Space: O(amount)
+        """
+        dp = [float("inf")] * (amount + 1) # go from 0 to amount
+
+        dp[0] = 0 # base case
+
+        for i in range(1, amount + 1): # need to calc dp[amnout], so range(1, amount + 1)
+            for c in coins:
+                if i - c >= 0:
+                    dp[i] = min(dp[i], 1 + dp[i - c])
+        
+        return dp[amount] if dp[amount] != float("inf") else -1
+```
+
+## Grid
+This is 2D version of the sequence DP. dp[i][j] means max/min/best value for matrix cell ending at index i, j
+### Algo
+[62. Unique Paths](https://leetcode.com/problems/unique-paths/)
+```py
+class Solution:
+    def uniquePaths(self, m: int, n: int) -> int:
+        """
+        number of path to a cell = number of path to its left + to its tops
+        dp[r][c] = dp[r - 1][c] + dp[r][c - 1]
+        base case: dp[r][c]的第一行和第一列都是1
+        最后返回dp[-1][-1]
+        """
+
+        dp = [[0 for _ in range(n)] for _ in range(m)]
+
+        for c in range(n):
+            dp[0][c] = 1
+        for r in rnage(m):
+            dp[r][0] = 1
+        
+        for r in range(1, m):
+            for c in range(1, n):
+                dp[r][c] = dp[r - 1][c] + dp[r][c - 1]
+        
+        return dp[-1][-1]
+
+```
+
+```py
+class Solution:
+    def uniquePaths(self, m: int, n: int) -> int:
+        """
+        dp[r][c] = right + down, each one stores the number of unique paths
+
+        Time: O(M*N)
+        Space: O(N)
+        """
+        row = [1] * n
+        
+        for i in range(m - 1): # wait until first row
+            newRow = [1] * n 
+            # out of range
+            for j in range(n - 2, -1, -1):
+                newRow[j] = newRow[j + 1] + row[j]
+            row = newRow
+        
+        return row[0] 
+```
+
+
+[64. Minimum Path Sum](https://leetcode.com/problems/minimum-path-sum/)
+```py
+class Solution:
+    def minPathSum(self, grid: List[List[int]]) -> int:
+        """
+        dp[r][c] is the minumum path sum to (r, c)
+        dp[r][c] = grid[r][c] + min(dp[r-1][c], dp[r][c-1])
+        
+        Time: O(M*N)
+        Space: O(M*N)
+        """
+        
+        rows, cols = len(grid), len(grid[0])
+        
+        dp = [[0 for _ in range(cols)] for _ in range(rows)]
+        
+        dp[0][0] = grid[0][0]
+        for r in range(1, rows):
+            dp[r][0] = grid[r][0] + dp[r-1][0]
+        for c in range(1, cols):
+            dp[0][c] = grid[0][c] + dp[0][c-1]
+            
+        for r in range(1, rows):
+            for c in range(1, cols):
+                dp[r][c] = grid[r][c] + min(dp[r-1][c], dp[r][c-1])
+        
+        return dp[-1][-1]
+```
+
+[221. Maximal Square](https://leetcode.com/problems/maximal-square/)
+
+
+
+## Dynamic number of subproblems
+Similar to Sequence DP, except dp[i] depends on a dynamic number of subproblems: dp[i] = max(d[j]) from 0 to i
+### Algo
+
+## Partition
+This is a continuation of DFS + Memoization problems. The key is to draw the state-space tree and then traverse it
+### Algo
+
+## Interval
+Find subproblem defined on an interval dp[i][j]
+### Algo
+
+## Two sequences
+dp[i][j] represents the max/min/best value for the first sequence ending in index i and second sequence ending in index j
+可能类似Grid，之后确认
+### Algo
+
+## Game theory
+This asks for whether a player can win a decision game. Key is to identify winning state, and formulate a winning state as a state that returns a losing state to the opponent
+### Algo
+
+## 0-1 Knapsack
+### Algo
+
+## Bitmask
+Use bitmasks to reduce factorial compelxity to 2^n by encoding the dp state in bitmasks
+### Algo
+
+
+
+
+
+
+
+## Other待分类
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 [509. Fibonacci Number](https://leetcode.com/problems/fibonacci-number/)
 
@@ -74,42 +353,6 @@ class Solution:
         return cur
 ```
 
-[322. Coin Change](https://leetcode.com/problems/coin-change/)
-
-```py
-class Solution:
-    def coinChange(self, coins: List[int], amount: int) -> int:
-        """
-        具有最优子结构，子问题相互独立 -> 确定是动态规划问题
-
-        1. 确定base case：amount是0
-        2. 确定状态：原问题和子问题的变化的量：目标金额amount
-        3. 确定选择：导致状态发生变化的行为
-        4. DP数组的定义
-
-        cannot be greedy: choose from the largest to the smallest as the total count is not guaranteed to be smallest
-        BF: backtracking using desicion tree
-        DP bottom-up: DP[i] = min number of coins it takes to count to i
-        DP[i] = min( one_coin_used + DP[i - value_one_coin_used])
-        
-        [1,3,4,5]
-        DP[7] = min(1 + DP[6], 1 + DP[4], 1 + DP[3], 1 + DP[2])
-
-        Time: O(amount * len(coins))
-        Space: O(amount)
-        """
-        dp = [float("inf")] * (amount + 1) # go from 0 to amount
-
-        dp[0] = 0 # base case
-
-        for i in range(1, amount + 1): # need to calc dp[amnout], so range(1, amount + 1)
-            for c in coins:
-                if i - c >= 0:
-                    dp[i] = min(dp[i], 1 + dp[i - c])
-        
-        return dp[amount] if dp[amount] != float("inf") else -1
-
-```
 
 
 [300. Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/)
@@ -152,51 +395,6 @@ class Solution:
 
 
 
-
-
-
-
-
-# Explore
-
-## What is DP
-
-1. The problem can be broken down into `"overlapping subproblems"` - smaller versions of the original problem that are re-used multiple times. -> subproblems are dependent
-2. The problem has an `"optimal substructure"` - an optimal solution can be formed from optimal solutions to the overlapping subproblems of the original problem.
-
-## Top-down and Bottom-up
-### Bottom-up -> runtime is faster
-implemented with iteration and starts at the base case
-
-### Top-down -> easier to write 想象决策树
-implemented with recursion and made efficient with memoization -> recursion tree
-> memoizing a result means to store the result of a function call, usually in a hashmap or an array, so that when the same function call is made again, we can simply return the memoized result instead of recalculating the result. 
-
-## When to use
-1. Ask for the optimum value (maximum or minimum) of something, or the number of ways there are to do somethings
-2. Future decisions depend on earlier decision
-   - House Robber
-   - LIS
-
-## Framework for DP problems
-State. In a DP problem, a state is a set of variables that can `sufficiently` describe a scenario. These variables are called state variables
-
-Climbing Stairs, there is `only` 1 relevant state variable, the current step we are on. We can denote this with an integer \text{i}i. If \text{i = 6}i = 6, that means that we are describing the state of being on the 6th step. Every unique value of \text{i}i represents a unique state.
-
-### Framework
-1. a function or data structure that will compute/contain the answer to the problem for every given state
-for Climbing Stairs, we have a function dp where dp[i] returns the number of ways to climb to the ith step. Solving the original problem would be to return dp[n] - literally the original problem, but generalized for a given state.
-> Typically, top-down is implemented with a recursive function and hash map, whereas bottom-up is implemented with nested for loops and an array. When designing this function or array, we also need to decide on state variables to pass as arguments. 
-
-2. A recurrence relation to transition between states
-`finding the recurrence relation is the most difficult part of solving a DP problem`
-
-3. Bases cases
-What state(s) can I find the answer to without using dynamic programming? 
-
-memoization means caching results from function calls and then referring to those results in the future instead of recalculating them. This is usually done with a hashmap or an array.
-
-
 ```py
 class Solution:
     def climbStairs(self, n: int) -> int:
@@ -214,10 +412,10 @@ class Solution:
         return dp(n)
 ```
 
-# 题目
 
-## Neetcode.io
-### 1D DP
+
+### Neetcode.io
+#### 1D DP
 [70. Climbing Stairs](https://leetcode.com/problems/climbing-stairs/)
 
 ```py
@@ -281,54 +479,7 @@ class Solution:
 
 ```
 
-[198. House Robber](https://leetcode.com/problems/house-robber/)
 
-```py
-class Solution:
-    def rob(self, nums: List[int]) -> int:
-        """
-        dp[i] = max(dp[i-2]+nums[i], dp[i-1]): the current dp[i] is determined by whether add this nums[i] or not
-
-        Time: O(N)
-        Space: O(N)
-        """
-        if len(nums) == 1:
-            return nums[0]
-        dp = [0] * len(nums)
-        
-        dp[0] = nums[0]
-        dp[1] = max(nums[0], nums[1])
-        
-        for i in range(2, len(nums)):
-            dp[i] = max(dp[i-2] + nums[i], dp[i-1])
-        
-        return dp[-1]
-```
-
-```py
-class Solution:
-    def rob(self, nums: List[int]) -> int:
-        """
-        BF: list all combinations using decision tree
-        Identify subproblems: if choose nums[0], then find the max from nums[2] to the end; else, find the max from nums[1:]
-        rob = max(nums[0] + rob[2:], rob[1:])
-        dp from the beginning to the end, each time only consider the larger one using two variables
-
-        Time: O(N)
-        Space: O(1)
-        """
-        rob1, rob2 = 0, 0
-
-        # [rob1, rob2, n, n + 1, ...]
-        for n in nums:
-            # calc the max up until n
-            tmp = max(n + rob1, rob2)
-            rob1 = rob2
-            rob2 = tmp
-        
-        return rob2
-
-```
 
 [213. House Robber II](https://leetcode.com/problems/house-robber-ii/)
 
@@ -583,30 +734,9 @@ class Solution:
 
 ```
 
-### 2D DP
+#### 2D DP
 
-[62. Unique Paths](https://leetcode.com/problems/unique-paths/)
-```py
-class Solution:
-    def uniquePaths(self, m: int, n: int) -> int:
-        """
-        dp[r][c] = right + down, each one stores the number of unique paths
 
-        Time: O(M*N)
-        Space: O(N)
-        """
-        row = [1] * n
-        
-        for i in range(m - 1): # wait until first row
-            newRow = [1] * n 
-            # out of range
-            for j in range(n - 2, -1, -1):
-                newRow[j] = newRow[j + 1] + row[j]
-            row = newRow
-        
-        return row[0]
-        
-```
 
 
 [1143. Longest Common Subsequence](https://leetcode.com/problems/longest-common-subsequence/)
