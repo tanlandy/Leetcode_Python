@@ -597,3 +597,31 @@ class Solution:
 https://leetcode.com/problems/longest-palindromic-substring/discuss/2030458/Python
 
 
+[1354. Construct Target Array With Multiple Sums](https://leetcode.com/problems/construct-target-array-with-multiple-sums/)
+
+```py
+class Solution:
+    def isPossible(self, A: List[int]) -> bool:
+        """
+        Subtract the largest with the rest of the array, and put the new element into the array. Repeat until all elements become one
+        use mod to quickly achieve target value, as the cur_max needs to be substracted repeatly until becomes smaller than cur_sum
+        
+        Space: O(N + logK * logN)
+        Time: O(N)
+        """
+        cur_sum = sum(A)
+        A = [-a for a in A]
+        heapq.heapify(A)
+        while True:
+            a = -heapq.heappop(A)
+            cur_sum -= a
+            if a == 1 or cur_sum == 1:
+                return True
+            if a < cur_sum or cur_sum < 1 or a % cur_sum == 0:
+                return False
+            a %= cur_sum
+            cur_sum += a
+            heapq.heappush(A, -a)
+```
+
+
