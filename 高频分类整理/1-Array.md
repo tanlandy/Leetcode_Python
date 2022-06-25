@@ -624,4 +624,46 @@ class Solution:
             heapq.heappush(A, -a)
 ```
 
+[665. Non-decreasing Array](https://leetcode.com/problems/non-decreasing-array/)
 
+```py
+class Solution:
+    def checkPossibility(self, nums: List[int]) -> bool:
+        """
+        重点是找到不合理的数字之后，如何赋值变得合理
+        
+        Time: O(N)
+        Space: O(1)
+        """
+        decrease = False
+        
+        for i in range(1, len(nums)):
+            if nums[i - 1] > nums[i]:
+                if decrease:
+                    return False
+                decrease = True
+                
+                if i < 2 or nums[i - 2] <= nums[i]: # [4,7,5]
+                    nums[i - 1] = nums[i]
+                else:  
+                    nums[i] = nums[i - 1]  # [4, 5, 3]
+        
+        return True
+```
+```py
+class Solution:
+    def checkPossibility(self, nums: List[int]) -> bool:
+        """
+        without modifing input array
+        """
+        idx = -1
+        
+        for i in range(len(nums) - 1):
+            if nums[i] > nums[i + 1]:
+                if idx != -1:
+                    return False
+                idx = i
+        
+        # return True if we can remove this element and have A[p-1] <= A[p+1] or remove next element and have A[p] <= A[p+2].
+        return idx in [-1, 0, len(nums) - 2] or nums[idx - 1] <= nums[idx + 1] or nums[idx] <= nums[idx + 2]
+```

@@ -333,3 +333,235 @@ class Solution:
         dfs(root, None)
         return res[0]
 ```
+
+[2034. Stock Price Fluctuation](https://leetcode.com/problems/stock-price-fluctuation/)
+
+```py
+from sortedcontainers import SortedDict
+
+class StockPrice:
+
+    def __init__(self):
+        """
+        need to record the price at different timestamps: hashmap
+        need to get the lowest and highest and latest price: sorted map(treemap in Java)
+        hashmap: {timestamp : price}
+        sorted map: {price : count} 为了便于之后删除
+        
+        """
+        self.time_price = {}
+        self.price_count = SortedDict()
+        self.cur = 0
+
+
+    def update(self, timestamp: int, price: int) -> None:
+        """
+        Time: O(NlogN) each time in sorted map takes logN time
+        Space: O(N) eacxh time takes O(1)
+        """
+        self.cur = max(timestamp, self.cur)
+        if timestamp in self.time_price:
+            old_price = self.time_price[timestamp]
+            self.price_count[old_price] -= 1
+            if not self.price_count[old_price]:
+                del self.price_count[old_price]
+            
+        self.time_price[timestamp] = price
+        if price in self.price_count:
+            self.price_count[price] += 1
+        else:
+            self.price_count[price] = 1
+        
+    def current(self) -> int:
+        """
+        Time: O(1)
+        Space: O(1)
+        """
+        return self.time_price[self.cur]
+
+    def maximum(self) -> int:
+        """
+        Time: O(1)
+        Space: O(1)
+        """
+        return self.price_count.peekitem(-1)[0]
+
+    def minimum(self) -> int:
+        """
+        Time: O(1)
+        Space: O(1)
+        """        
+        return self.price_count.peekitem(0)[0]
+```
+
+相同思路用HashMap in Java
+语法上的几个区别：
+1. cur, timePrice都声明写在class内，在构造函数里面生成
+2. map的几个函数的使用.put(), .get(), .containsKey()
+3. map在原有数据map.put(key, map.getOrDefault(key, defaultValue) + 1)
+```java
+class StockPrice {
+
+    int cur;
+    Map<Integer, Integer> timePrice;
+    TreeMap<Integer, Integer> priceCount;
+
+    public StockPrice() {
+        cur = 0;
+        timePrice = new HashMap<>();
+        priceCount = new TreeMap<>();
+    }
+    
+    public void update(int timestamp, int price) {
+        cur = Math.max(cur, timestamp);
+        if (timePrice.containsKey(timestamp)) {
+            int oldPrice = timePrice.get(timestamp);
+            priceCount.put(oldPrice, priceCount.get(oldPrice) - 1);
+
+            if (priceCount.get(oldPrice) == 0) {
+                priceCount.remove(oldPrice);
+            }
+        }
+        timePrice.put(timestamp, price);
+        priceCount.put(price, priceCount.getOrDefault(price, 0) + 1);
+    }
+    
+    public int current() {
+        return timePrice.get(cur);
+    }
+    
+    public int maximum() {
+        return priceCount.lastKey();
+    }
+    
+    public int minimum() {
+        return priceCount.firstKey();
+    }
+}
+```
+
+双Heap法
+```py
+class StockPrice:
+
+    def __init__(self):
+        """
+        need to record the price at different timestamps: hashmap
+        need to get the lowest and highest and latest price: minHeap and maxHeap
+        hashmap: {timestamp : price}
+        
+        """
+        self.time_price = {}
+        self.cur = 0
+        self.minHeap = []
+        self.maxHeap = []
+
+    def update(self, timestamp: int, price: int) -> None:
+        """
+        Time: O(NlogN) each call for heappush is O(logN)
+        Space: O(N) each call is O(1)
+        """
+        self.cur = max(self.cur, timestamp)
+        self.time_price[timestamp] = price
+        heapq.heappush(self.minHeap, (price, timestamp))
+        heapq.heappush(self.maxHeap, (-price, timestamp))
+        
+    def current(self) -> int:
+        """
+        Time: O(1)
+        Space: O(1)
+        """
+        return self.time_price[self.cur]
+        
+    def maximum(self) -> int:
+        """
+        check if the maxHeap[0] is in time_price, if not, means that had been updated, thus keeping popping until find the valid one.
+        Time: O(NlogN)
+        Space: O(1)
+        """
+        price, time = self.maxHeap[0]
+        while -price != self.time_price[time]:
+            heapq.heappop(self.maxHeap)
+            price, time = self.maxHeap[0]
+        return -price
+        
+    def minimum(self) -> int:
+        """
+        similar to maximum()
+        Time: O(NlogN)
+        Space: O(1)
+        """
+        price, time = self.minHeap[0]
+        while price != self.time_price[time]:
+            heapq.heappop(self.minHeap)
+            price, time = self.minHeap[0]
+            
+        return price
+```
+
+
+[1146. Snapshot Array](https://leetcode.com/problems/snapshot-array/)
+
+```py
+class SnapshotArray:
+
+    def __init__(self, length: int):
+        """
+        BF: use a lot of memory to store snap; also take times to copy arr to do snap; quick to access
+        array
+        Dict: {id: array}, id is len(dict)
+        get: dict[id][idx]
+        
+        """
+        self.arr = [0] * length
+        self.id_arr = {}
+
+    def set(self, index: int, val: int) -> None:
+        self.arr[index] = val
+
+    def snap(self) -> int:
+        id = len(self.id_arr)
+        self.id_arr[id] = self.arr.copy()
+        return id
+
+    def get(self, index: int, snap_id: int) -> int:
+        return self.id_arr[snap_id][index]
+```
+
+instead of record the whole array, we record the history of each cell -> minimum space to record all information
+for each arr[i], record the history with a snap_id and value.
+when call the get(), do binary search tthe time snap_id
+
+
+## 06/24/22 Engineering Round Table
+google coursera
+
+GTI training: Google tech immersion
+could you tell me more about the self-development opportunities that google provides: technical and non-technical?
+- intro to technical writing
+
+
+three skills that you think are most critical to success in your role at Google?
+1. ask for help and be open
+2. express your idea in any way you fell comfortable with
+3. find your group, find allies with same interests or share the same value to find support and inclusive
+
+what was something that surprised you about Google:
+1. scale
+2. google code search
+3. how easy to reach anyone
+
+how did you prepare for your interviews
+1. leedcode
+2. youtube video into different categories
+3. mock interviews to get feedback
+4. Communication!!!
+
+
+common mistakes you see candidates make during the interviews
+1. communication is key
+2. not stick to a single algo, but to analyze the problem and try different approaches
+3. listen to their hints, pay attention to hints
+4. don't give up, try hard, come up with the correct code for the end minute
+
+ckech the prep email, google suite interview perp guide

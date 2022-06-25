@@ -544,3 +544,71 @@ class Solution:
 [1631. Path With Minimum Effort](https://leetcode.com/problems/path-with-minimum-effort/)
 
 
+# other
+
+[1197. Minimum Knight Moves](https://leetcode.com/problems/minimum-knight-moves/)
+
+```py
+class Solution:
+    def minKnightMoves(self, x: int, y: int) -> int:
+        """
+        BFS one-direction
+        """
+        
+        queue = collections.deque([(0, 0, 0)])
+        x, y, visited = abs(x), abs(y), set([(0, 0)])
+        dirs = [(1, 2), (2, 1), (1, -2), (-2, 1), (-1, 2), (2, -1)]
+        while queue:
+            a, b, step = queue.popleft()
+            if (a, b) == (x, y):
+                return step
+            
+            for dx, dy in dirs:
+                nei_x, nei_y = a + dx, b + dy
+                if (nei_x, nei_y) not in visited and -1 <= nei_x <= x + 2 and -1 <= nei_y <= y + 2:
+                    visited.add((nei_x, nei_y))
+                    queue.append((nei_x, nei_y, step + 1))
+            
+        return -1
+
+```
+
+```py
+class Solution:
+    def minKnightMoves(self, x: int, y: int) -> int:
+        """
+        BFS two-direction: Start BFS from both origin and target position
+        
+        Time: O(|x|*|y|)
+        Space: O(|x|*|y|)
+        """
+        x, y = abs(x), abs(y)
+        queue_ori = collections.deque([(0, 0, 0)])
+        queue_tar = collections.deque([(x, y, 0)])
+        # use two dicts to map the position to step
+        d_ori, d_tar = {(0, 0): 0}, {(x, y): 0}
+        dirs = [(1, 2), (2, 1), (1, -2), (-2, 1), (-1, 2), (2, -1), (-1, -2), (-2, -1)]
+        
+        while True:
+            # if already visited in the other dict: return 
+            ox, oy, ostep = queue_ori.popleft()
+            if (ox, oy) in d_tar:
+                return ostep + d_tar[(ox, oy)]
+            tx, ty, tstep = queue_tar.popleft()
+            if (tx, ty) in d_ori:
+                return tstep + d_ori[(tx, ty)]
+            
+            # visit new nodes, add it to queue and dict
+            for dx, dy in dirs:
+                nei_ox, nei_oy = ox + dx, oy + dy
+                if (nei_ox, nei_oy) not in d_ori and -1 <= nei_ox <= x + 2 and -1 <= nei_oy <= y + 2:
+                    queue_ori.append((nei_ox, nei_oy, ostep + 1))
+                    d_ori[(nei_ox, nei_oy)] = ostep + 1
+                    
+                nei_tx, nei_ty = tx + dx, ty + dy
+                if (nei_tx, nei_ty) not in d_tar and -1 <= nei_tx <= x + 2 and -1 <= nei_ty <= y + 2:
+                    queue_tar.append((nei_tx, nei_ty, tstep + 1))
+                    d_tar[(nei_tx, nei_ty)] = tstep + 1
+        
+        return -1
+```

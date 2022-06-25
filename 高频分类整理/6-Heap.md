@@ -847,3 +847,51 @@ class Solution:
         
         return r
 ```
+
+[1229. Meeting Scheduler](https://leetcode.com/problems/meeting-scheduler/)
+
+```py
+class Solution:
+    def minAvailableDuration(self, slots1: List[List[int]], slots2: List[List[int]], duration: int) -> List[int]:
+        """
+        sort input arrays and apply two pointers
+        always move the pointer that ends earlier
+
+        Time: O(MlogM + NlogN)
+        Space: O(M + N) as sort in python takes O(N) for the worst case
+        """
+        
+        slots1.sort()
+        slots2.sort()
+        
+        ptr1 = ptr2 = 0
+        
+        while ptr1 < len(slots1) and ptr2 < len(slots2):
+            # find the common slot
+            slot_end = min(slots1[ptr1][1], slots2[ptr2][1])
+            slot_begin = max(slots1[ptr1][0], slots2[ptr2][0])
+            if slot_end - slot_begin >= duration:
+                return [slot_begin, slot_begin + duration]
+            
+            # mvoe the one ends earlier
+            if slots1[ptr1][1] < slots2[ptr2][1]:
+                ptr1 += 1
+            else:
+                ptr2 += 1
+        return []
+```
+
+```py
+class Solution:
+    def minAvailableDuration(self, slots1: List[List[int]], slots2: List[List[int]], duration: int) -> List[int]:
+        # build up a heap containing time slots last longer than duration
+        timeslots = list(filter(lambda x: x[1] - x[0] >= duration, slots1 + slots2))
+        heapq.heapify(timeslots)
+
+        while len(timeslots) > 1:
+            start1, end1 = heapq.heappop(timeslots)
+            start2, end2 = timeslots[0]
+            if end1 >= start2 + duration:
+                return [start2, start2 + duration]
+        return []
+```
