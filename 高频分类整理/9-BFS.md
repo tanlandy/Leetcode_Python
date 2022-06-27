@@ -372,6 +372,83 @@ class Solution:
         return -1 
 ```
 
+[314. Binary Tree Vertical Order Traversal](https://leetcode.com/problems/binary-tree-vertical-order-traversal/)
+
+```python
+from collections import deque
+class Solution:
+    def verticalOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        """
+        Queue存((node, col)), 用一个map{col, oneRes}
+        遍历的时候，更新HashMap,最后用HashMap来导出，但是不知道最小值最大值，所以实时更新一下，这样就不用sort
+        col_res=defaultlist(list); queue=deque([(root, 0)]); queue.append((node,col-1))
+
+        Time: O(N),
+        Space: O(N)
+        """
+        if root is None: # 不要忘了base case
+            return []
+        col_res = defaultdict(list) #When the list class is passed as the default_factory argument, then a defaultdict is created with the values that are list.
+        min_col = max_col = 0
+        queue = deque([(root, 0)]) # 初始化加是deque([(root, 0)])
+        res = []
+        while queue:
+            node, col = queue.popleft()
+            col_res[col].append(node.val)
+            min_col = min(min_col, col)
+            max_col = max(max_col, col)
+            if node.left:
+                queue.append((node.left, col - 1)) # 双(())
+            if node.right:
+                queue.append((node.right, col + 1)) 
+
+        for i in range(min_col, max_col + 1): # 左闭右开，需要加一
+            res.append(col_res[i])
+        return res
+
+        """
+        如果是直接colTable = {}
+            if col not in colTable:
+                colTable[col] = [node.val]
+            else:
+                colTable[col].append(node.val)
+        """
+```
+
+
+[987. Vertical Order Traversal of a Binary Tree](https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/)
+
+```python
+class Solution(object):
+    def verticalTraversal(self, root):
+        """
+        与上一题唯一不同就是每一层新建一个map，然后排序好之后加到最终的map里；走完一层如何放进来：one_res[col] += sorted(temp[col])
+        """    
+        col_res = collections.defaultdict(list) 
+        queue = collections.deque([(root, 0)])
+        min_col, max_col = 0, 0
+        while queue:
+            tmp = collections.defaultdict(list)  # 每层之前先另外搞一个map
+            for _ in range(len(queue)):
+                node, col = queue.popleft()
+                tmp[col].append(node.val) 
+                min_col = min(min_col, col)
+                max_col = max(max_col, col)
+
+                if node.left:
+                    queue.append((node.left, col - 1))
+                if node.right: 
+                    queue.append((node.right, col + 1)) 
+                    
+            for col in tmp: # 走完一层再把map按顺序加进去，不能用.append，否则某一层是[[3],[15]]
+                col_res[col] += sorted(tmp[col])
+
+        res = []
+        for col in range(min_col, max_col + 1): # 左开右闭，需要加一
+            res.append(col_res[col])
+        return res
+```
+
 # 2D Grid
 
 [994. Rotting Oranges](https://leetcode.com/problems/rotting-oranges/)
@@ -420,10 +497,19 @@ class Solution:
         return time if fresh == 0 else -1
 ```
 
-# 拓扑排序
+# Topological Sort
+Topological sort or topological ordering of a directed graph is an ordering of nodes such that every node appears in the ordering before all the nodes it points to.
+
+Topological sort is not unique
+
+Graph with cycles do not havfe topological ordering
+
+## Kahn's Algorithm
+
+To obtain a tolopogical order, we can use Kahn's algorithm
 
 假设L是存放结果的列表，
-Step1: 找到那些入度为零的节点，把这些节点放到L中。
+Step1: 找到那些入度为零的节点，把这些节点放到L中。initialize a hashmap of node to parent
 Step2: 因为这些节点没有任何的父节点。所以可以把与这些节点相连的边从图中去掉。
 Step3: 再次寻找图中的入度为零的节点。对于新找到的这些入度为零的节点来说，他们的父节点已经都在L中了，所以也可以放入L。
 Step4: 重复上述操作，直到找不到入度为零的节点。
@@ -443,6 +529,9 @@ S ← 入度为零的节点的集合
     return L   (L为图的拓扑排序)
 ```
 
+和BFS的区别是，Topological sort只push入度为0的点到queue，而BFS把所有的邻居都push到queue
+
+
 [207. Course Schedule](https://leetcode.com/problems/course-schedule/)
 
 ```py
@@ -450,12 +539,15 @@ class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
         """
         Algorithm: BFS Topological Sorting
-        Time: O(E + V)
+        
+        Time: O(E + V) This is because we have to go through every connection and node once when we sort the graph.
         Space: O(E + V)
         """
-        # step1: build graph and store 入边的数量
-        graph = [[] for _ in range(numCourses)]
-        indegree = [0] * numCourses
+        # step1: build graph and 入边的数量
+        graph = {x: [] for x in range(numCourses)}
+        indegree = {x: 0 for x in range(numCourses)}
+        # graph = [[] for _ in range(numCourses)]
+        # indegree = [0] * numCourses
         for to_, from_ in prerequisites:
             graph[from_].append(to_)
             indegree[to_] += 1
@@ -490,8 +582,10 @@ class Solution:
         """
         和LC207相同，只是在拓扑排序的时候把结果同时存一下即可
         """
-        graph = [[] for _ in range(numCourses)]
-        indegree = [0] * numCourses
+        # graph = [[] for _ in range(numCourses)]
+        # indegree = [0] * numCourses
+        graph = {x: [] for x in range(numCourses)}
+        indegree = {x: 0 for x in range(numCourses)}
         for to_, from_ in prerequisites:
             graph[from_].append(to_)
             indegree[to_] += 1
@@ -516,6 +610,145 @@ class Solution:
 
         return order if count == numCourses else [] # 根据是否记录的数量等于总课程数量
 ```
+
+[444. Sequence Reconstruction](https://leetcode.com/problems/sequence-reconstruction/)
+
+```py
+class Solution:
+    def sequenceReconstruction(self, nums: List[int], sequences: List[List[int]]) -> bool:
+        """
+        We can try to construct a topological ordering and see if it's the same as original
+        
+        The key to determine uniqueness is checking the number of nodes in the queue at each step. If there is more than one node in the queue, we can pop any of them and still obtain a valid ordering and that means there will be more than one way to reconstruct the original sequence and therefore not unique.
+        """
+        # build graph and indgree
+        graph = {x:[] for x in nums}
+        indegree = {x: 0 for x in nums}
+        # graph = collections.defaultdict(list) 不能用这个，因为直接忽略了x:0 x:[]的情况
+        # indegree = collections.defaultdict(int)
+        for seq in sequences:
+            for i in range(len(seq) - 1):
+                from_, to_ = seq[i], seq[i + 1]
+                graph[from_].append(to_)
+                indegree[to_] += 1
+        
+        # add valid nodes to queue
+        queue = collections.deque()
+        for node in indegree:
+            if indegree[node] == 0:
+                queue.append(node)
+        
+        # check using topological sort
+        res = []
+        while queue:
+            if len(queue) != 1:
+                return False
+            node = queue.popleft()
+            res.append(node)
+            for to_ in graph[node]:
+                indegree[to_] -= 1
+                if indegree[to_] == 0:
+                    queue.append(to_)
+        
+        return len(res) == len(nums)
+```
+
+
+[953. Verifying an Alien Dictionary](https://leetcode.com/problems/verifying-an-alien-dictionary/)
+```python
+class Solution:
+    def isAlienSorted(self, words: List[str], order: str) -> bool:
+        """
+        用map存{letter: rank}，然后比较相邻的word，不符合的条件有两个：1，前面相同时len(words[i]) > len(words[i+1]；2，不同时候rank不对。如果不同但是满足，可以就直接break这两个word的比较；enumerate(string)返回(index, val)
+
+        时间：O(M)； M is total number of char in words
+        空间：O(1)
+        """
+        letter_order = {}
+        
+        for idx, val in enumerate(order):
+            letter_order[val] = idx
+        
+        # 两两比较
+        for i in range(len(words) - 1):
+            w1, w2 = words[i], words[i+1]
+            min_len = min(len(w1), len(w2))
+            # edge case：两个前缀一样，但是第一个更长
+            if len(w1) > len(w2) and w1[:min_len] == w2[:min_len]:
+                return False
+            # 正常比较
+            for j in range(min_len):
+                if w1[j] != w2[j]:
+                    if letter_order[w1[j]] > letter_order[w2[j]]:
+                        return False
+                    break
+                    
+        return True
+```
+
+
+[269. Alien Dictionary](https://leetcode.com/problems/alien-dictionary/) 先做LC953
+
+```python
+class Solution:
+    def alienOrder(self, words: List[str]) -> str:
+        """
+        先建adj{ch:set()}：两两word比较，得到两两letter的顺序；之后用postDFS放进来，DFS需要一个visit{ch:T/F}，每次看是否在里面，在的话就返回visit[c]，然后在dfs内部看ch的nei，如果dfs(nei)返回true就说明这条路不通，最后把res加进去；从adj的任意一个ch走dfs，最后reverse这个结果
+
+        时间：O(M), M is number of char of words，决定了graph大小
+        空间：O(1)
+        """
+        # adj list存储两两字母之间的order
+        # 对于words里的每个w，对于w里的每个character
+        # {c : set()}
+        adj = {c:set() for w in words for c in w}
+
+        for i in range(len(words) - 1):
+            w1, w2 = words[i], words[i+1]
+            minLen = min(len(w1), len(w2))
+            if len(w1) > len(w2) and w1[:minLen] == w2[:minLen]:
+                return ""
+            for j in range(minLen):
+                if w1[j] != w2[j]:
+                    adj[w1[j]].add(w2[j])
+                    break
+        
+        # DFS来遍历postorder，根据排好的顺序来画图
+        # 用visit来看是否有loop->
+        # visit{character: False/True} 给每个字母一个映射
+        # False说明已经visit过了
+        # True说明是在当前路径里
+        visit = {} # False = visited, True = visited & current path
+        res = []
+
+        # post-order traversal
+        def dfs(c): # 如果dfs返回True，说明这个ch已经看过并且是在当前路径，也就是cycle
+            if c in visit:
+                return visit[c] #如果返回true: cycle
+
+            visit[c] = True
+
+            for nei in adj[c]: # 看这个ch的每一个neighbor
+                if dfs(nei):
+                    return True
+            
+            visit[c] = False # 已经看过，但是不在当前路径了就
+            res.append(c)
+        
+        for c in adj:
+            if dfs(c):
+                return ""
+        
+        res.reverse()
+        return "".join(res)
+```
+
+[310. Minimum Height Trees](https://leetcode.com/problems/minimum-height-trees/)
+
+
+# Otherss
+
+
 
 [261. Graph Valid Tree](https://leetcode.com/problems/graph-valid-tree/)
 
@@ -545,6 +778,149 @@ class Solution:
 
 
 # other
+
+
+
+Since the difference between a tree and a graph is the possibility of having a cycle, we just have to handle this situation. We use an extra visited variable to keep track of vertices we have already visited to prevent re-visiting and getting into infinite loops
+
+Time: 
+O(V+E)
+
+BFS on graph template
+get_neighbors(node):
+In an adjacency list representation, this would be returning the list of neighbors for the node. 
+If the problem is about a matrix, this would be the surrounding valid cells as we will see in number of islands and knight shortest path. 
+If the graph is implicit, we have to generate the neighbors as we traverse. We will see this in word ladder.
+```python
+from collections import deque
+
+def bfs(root):
+    queue = deque([root])
+    visited = set([root])
+    while len(queue) > 0:
+        node = queue.popleft()
+        for neighbor in get_neighbors(node):
+            if neighbor in visited:
+                continue
+            queue.append(neighbor)
+            visited.add(neighbor)
+```
+
+使用：shortest path, graph of unknown or even infinite size
+
+```py
+def dfs(root, visited):
+    if not root:
+        return 
+    for neighbor in get_neighbors(root):
+        if neighbor in visited:
+            continue
+        visited.add(neighbor)
+        dfs(neighbor, visited)
+```
+
+BFS vs DFS
+BFS:
+1. find the shortest distance
+2. graph of unknown size (word ladder), or infinite size (knight shortest path)
+
+DFS:
+1. less memory. as BFS has to keep all the nodes in the queue for wide graph
+2. find nodes far away from the root, eg looking for an exit in a maze
+
+shortest path btw A and B
+```py
+def shortest_path(graph: List[List[int]], a: int, b: int) -> int:
+    queue = collections.deque([a])
+    visited = set([a])
+    res = 0
+    while queue:
+
+        for _ in range(len(queue)):
+            node = queue.popleft()
+            if node == b:
+                return res   
+            for nei in graph[node]:
+                if nei not in visited:
+                    queue.append(nei)
+                    visited.add(nei)
+        res += 1
+    
+    return -1
+```
+
+## Matrix as Graph
+[733. Flood Fill](https://leetcode.com/problems/flood-fill/)
+
+```py
+class Solution:
+    def floodFill(self, image: List[List[int]], sr: int, sc: int, newColor: int) -> List[List[int]]:
+        """
+        最基本的BFS
+        """
+        rows, cols = len(image), len(image[0])   
+        queue = collections.deque([(sr, sc)])
+        visited = set([(sr, sc)])
+        dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+        while queue:
+            r, c = queue.popleft()
+            for dx, dy in dirs:
+                nei_r, nei_c = r + dx, c + dy
+                if 0 <= nei_r < rows and 0 <= nei_c < cols and (nei_r, nei_c) not in visited and image[nei_r][nei_c] == image[sr][sc]:
+                    image[nei_r][nei_c] = newColor
+                    queue.append((nei_r, nei_c))
+                    visited.add((nei_r, nei_c))
+        image[sr][sc] = newColor
+        return image
+```
+
+```py
+class Solution(object):
+    def floodFill(self, image, sr, sc, newColor):
+        rows, cols = len(image), len(image[0])
+        color = image[sr][sc]
+        
+        def dfs(r, c):
+            if 0 <= r < rows and 0 <= c < cols and image[r][c] == color:
+                image[r][c] = newColor
+                dfs(r-1, c)
+                dfs(r+1, c)
+                dfs(r, c-1)
+                dfs(r, c+1)
+        
+        if color == newColor:
+            return image
+        dfs(sr, sc)
+        return image
+```
+
+[200. Number of Islands](https://leetcode.com/problems/number-of-islands/)
+
+```py
+class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        rows, cols = len(grid), len(grid[0])
+        visit = set()
+        
+        def dfs(r, c):
+            if (r < 0 or r == rows or c < 0 or c == cols or (r, c) in visit or grid[r][c] != "1"):
+                return
+            
+            visit.add((r, c))
+            dfs(r + 1, c)
+            dfs(r - 1, c)
+            dfs(r, c + 1)
+            dfs(r, c - 1)
+            
+        
+        count = 0
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == "1" and (r, c) not in visit:
+                    count += 1
+                    dfs(r, c)      
+        return count
+```
 
 [1197. Minimum Knight Moves](https://leetcode.com/problems/minimum-knight-moves/)
 
@@ -612,3 +988,312 @@ class Solution:
         
         return -1
 ```
+
+[286. Walls and Gates](https://leetcode.com/problems/walls-and-gates/)
+
+```py
+class Solution:
+    def wallsAndGates(self, rooms: List[List[int]]) -> None:
+        """
+        找每个格子到gate的最短距离：从gate出发bfs
+        """
+        rows, cols = len(rooms), len(rooms[0])
+        queue = collections.deque()
+        visit = set()
+        
+        def addRoom(r, c):
+            if (r < 0 or r == rows or c < 0 or c == cols or (r, c) in visit or rooms[r][c] == -1):
+                return
+            queue.append((r, c))
+            visit.add((r, c))
+        
+        # 先把gates都添加到queue中，然后同时的bfs
+        for r in range(rows):
+            for c in range(cols):
+                if rooms[r][c] == 0:
+                    queue.append((r, c))
+                    visit.add((r, c))
+                    
+        dist = 0
+        while queue:
+            size = len(queue)
+            for i in range(size):
+                r, c = queue.popleft()
+                rooms[r][c] = dist
+                addRoom(r + 1, c)
+                addRoom(r - 1, c)
+                addRoom(r, c + 1)
+                addRoom(r, c - 1)
+            dist += 1
+```
+
+## Implicit Graph
+
+[752. Open the Lock](https://leetcode.com/problems/open-the-lock/)
+
+```py
+class Solution:
+    def openLock(self, deadends: List[str], target: str) -> int:
+        """
+        BFS templete, trick point is to find the adjcent wheels each time
+
+        Time: O(N^2 * A^N + D) N is number of digtis, A is number of alphabets: O(N^2) for each combination, we spend
+        """
+        # edge case
+        if "0000" in deadends:
+            return -1
+        
+        # find the adjacent locks
+        def children(wheel):
+            res = []
+            for i in range(4): # 8 adjcents in toal
+                digit = str((int(wheel[i]) + 1) % 10) # up 1
+                res.append(wheel[:i] + digit + wheel[i+1:])
+                digit = str((int(wheel[i]) + 10 - 1) % 10) # down 1
+                res.append(wheel[:i] + digit + wheel[i+1:])
+            return res    
+        
+        # BFS structrue
+        queue = collections.deque()
+        visit = set(deadends)
+        queue.append(["0000", 0]) # queue stores both [wheel, turns]
+        while queue:
+            wheel, turns = queue.popleft()
+            # target to return
+            if wheel == target:
+                return turns
+            
+            # traverse other
+            for child in children(wheel):
+                if child not in visit:
+                    visit.add(child)
+                    queue.append([child, turns + 1])
+        return -1 
+
+```
+
+[127. Word Ladder](https://leetcode.com/problems/word-ladder/)
+
+```python
+class Solution:
+    def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
+        """
+        先用nested loop建一个adjacent list，然后用BFS
+        adj: {pattern: [words]} : {*ot: [hot, dot, lot]}；
+        找pattern = word[:j] + "*" + word[j+1:]；
+        res起点是1；visited和queue一开始要把beginWord放进来：visit.add([beginWord]); queue.append([beginWord])
+
+        时间：O(M^2*N), M is len(word)
+        空间：O(M^2*N)
+        """
+        if endWord not in wordList:
+            return 0
+        
+        pattern_word = collections.defaultdict(list)
+        wordList.append(beginWord)
+        
+        # 对于wordList的每个word，把每一个pattern都找到，然后构建adj
+        for word in wordList:
+            for j in range(len(word)):
+                pattern = word[:j] + "*" + word[j+1:]
+                pattern_word[pattern].append(word)
+        
+        visited = set([beginWord])
+        queue = collections.deque([beginWord])
+        res = 1
+        
+        while queue:
+            for i in range(len(queue)):
+                word = queue.popleft()
+                if word == endWord:
+                    return res
+                
+                # 对于每一个word, 如果在map对应的pattern里面，说明是一个选择，就queue加进去visited加进去
+                for j in range(len(word)):
+                    pattern = word[:j] + "*" + word[j+1:]
+                    for nei_word in pattern_word[pattern]:
+                        if nei_word not in visited:
+                            visited.add(nei_word)
+                            queue.append(nei_word)
+            res += 1
+        
+        return 0
+```
+
+[126. Word Ladder II](https://leetcode.com/problems/word-ladder-ii/)
+```py
+class Solution:
+    def findLadders(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
+        
+        if endWord not in wordList:
+            return []
+        
+        word_queue = deque([[beginWord, [beginWord]]])
+        visited = set([beginWord])
+        
+        patterns = defaultdict(list)
+        paths = []
+        word_len = len(beginWord)
+        
+        for word in wordList:
+            for index in range(word_len):
+                patterns[word[:index] + '*' + word[index + 1:]].append(word)
+        
+        while word_queue:
+            current_level_length = len(word_queue)
+            current_level_visited = set()
+            
+            for _ in range(current_level_length):
+                word, word_sequence = word_queue.popleft()
+                if word == endWord:
+                    paths.append(word_sequence)
+                    continue
+                for index in range(word_len):
+                    pattern  = word[ : index] + '*' + word[index + 1: ]
+                    for adjacent_word in patterns[pattern]:
+                        if adjacent_word not in visited:
+                            word_queue.append([adjacent_word, word_sequence[:] + [adjacent_word]])
+                            current_level_visited.add(adjacent_word)
+            visited.update(current_level_visited)
+        
+        return paths
+```
+
+```py
+class Solution:
+    def findLadders(self, beginWord: str, endWord: str, wordList: List[str]) -> List[List[str]]:
+        prefix_d = defaultdict(list)
+        for word in wordList:
+            for i in range(0,len(word)):
+                prefix_d[word[0:i]+"*"+word[i+1:]].append(word)
+        
+        order = {beginWord: []}
+        queue = deque([beginWord])
+        temp_q = deque()
+        go_on = True
+        end_list = []
+        
+        while queue and go_on:  # There is no node even added to temp_q
+            temp_d = {}
+            while queue:        # Pop every node on this level
+                cur = queue.popleft()
+                for i in range(0, len(cur)):
+                    for j in prefix_d[cur[0:i]+"*"+cur[i+1:]]:
+                        if j == endWord:
+                            end_list.append(j)
+                            go_on = False
+                        if j not in order:
+                            if j not in temp_d:
+                                temp_d[j] = [cur]
+                                temp_q.append(j)
+                            else:
+                                temp_d[j].append(cur)
+            queue = temp_q
+            temp_q = deque()
+            order.update(temp_d)
+        
+        ret = []
+        
+        # DFS to restore the paths
+        def dfs(path, node):
+            path = path + [node]    # add the node(Deepcopy)
+            if order[node] == []:
+                ret.append(list(path[::-1]))
+                return
+            for i in order[node]:
+                dfs(path, i)
+        if endWord in order:
+            dfs([], endWord)
+        else:
+            return []
+        
+        return ret
+```
+
+
+
+[773. Sliding Puzzle](https://leetcode.com/problems/sliding-puzzle/)
+```py
+class Solution:
+    def slidingPuzzle(self, board: List[List[int]]) -> int:
+        """
+        BFS上下左右移动空格，和对应的格子交换
+        """     
+        rows = 2
+        cols = 3
+        def find_zero(board):
+            for i in range(rows):
+                for j in range(cols):
+                    if board[i][j] == 0:
+                        return i, j
+        
+        steps = 0
+        queue = collections.deque([board])
+        visited = set([str(board)]) # list is unhashable, so converted to string
+
+        target = [[1, 2, 3], [4, 5, 0]]
+
+        while queue:
+            for _ in range(len(queue)):
+                board = queue.popleft()
+                i, j = find_zero(board)
+                if board == target:
+                    return steps
+                neighbors = [(i-1, j), (i+1, j), (i, j-1), (i, j+1)]
+                for nei in neighbors:
+                    new_board = [row[:] for row in board]
+                    r, c = nei
+                    if 0 <= r < rows and 0 <= c < cols:
+                        new_board[r][c], new_board[i][j] = new_board[i][j], new_board[r][c]
+                        if str(new_board) not in visited:
+                            queue.append(new_board)
+                            visited.add(str(new_board))
+            steps += 1
+        
+        return -1
+
+```
+
+```py
+class Solution:
+    def slidingPuzzle(self, board: List[List[int]]) -> int:
+        # Define the function for any size
+        # @params: m, n are the size of the board, final is the final state of the board
+        # @return: least number of moves (or -1 if there's no result)
+        def sliding_puzzle_any_size(board, m, n, final):
+            def find_zero(board):
+                for i in range(n):
+                    for j in range(m):
+                        if board[i][j] == 0:
+                            return i, j
+
+            moves_so_far = 0
+            queue = collections.deque([board])
+            visited = set([str(board)])
+
+            while queue:
+                
+                for _ in range(len(queue)):
+                    board = queue.popleft()
+                    i, j = find_zero(board)
+                    if board == final:
+                        return moves_so_far
+                    neighbors = [(i-1, j), (i+1, j), (i, j-1), (i, j+1)]
+                    for neighbor in neighbors:
+                        new_board = [row[:] for row in board]
+                        row, col = neighbor
+                        if row < 0 or row >= n or col < 0 or col >= m:
+                            continue
+                        new_board[row][col], new_board[i][j] = new_board[i][j], new_board[row][col]
+                        if str(new_board) not in visited:
+                            queue.append(new_board)
+                            visited.add(str(new_board))
+
+                moves_so_far += 1
+            return -1
+
+        # Define the final state and pass it with m=3 n=2 as arguments to the function
+        final = [[1, 2, 3],[4, 5, 0]]
+        return sliding_puzzle_any_size(board, 3, 2, final)  
+```
+

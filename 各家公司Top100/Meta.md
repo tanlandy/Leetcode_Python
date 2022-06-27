@@ -489,23 +489,18 @@ class Solution:
 
 [314. Binary Tree Vertical Order Traversal](https://leetcode.com/problems/binary-tree-vertical-order-traversal/)
 
-Given the root of a binary tree, return the vertical order traversal of its nodes' values. (i.e., from top to bottom, column by column).
-
-If two nodes are in the same row and column, the order should be from left to right.
-
-思路：
-Queue存((node, col)), 用一个map{col, oneRes}, 遍历的时候，更新HashMap,最后用HashMap来导出，但是不知道最小值最大值，所以实时更新一下，这样就不用sort，时间复杂度O(N),空间：O(N); colTable=defaultlist(list); queue=deque([(root, 0)]); queue.append((node,col-1))
-
 ```python
-# Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
 from collections import deque
 class Solution:
     def verticalOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        """
+        Queue存((node, col)), 用一个map{col, oneRes}
+        遍历的时候，更新HashMap,最后用HashMap来导出，但是不知道最小值最大值，所以实时更新一下，这样就不用sort
+        colTable=defaultlist(list); queue=deque([(root, 0)]); queue.append((node,col-1))
+
+        Time: O(N),
+        Space: O(N)
+        """
         if root is None: # 不要忘了base case
             return []
         colTable = defaultdict(list) #When the list class is passed as the default_factory argument, then a defaultdict is created with the values that are list.
@@ -522,7 +517,7 @@ class Solution:
             if node.right:
                 queue.append((node.right, col + 1)) 
 
-        for i in range(min_col, max_col + 1): # 左开右闭，需要加一
+        for i in range(min_col, max_col + 1): # 左闭右开，需要加一
             res.append(colTable[i])
         return res
 
@@ -537,17 +532,13 @@ class Solution:
 
 [987. Vertical Order Traversal of a Binary Tree](https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/)
 
-The vertical order traversal of a binary tree is a list of top-to-bottom orderings for each column index starting from the leftmost column and ending on the rightmost column. There may be multiple nodes in the same row and same column. In such a case, sort these nodes by their values.
-
-与上一题唯一不同就是每一层新建一个map，然后排序好之后加到最终的map里；走完一层如何放进来：one_res[col] += sorted(temp[col])
 ```python
 class Solution(object):
     def verticalTraversal(self, root):
         """
-        :type root: TreeNode
-        :rtype: List[List[int]]
+        与上一题唯一不同就是每一层新建一个map，然后排序好之后加到最终的map里；走完一层如何放进来：one_res[col] += sorted(temp[col])
         """    
-        one_res = collections.defaultdict(list) 
+        col_res = collections.defaultdict(list) 
         queue = collections.deque([(root, 0)])
         min_col, max_col = 0, 0
         while queue:
@@ -563,12 +554,12 @@ class Solution(object):
                 if node.right: 
                     queue.append((node.right, col + 1)) 
                     
-            for col in tmp: # 走完一层再把map按顺序加进去
-                one_res[col] += sorted(tmp[col])
+            for col in tmp: # 走完一层再把map按顺序加进去，不能用.append，否则某一层是[[3],[15]]
+                col_res[col] += sorted(tmp[col])
 
         res = []
         for col in range(min_col, max_col + 1): # 左开右闭，需要加一
-            res.append(one_res[col])
+            res.append(col_res[col])
         return res
 ```
 
