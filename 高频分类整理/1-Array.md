@@ -667,3 +667,27 @@ class Solution:
         # return True if we can remove this element and have A[p-1] <= A[p+1] or remove next element and have A[p] <= A[p+2].
         return idx in [-1, 0, len(nums) - 2] or nums[idx - 1] <= nums[idx + 1] or nums[idx] <= nums[idx + 2]
 ```
+
+[1010. Pairs of Songs With Total Durations Divisible by 60](https://leetcode.com/problems/pairs-of-songs-with-total-durations-divisible-by-60/)
+
+```py
+class Solution:
+    def numPairsDivisibleBy60(self, time: List[int]) -> int:
+        """
+        similar to twoSum: record the frequencies of each remainder
+        
+        Time: O(N)
+        Space: O(1)
+        """
+        # remainders = collections.defaultdict(int)
+        remainders = [0] * 60 
+        res = 0
+        for t in time:
+            if t % 60 == 0:
+                res += remainders[0]
+            else:
+                res += remainders[60 - t % 60]
+            remainders[t % 60] += 1
+        
+        return res
+```
