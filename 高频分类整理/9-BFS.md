@@ -746,6 +746,9 @@ class Solution:
 [310. Minimum Height Trees](https://leetcode.com/problems/minimum-height-trees/)
 
 
+
+
+
 # Otherss
 
 
@@ -766,6 +769,32 @@ class Solution:
 对于加权图，for循环遍历帮助维护depth层数，但是在Dijkstra中层数无意义，要考虑的是路径的权重和
 -> 去掉for循环，在queue中存[node, depth]
 
+the distance increases by the weight instead of 1 -> need to visit a node more than once to guarantee minimum distance to that node
+
+## 模板
+```py
+def shortest_path(graph: List[List[Tuple[int, int]]], a: int, b: int) -> int:
+
+    def bfs(root: int, target: int):
+        queue = [(0, root)]
+        distances = [float('inf')] * len(graph)
+        distances[root] = 0
+        while len(queue) > 0:
+            distance, node = heappop(queue)
+            if distance > distances[node]:
+                continue
+            for neighbor, weight in graph[node]:
+                d = distances[node] + weight
+                if distances[neighbor] <= d:
+                    continue
+                heappush(queue, (d, neighbor))
+                distances[neighbor] = d
+        return distances[target]
+
+    return -1 if bfs(a, b) == float('inf') else bfs(a, b)
+```
+
+
 ## 例题
 
 [743. Network Delay Time](https://leetcode.com/problems/network-delay-time/)
@@ -775,6 +804,62 @@ class Solution:
 
 
 [1631. Path With Minimum Effort](https://leetcode.com/problems/path-with-minimum-effort/)
+
+
+# MST
+It is a graph that connects all the vertices together, withoug cycles and with the minimum total edge weight
+## Kruskal's Algo
+Kruskal's algorithm generates the Minimum Spanning Tree by always choosing the smallest weigthed edge in the graph and consistently growing the tree by one edge.
+1. Sort the edge besed on weights
+2. Try every edge, add the edge to res as long as they are not connected -> Disjoint Sets
+3. Repeat until have connected n-1 edges
+
+Time: O(ElogE) union find is logE, do it E times. we also sort the graph
+
+```py
+class UnionFind:
+    def __init__(self):
+        self.id = {}
+
+    def find(self, x):
+        y = self.id.get(x, x)
+        if y != x:
+            self.id[x] = y = self.find(y)
+        return y
+
+    def union(self, x, y):
+        self.id[self.find(x)] = self.find(y)
+
+class Edge:
+    def __init__(self, weight, a, b):
+        self.weight = weight
+        self.a = a
+        self.b = b
+def cmp():
+    def compare(x, y):
+        return x.weight < y.weight
+    return compare
+def minimum_spanning_tree(n : int, edges : List[edge]) -> int:
+    # sort list, make sure to define custom comparator class cmp to sort edge based on weight from lowest to highest
+    edges.sort(key = cmp)
+    dsu = UnionFind()
+    ret, cnt = 0, 0
+    for edge in edges:
+      # check if edges belong to same set before merging and adding edge to mst
+      if dsu.find(edge.a) != dsu.find(edge.b):
+        dsu.union(edge.a, edge.b)
+        ret = ret + edge.weight
+        cnt += 1
+        if cnt == n - 1:
+          break
+    return ret
+```
+
+## Prim's Algo
+another way to calculate MST, skip for now.
+
+
+
 
 
 # other
