@@ -236,6 +236,88 @@ class Solution:
 
 # Top 200
 
+[1293. Shortest Path in a Grid with Obstacles Elimination](https://leetcode.com/problems/shortest-path-in-a-grid-with-obstacles-elimination/)
+```py
+class Solution:
+    def shortestPath(self, grid: List[List[int]], k: int) -> int:
+        """
+        BFS on (x,y,r) x,y is coordinate, r is remain number of obstacles you can remove.
+        queue: (step, state)
+        visited: (state)
+        state: (r, c, k)
+
+        Time: O(NK), visit each cell K times
+        Space: O(NK)
+        """
+        rows, cols = len(grid), len(grid[0])
+        
+        if k >= rows + cols - 2:
+            return rows + cols - 2
+        
+        state = (0, 0, k)
+        queue = collections.deque([(0, state)])
+        visited = set([state])
+        dirs = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        
+        while queue:
+            steps, (r, c, k) = queue.popleft()
+            if r == rows - 1 and c == cols - 1:
+                return steps
+            
+            for dx, dy in dirs:
+                nei_r, nei_c = r + dx, c + dy
+                if 0 <= nei_r < rows and 0 <= nei_c < cols:
+                    nei_k = k - grid[nei_ar][nei_c]
+                    nei_state = (nei_r, nei_c, nei_k)
+                    if nei_k >= 0 and nei_state not in visited:
+                        visited.add(nei_state)
+                        queue.append((steps + 1, nei_state))
+        
+        return -1
+```
+
+```py
+class Solution:
+    def shortestPath(self, grid: List[List[int]], k: int) -> int:
+        """
+        prioritize exploring the most promising directions at each step: Use priority queue to store the order of visits, the order is based on the estimated total cost function f(n) = g(n) + h(n)
+        
+        Time: O(NK*log(NK)), visit each cell K times, each time: log(NK)
+        Space: O(NK)
+        """
+        rows, cols = len(grid), len(grid[0])
+        
+        def dist(r, c):
+            return rows - 1 - r + cols - 1 - c
+        
+        # (r, c, remaining_k)
+        state = (0, 0, k)
+        
+        # (total_dist, steps, state)
+        minHeap = [(dist(0, 0), 0, state)]
+        visited = set([state])
+        dirs = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        
+        while minHeap:
+            total_dist, steps, (r, c, remain_k) = heapq.heappop(minHeap)
+            
+            if total_dist - steps <= remain_k:
+                return total_dist
+            
+            for dx, dy in dirs:
+                nei_r, nei_c = r + dx, c + dy
+                if 0 <= nei_r < rows and 0 <= nei_c < cols:
+                    nei_k = remain_k - grid[nei_r][nei_c]
+                    nei_state = (nei_r, nei_c, nei_k)
+                    if nei_k >= 0 and nei_state not in visited:
+                        visited.add(nei_state)
+                        nei_total_dist = dist(nei_r, nei_c) + steps + 1
+                        heapq.heappush(minHeap, (nei_total_dist, steps + 1, nei_state))
+        
+        return -1
+```
+
+
 [366. Find Leaves of Binary Tree](https://leetcode.com/problems/find-leaves-of-binary-tree/)
 
 ```py
@@ -333,6 +415,92 @@ class Solution:
         dfs(root, None)
         return res[0]
 ```
+
+```py
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def findLeaves(self, root: Optional[TreeNode]) -> List[List[int]]:
+        """
+        拓扑排序：把所有outdegree==0的node一一删除
+        """
+        
+        # build graph: {child: parents} and outdegree
+        graph = collections.defaultdict(list)
+        outdegree = collections.defaultdict(int)
+        
+        def dfs(cur, prev):
+            if cur == None:
+                return
+            outdegree[prev] += 1
+            outdegree[cur] += 0
+            graph[cur].append(prev)
+            
+            dfs(cur.left, cur)
+            dfs(cur.right, cur)
+        
+        dfs(root, TreeNode(-101)) # the range of val is between -100 and 100
+        
+        # add valid nodes to queue
+        queue = collections.deque()
+        for node in outdegree:
+            if outdegree[node] == 0:
+                queue.append(node)
+        
+        # build res using topological sort
+        res = []
+        while queue:
+            size = len(queue)
+            cur_level = []
+            for _ in range(size): # build one level
+                cur = queue.popleft()
+                if cur.val > -101:
+                    cur_level.append(cur.val)
+                for nei in graph[cur]:
+                    outdegree[nei] -= 1
+                    if outdegree[nei] == 0:
+                        queue.append(nei)
+            if cur_level: # add one level to res
+                res.append(cur_level)
+        
+        return res
+```
+
+```py
+class Solution(object):
+    
+    def findLeaves(self, root):
+        
+        if not root:
+            return []
+        result=[]
+        while root:
+            curLeaves = []
+            root = self._findLeaves(root, curLeaves)
+            
+            result.append(curLeaves)
+        
+        return result 
+
+    def _findLeaves(self, root, curLeaves):
+        """
+        remove the leave
+        """
+        if not root:
+            return None
+        if not root.left and not root.right:
+            curLeaves.append(root.val)
+            return None
+        else:
+            root.left = self._findLeaves(root.left, curLeaves)
+            root.right = self._findLeaves(root.right, curLeaves)
+            return root
+```
+
 
 [2034. Stock Price Fluctuation](https://leetcode.com/problems/stock-price-fluctuation/)
 
