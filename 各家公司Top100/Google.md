@@ -394,6 +394,239 @@ class Solution:
         return self.ps + self.pd
 ```
 
+[2128. Remove All Ones With Row and Column Flips](https://leetcode.com/problems/remove-all-ones-with-row-and-column-flips/)
+```py
+class Solution:
+    def removeOnes(self, grid: List[List[int]]) -> bool:
+        """
+        the order of the operations doesn't matter
+        doing more than 1 operation on the same row/col is not useful
+        
+        step:
+        1. flip rows, make sure all rows be the "same"
+        2. flip cols
+
+        Time: O(M*N)
+        Space: O(M*N)
+        """
+        r1, r1_flip = grid[0], [1 - val for val in grid[0]]
+        
+        for i in range(1, len(grid)):
+            if grid[i] != r1 and grid[i] != r1_flip:
+                return False
+        
+        return True
+```
+
+[818. Race Car](https://leetcode.com/problems/race-car/)
+
+```py
+class Solution:
+    def racecar(self, target: int) -> int:
+        """
+        Sol1: Greedily BFS
+        For Naive BFS: 2^N, each time we have two choices. 
+        ->Optimized with memorization: store the visited car speed and position
+        """
+        
+        #1. Initialize double ended queue as 0 moves, 0 position, +1 velocity
+        state = (0, 1)
+        queue = collections.deque([(0, state)])
+        visited = set(state)
+        while queue:
+            moves, (pos, vel) = queue.popleft()
+
+            if pos == target:
+                return moves
+            
+            #2. Always consider moving the car in the direction it is already going
+            forward_state = (pos + vel, 2 * vel)
+            if forward_state not in visited:
+                queue.append((moves + 1, (forward_state)))
+                visited.add(forward_state)
+            
+            #3. Only consider changing the direction of the car if one of the following conditions is true
+            #   i.  The car is driving away from the target.
+            #   ii. The car will pass the target in the next move.  
+            if (pos + vel > target and vel > 0) or (pos + vel < target and vel < 0):
+                back_state = (pos, -1 if vel > 0 else 1)
+                if back_state not in visited:
+                    queue.append((moves + 1,back_state))
+                    visited.add(back_state)
+```
+
+```py
+class Solution:
+    def racecar(self, target: int) -> int:
+        """
+        Sol2: Basic DP 
+        DP: dp(i) be the shortest instructions to move car from position 0 to position i. Return value is dp[target], base case is dp[0] = 0
+        case1: 一直走m次就到了 dp[target] = m, when target == 2 ** m - 1
+        case2: 走m次之后没到target就掉头，走了n次再掉头，再往前走直到到了 dp[target] = m + 1 + n + 1 + dp[target-(pm-pn)], where pm = 2 ** m - 1, pn = 2 ** n - 1
+        case3: 走m次之后超过target再掉头，直到走到了 dp[target] = m + 1 + dp[pm - target], where pm = 2 ** m - 1 
+        """
+        dp = [float("inf")] * (target + 1)
+
+        dp[0] = 0
+        for i in range(1, target + 1):
+            m, pm = 1, 1
+            while pm < i:
+                n, pn = 0, 0
+                while pn < pm:
+                    dp[i] = min(dp[i], m + 1 + n + 1 + dp[i - (pm - pn)])
+                    n += 1
+                    pn = 2 ** n - 1
+                m += 1
+                pm = 2 ** m - 1
+            dp[i] = min(dp[i], m + (0 if i == pm else 1 + dp[pm - i]))
+
+        return dp[target]
+```
+
+```py
+class Solution:
+    # def racecar(self, target: int) -> int:
+    #     """
+    #     Sol3: Greedily DP
+    #     """
+    dp = {0: 0}
+    def racecar(self, t):
+        if t in self.dp:
+            return self.dp[t]
+        n = t.bit_length()
+        if 2**n - 1 == t:
+            self.dp[t] = n
+        else:
+            self.dp[t] = self.racecar(2**n - 1 - t) + n + 1
+            for m in range(n - 1):
+                self.dp[t] = min(self.dp[t], self.racecar(t - 2**(n - 1) + 2**m) + n + m + 1)
+        return self.dp[t]
+            
+```
+
+
+[2115. Find All Possible Recipes from Given Supplies](https://leetcode.com/problems/find-all-possible-recipes-from-given-supplies/)
+
+```py
+class Solution:
+    def findAllRecipes(self, recipes: List[str], ingredients: List[List[str]], supplies: List[str]) -> List[str]:
+        """
+        拓扑排序
+        graph: {ingredients: recipies}
+        indegree: recipes
+        遍历一遍recipes和ingredients，构建出来graph和indegree
+        
+        queue装所有的supplies，然后更新indegree，把indegree[i]==0的放进queue
+        res是拓扑排序之后indegree[i]==0的那些i
+        """
+        
+        # graph: {ingredients: recipies}
+        graph = collections.defaultdict(list)
+        # indegree: required for recipes
+        indegree = collections.defaultdict(int)
+        
+        for i in range(len(recipes)):
+            for ing in ingredients[i]:
+                indegree[recipes[i]] += 1
+                graph[ing].append(recipes[i])
+        
+        
+        # 拓扑排序
+        queue = collections.deque(supplies)
+        while queue:
+            cur = queue.popleft()
+            for nei in graph[cur]:
+                indegree[nei] -= 1
+                if indegree[nei] == 0:
+                    queue.append(nei)
+        
+        res = []
+        for recipe in recipes:
+            if indegree[recipe] == 0:
+                res.append(recipe)
+        
+        return res
+```
+
+```py
+class Solution:
+    def findAllRecipes(self, recipes: List[str], ingredients: List[List[str]], supplies: List[str]) -> List[str]:
+        """
+        use DFS with Memorization to find the one
+        """
+        suppliesSet = set(supplies)
+        recipesMap = {recipes[i]: ingredients[i] for i in range(0, len(recipes))}
+        ans = []
+        
+        for recipe in recipesMap:
+            if self.canMake(recipe, suppliesSet, recipesMap, set()):
+                ans.append(recipe)
+                
+        return ans
+    
+    def canMake(self, target, suppliesSet, recipesMap, seen):
+        if target in suppliesSet:
+            return True
+        if target in seen:
+            return False
+        if target not in recipesMap:
+            return False
+        
+        seen.add(target)
+        
+        for ingredient in recipesMap[target]:
+            if not self.canMake(ingredient, suppliesSet, recipesMap, seen):
+                return False
+        
+        suppliesSet.add(target)
+        return True
+        
+```
+
+[2013. Detect Squares](https://leetcode.com/problems/detect-squares/)
+```py
+class DetectSquares:
+
+    def __init__(self):
+        # counter: {point: freq}
+        self.counter = collections.Counter()
+
+    def add(self, point: List[int]) -> None:
+        self.counter[tuple(point)] += 1
+
+    def count(self, point: List[int]) -> int:
+        res = 0
+        x1, y1 = point
+        # for each point, make it the potientail diagnal point
+        for (x3, y3), freq in self.counter.items():
+            # use the diagnal points to generate square
+            if x1 == x3 or abs(x1 - x3) != abs(y1 - y3):
+                continue
+            # += freq * p2_freq * p4_freq
+            res += freq * self.counter[(x3, y1)] * self.counter[(x1, y3)]
+        return res
+```
+
+[359. Logger Rate Limiter](https://leetcode.com/problems/logger-rate-limiter/)
+```py
+class Logger:
+
+    def __init__(self):
+        self.msg_time = {}
+
+    def shouldPrintMessage(self, timestamp: int, message: str) -> bool:
+        if message not in self.msg_time:
+            self.msg_time[message] = timestamp
+            return True
+        else:
+            if timestamp >= self.msg_time[message] + 10:
+                self.msg_time[message] = timestamp
+                return True
+            else:
+                return False
+```
+
+再看一下set和queue的解法
 
 [250. Count Univalue Subtrees](https://leetcode.com/problems/count-univalue-subtrees/)
 ```py
@@ -417,12 +650,6 @@ class Solution:
 ```
 
 ```py
-# Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
 class Solution:
     def findLeaves(self, root: Optional[TreeNode]) -> List[List[int]]:
         """
@@ -698,9 +925,35 @@ class SnapshotArray:
 
 instead of record the whole array, we record the history of each cell -> minimum space to record all information
 for each arr[i], record the history with a snap_id and value.
-when call the get(), do binary search tthe time snap_id
+when call the get(), do binary search the time snap_id
+
+[150. Evaluate Reverse Polish Notation](https://leetcode.com/problems/evaluate-reverse-polish-notation/)
+
+```py
+class Solution:
+    def evalRPN(self, tokens: List[str]) -> int:
+        stack = []
+        
+        for c in tokens:
+            if c in "+-*/":
+                a, b = stack.pop(), stack.pop()
+                if c == "+":
+                    stack.append(a + b)
+                elif c == "-":
+                    stack.append(b - a)
+                elif c == "*":
+                    stack.append(a * b)
+                else:
+                    stack.append(int(b / a))
+            else:
+                stack.append(int(c))  
+        
+        return stack[0]
+```
 
 
+
+# Events
 ## 06/24/22 Engineering Round Table
 google coursera
 
@@ -733,3 +986,100 @@ common mistakes you see candidates make during the interviews
 4. don't give up, try hard, come up with the correct code for the end minute
 
 ckech the prep email, google suite interview perp guide
+
+## 06/27/22 Welcome
+你不要放松 很需要你在这时候努力
+
+Area 120
+ERGs: Employee Resource Groups
+Personal growth opportunities to keep you learning and growing:
+- “Grow” classes and educational benefits
+- Bungee or rotational programs
+- 20% project
+
+Fostering diversity and inclusion
+
+process:
+1. initial call with your recruiter and interview prep
+2. 3 coding and 1 Googleyness and leadership interview
+3. feedback review, match, and offer process: 2-3 weeks
+
+Interview day-of logistics
+be held over Google Meet
+have a minimum of 15 minutes in between each round
+Google’s Virtual Interviewing Platform (VIP) allows for real-time collaborative remote coding between the candidate and the interviewer, complete with formatting and syntax highlighting(no compiler)
+
+Please do!
+1. make sure you can be heard during virtual interview
+2. turn on captions
+3. utilize whiteboards, pen, and paper
+4. be yourself
+
+Please don’t!
+1. wait until the last moment to test your technology
+2. utilize outside technology (tablets, other tabs, your phone)
+
+Googlyness
+1. 30 mins long and does not
+2. BQ: tell me about a time when…
+    1. walk through your action, and show the result
+3. Hypothetical
+    1. imagine if…
+
+Technical Interviews
+1. each of the 3 lasts about 45 mins
+2. expect 1-3 coding questions
+3. there will be time for short introductions and closing questions
+
+Skills
+1. coding proficiency and quality
+2. Data structures and algo
+3. Problem solving and analytical skills
+4. Communication and collaboration
+
+What don’t see:
+1. Brain teasers, puzzles, or trick questions
+2. Systems design
+
+Framework for a successful interview
+1. clarify the question
+    1. do yo understand?
+        1. what are inputs and outputs
+    2. is there additional information that’d be helpful
+        1. numbers be negative? duplicate?
+        2. are sorted? 
+        3. do I need to handle invalid inputs?
+    3. why asking clarifying questions?
+        1. demonstrate your communication skills
+        2. save you a lot of time and avoid misunderstandings
+2. design a solution
+    1. Start with the first solution that comes to mind, then iterate
+    2. Describe your algorithms and BIG-O
+    3. Edge cases
+    4. Tradeoffs to your solution
+    5. THINK OUT LOUD
+        1. Communicate with the interviewer the whole time
+        2. Refine and improve solution collaboratively with your interviewer
+        3. It’s OK to talk about ideas that you later realize don’t work
+3. write your code
+    1. Break solution into smaller parts using helper functions
+    2. write full code (not pseudocode)
+    3. verbalize: teach as you go
+    4. listen for hints and suggestions
+4. test your code
+    1. don’t assume your code works
+    2. walkthrough your code line by line. run at least 2 test cases to check
+    3. If you realize ways to optimize your solution, talk about it
+5. Common mistakes
+    1. CLARIFY: Not understanding the question or prematurely optimizing
+    2. DESIGN: Jumping into code
+    3. CODE: Not writing real code
+    4. TEST: Not talking about examples and not thinking of testing
+
+Why google:
+1. impact we can make
+
+Interviews are isolated
+
+
+
