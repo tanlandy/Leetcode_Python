@@ -180,28 +180,6 @@ if __name__ == "__main__":
 
 # VO
 
-[150. Evaluate Reverse Polish Notation](https://leetcode.com/problems/evaluate-reverse-polish-notation/)
-
-
-时间：O(sqrt(N))
-空间：O(N)
-
-```python
-class Solution:
-    def maximumEvenSplit(self, finalSum: int) -> List[int]:
-        res = []
-        curRes = 2
-        
-        if finalSum %2 == 0:
-            while curRes <= finalSum:
-                res.append(curRes)
-                finalSum -= curRes
-                curRes += 2
-            res[-1] += finalSum
-        
-        return res
-```
-
 
 [670. Maximum Swap](https://leetcode.com/problems/maximum-swap/)
 
@@ -951,6 +929,81 @@ class Solution:
         return stack[0]
 ```
 
+[843. Guess the Word](https://leetcode.com/problems/guess-the-word/)
+```py
+class Solution:
+    def getMatch(self,word1, word2):
+        count = 0
+        for x,y in zip(word1,word2):
+            if x == y:
+                count +=1
+        return count
+                
+            
+    def findSecretWord(self, wordlist: List[str], master: 'Master') -> None:
+        """
+        每次.guess(word)之后，缩小wordlist的范围，只把matches与word相同的保留下来
+
+        Time: O(N)
+        Space: O(N)
+        """
+        i = 0
+        matches = 0
+        while i < 10 and matches != 6:
+            index = random.randint(0,len(wordlist)-1)
+            word = wordlist[index]
+            matches = master.guess(word)
+            candidates = []
+            for w in wordlist:
+                if matches == self.getMatch(word,w):
+                    candidates.append(w)
+            wordlist = candidates
+        return word
+```
+
+[1937. Maximum Number of Points with Cost](https://leetcode.com/problems/maximum-number-of-points-with-cost/)
+类似LC931的解法
+```py
+class Solution:
+    def maxPoints(self, P: List[List[int]]) -> int:
+            m, n = len(P), len(P[0])
+            if m == 1: return max(P[0])
+            if n == 1: return sum(sum(x) for x in P)
+
+            def left(arr):
+                lft = [arr[0]] + [0] * (n - 1)
+                for i in range(1, n): lft[i] = max(lft[i - 1] - 1, arr[i])
+                return lft
+
+            def right(arr):
+                rgt = [0] * (n - 1) + [arr[-1]]
+                for i in range(n - 2, -1, -1): rgt[i] = max(rgt[i + 1] - 1, arr[i])
+                return rgt
+
+            pre = P[0]
+            for i in range(m - 1):
+                lft, rgt, cur = left(pre), right(pre), [0] * n
+                for j in range(n):
+                    cur[j] = P[i + 1][j] + max(lft[j], rgt[j])
+                pre = cur[:]
+
+            return max(pre)
+```
+
+类似LC121和1014的解法
+```py
+class Solution:
+    # def maxPoints(self, P: List[List[int]]) -> int:
+    def maxPoints(self, A):
+        m, n = len(A), len(A[0])
+        for i in range(m - 1):
+            for j in range(n - 2, -1, -1):
+                A[i][j] = max(A[i][j], A[i][j + 1] - 1)
+            for j in range(n):
+                A[i][j] = max(A[i][j], A[i][j - 1] - 1 if j else 0)
+                A[i + 1][j] += A[i][j]
+        return max(A[-1])
+```
 
 
 # Events
