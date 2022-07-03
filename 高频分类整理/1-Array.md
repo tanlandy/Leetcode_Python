@@ -714,3 +714,26 @@ class Solution:
         
         return max_h * max_w % (10 ** 9 + 7)
 ```
+
+[376. Wiggle Subsequence](https://leetcode.com/problems/wiggle-subsequence/)
+有些类似于LC121
+```py
+class Solution:
+    def wiggleMaxLength(self, nums: List[int]) -> int:
+        """
+        greedy如果上升就一直上升，然后再拐点
+        用pre_diff来记录是一直上升还是一直下降
+        """
+        if len(nums) < 2:
+            return len(nums)
+        pre_diff = nums[1] - nums[0]
+        count = 2 if pre_diff != 0 else 1
+        
+        for i in range(2, len(nums)):
+            diff = nums[i] - nums[i - 1]
+            if (diff > 0 and pre_diff <= 0) or (diff < 0 and pre_diff >= 0):
+                count += 1
+                pre_diff = diff
+        
+        return count
+```

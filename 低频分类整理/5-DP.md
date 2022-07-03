@@ -734,6 +734,29 @@ class Solution:
 
 ```
 
+[121. Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)
+```py
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        """
+        two pointers: always try to pick the smallest starting point, while calculating the potentional profit: when find a smaller one, change the pointer l to that one.
+        """
+        l, r = 0, 1
+        res = 0
+        cur_profit = 0
+        
+        while r < len(prices):
+            if prices[l] > prices[r]:
+                l = r
+            else:
+                cur_profit = prices[r] - prices[l]
+                res = max(res, cur_profit)
+            r += 1
+        
+        return res
+```
+
+
 #### 2D DP
 
 
