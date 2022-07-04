@@ -499,35 +499,6 @@ class Solution:
 ```
 
 
-[567. Permutation in String](https://leetcode.com/problems/permutation-in-string/)
-
-```python
-class Solution:
-    def checkInclusion(self, s1: str, s2: str) -> bool:
-        counter = collections.Counter(s1)
-        l = r = 0
-        count = len(s1)
-
-        while r < len(s2):
-            c1 = s2[r]
-            if counter[c1] > 0:
-                count -= 1
-            counter[c1] -= 1
-            r += 1
-
-            if (r - l == len(s1)):
-                if count == 0:
-                    return True
-
-                c2 = s2[l]
-                counter[c2] += 1
-                if counter[c2] > 0:
-                    count += 1
-                l += 1
-
-        return False
-```
-
 [239. Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/)
 用monotonic decreasing queue
 
@@ -576,6 +547,85 @@ class Solution:
                 cur_sum = 0
 
         return res
+```
+
+[567. Permutation in String](https://leetcode.com/problems/permutation-in-string/)
+
+```python
+class Solution:
+    def checkInclusion(self, s1: str, s2: str) -> bool:
+        counter = collections.Counter(s1)
+        l = r = 0
+        count = len(s1)
+
+        while r < len(s2):
+            c1 = s2[r]
+            if counter[c1] > 0:
+                count -= 1
+            counter[c1] -= 1
+            r += 1
+
+            if (r - l == len(s1)):
+                if count == 0:
+                    return True
+
+                c2 = s2[l]
+                counter[c2] += 1
+                if counter[c2] > 0:
+                    count += 1
+                l += 1
+
+        return False
+```
+
+
+[438. Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/)
+
+```py
+class Solution:
+    def findAnagrams(self, s: str, p: str) -> List[int]:
+        """
+        Similar to LC567
+        """
+        counter = collections.Counter(p)
+        l = r = 0
+        to_match = len(p)
+        res = []
+        
+        while r < len(s):
+            if counter[s[r]] > 0:
+                to_match -= 1
+            counter[s[r]] -= 1
+            r += 1
+            if (r - l) == len(p):
+                if to_match == 0:
+                    res.append(l)
+                counter[s[l]] += 1
+                if counter[s[l]] > 0:
+                    to_match += 1
+                l += 1
+        
+        return res
+```
+
+[209. Minimum Size Subarray Sum](https://leetcode.com/problems/minimum-size-subarray-sum/)
+
+```py
+class Solution:
+    def minSubArrayLen(self, target: int, nums: List[int]) -> int:
+        l = r = 0
+        res = float("inf")
+        cur_sum = 0
+        
+        while r < len(nums):
+            cur_sum += nums[r]
+            r += 1
+            while cur_sum >= target:
+                res = min(res, r - l)
+                cur_sum -= nums[l]
+                l += 1
+        
+        return 0 if res == float("inf") else res
 ```
 
 # Others

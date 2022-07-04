@@ -1921,3 +1921,5 @@ class Solution:
 
 
 https://leetcode.com/problems/critical-connections-in-a-network/discuss/382638/DFS-detailed-explanation-O(orEor)-solution 
+
+# 迷宫问题

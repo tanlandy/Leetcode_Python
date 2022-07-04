@@ -181,3 +181,55 @@ class Solution:
 
 
 ```
+
+[2135. Count Words Obtained After Adding a Letter](https://leetcode.com/problems/count-words-obtained-after-adding-a-letter/)
+
+```py
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.end = False
+
+class Solution:
+    
+    def __init__(self):
+        self.root = TrieNode()
+    
+    def add(self, word):
+        cur = self.root
+        for c in word:
+            if c not in cur.children:
+                cur.children[c] = TrieNode()
+            cur = cur.children[c]
+        cur.end = True
+    
+    def find(self, word):
+        cur = self.root
+        for c in word:
+            if c not in cur.children:
+                return False
+            cur = cur.children[c]
+        return cur.end
+    
+    
+    def wordCount(self, startWords: List[str], targetWords: List[str]) -> int:
+        """
+        build trie from the startwords
+        sort the word in targetWords, and try to find the potentional word in trie, to reduce the search place
+        """
+        for word in startWords:
+            self.add(sorted(list(word)))
+            
+        res = 0
+        for word in targetWords:
+            target = sorted(list(word))
+            for i in range(len(target)):
+                w = target[:i] + target[i + 1:]
+                if self.find(w):
+                    res += 1
+                    break
+        
+        return res
+```
+
+也可以用bitmask

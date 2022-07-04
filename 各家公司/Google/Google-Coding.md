@@ -295,7 +295,6 @@ class Solution:
         return -1
 ```
 
-
 [366. Find Leaves of Binary Tree](https://leetcode.com/problems/find-leaves-of-binary-tree/)
 
 ```py
@@ -322,6 +321,55 @@ class Solution:
         dfs(root, 0)
         return res.values()
 ```
+
+```py
+class Solution:
+    def findLeaves(self, root: Optional[TreeNode]) -> List[List[int]]:
+        """
+        拓扑排序：把所有outdegree==0的node一一删除
+        """
+        
+        # build graph: {child: parents} and outdegree
+        graph = collections.defaultdict(list)
+        outdegree = collections.defaultdict(int)
+        
+        def dfs(cur, prev):
+            if cur == None:
+                return
+            outdegree[prev] += 1
+            outdegree[cur] += 0
+            graph[cur].append(prev)
+            
+            dfs(cur.left, cur)
+            dfs(cur.right, cur)
+        
+        dfs(root, TreeNode(-101)) # the range of val is between -100 and 100
+        
+        # add valid nodes to queue
+        queue = collections.deque()
+        for node in outdegree:
+            if outdegree[node] == 0:
+                queue.append(node)
+                        
+        # build res using topological sort
+        res = []
+        while queue:
+            size = len(queue)
+            cur_level = []
+            for _ in range(size): # build one level
+                cur = queue.popleft()
+                if cur.val > -101:
+                    cur_level.append(cur.val)
+                for nei in graph[cur]:
+                    outdegree[nei] -= 1
+                    if outdegree[nei] == 0:
+                        queue.append(nei)
+            if cur_level: # add one level to res
+                res.append(cur_level)
+        
+        return res
+```
+
 
 [2096. Step-By-Step Directions From a Binary Tree Node to Another](https://leetcode.com/problems/step-by-step-directions-from-a-binary-tree-node-to-another/)
 
@@ -370,30 +418,6 @@ class Solution:
         
         dfs(lca, [])
         return self.ps + self.pd
-```
-
-[2128. Remove All Ones With Row and Column Flips](https://leetcode.com/problems/remove-all-ones-with-row-and-column-flips/)
-```py
-class Solution:
-    def removeOnes(self, grid: List[List[int]]) -> bool:
-        """
-        the order of the operations doesn't matter
-        doing more than 1 operation on the same row/col is not useful
-        
-        step:
-        1. flip rows, make sure all rows be the "same"
-        2. flip cols
-
-        Time: O(M*N)
-        Space: O(M*N)
-        """
-        r1, r1_flip = grid[0], [1 - val for val in grid[0]]
-        
-        for i in range(1, len(grid)):
-            if grid[i] != r1 and grid[i] != r1_flip:
-                return False
-        
-        return True
 ```
 
 [818. Race Car](https://leetcode.com/problems/race-car/)
@@ -482,6 +506,29 @@ class Solution:
             
 ```
 
+[2128. Remove All Ones With Row and Column Flips](https://leetcode.com/problems/remove-all-ones-with-row-and-column-flips/)
+```py
+class Solution:
+    def removeOnes(self, grid: List[List[int]]) -> bool:
+        """
+        the order of the operations doesn't matter
+        doing more than 1 operation on the same row/col is not useful
+        
+        step:
+        1. flip rows, make sure all rows be the "same"
+        2. flip cols
+
+        Time: O(M*N)
+        Space: O(M*N)
+        """
+        r1, r1_flip = grid[0], [1 - val for val in grid[0]]
+        
+        for i in range(1, len(grid)):
+            if grid[i] != r1 and grid[i] != r1_flip:
+                return False
+        
+        return True
+```
 
 [2115. Find All Possible Recipes from Given Supplies](https://leetcode.com/problems/find-all-possible-recipes-from-given-supplies/)
 
@@ -905,6 +952,38 @@ instead of record the whole array, we record the history of each cell -> minimum
 for each arr[i], record the history with a snap_id and value.
 when call the get(), do binary search the time snap_id
 
+```py
+class SnapshotArray:
+    def __init__(self, length: int):
+        self.map = defaultdict(list)
+        self.snapId = 0
+
+    def set(self, index: int, val: int) -> None:
+        if self.map[index] and self.map[index][-1][0] == self.snapId:
+            self.map[index][-1][1] = val
+            return
+        self.map[index].append([self.snapId, val])
+
+    def snap(self) -> int:
+        self.snapId += 1
+        return self.snapId - 1
+
+    def get(self, index: int, snap_id: int) -> int:
+        """
+        find the right most valid
+        """
+        arr = self.map[index]
+        left, right = 0, len(arr) - 1
+        while left <= right:
+            mid = (left + right) // 2
+            if arr[mid][0] <= snap_id:
+                left = mid + 1
+            else:
+                right = mid - 1
+        return 0 if right < 0 else arr[right][1]
+```
+
+
 [150. Evaluate Reverse Polish Notation](https://leetcode.com/problems/evaluate-reverse-polish-notation/)
 
 ```py
@@ -930,6 +1009,7 @@ class Solution:
 ```
 
 [843. Guess the Word](https://leetcode.com/problems/guess-the-word/)
+
 ```py
 class Solution:
     def getMatch(self,word1, word2):
@@ -939,7 +1019,6 @@ class Solution:
                 count +=1
         return count
                 
-            
     def findSecretWord(self, wordlist: List[str], master: 'Master') -> None:
         """
         每次.guess(word)之后，缩小wordlist的范围，只把matches与word相同的保留下来
@@ -993,8 +1072,7 @@ class Solution:
 类似LC121和1014的解法
 ```py
 class Solution:
-    # def maxPoints(self, P: List[List[int]]) -> int:
-    def maxPoints(self, A):
+    def maxPoints(self, A: List[List[int]]) -> int:
         m, n = len(A), len(A[0])
         for i in range(m - 1):
             for j in range(n - 2, -1, -1):
@@ -1005,134 +1083,317 @@ class Solution:
         return max(A[-1])
 ```
 
+[1014. Best Sightseeing Pair](https://leetcode.com/problems/best-sightseeing-pair/)
 
-# Events
-## 06/24/22 Engineering Round Table
-google coursera
+```py
+class Solution:
+    def maxScoreSightseeingPair(self, values: List[int]) -> int:
+        res = 0
+        max_so_far = 0
+        for i in range(len(values)):
+            res = max(res, max_so_far + values[i] - i)
+            max_so_far = max(max_so_far, values[i] + i)
+        
+        return res
+```
 
-GTI training: Google tech immersion
-could you tell me more about the self-development opportunities that google provides: technical and non-technical?
-- intro to technical writing
+[1610. Maximum Number of Visible Points](https://leetcode.com/problems/maximum-number-of-visible-points/)
+```py
+class Solution:
+    def visiblePoints(self, points: List[List[int]], angle: int, location: List[int]) -> int:
+        """
+        convert all coordinates to radians
+        sort the array
+        use sliding window to find the longest window that satisfies arr[r] - arr[l] <= angle.
+        
+        Time: O(NlogN)
+        Space: O(N)
+        """
+        if not points or len(points) == 0:
+            return 0
+        
+        pointsAtLocationCount = 0
+        pointsAngles = []
+        
+        for x, y in points:
+            dx = x - location[0]
+            dy = y - location[1]
+            if dx == 0 and dy == 0:
+                pointsAtLocationCount += 1
+            else:
+                radAngle = math.atan2(dy, dx)
+                degAngle = math.degrees(radAngle)
+                pointsAngles.append(degAngle)
+        
+        pointsAngles = sorted(pointsAngles)
+
+        # Add the additional points to make circular array to handle and points start from the second half
+        pointsAngles += [i+360 for i in pointsAngles]
+        
+        l = 0
+        res = 0
+        for r in range(len(pointsAngles)):
+            while(pointsAngles[r] - pointsAngles[l] > angle):
+                l += 1
+            res = max(res, r - l + 1)
+
+        # Add the points those are at the location and return.
+        return res + pointsAtLocationCount
+```
+
+[1048. Longest String Chain](https://leetcode.com/problems/longest-string-chain/)
+```py
+class Solution:
+    def longestStrChain(self, words: List[str]) -> int:
+        dp = {}
+        result = 1
+
+        for word in sorted(words, key=len):
+            dp[word] = 1
+
+            for i in range(len(word)):
+                prev = word[:i] + word[i + 1:]
+
+                if prev in dp:
+                    dp[word] = max(dp[prev] + 1, dp[word])
+                    result = max(result, dp[word])
+
+        return result
+```
+```py
+class Solution:
+    def longestStrChain(self, words: List[str]) -> int:
+        """
+        map: {ending word: length of the longest sequence ending with the word}
+        res = max(map.values())
+        
+        Time: O(L^2 * N)
+        Space: O(N)
+        """
+        memo = {}
+        visited = set(words)
+        
+        def dfs(word):
+            if word in memo:
+                return memo[word]
+            
+            memo[word] = 1
+            for i in range(len(word)):
+                prev = word[:i] + word[i + 1:] # create all possible words
+                if prev in visited: # if in the wordlist, perform dfs, and update the memo[word]
+                    memo[word] = max(memo[word], dfs(prev) + 1)
+            return memo[word] # return it
+    
+        res = 0
+        for word in words:
+            res = max(res, dfs(word)) # dfs each word
+        return res
+```
+
+[539. Minimum Time Difference](https://leetcode.com/problems/minimum-time-difference/)
+
+```py
+class Solution:
+    def findMinDifference(self, timePoints: List[str]) -> int:
+        """
+        convert to minutes, sort, and then iterate through to find the minimum difference.
+        to compare the last one and the first one: add (times[0] + 24 * 60) to the end of times
+        """
+        times = []
+        for t in timePoints:
+            minute = int(t[:2]) * 60 + int(t[-2:])
+            times.append(minute)
+        times.sort()
+        print(times)
+        times.append(times[0] + 24 * 60) # calc the final point with the first point
+        
+        res = float("inf")
+        for i in range(1, len(times)):
+            res = min(res, times[i] - times[i - 1])
+        
+        return res
+```
+
+[833. Find And Replace in String](https://leetcode.com/problems/find-and-replace-in-string/)
+```py
+class Solution:
+    def findReplaceString(self, s: str, indices: List[int], sources: List[str], targets: List[str]) -> str:
+        """
+        convert to list
+        when the src meet the same, change it to tar. after that, delete the original char in the res
+        
+        Time: O(N)
+        Space: O(N)
+        """
+        res = list(s)
+        for idx, src, tar in zip(indices, sources, targets):
+            if s[idx: idx + len(src)] == src:
+                res[idx] = tar
+                for j in range(idx + 1, idx + len(src)): # delete the original char in the res
+                    res[j] = ""
+        return "".join(res)
+
+```
+
+[2178. Maximum Split of Positive Even Integers](https://leetcode.com/problems/maximum-split-of-positive-even-integers/)
+
+```python
+class Solution:
+    def maximumEvenSplit(self, finalSum: int) -> List[int]:
+        """
+        从2，4，6开始加同时finalSum-=246，直到curRes>finalSum，这个时候就res[-1]+=finalSum就可以了
+        """
+        res = []
+        curRes = 2
+        
+        if finalSum %2 == 0:
+            while curRes <= finalSum:
+                res.append(curRes)
+                finalSum -= curRes
+                curRes += 2
+            res[-1] += finalSum
+        
+        return res
+
+```
+
+[2135. Count Words Obtained After Adding a Letter](https://leetcode.com/problems/count-words-obtained-after-adding-a-letter/)
+
+```py
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.end = False 
+        
+class Solution:
+    def __init__(self):
+        self.root = TrieNode()
+    
+    def add(self, word):
+        curt = self.root
+        for c in word:
+            if c not in curt.children:
+                curt.children[c] = TrieNode()
+            
+            curt = curt.children[c]
+        curt.end = True
+        
+    def find(self, word):
+        curt = self.root
+        for c in word:
+            if c not in curt.children:
+                return False 
+            curt = curt.children[c]
+        return curt.end
+        
+        
+    def wordCount(self, startWords: List[str], targetWords: List[str]) -> int:
+        for word in startWords:
+            self.add(sorted(list(word)))
+            
+        res = 0
+        for word in targetWords:
+            target = sorted(list(word))
+            for i in range(len(target)):
+                w = target[:i] + target[i+1:]
+                if self.find(w):
+                    res += 1
+                    break
+        return res
+```
+
+```py
+class Solution:
+    def wordCount(self, startWords: List[str], targetWords: List[str]) -> int:
+        """
+        add bitmasks of start word to the hash set
+        obtaion bitmask of a word: map each letter to a power of 2 number: {a:1, b:2, c:4, d:8...}, then for all letters in the word, we take the sum
+        for a target word, remove one of the char, and check if in the hash set
+        bitmask(abc) == bitmask(bca)
+
+        Time: O(N)
+        Space: O(N)
+        """
+        seen = set()
+        for word in startWords: # bitmasks all word in startWord
+            m = 0
+            for ch in word:
+                # m ^= 1 << ord(ch)-ord("a")  
+                m ^= 2 ** (ord(ch)-ord("a"))
+            seen.add(m)
+            
+        ans = 0 
+        for word in targetWords: 
+            m = 0 
+            for ch in word: # bitmask the target word
+                m ^= 2 ** (ord(ch)-ord("a"))
+            for ch in word: # remove one char
+                if m ^ (2 ** (ord(ch)-ord("a"))) in seen: 
+                    ans += 1
+                    break 
+        return ans 
+```
 
 
-three skills that you think are most critical to success in your role at Google?
-1. ask for help and be open
-2. express your idea in any way you fell comfortable with
-3. find your group, find allies with same interests or share the same value to find support and inclusive
 
-what was something that surprised you about Google:
-1. scale
-2. google code search
-3. how easy to reach anyone
+[2158. Amount of New Area Painted Each Day](https://leetcode.com/problems/amount-of-new-area-painted-each-day/)
+```py
+class Solution:
+    def amountPainted(self, paint: List[List[int]]) -> List[int]:
+        # constructure the sweep line
+        records = []
+        max_pos = 0
+        for i, [start, end] in enumerate(paint):
+            records.append((start, i, 1)) # use 1 and -1 to records the type.
+            records.append((end, i, -1))
+            max_pos = max(max_pos, end)
+        records.sort()
 
-how did you prepare for your interviews
-1. leedcode
-2. youtube video into different categories
-3. mock interviews to get feedback
-4. Communication!!!
+        # sweep across all position
+        ans = [0 for _ in range(len(paint))]
+        indexes = []
+        ended_set = set()
+        i = 0
+        for pos in range(max_pos + 1):
+            while i < len(records) and records[i][0] == pos:
+                pos, index, type = records[i]
+                if type == 1:
+                    heapq.heappush(indexes, index)
+                else:
+                    ended_set.add(index)
+                i += 1
+            
+            while indexes and indexes[0] in ended_set:
+                heapq.heappop(indexes)
 
+            if indexes:
+                ans[indexes[0]] += 1
+        return ans
+```
 
-common mistakes you see candidates make during the interviews
-1. communication is key
-2. not stick to a single algo, but to analyze the problem and try different approaches
-3. listen to their hints, pay attention to hints
-4. don't give up, try hard, come up with the correct code for the end minute
-
-ckech the prep email, google suite interview perp guide
-
-## 06/27/22 Welcome
-你不要放松 很需要你在这时候努力
-
-Area 120
-ERGs: Employee Resource Groups
-Personal growth opportunities to keep you learning and growing:
-- “Grow” classes and educational benefits
-- Bungee or rotational programs
-- 20% project
-
-Fostering diversity and inclusion
-
-process:
-1. initial call with your recruiter and interview prep
-2. 3 coding and 1 Googleyness and leadership interview
-3. feedback review, match, and offer process: 2-3 weeks
-
-Interview day-of logistics
-be held over Google Meet
-have a minimum of 15 minutes in between each round
-Google’s Virtual Interviewing Platform (VIP) allows for real-time collaborative remote coding between the candidate and the interviewer, complete with formatting and syntax highlighting(no compiler)
-
-Please do!
-1. make sure you can be heard during virtual interview
-2. turn on captions
-3. utilize whiteboards, pen, and paper
-4. be yourself
-
-Please don’t!
-1. wait until the last moment to test your technology
-2. utilize outside technology (tablets, other tabs, your phone)
-
-Googlyness
-1. 30 mins long and does not
-2. BQ: tell me about a time when…
-    1. walk through your action, and show the result
-3. Hypothetical
-    1. imagine if…
-
-Technical Interviews
-1. each of the 3 lasts about 45 mins
-2. expect 1-3 coding questions
-3. there will be time for short introductions and closing questions
-
-Skills
-1. coding proficiency and quality
-2. Data structures and algo
-3. Problem solving and analytical skills
-4. Communication and collaboration
-
-What don’t see:
-1. Brain teasers, puzzles, or trick questions
-2. Systems design
-
-Framework for a successful interview
-1. clarify the question
-    1. do yo understand?
-        1. what are inputs and outputs
-    2. is there additional information that’d be helpful
-        1. numbers be negative? duplicate?
-        2. are sorted? 
-        3. do I need to handle invalid inputs?
-    3. why asking clarifying questions?
-        1. demonstrate your communication skills
-        2. save you a lot of time and avoid misunderstandings
-2. design a solution
-    1. Start with the first solution that comes to mind, then iterate
-    2. Describe your algorithms and BIG-O
-    3. Edge cases
-    4. Tradeoffs to your solution
-    5. THINK OUT LOUD
-        1. Communicate with the interviewer the whole time
-        2. Refine and improve solution collaboratively with your interviewer
-        3. It’s OK to talk about ideas that you later realize don’t work
-3. write your code
-    1. Break solution into smaller parts using helper functions
-    2. write full code (not pseudocode)
-    3. verbalize: teach as you go
-    4. listen for hints and suggestions
-4. test your code
-    1. don’t assume your code works
-    2. walkthrough your code line by line. run at least 2 test cases to check
-    3. If you realize ways to optimize your solution, talk about it
-5. Common mistakes
-    1. CLARIFY: Not understanding the question or prematurely optimizing
-    2. DESIGN: Jumping into code
-    3. CODE: Not writing real code
-    4. TEST: Not talking about examples and not thinking of testing
-
-Why google:
-1. impact we can make
-
-Interviews are isolated
-
-
+```py
+class Solution:
+    def amountPainted(self, paint: List[List[int]]) -> List[int]:
+        """
+        For each interval traverse start to end marking jump value as end.
+        if any jump index is already marked (i.e. > 0) skip to the jump value, saving traversal. and continue #3 till interval is complete.
+        """
+        p = [0] * 50000 # 1D number array
+        res = []
+        for (start,end) in paint:
+            cur_res = 0
+            # loop from start to end of the interval
+            while start < end : 
+                # if jump value is set
+                if p[start] != 0 : 
+                    start = p[start]
+                # if jump value is not set
+                else :
+                    cur_res += 1
+                    p[start] = end
+                    start += 1
+           
+            res.append(cur_res)
+        return res
+```
 
