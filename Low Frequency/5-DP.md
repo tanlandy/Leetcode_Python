@@ -610,6 +610,42 @@ class Solution:
         return dp[0]
 ```
 
+```py
+class Solution:
+    def numDecodings(self, s: str) -> int:
+        """
+        Time: O(N)
+        Space: O(N)
+        """
+        memo = {}
+        
+        def dfs(idx):
+            if idx in memo:
+                return memo[idx]
+            
+            # 走到头了
+            if idx == len(s):
+                return 1
+            
+            # 这个string以0开头
+            if s[idx] == "0":
+                return 0
+            
+            # 走到前一位：只有1种方式了
+            if idx == len(s) - 1:
+                return 1
+            
+            res = dfs(idx + 1)
+            if int(s[idx: idx + 2]) <= 26:
+                res += dfs(idx + 2)
+            
+            memo[idx] = res       
+                 
+            return res
+        
+        return dfs(0)        
+```
+
 [322. Coin Change](https://leetcode.com/problems/coin-change/) 前有
 
 
@@ -686,8 +722,9 @@ class Solution:
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
         """
-        dp[] stores given index is true or false
+        dp[i] means s[i:] whether can be formed by words in wordDict or not
 
+        From right to left
         Time: O(N*M*N), N is len(s), M is len(wordDict)
         Space: O(N+M)
         """
@@ -703,6 +740,41 @@ class Solution:
                     break
         return dp[0]
 ```
+
+```py
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        """
+        DFS + Memo
+        
+        Time: O(N^3)
+        Space: O(N)
+        """
+        if not s:
+            return False
+        words = set(wordDict)
+        memo = {}
+        
+        def dfs(s):
+            if s in memo:
+                return memo[s]
+            if not s:
+                return True
+            for word in words:
+                # 前面不同就跳过
+                if s[:len(word)] != word:
+                    continue
+                # 前面相同就可以往后看
+                remain = dfs(s[len(word):])
+                if remain:
+                    memo[s] = True # 保存remain的结果
+                    return True
+            memo[s] = False
+            return False
+        
+        return dfs(s)
+```
+
 
 [300. Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/) 前面出现
 

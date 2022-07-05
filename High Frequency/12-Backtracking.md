@@ -227,38 +227,6 @@ class Solution:
         return res
 ```
 
-Letter Combinations of A Phone Number
-Given a phone number that contains digits 2-9, find all possible letter combinations the phone number could translate to.
-
-input: "56"
-output: ["jm","jn","jo","km","kn","ko","lm","ln","lo"]
-```py
-def letter_combinations_of_phone_number(digits: str) -> List[str]:
-    KEYBOARD = {
-    '2': 'abc',
-    '3': 'def',
-    '4': 'ghi',
-    '5': 'jkl',
-    '6': 'mno',
-    '7': 'pqrs',
-    '8': 'tuv',
-    '9': 'wxyz',
-    }
-    res = []
-    def dfs(cur_res):
-        if len(cur_res) == len(digits): # base case
-            res.append("".join(cur_res))
-            return
-
-        next_digit = digits[len(cur_res)] # the way to go next is using the len(cur_res)
-        for letter in KEYBOARD[next_digit]: # dfs framework
-            cur_res.append(letter)
-            dfs(cur_res)
-            cur_res.pop()
-    dfs([])
-    return res
-```
-
 
 [90. Subsets II](https://leetcode.com/problems/subsets-ii/)
 Given an integer array nums that may contain duplicates, return all possible subsets (the power set).

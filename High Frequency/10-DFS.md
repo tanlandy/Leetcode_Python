@@ -1985,3 +1985,141 @@ class Solution:
 https://leetcode.com/problems/critical-connections-in-a-network/discuss/382638/DFS-detailed-explanation-O(orEor)-solution 
 
 # 迷宫问题
+
+# DFS + Memorization
+
+[139. Word Break](https://leetcode.com/problems/word-break/)
+
+```py
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        """
+        dp[i] means s[i:] whether can be formed by words in wordDict or not
+
+        From right to left
+        Time: O(N*M*N), N is len(s), M is len(wordDict)
+        Space: O(N+M)
+        """
+        
+        dp = [False] * (len(s) + 1)
+        dp[len(s)] = True
+        
+        for i in range(len(s) - 1, -1, -1):
+            for w in wordDict:
+                if (i + len(w) <= len(s)) and s[i:i + len(w)] == w:
+                    dp[i] = dp[i + len(w)] # at idx i, dp[i] determines at dp[i+len(w)] if s[i:i+len(w)] == w
+                if dp[i]:
+                    break
+        return dp[0]
+```
+
+```py
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        """
+        DFS + Memo
+        
+        Time: O(N^3)
+        Space: O(N)
+        """
+        if not s:
+            return False
+        words = set(wordDict)
+        memo = {}
+        
+        def dfs(s):
+            if s in memo:
+                return memo[s]
+            if not s:
+                return True
+            for word in words:
+                # 前面不同就跳过
+                if s[:len(word)] != word:
+                    continue
+                # 前面相同就可以往后看
+                remain = dfs(s[len(word):])
+                if remain:
+                    memo[s] = True # 保存remain的结果
+                    return True
+            memo[s] = False
+            return False
+        
+        return dfs(s)
+```
+
+
+[91. Decode Ways](https://leetcode.com/problems/decode-ways/)
+
+```py
+class Solution:
+    def numDecodings(self, s: str) -> int:
+        """
+        BF: when str has more than two digits: draw a desicion tree
+        Example: "121" can only branch to 1-26 -> O(2^N)
+                 121
+             /          \
+            1            12
+          /   \         /
+         2    21       1
+        /
+        1
+
+        subproblem: once solve 21, the subproblem is 1, solve from right to left
+        dp[i] = dp[i + 1] + dp[i + 2]
+
+        Time: O(N)
+        Space: O(N), O(1) if only use two variables
+        """
+        dp = [1] * (len(s) + 1)
+
+        for i in range(len(s) - 1, -1, -1):
+            if s[i] == "0":
+                dp[i] = 0
+            else:
+                dp[i] = dp[i + 1]
+
+            if ((i + 1) < len(s)) and ((s[i] == "1") or s[i] == "2" and s[i + 1] in "0123456"): # double digit
+            # if 10 <= int(s[i:i+2]) <= 26:
+                dp[i] += dp[i + 2]
+        
+        return dp[0]
+```
+
+```py
+class Solution:
+    def numDecodings(self, s: str) -> int:
+        """
+        Time: O(N)
+        Space: O(N)
+        """
+        memo = {}
+        
+        def dfs(idx):
+            if idx in memo:
+                return memo[idx]
+            
+            # 走到头了
+            if idx == len(s):
+                return 1
+            
+            # 这个string以0开头
+            if s[idx] == "0":
+                return 0
+            
+            # 走到前一位：只有1种方式了
+            if idx == len(s) - 1:
+                return 1
+            
+            res = dfs(idx + 1)
+            if int(s[idx: idx + 2]) <= 26:
+                res += dfs(idx + 2)
+            
+            memo[idx] = res       
+                 
+            return res
+        
+        return dfs(0)        
+```
+
+
+
