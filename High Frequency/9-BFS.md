@@ -798,13 +798,121 @@ def shortest_path(graph: List[List[Tuple[int, int]]], a: int, b: int) -> int:
 ## 例题
 
 [743. Network Delay Time](https://leetcode.com/problems/network-delay-time/)
-
+```py
+class Solution:
+    def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
+        """
+        Dijstra: find the shortest single path in weighted graph
+        
+        Time: O(ElogV)
+        Space: O(E)
+        """
+        
+        # build a graph: adjacency list
+        graph = collections.defaultdict(list)
+        for u, v, w in times:
+            graph[u].append((v, w)) # {n1:[(n2, w2), (n3, w3)], n2:[], n3:[]}
+            
+        # Dijkstra
+        min_heap = [(0, k)] # (time, node)
+        visited = set()
+        res = 0
+        while min_heap:
+            # pop and visit the node with minimum time
+            t1, n1 = heapq.heappop(min_heap)
+            if n1 in visited:
+                continue
+            res = t1
+            visited.add(n1)
+            
+            # traverse its unvisited neighbors
+            for n2, w2 in graph[n1]:
+                if n2 not in visited:
+                    heapq.heappush(min_heap, (t1 + w2, n2))
+        
+        return res if len(visited) == n else -1
+```
 
 [1514. Path with Maximum Probability](https://leetcode.com/problems/path-with-maximum-probability/)
 
 
 [1631. Path With Minimum Effort](https://leetcode.com/problems/path-with-minimum-effort/)
+```py
+class Solution:
+    def minimumEffortPath(self, heights: List[List[int]]) -> int:
+        """
+        The absolute difference between adjacent cells A and B can be perceived as the weight of an edge from cell A to cell B.
+        
+        Time: O(ElogV), E = 4MN, V = MN
+        Space: O(MN)
+        """
+        rows, cols = len(heights), len(heights[0])
+        
+        # dist[r][c] stores max diff btw (r, c) and (0, 0)
+        dist = [[float("inf")] * cols for _ in range(rows)]
+        dist[0][0] = 0
+        visited = set()
+        minHeap = [(0, 0, 0)] # (dist, r, c)
+        dirs = [(0, 1), (0, -1), (-1, 0), (1, 0)]
+        
+        while minHeap:
+            d, r, c = heapq.heappop(minHeap)
+            visited.add((r, c)) # 在这里add而不是在加入的时候add，是因为只有在现在才pop出来并且查看
+            
+            if r == rows - 1 and c == cols - 1:
+                return d
+            
+            for dx, dy in dirs:
+                nei_r, nei_c = r + dx, c + dy
+                if 0 <= nei_r < rows and 0 <= nei_c < cols and (nei_r, nei_c) not in visited:
+                    new_d = max(d, abs(heights[nei_r][nei_c] - heights[r][c])) # always try to get the larger diff, and then store it into dist[][]
+                    if dist[nei_r][nei_c] > new_d:
+                        dist[nei_r][nei_c] = new_d
+                        heapq.heappush(minHeap, (new_d, nei_r, nei_c))
+        
+        return -1
+```
 
+```py
+class Solution:
+    def minimumEffortPath(self, heights: List[List[int]]) -> int:
+        """
+        Using binary search to find the minimum threadshold: [False, ..., True, True, True...] find the left most valid position
+        
+        Time: O(M*N)
+        Space: O(M*N)
+        """
+        rows, cols = len(heights), len(heights[0])
+        dirs = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        
+        def canReach(k): # check whether the maximum diff is smaller than k
+            """BFS, check whether can reach to the target position within k"""
+            queue = collections.deque([(0, 0)]) # (r, c)
+            visited = set((0, 0))
+            while queue:
+                r, c = queue.popleft()
+                if r == rows - 1 and c == cols - 1:
+                    return True
+                
+                for dx, dy in dirs:
+                    nr, nc = r + dx, c + dy
+                    if 0 <= nr < rows and 0 <= nc < cols and (nr, nc) not in visited:
+                        diff = abs(heights[nr][nc] - heights[r][c])
+                        if diff <= k: # only add valid node into queue: the diff btw is smaller than k
+                            queue.append((nr, nc))
+                            visited.add((nr, nc))
+            return False
+        
+        l, r = 0, 10000000
+        while l <= r:
+            mid = (l + r) // 2
+            if canReach(mid):
+                r = mid - 1
+            else:
+                l = mid + 1
+        
+        return l
+```
 
 # MST
 It is a graph that connects all the vertices together, withoug cycles and with the minimum total edge weight

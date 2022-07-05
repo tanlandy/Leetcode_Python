@@ -1362,6 +1362,68 @@ class Solution:
         return res[0]
 ```
 
+[113. Path Sum II](https://leetcode.com/problems/path-sum-ii/)
+```py
+class Solution:
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> List[List[int]]:
+        """
+        execute the dfs and maintain the running sum of node traversed and the list of those nodes
+        
+        Time: O(N^2)
+        Space: O(N)
+        """
+        res = []
+        def dfs(node, cur_sum, cur_path):
+            if not node:
+                return
+            cur_sum += node.val
+            cur_path.append(node.val)
+            
+            if cur_sum == targetSum and not node.left and not node.right: # 同时满足大小和位置关系
+                res.append(cur_path.copy())
+            else:
+                dfs(node.left, cur_sum, cur_path)
+                dfs(node.right, cur_sum, cur_path)
+            
+            cur_path.pop()
+        
+        dfs(root, 0, [])
+        return res
+```
+
+多叉树的遍历
+```py
+class Node:
+    def __init__(self, val, children=None):
+        if children is None:
+            children = []
+        self.val = val
+        self.children = children
+
+def ternary_tree_paths(root: Node) -> List[str]:
+    res = []
+    def dfs(node, cur_path):
+        if not node:
+            return 
+        cur_path.append(str(node.val)) 
+        # cur_path.append(node.val)       
+        
+        if all(c is None for c in node.children):
+            res.append("->".join(cur_path))
+            # res.append(cur_path.copy())
+            cur_path.pop()
+            return
+        for c in node.children:
+            if c is not None:
+                dfs(c, cur_path)
+        cur_path.pop()
+              
+        
+    dfs(root, [])
+    return res
+```
+
+
 ## other
 
 [1367. Linked List in Binary Tree](https://leetcode.com/problems/linked-list-in-binary-tree/)
