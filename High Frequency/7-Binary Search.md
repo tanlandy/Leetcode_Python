@@ -1,72 +1,77 @@
+# 基础知识
 
-2. 找一个数
-``` Java
-int binary_search(int[] nums, int target) {
-    int left = 0, right = nums.length - 1; 
-    while(left <= right) { // 最后一次搜索的是left == right的情况，是[left, right]，因为right定义
-        int mid = left + (right - left) / 2;
-        if (nums[mid] < target) {
-            left = mid + 1; // mid已经搜索过了，所以+1
-        } else if (nums[mid] > target) {
-            right = mid - 1; 
-        } else if(nums[mid] == target) {
-            // 直接返回
-            return mid;
-        }
-    }
-    // 直接返回
-    return -1;
-}
-
-// 比如说给你有序数组nums = [1,2,2,2,3]，target为 2，此算法返回的索引是 2，没错。但是如果我想得到target的左侧边界，即索引 1，或者我想得到target的右侧边界，即索引 3
-```
-3. 寻找左侧边界
-```Java
-int left_bound(int[] nums, int target) {
-    int left = 0, right = nums.length - 1;
-    while (left <= right) {  // [left, right]
-        int mid = left + (right - left) / 2;
-        if (nums[mid] < target) {
-            left = mid + 1;
-        } else if (nums[mid] > target) {
-            right = mid - 1;
-        } else if (nums[mid] == target) {
-            // 别返回，锁定左侧边界
-            right = mid - 1;
-        }
-    }$$
-    // 最后要检查 left 越界的情况，当target比所有元素都大的情况
-    if (left >= nums.length || nums[left] != target)
-        return -1;
-    return left; // 最后返回left
-}
-
-```
-4. 寻找右侧边界
-``` Java
-int right_bound(int[] nums, int target) {
-    int left = 0, right = nums.length - 1;
-    while (left <= right) { // [left, right]
-        int mid = left + (right - left) / 2;
-        if (nums[mid] < target) {
-            left = mid + 1;
-        } else if (nums[mid] > target) {
-            right = mid - 1;
-        } else if (nums[mid] == target) {
-            // 别返回，锁定右侧边界
-            left = mid + 1;
-        }
-    }
-    // 最后要检查 right 越界的情况，即当target比所有元素都小的情况
-    if (right < 0 || nums[right] != target)
-        return -1;
-    return right;
-}
-
+## 找一个数
+```py
+def find_target(nums, target):
+    l, r = 0, len(nums) - 1
+    while l <= r: # 最后一次搜索的是left == right的情况，是[left, right]: 左闭右闭
+        mid = (l + r) // 2
+        if nums[mid] == target:
+            return mid
+        elif nums[mid] < target:
+            l = mid + 1 # mid已经搜索过了，所以+1
+        else:
+            r = mid - 1
+        
+    return -1
 ```
 
+## 找最左侧边界
+```py
+def find_leftmost(nums, target):
+    l, r = 0, len(nums) - 1
+    while l <= r:
+        mid = (l + r) // 2
+        if nums[mid] == target: # 继续往左边找，所以右边的空间就缩小不要了
+            r = mid - 1
+        elif nums[mid] < target:
+            l = mid + 1
+        else:
+            r = mid - 1
+    
+    if l >= len(nums) or nums[l] != target: # 一个都没有相等的, l一直往右走
+        return -1
+    return l
+```
 
-# Educative
+## 找最右侧边界
+```py
+def find_leftmost(nums, target):
+    l, r = 0, len(nums) - 1
+    while l <= r:
+        mid = (l + r) // 2
+        if nums[mid] == target: # 继续往右边找，所以把左边的空间缩小不要了
+            l = mid + 1
+        elif nums[mid] < target:
+            l = mid + 1
+        else:
+            r = mid - 1
+    
+    if r < 0 or nums[r] != target: # 一个都没有相等的, r一直往左走
+        return -1
+    return r
+```
+
+## Bisect
+```py
+import bisect
+
+A = [-14, -10, 2, 108, 108, 243, 285, 285, 285, 401]
+
+# first 108 is at index 3
+print(bisect.bisect_left(A, 108))
+
+bisect_right() # 相当于 bisect()
+
+bisect.insort_left(A, 108) # insert at the first index
+print(A)
+```
+
+# 例题
+
+## 显式二分法
+
+## 隐式二分法
 Find the Closest Number
 Input :arr[] = {2, 5, 6, 7, 8, 8, 9};
 Target number = 4
@@ -152,22 +157,7 @@ def find_highest_number(A):
     return None
 ```
 
-### Bisect
-```py
-import bisect
 
-A = [-14, -10, 2, 108, 108, 243, 285, 285, 285, 401]
-
-# first 108 is at index 3
-print(bisect.bisect_left(A, 108))
-
-bisect_right() # 相当于 bisect()
-
-bisect.insort_left(A, 108) # insert at the first index
-print(A)
-```
-
-# 知乎
 
 [34. Find First and Last Position of Element in Sorted Array](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/)
 
@@ -637,17 +627,17 @@ class Solution:
 
 [1011. Capacity To Ship Packages Within D Days](https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/)
 
-l=max(weights), r=sum(weights),最后返回的是最左侧边界l；isValid: r = mid - 1；计算isValid：用一个cur，每次cur+=w，先检查是否cur+w>cap，是的话就days_need+=1, cur = 0
 
-时间：O(logN)
-空间：O(1)
 
 ```python
 class Solution:
     def shipWithinDays(self, weights: List[int], days: int) -> int:
-        # capacity is res, res+1, res+2, ..., 
-        # binary search from max(weights) to be able to carry the biggest package, to sum(weights) as it'd take only 1 day to ship.
-        # if valid, r = mid - 1
+        """
+        l=max(weights), r=sum(weights),最后返回的是最左侧边界l；isValid: r = mid - 1；计算isValid：用一个cur，每次cur+=w，先检查是否cur+w>cap，是的话就days_need+=1, cur = 0
+
+        时间：O(logN)
+        空间：O(1)
+        """
         l, r = max(weights), sum(weights)
         
         def isvalid(cap): # 注意如何计算满足
@@ -702,10 +692,4 @@ class TimeMap:
                 r = mid - 1
         
         return "" if r == -1 else arr[r][1]
-
-
-# Your TimeMap object will be instantiated and called as such:
-# obj = TimeMap()
-# obj.set(key,value,timestamp)
-# param_2 = obj.get(key,timestamp)
 ```

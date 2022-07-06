@@ -1,13 +1,18 @@
 # 整理的结构
-一级标题：
-1. Educative（基础知识）
-2. Labulado
-3. Algo
-4. Explore
-5. 知乎
-6. Others
 
 
+基础知识
+- what: 实现，增删改查的复杂度
+- when: 什么时候使用
+- how: Template
+
+根据类型分类的题目们 -> 参考algomonster和知乎
+- 类型一
+  - 模版/总结
+  - 例题们
+- 类型二
+  - 模版/总结
+  - 例题们
 
 # Leetcode_Python
 
