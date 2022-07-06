@@ -852,3 +852,40 @@ class Solution:
 
 ```
 
+
+[10. Regular Expression Matching](https://leetcode.com/problems/regular-expression-matching/)
+
+```py
+class Solution:
+    def isMatch(self, s: str, p: str) -> bool:
+        """
+        DFS + Memorization
+        """
+        memo = {} # [(i, j)] whether valid given idx is (i, j)
+        def dfs(i, j): # compare s[i] with p[j]
+            if (i, j) in memo:
+                return memo[(i, j)]
+            if i >= len(s) and j >= len(p): # base case
+                return True
+            if j >= len(p): # when j reaches to the end alone, its definitely not valie
+                return False
+            # when i >= len(s), and j < len(p), could be True: s="a", p="a*b*"
+            
+            match = (i < len(s)) and (s[i] == p[j] or p[j] == ".")
+            
+            if (j + 1) < len(p) and p[j + 1] == "*": # when the next is star
+                # 2种方式往后走：用star和不用star
+                memo[(i, j)] = (dfs(i, j + 2) or # don't use star
+                               (match and dfs(i + 1, j))) # use star: current matches and then check the next one
+                return memo[(i, j)]
+            
+            if match: # 往后走，把后面的结果传递回来
+                memo[(i, j)] = dfs(i + 1, j + 1)
+                return memo[(i, j)]
+            
+            # 明确了不能match，直接返回False
+            memo[(i, j)] = False
+            return False
+        
+        return dfs(0, 0)
+```
