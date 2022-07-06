@@ -271,6 +271,33 @@ class Solution:
         return res
 ```
 
+[277. Find the Celebrity](https://leetcode.com/problems/find-the-celebrity/)
+
+```py
+class Solution:
+    def findCelebrity(self, n: int) -> int:
+        """
+        Step1: two pointers to find the potiential celebrity
+        Step2: check whether that one is the true celebrity
+        """
+        
+        # Step1
+        may_cele = 0
+        for nxt_per in range(1, n):
+            if knows(may_cele, nxt_per):
+                may_cele = nxt_per
+        
+        # Step2
+        for i in range(n):
+            if may_cele == i:
+                continue
+            if knows(may_cele, i) or (not knows(i, may_cele)):
+                return -1
+        
+        return may_cele
+```
+
+
 # 同向双指针-Sliding Window
 
 -> 扩大的条件和结果；缩小的条件和结果；更新res的条件和结果
