@@ -1,8 +1,5 @@
-# Educative基础知识
-
-
-## Tree
-### Terminology
+# 基础知识
+## Terminology
 1. Depth of Node: depth of root node is 0
 2. Height of Node: 
    - height of leaf node is 0
@@ -21,7 +18,7 @@
 | Insert | O(logN) | O(N) |
 | Delete | O(logN) | O(N) |
 
-implementation in python
+## Implementation
 ```py
 class Node(object):
   def __init__(self, value):
@@ -43,10 +40,11 @@ tree.root.right.left = Node(6)
 tree.root.right.right = Node(7)
 ```
 
-# Tree
+
+# Binary Tree
 
 ## 模板
-BFS搜索模板
+BFS层序遍历
 ```py
 def BFS(root):
     if not root:
@@ -69,6 +67,15 @@ def BFS(root):
                     visit.add(nei)
         step += 1
 ```
+
+DFS
+
+
+
+
+
+
+
 
 ## 题目
 [111. Minimum Depth of Binary Tree](https://leetcode.com/problems/minimum-depth-of-binary-tree/)
@@ -210,4 +217,14 @@ class Solution(object):
 
 
 
+# BST
+BST is often used to look up the existence of certain objects. Compared to sorted arrays, the insertion has way lower time complexity, so it's good for dynamic insertion of items. If you don't need to dynamically insert new items, then you can simply sort the collection first and use binary search to look up.
 
+However, most modern languages offers hash tables, which is another way of looking up the existence of an object in a collection. Most implementations are dynamically sized, which can cause the lookup and insertion of items to approach O(1), so usually hash tables are preferred over BST. Nevertheless, there are some advantages to using a BST over a hash table.
+
+Hash tables are unsorted, while BSTs are. If you want to constantly maintain a sorted order while inserting, using a BST is more efficient than a hash table or a sorted list.
+It's easy to look up the first element in the BST that is greater/smaller than a lookup value than a hash table.
+It's easy to find the k-th largest/smallest element.
+Dynamic hash tables usually have a lot of unused memory in order to make the insertion/deletion time approach O(1), whereas BST uses all the memory they requested.
+
+# 多叉树

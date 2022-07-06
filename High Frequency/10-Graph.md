@@ -453,6 +453,308 @@ class Solution:
 
 
 
+[1293. Shortest Path in a Grid with Obstacles Elimination](https://leetcode.com/problems/shortest-path-in-a-grid-with-obstacles-elimination/)
+```py
+class Solution:
+    def shortestPath(self, grid: List[List[int]], k: int) -> int:
+        """
+        BFS on (x,y,r) x,y is coordinate, r is remain number of obstacles you can remove.
+        queue: (step, state)
+        visited: (state)
+        state: (r, c, k)
+
+        Time: O(NK), visit each cell K times
+        Space: O(NK)
+        """
+        rows, cols = len(grid), len(grid[0])
+        
+        if k >= rows + cols - 2:
+            return rows + cols - 2
+        
+        state = (0, 0, k)
+        queue = collections.deque([(0, state)])
+        visited = set([state])
+        dirs = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        
+        while queue:
+            steps, (r, c, k) = queue.popleft()
+            if r == rows - 1 and c == cols - 1:
+                return steps
+            
+            for dx, dy in dirs:
+                nei_r, nei_c = r + dx, c + dy
+                if 0 <= nei_r < rows and 0 <= nei_c < cols:
+                    nei_k = k - grid[nei_ar][nei_c]
+                    nei_state = (nei_r, nei_c, nei_k)
+                    if nei_k >= 0 and nei_state not in visited:
+                        visited.add(nei_state)
+                        queue.append((steps + 1, nei_state))
+        
+        return -1
+```
+
+
+[1254. Number of Closed Islands](https://leetcode.com/problems/number-of-closed-islands/)
+
+```py
+class Solution:
+    def closedIsland(self, grid: List[List[int]]) -> int:
+        """
+        step1: flood or visit all the islands that in the boarder
+        step2: count the num of islands
+
+        Time: O(M*N)
+        Space: O(M*N)
+        """
+        
+        rows, cols = len(grid), len(grid[0])
+        
+        visit = set()
+        
+        def dfs(r, c):
+            if r < 0 or r == rows or c < 0 or c == cols or grid[r][c] != 0 or (r, c) in visit:
+                return
+            
+            visit.add((r, c))
+            dfs(r + 1, c)
+            dfs(r - 1, c)            
+            dfs(r, c + 1)            
+            dfs(r, c - 1)
+        
+        # step1
+        for r in range(rows):
+            dfs(r, 0)
+            dfs(r, cols - 1)
+        
+        for c in range(cols):
+            dfs(0, c)
+            dfs(rows - 1, c)
+        
+        # step2
+        count = 0
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == 0 and (r, c) not in visit:
+                    dfs(r, c)
+                    count += 1
+        
+        return count
+```
+
+[1020. Number of Enclaves](https://leetcode.com/problems/number-of-enclaves/)
+
+```py
+class Solution:
+    def numEnclaves(self, grid: List[List[int]]) -> int:
+        """
+        The same as LC1254
+        
+        Step1: visit all the cells that can walk off the boundary
+        Step2: count the remaining cells
+        
+        Time: O(M*N)
+        Space: O(M*N)
+        """
+        
+        rows, cols = len(grid), len(grid[0])
+        
+        visit = set()
+        
+        def dfs(r, c):
+            if r < 0 or r == rows or c < 0 or c == cols or (r, c) in visit or grid[r][c] != 1:
+                return
+            
+            visit.add((r, c))
+            dfs(r + 1, c)
+            dfs(r - 1, c)            
+            dfs(r, c + 1)            
+            dfs(r, c - 1)
+            
+        # step1
+        for r in range(rows):
+            dfs(r, 0)
+            dfs(r, cols - 1)
+        
+        for c in range(cols):
+            dfs(0, c)
+            dfs(rows - 1, c)
+        
+        # step2
+        count = 0
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == 1 and (r, c) not in visit:
+                    count += 1
+        
+        return count
+```
+
+[695. Max Area of Island](https://leetcode.com/problems/max-area-of-island/)
+
+```py
+class Solution:
+    def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+        """
+        the dfs() returns the current area while traversing the island
+        Time: O(M*N)
+        Space: O(M*N)
+        """
+        rows, cols = len(grid), len(grid[0])
+        visit = set()
+        
+        def dfs(r, c): # return the current area while traversing the island
+            if (r < 0 or r == rows or c < 0 or c == cols or grid[r][c] != 1 or (r, c) in visit):
+                return 0 # reach the end, the current area is 0
+            
+            visit.add((r, c))
+            return (1 +  # 1 is the current area
+                   dfs(r+1, c) + # add the possible adjcent area
+                   dfs(r-1, c) +
+                   dfs(r, c+1) +
+                   dfs(r, c-1) 
+                   )
+            
+        
+        area = 0
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == 1 and (r, c) not in visit:
+                    area = max(area, dfs(r, c)) # compare the area of different islands
+        return area                 
+```
+
+[1905. Count Sub Islands](https://leetcode.com/problems/count-sub-islands/)
+
+```py
+class Solution:
+    def countSubIslands(self, grid1: List[List[int]], grid2: List[List[int]]) -> int:
+        """
+        Step1: iterate through all islands in grid2, if any cell is not island in grid1, flood or visit the entire island of grid2
+        Step2: count the num of islands in grid2
+        
+        Time: O(M*N)
+        Space: O(M*N)
+        """
+        rows, cols = len(grid1), len(grid1[0])
+        
+        visit = set()
+        
+        def dfs(r, c):
+            if r < 0 or r == rows or c < 0 or c == cols or (r, c) in visit or grid2[r][c] != 1:
+                return
+            
+            visit.add((r, c))
+            dfs(r + 1, c)
+            dfs(r - 1, c)
+            dfs(r, c + 1)
+            dfs(r, c - 1)
+            
+        
+        # step1
+        for r in range(rows):
+            for c in range(cols):
+                if grid2[r][c] == 1 and grid1[r][c] == 0 and (r, c) not in visit:
+                    dfs(r, c)
+        
+        # step2
+        count = 0
+        for r in range(rows):
+            for c in range(cols):
+                if grid2[r][c] == 1 and (r, c) not in visit:
+                    dfs(r, c)
+                    count += 1
+            
+        return count
+```
+
+[694. Number of Distinct Islands](https://leetcode.com/problems/number-of-distinct-islands/)
+
+```py
+class Solution:
+    def numDistinctIslands(self, grid: List[List[int]]) -> int:
+        """
+        dfs() returns the current path of the island
+        
+        Time: O(M*N)
+        Space: O(M*N)
+        """
+        rows, cols = len(grid), len(grid[0])
+        visit = set()
+        
+        def dfs(r, c, path):
+            if r < 0 or r == rows or c < 0 or c == cols or (r, c) in visit or grid[r][c] == 0:
+                return "0"
+            
+            visit.add((r, c)) # enter the traverse
+            d = dfs(r + 1, c, path)
+            u = dfs(r - 1, c, path)            
+            right = dfs(r, c + 1, path)            
+            l = dfs(r, c - 1, path)            
+            path = d + u + right + l + "1" # exit the traverse
+            
+            return path
+        
+        count = set()
+        
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == 1 and (r, c) not in visit:
+                    one_path = dfs(r, c, "o")
+                    count.add(one_path)
+        
+        return len(count)
+```
+
+
+[130. Surrounded Regions](https://leetcode.com/problems/surrounded-regions/)
+
+```py
+class Solution:
+    def solve(self, board: List[List[str]]) -> None:
+        """
+        走三遍
+        1. 先从边界，把所有延伸出来的O变成T
+        2. 把剩下的O变成X
+        3. 把T变回O
+        时间：O(M*N) 每个都会走到
+        空间：O(M*N)
+        """
+        
+        rows, cols = len(board), len(board[0])
+
+        def capture(r, c):
+            if r < 0 or c < 0 or r == rows or c == cols or board[r][c] != "O":
+                return
+            
+            board[r][c] = "T"
+
+            capture(r + 1, c)
+            capture(r - 1, c)
+            capture(r, c + 1)
+            capture(r, c - 1)
+
+        # O -> T
+        for r in range(rows):
+            for c in range(cols):
+                if board[r][c] == "O" and (r in [0, rows - 1] or c in [0, cols - 1]):
+                    capture(r, c)
+        
+        # O -> X
+        for r in range(rows):
+            for c in range(cols):
+                if board[r][c] == "O":
+                    board[r][c] = "X"
+
+        # T -> O 
+        for r in range(rows):
+            for c in range(cols):
+                if board[r][c] == "T":
+                    board[r][c] = "O"
+```
+
+
+# 迷宫问题
+
 # Implicit Graph
 
 [752. Open the Lock](https://leetcode.com/problems/open-the-lock/)
@@ -661,6 +963,150 @@ class Solution:
         dfs(0)
         return len(seen) == n     
 ```
+
+# Un-weighted Graph
+
+[261. Graph Valid Tree](https://leetcode.com/problems/graph-valid-tree/)
+
+```py
+class Solution:
+    def validTree(self, n: int, edges: List[List[int]]) -> bool:
+        """
+        构建adjList
+        然后DFS，最后看visit过的是否和n相同
+        dfs: 用prev来记录入边，这样就避免false positive的hasCycle
+
+        时间：O(V+E)
+        空间：O(V+E)
+        """       
+        if not n:
+            return True
+        
+        graph = [[] for _ in range(n)]
+        for n1, n2 in edges:
+            graph[n1].append(n2)
+            graph[n2].append(n1)
+        
+        visit = set()
+        def hasCycle(i, prev):
+            if i in visit: # detect a loop
+                return True
+
+            visit.add(i)
+            for j in graph[i]:
+                if j == prev:
+                    continue
+                if hasCycle(j, i):
+                    return True
+            
+            return False
+        
+        return not hasCycle(0, -1) and n == len(visit)
+
+```
+
+
+
+## 图的遍历
+
+[797. All Paths From Source to Target](https://leetcode.com/problems/all-paths-from-source-to-target/)
+
+```py
+class Solution:
+    def allPathsSourceTarget(self, graph: List[List[int]]) -> List[List[int]]:
+        """
+        traverse the graph from graph[0], while maintaining an one_res path, the base case is reaching the end of the graph
+        """
+        res = []
+        
+        def dfs(cur_node, one_res):
+            # base case
+            if cur_node == len(graph)-1:
+                res.append(one_res.copy())
+                return
+            
+            # traverse neighbors
+            for node in graph[cur_node]:
+                one_res.append(node)
+                dfs(node, one_res) 
+                one_res.pop()
+        
+        # initiate one_res with [0], as the first element is not added from dfs()：only added 0'neighbors at the beginning
+        dfs(0, [0])
+        return res
+```
+
+[785. Is Graph Bipartite?](https://leetcode.com/problems/is-graph-bipartite/)
+
+```py
+class Solution(object):
+    def isBipartite(self, graph):
+        """
+        遍历一遍图，一边遍历一边染色，看看能不能用两种颜色给所有节点染色，且相邻节点的颜色都不相同。
+
+        时间：O(V+E)
+        空间：O(V) 用来存visit
+        """
+
+        def traverse(v, color):
+            # base case 已经走过
+            if v in visit:
+                return visit[v] == color: # 判断颜色是否相同
+
+            # 没有走过
+            visit[v] = color
+            for nei in graph[v]:
+                if not traverse(nei, -color): # 给nei涂上不同的颜色
+                    return False
+            return True
+
+        visit = {} # {visited vertex: color}既能确认是否visited，又能比较color
+
+        # 对每一个点都要遍历
+        for i in range(len(graph)):
+            if i not in visit: # 对于没有走过的点，都作为起点，来检查是否分别是二分图
+                if not traverse(i, 1): # 有一个不是二分图，就return False
+                    return False
+        return True
+```
+
+
+[886. Possible Bipartition](https://leetcode.com/problems/possible-bipartition/)
+
+```py
+class Solution:
+    def possibleBipartition(self, N: int, dislikes: List[List[int]]) -> bool:
+        """
+        与LC785一样，只是多了一个建图的过程
+        
+        时间：O(V+E)
+        空间：O(V) 用来存visit
+        """
+        def traverse(v, color):                
+            if v in visit:
+                return visit[v] == color
+            
+            visit[v] = color        
+            for nei in graph[v]:                
+                if not traverse(nei, -color):
+                    return False
+            return True
+        
+        graph = collections.defaultdict(list)
+        visit = {}      
+
+        for a,b in dislikes: 
+            graph[a].append(b)
+            graph[b].append(a)
+        
+        for i in range(1,N+1):            
+            if i not in visit:
+                if not traverse(i, 1):
+                    return False
+        return True
+```
+
+
 
 # Dijkstra
 
@@ -968,6 +1414,50 @@ class Solution:
         return count == numCourses # 根据是否记录的数量等于总课程数量
 ```
 
+DFS成环问题
+```py
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        """
+        就是看是否会成环
+        用adjcent list存[course:[prereq_courses]]
+        从0到n-1，按adj list跑到底，看这个course能否上掉
+        用visit set来记录是否已经走过
+
+        时间：O(V + E)
+        空间：O(V + E)
+        """        
+        graph = [[] for _ in range(numCourses)]
+        for course, pre in prerequisites:
+            graph[course].append(pre)
+        
+        # visit = all courses along the curr DFS path
+        visit = set()
+
+        def hasCycle(course):
+            # base case
+            if course in visit: # already processed: detect a loop
+                return True
+            if graph[course] == []:
+                return False
+            
+            visit.add(course)
+            for pre in graph[course]: # 对于每个点，走到底
+                if hasCycle(pre): # 发现一个是False，就返回False
+                    return True
+            
+            visit.remove(course)
+            graph[course] = []
+            return False
+        
+        for course in range(numCourses): # graph可能不是fully connected，所以要从每个点开始走
+            if hasCycle(course):
+                return False
+        
+        return True
+
+```
+
 [210. Course Schedule II](https://leetcode.com/problems/course-schedule-ii/)
 
 ```py
@@ -1136,6 +1626,85 @@ class Solution:
         res.reverse()
         return "".join(res)
 ```
+
+[2115. Find All Possible Recipes from Given Supplies](https://leetcode.com/problems/find-all-possible-recipes-from-given-supplies/)
+
+```py
+class Solution:
+    def findAllRecipes(self, recipes: List[str], ingredients: List[List[str]], supplies: List[str]) -> List[str]:
+        """
+        拓扑排序
+        graph: {ingredients: recipies}
+        indegree: recipes
+        遍历一遍recipes和ingredients，构建出来graph和indegree
+        
+        queue装所有的supplies，然后更新indegree，把indegree[i]==0的放进queue
+        res是拓扑排序之后indegree[i]==0的那些i
+        """
+        
+        # graph: {ingredients: recipies}
+        graph = collections.defaultdict(list)
+        # indegree: required for recipes
+        indegree = collections.defaultdict(int)
+        
+        for i in range(len(recipes)):
+            for ing in ingredients[i]:
+                indegree[recipes[i]] += 1
+                graph[ing].append(recipes[i])
+        
+        
+        # 拓扑排序
+        queue = collections.deque(supplies)
+        while queue:
+            cur = queue.popleft()
+            for nei in graph[cur]:
+                indegree[nei] -= 1
+                if indegree[nei] == 0:
+                    queue.append(nei)
+        
+        res = []
+        for recipe in recipes:
+            if indegree[recipe] == 0:
+                res.append(recipe)
+        
+        return res
+```
+
+```py
+class Solution:
+    def findAllRecipes(self, recipes: List[str], ingredients: List[List[str]], supplies: List[str]) -> List[str]:
+        """
+        use DFS with Memorization to find the one
+        """
+        suppliesSet = set(supplies)
+        recipesMap = {recipes[i]: ingredients[i] for i in range(0, len(recipes))}
+        ans = []
+        
+        for recipe in recipesMap:
+            if self.canMake(recipe, suppliesSet, recipesMap, set()):
+                ans.append(recipe)
+                
+        return ans
+    
+    def canMake(self, target, suppliesSet, recipesMap, seen):
+        if target in suppliesSet:
+            return True
+        if target in seen:
+            return False
+        if target not in recipesMap:
+            return False
+        
+        seen.add(target)
+        
+        for ingredient in recipesMap[target]:
+            if not self.canMake(ingredient, suppliesSet, recipesMap, seen):
+                return False
+        
+        suppliesSet.add(target)
+        return True
+        
+```
+
 # MST
 It is a graph that connects all the vertices together, withoug cycles and with the minimum total edge weight
 ## Kruskal's Algo
@@ -1193,10 +1762,107 @@ def minimum_spanning_tree(n : int, edges : List[edge]) -> int:
 
 [139. Word Break](https://leetcode.com/problems/word-break/)
 
+```py
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        """
+        dp[i] means s[i:] whether can be formed by words in wordDict or not
+
+        From right to left
+        Time: O(N*M*N), N is len(s), M is len(wordDict)
+        Space: O(N+M)
+        """
+        
+        dp = [False] * (len(s) + 1)
+        dp[len(s)] = True
+        
+        for i in range(len(s) - 1, -1, -1):
+            for w in wordDict:
+                if (i + len(w) <= len(s)) and s[i:i + len(w)] == w:
+                    dp[i] = dp[i + len(w)] # at idx i, dp[i] determines at dp[i+len(w)] if s[i:i+len(w)] == w
+                if dp[i]:
+                    break
+        return dp[0]
+```
+
+```py
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        """
+        DFS + Memo
+        
+        Time: O(N^3)
+        Space: O(N)
+        """
+        if not s:
+            return False
+        words = set(wordDict)
+        memo = {}
+        
+        def dfs(s):
+            if s in memo:
+                return memo[s]
+            if not s:
+                return True
+            for word in words:
+                # 前面不同就跳过
+                if s[:len(word)] != word:
+                    continue
+                # 前面相同就可以往后看
+                remain = dfs(s[len(word):])
+                if remain:
+                    memo[s] = True # 保存remain的结果
+                    return True
+            memo[s] = False
+            return False
+        
+        return dfs(s)
+```
 [140. Word Break II](https://leetcode.com/problems/word-break-ii/)
 
 [79. Word Search](https://leetcode.com/problems/word-search/)
 
+```py
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        """
+        dfs(r, c, i)同时传入一个idx
+
+        时间：O(M*N*4 ^ N)
+        空间：O(L) L is len(words)
+        """
+        rows = len(board)
+        cols = len(board[0])
+        visit = set()
+        
+        def dfs(r, c, i):
+            # Base case
+            if i == len(word):
+                return True
+            
+            # 排除的条件
+            if r < 0 or r >= rows or c < 0 or c >= cols or (r, c) in visit or board[r][c] != word[i]:
+                return False
+            
+            # 做选择
+            visit.add((r, c))
+            # Backtrack
+            res =  (dfs(r + 1, c, i + 1) or
+                    dfs(r - 1, c, i + 1) or         
+                    dfs(r, c + 1, i + 1) or         
+                    dfs(r, c - 1, i + 1)
+                  )
+            # 回溯
+            visit.remove((r, c))            
+            return res
+        
+        for r in range(rows):
+            for c in range(cols):
+                if dfs(r, c, 0):
+                    return True
+        
+        return False
+```
 
 [127. Word Ladder](https://leetcode.com/problems/word-ladder/)
 
