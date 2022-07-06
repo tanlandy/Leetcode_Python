@@ -329,23 +329,30 @@ class Solution:
 ```
 
 [424. Longest Repeating Character Replacement](https://leetcode.com/problems/longest-repeating-character-replacement/)
-windowLen - max(count[letter]) <= k, valid就移动r，直到不valid就停止
 
-时间：O(26N)或者O(N)
-空间：O(N)
 
 ```py
 class Solution:
     def characterReplacement(self, s: str, k: int) -> int:
+        """
+        用一个counter来记录window中字母出现的次数，这个window是什么字母由max(counter.values())决定，一直expand直到window的大小超过了max+k
+        windowLen - max(count[letter]) <= k, valid就移动r，直到不valid就停止
+
+        时间：O(26N)或者O(N)
+        空间：O(N)
+        """
         count = collections.defaultdict(int)
         res = 0
 
         l = r = 0
+        max_f = 0
 
         while r < len(s):
             count[s[r]] += 1
+            max_f = max(max_f, counts[s[r]])
 
-            while (r - l + 1) - max(count.values()) > k:
+            # while (r - l + 1) - max(count.values()) > k:
+            while (r - l + 1) - max_f > k:
                 count[s[l]] -= 1
                 l += 1
 
@@ -355,70 +362,56 @@ class Solution:
         return res
 ```
 
-```py
-class Solution:
-    def characterReplacement(self, s: str, k: int) -> int:
-        count = collections.defaultdict(int)
-        res = 0
-
-        l = r = 0
-        maxf = 0
-        while r < len(s):
-            count[s[r]] += 1
-            maxf = max(maxf, count[s[r]])
-
-            while (r - l + 1) - maxf > k:
-                count[s[l]] -= 1
-                l += 1
-
-            res = max(res, r - l + 1)
-            r += 1
-        return res
-```
 
 [76. Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring/)
 
 ```py
 class Solution:
     def minWindow(self, s: str, t: str) -> str:
+        """
+        用count_remain来记录需要配对的剩余的量
+        当counter[c] > 0，说明找到一个合适的，如果是在expand时候遇到就要count_remain-=1，如果是在shrink时候遇到就要+=1
+        """
         countMap = collections.Counter(t)
 
         l = r = 0
         minStart = 0
         minLen = float("inf")
-        counter = len(t)
+        count_remain = len(t)
 
         while r < len(s):
             # 扩大窗口
             ch = s[r]
             if countMap[ch] > 0:
-                counter -= 1
+                count_remain -= 1
             countMap[ch] -= 1 # 扩大的结果
             r += 1
 
             # 缩小窗口
-            while counter == 0: # 缩小的条件
+            while count_remain == 0: # 缩小的条件
                 if minLen > r - l: # 更新res
                     minStart = l
                     minLen = r - l
                 ch2 = s[l] # 缩小的结果
                 countMap[ch2] += 1 # 相互对称，先扩大一个再更新窗口
                 if countMap[ch2] > 0:
-                    counter += 1
+                    count_remain += 1
                 l += 1
 
         return s[minStart: minStart + minLen] if minLen != float("inf") else ""
 ```
 
 [3. Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
-用set记录当前sliding window的数据；如果s[r]在set里，移动窗口直到不在并且在set中删去
-
-时间：O(N)
-空间：O(N)
 
 ```python
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
+        """
+        用set记录当前sliding window的数据；如果s[r]在set里，移动窗口直到不在并且在set中删去
+
+        时间：O(N)
+        空间：O(N)
+        """
         char_set = set()
         l = r = 0
         res = 0
@@ -433,43 +426,6 @@ class Solution:
 
         return res
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -627,6 +583,126 @@ class Solution:
         
         return 0 if res == float("inf") else res
 ```
+
+[395. Longest Substring with At Least K Repeating Characters](https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/)
+
+```py
+class Solution:
+    def longestSubstring(self, s, k):
+        """
+        do sliding window unique_letters(at most 26) times, each time i means the unique letter in the sliding window is i
+        """
+        def longest_h_unique_at_least_k_repeat(s, k, h):
+        
+            start = end = 0
+            hist = collections.Counter()
+            unique = no_less_than_k = 0
+            res = 0
+        
+            while end < len(s):
+                hist[s[end]] += 1
+                if hist[s[end]] == 1:
+                    unique += 1
+                if hist[s[end]] == k:
+                    no_less_than_k += 1
+                
+                end += 1
+            
+                while unique > h:
+                    hist[s[start]] -= 1
+                    if hist[s[start]] == k-1:
+                        no_less_than_k -= 1
+                    if hist[s[start]] == 0:
+                        unique -= 1
+                    start += 1
+                if no_less_than_k == unique:
+                    res = max(res, end - start)
+            return res
+        
+        counter = collections.Counter(s)
+        unique_letters = len(counter)
+        
+        return max(longest_h_unique_at_least_k_repeat(s, k, i) for i in range(1, unique_letters + 1))
+```
+
+[340. Longest Substring with At Most K Distinct Characters](https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/)
+
+```py
+class Solution:
+    def lengthOfLongestSubstringKDistinct(self, s: str, k: int) -> int:
+        counter = collections.defaultdict(int)
+        l = r = 0
+        res = 0
+        
+        while r < len(s):
+            counter[s[r]] += 1
+            r += 1
+            while len(counter) > k:
+                counter[s[l]] -= 1
+                if counter[s[l]] == 0:
+                    del counter[s[l]]
+                l += 1
+            res = max(res, r - l)
+
+        return res
+```
+
+
+[1004. Max Consecutive Ones III](https://leetcode.com/problems/max-consecutive-ones-iii/)
+
+```py
+class Solution:
+    def longestOnes(self, nums: List[int], k: int) -> int:
+        """
+        expand window until k < 0, when expanding, k -= 1 when flip needed
+        shrink window until k == 0, when shrinking, k += 1 when flip no longer needed
+        """
+        l = r = 0
+        res = 0
+        
+        while r < len(nums):
+            if nums[r] == 0:
+                k -= 1
+            r += 1
+            while k < 0:
+                if nums[l] == 0:
+                    k += 1
+                l += 1
+            res = max(res, r - l)
+        
+        return res
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Others
 [88. Merge Sorted Array]([Loading...](https://leetcode.com/problems/merge-sorted-array/))
