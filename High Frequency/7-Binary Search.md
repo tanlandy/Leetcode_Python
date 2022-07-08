@@ -664,6 +664,49 @@ class Solution:
 
 [4. Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/)
 
+```py
+class Solution:
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        """
+        Binary search大小更小的那组数A，把这组数partition到2部分
+        看A的左边和对应B的左边是否刚好就是把AB合并之后左边的那部分：Aleft<=Bright, Bleft<=Aright
+            - 如果是奇数个数，那么就是Aright和Bright中较小的数
+            - 如果是偶数个数，那么就是(max(Aleft, Bleft) + min(Aright, Bright)) / 2
+        否则就重新搜索A的大小：
+            - Aleft>Bright的话，就要缩小A：r = mid - 1
+            - Bleft>Aright的话，就要扩大A：l = mid + 1
+        
+        Time: O(min(A, B))
+        Space: O(1)
+        """
+        A, B = nums1, nums2
+        if len(A) > len(B):
+            A, B = B, A
+        total = len(A) + len(B)
+        half = total // 2
+        
+        l, r = 0 , len(A) - 1
+        while True:
+            i = (l + r) // 2
+            j = half - i - 2
+            
+            Aleft = A[i] if i >= 0 else float("-inf")
+            Aright = A[i + 1] if (i + 1) < len(A) else float("inf")
+            Bleft = B[j] if j >= 0 else float("-inf")
+            Bright = B[j + 1] if (j + 1) < len(B) else float("inf")
+            
+            if Aleft <= Bright and Bleft <= Aright:
+                if total % 2:
+                    return min(Aright, Bright) # 左边刚好就满了，下一个数就是median
+                else:
+                    return (max(Aleft, Bleft) + min(Aright, Bright)) / 2
+            elif Aleft > Bright:
+                r = i - 1
+            else:
+                l = i + 1
+            
+```
+
 [719. Find K-th Smallest Pair Distance](https://leetcode.com/problems/find-k-th-smallest-pair-distance/)
 
 [410. Split Array Largest Sum](https://leetcode.com/problems/split-array-largest-sum/)

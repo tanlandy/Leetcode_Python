@@ -227,4 +227,38 @@ It's easy to look up the first element in the BST that is greater/smaller than a
 It's easy to find the k-th largest/smallest element.
 Dynamic hash tables usually have a lot of unused memory in order to make the insertion/deletion time approach O(1), whereas BST uses all the memory they requested.
 
+
+
+[510. Inorder Successor in BST II](https://leetcode.com/problems/inorder-successor-in-bst-ii/)
+```py
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+        self.parent = None
+"""
+
+class Solution:
+    def inorderSuccessor(self, node: 'Node') -> 'Optional[Node]':
+        """
+        往右找，如果右边没有，就是自己的父
+        """
+        # 往右找：右一步，然后一直往左
+        if node.right:
+            node = node.right
+            while node.left:
+                node = node.left
+            return node
+        
+        # 往上找：一直往左上，走到头之后再上一个就是successor
+        while node.parent and node == node.parent.right:
+            node = node.parent
+        return node.parent
+```
+
+
+
 # 多叉树
