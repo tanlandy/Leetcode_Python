@@ -393,6 +393,11 @@ Interval的关键是找到两个区间的重合部分：overlap of two intervals
 
 常见的技巧是首先sort by start time
 
+两个相邻区间的三种相对位置：
+1. 完全重叠
+2. 部分重叠
+3. 不重叠
+
 ### 例题
 [56. Merge Intervals](https://leetcode.com/problems/merge-intervals/)
 
@@ -449,10 +454,52 @@ class Solution:
 ```
 
 [1288. Remove Covered Intervals](https://leetcode.com/problems/remove-covered-intervals/)
-
+```py
+class Solution:
+    def removeCoveredIntervals(self, intervals: List[List[int]]) -> int:
+        """
+        sort the intervals by start, when start are the same, sort base on end in decreasing order
+        """
+        intervals.sort(key = lambda x: (x[0], -x[1]))
+        count = 0
+        pre_end = 0
+        
+        # count the remaining intervals
+        for start, end in intervals:
+            if end > pre_end: # condition for a valid remaining interval
+                count += 1
+                pre_end = end
+        
+        return count
+```
 
 [986. Interval List Intersections](https://leetcode.com/problems/interval-list-intersections/)
-
+```py
+class Solution:
+    def intervalIntersection(self, firstList: List[List[int]], secondList: List[List[int]]) -> List[List[int]]:
+        """
+        可能重叠的地方就是[max(x1, y1), min(x2, y2)]
+        """
+        res = []
+        i = j = 0
+        
+        while i < len(firstList) and j < len(secondList):
+            start_1, end_1 = firstList[i][0], firstList[i][1]
+            start_2, end_2 = secondList[j][0], secondList[j][1]
+ 
+            start = max(start_1, start_2)
+            end = min(end_1, end_2)
+            
+            if start <= end:
+                res.append([start, end])
+            
+            if end_1 < end_2:
+                i += 1
+            else:
+                j += 1
+        
+        return res
+```
 
 [252. Meeting Rooms](https://leetcode.com/problems/meeting-rooms/)
 
@@ -470,7 +517,7 @@ class Solution:
 ```
 
 
-[253. Meeting Rooms II](https://leetcode.com/problems/meeting-rooms-ii/)
+[253. Meeting Rooms II](https://leetcode.com/problems/meeting-rooms-ii/) 高频好题
 ```python
 class Solution:
     def minMeetingRooms(self, intervals: List[List[int]]) -> int:
@@ -497,9 +544,81 @@ class Solution:
                 count -= 1
         
         return res
-
 ```
 
-[1229. Meeting Scheduler](https://leetcode.com/problems/meeting-scheduler/)
+```py
+class Solution:
+    def minMeetingRooms(self, intervals: List[List[int]]) -> int:
+        """
+        判断是否需要一件新的room：check the min(end) with cur_start
+        effectively check the minimum number of all rooms allocated: min_heap with the key is the end time of the current room
+        for a new interval: if add then add, if not then update  
+        the return value is the final size of the min_heap
+        """
+        intervals.sort()
+        min_heap = []
+        
+        heapq.heappush(min_heap, intervals[0][1])
+        
+        for interval in intervals[1:]:
+            if min_heap[0] <= interval[0]: # if no new room needed, free up the space
+                heapq.heappop(min_heap)
+            # push to room all the time
+            heapq.heappush(min_heap, interval[1])
+        
+        return len(min_heap)
+```
 
+[1229. Meeting Scheduler](https://leetcode.com/problems/meeting-scheduler/) 高频好题
 
+```py
+class Solution:
+    def minAvailableDuration(self, slots1: List[List[int]], slots2: List[List[int]], duration: int) -> List[int]:
+        """
+        LC986的变形 加了一个判断条件
+        sort input arrays and apply two pointers
+        always move the pointer that ends earlier
+
+        Time: O(MlogM + NlogN)
+        Space: O(M + N) as sort in python takes O(N) for the worst case
+        """
+        
+        slots1.sort()
+        slots2.sort()
+        
+        i = j = 0
+        
+        while i < len(slots1) and j < len(slots2):
+            s1, e1 = slots1[i][0], slots1[i][1]
+            s2, e2 = slots2[j][0], slots2[j][1]
+            
+            start = max(s1, s2)
+            end = min(e1, e2)
+            
+            if start + duration <= end: # <>的比较一定要注意，总是容易弄反
+                return [start, start + duration]
+            
+            if e1 < e2:
+                i += 1
+            else:
+                j += 1
+        
+        return []
+```
+
+```py
+class Solution:
+    def minAvailableDuration(self, slots1: List[List[int]], slots2: List[List[int]], duration: int) -> List[int]:
+        # build up a heap containing time slots last longer than duration
+        timeslots = list(filter(lambda x: x[1] - x[0] >= duration, slots1 + slots2))
+        heapq.heapify(timeslots)
+
+        # 同一个的时间不可能重叠：有重叠的话就是2个人的重叠部分，就是可能的结果区间
+
+        while len(timeslots) > 1:
+            start1, end1 = heapq.heappop(timeslots) # 其中一个人
+            start2, end2 = timeslots[0] # 另一个人
+            if end1 >= start2 + duration: # 因为在构建timeslots时候，已经确保了end2 >= start2 + duration
+                return [start2, start2 + duration]
+        return []
+```
