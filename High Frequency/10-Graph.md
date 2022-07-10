@@ -595,6 +595,7 @@ class Solution:
 class Solution:
     def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
         """
+        find the area of each island, then return the maximum one
         the dfs() returns the current area while traversing the island
         Time: O(M*N)
         Space: O(M*N)
@@ -613,7 +614,6 @@ class Solution:
                    dfs(r, c+1) +
                    dfs(r, c-1) 
                    )
-            
         
         area = 0
         for r in range(rows):
@@ -713,7 +713,7 @@ class Solution:
     def solve(self, board: List[List[str]]) -> None:
         """
         走三遍
-        1. 先从边界，把所有延伸出来的O变成T
+        1. 先从边界，把所有延伸到边界的O变成T
         2. 把剩下的O变成X
         3. 把T变回O
         时间：O(M*N) 每个都会走到
@@ -750,6 +750,48 @@ class Solution:
             for c in range(cols):
                 if board[r][c] == "T":
                     board[r][c] = "O"
+```
+
+[417. Pacific Atlantic Water Flow](https://leetcode.com/problems/pacific-atlantic-water-flow/)
+
+```py
+class Solution:
+    def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
+        """
+        分别从Pac和Atl来看哪些点满足，最后都满足的点就是最终结果
+        从Pac来看哪些点满足：
+        1，从第一行和第一列，分别作dfs
+        2，dfs的时候：提前返回的条件只多一个cur_height < pre_height
+        """
+        pac, atl = set(), set()
+        rows, cols = len(heights), len(heights[0])
+        
+        def dfs(r, c, visit, pre_height):
+            if (r < 0 or r == rows or c < 0 or c == cols or (r, c) in visit or heights[r][c] < pre_height):
+                return
+            visit.add((r, c))
+            
+            dfs(r + 1, c, visit, heights[r][c])
+            dfs(r - 1, c, visit, heights[r][c])
+            dfs(r, c + 1, visit, heights[r][c])
+            dfs(r, c - 1, visit, heights[r][c])
+        
+        # 第一行最后一行，第一列最后一列分别找满足的点
+        for c in range(cols):
+            dfs(0, c, pac, heights[0][c]) # 第一行Pac
+            dfs(rows - 1, c, atl, heights[rows - 1][c]) # 最后一行Atl
+        
+        for r in range(rows):
+            dfs(r, 0, pac, heights[r][0]) # 第一列Pac
+            dfs(r, cols - 1, atl, heights[r][cols - 1]) # 最后一列Atl
+            
+        # 都满足的点就是最终的点
+        res = []
+        for r in range(rows):
+            for c in range(cols):
+                if (r, c) in pac and (r, c) in atl:
+                    res.append([r, c])
+        return res
 ```
 
 

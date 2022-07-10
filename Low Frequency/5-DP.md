@@ -3,6 +3,14 @@
 ## Intro
 Dynamic programming is an algorithmic optimization technique that breaks down a complicated problem into smaller overlapping subproblems in a recursive manner and use solutions to the subproblems to construct solution to the original problem.
 
+DP ~= Careful brute force
+DP ~= subproblems + reuse -> for graph, should be acylic
+DP ~= Recursion + Memo + GUESSING
+- memoize
+- reuse
+- to subproblems that can solve the problem
+Time: # of subproblems * time/subproblem
+
 -> It is a simple concept of solving bigger problems using smaller problems while saving results to avoid repeated calculations. 
 
 1. The problem can be broken down into `"overlapping subproblems"` - smaller versions of the original problem that are re-used multiple times. -> subproblems are dependent
@@ -32,7 +40,7 @@ DP is an **optimization** method on one or more **sequences**.
    - LIS
 
 ## How to use
-1. Top-down: DFS + Memorization: split large problems and recursively solve smaller subproblems
+1. Top-down: DFS + Memoization: split large problems and recursively solve smaller subproblems
    - draw the tree
    - identify states
     1. 站在节点：需要什么来解决问题，如何解决
@@ -40,8 +48,12 @@ DP is an **optimization** method on one or more **sequences**.
    - DFS + Memoization
      - memoizing a result means to store the result of a function call, usually in a hashmap or an array,
 2. Bottom-up: solve subproblmes first, and then use their solution to find the solutions to bigger subproblems -> normally done in a tabular form -> start at the base case
-    - 找到recurrence relation，例如dp[i] = dp[i-1] + dp[i-2]
+   - exact same computation as DFS + Memo
+   - (Topological sort of subproblem dependency DAG)
+   - 找到recurrence relation，例如dp[i] = dp[i-1] + dp[i-2]
+   - Can often save space
 
+## How to use
 不论top-down还是bottom-up，都要思考
 1. A function or data structure that will compute/contain the answer to the problem for every given state
 
@@ -75,6 +87,14 @@ for 状态1 in 状态1的所有取值：
         for ...
             dp[状态1][状态2][...] = 求最值(选择1，选择2...)
 ```
+
+### 5 steps to DP 
+1. Define subproblems -> number of subproblems
+2. Guess(part of solution) -> choice of guess
+3. relate subproblem solutions -> time/subproblem
+4. recurse + Memo OR bottom-up tables -> check subproblem recurrence is acyclic
+5. solve the original problem
+
 
 # Problems
 
@@ -290,26 +310,34 @@ Use bitmasks to reduce factorial compelxity to 2^n by encoding the dp state in b
 
 ## Other待分类
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 [509. Fibonacci Number](https://leetcode.com/problems/fibonacci-number/)
 
 ```py
 class Solution:
     def fib(self, n: int) -> int:
         """
+        Naive recursive algo:
+        fib(n):
+            if n <= 2:
+                f(n) = 1
+            else:
+                f(n) = fib(n-1) + fib(n-2)
+        time: exponential time
         暴力解法存在大量的重叠子问题
+
+        Memoized DP algo
+        memo = {}
+        fib(n):
+            if n in memo:
+                return memo[n]
+            if n <= 2:
+                f(n) = 1
+            else:
+                f(n) = fib(n-1) + fib(n-2)
+            memo[n] = f(n)
+            return f(n)
+
+
         dp[i] = dp[i-1] + dp[i-2]
         
         Time: O(N)
@@ -381,20 +409,6 @@ class Solution:
 ```
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ```py
 class Solution:
     def climbStairs(self, n: int) -> int:
@@ -411,6 +425,12 @@ class Solution:
         memo = {}
         return dp(n)
 ```
+
+[68. Text Justification](https://www.youtube.com/watch?v=ENyox7kNKeY)
+
+
+
+
 
 
 
