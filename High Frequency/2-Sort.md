@@ -1,4 +1,4 @@
-# 排序基础知识
+# 基础知识
 In Java, Arrays.sort() for primitives is implemented using a variant of the Quick Sort algorithm, which has a space complexity of O(\log n)O(logn)
 In C++, the sort() function provided by STL uses a hybrid of Quick Sort, Heap Sort and Insertion Sort, with a worst case space complexity of O(\log n)O(logn)
 In Python, the sort() function is implemented using the Timsort algorithm, which has a worst-case space complexity of O(n)O(n)
@@ -134,6 +134,8 @@ def partition(nums, l, r):
     return p
 ```
 
+# 例题
+
 [148. Sort List](https://leetcode.com/problems/sort-list/)
 
 ```py
@@ -182,25 +184,6 @@ class Solution:
         left = self.sortList(head)
         right = self.sortList(mid)
         return merge(left, right)
-```
-
-[56. Merge Intervals](https://leetcode.com/problems/merge-intervals/)
-
-```py
-class Solution:
-    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
-        intervals.sort(key = lambda i : i[0])  # i代表interval，：后面表示按照排序i[0]
-        # intervals.sort()
-        res = [intervals[0]] # 一开始把第一个放进去
-
-        for start, end in intervals[1:] :
-            lastEnd = res[-1][1]
-            if start <= lastEnd:
-                res[-1][1] = max(lastEnd, end)
-            else:
-                res.append([start, end])
-
-        return res 
 ```
 
 [27. Remove Element](https://leetcode.com/problems/remove-element/)
@@ -400,4 +383,123 @@ class Solution:
         return select(0, len(nums) - 1)
 ```
 
-[4. Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/)
+## Intervals
+### 模版
+
+Interval的关键是找到两个区间的重合部分：overlap of two intervals
+
+重叠的部分：[max(x1, y1), min(x2, y2)]
+因此，终点是确保max(x1, y1) <= min(x2, y2)
+
+常见的技巧是首先sort by start time
+
+### 例题
+[56. Merge Intervals](https://leetcode.com/problems/merge-intervals/)
+
+```py
+class Solution:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        intervals.sort(key = lambda i : i[0])  # i代表interval，：后面表示按照排序i[0]
+        # intervals.sort()
+        res = [intervals[0]] # 一开始把第一个放进去，这样好直接进行第一次比较
+
+        for start, end in intervals[1:] :
+            lastEnd = res[-1][1]
+            if start <= lastEnd:
+                res[-1][1] = max(lastEnd, end)
+            else:
+                res.append([start, end])
+
+        return res 
+
+
+```
+
+[57. Insert Interval](https://leetcode.com/problems/insert-interval/)
+```py
+class Solution:
+    def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+        """
+        普通方法是把newInterval加到最后，然后用LC56的方式: sort之后一一比较。时间O(NlogN)
+        本方法是Greedy，找到要插入区间的起始点，然后找到终止点。插入区间的前后保持原样。时间O(N)
+        """
+
+        res = []
+        i = 0
+        n = len(intervals)
+
+        # find the beginning of newInterval
+        while i < n and intervals[i][1] < newInterval[0]:
+            res.append(intervals[i]) # before remains the same
+            i += 1
+
+        # find the end of newInterval
+        while i < n and intervals[i][0] <= newInterval[1]:
+            newInterval[0] = min(intervals[i][0], newInterval[0])
+            newInterval[1] = max(intervals[i][1], newInterval[1])
+            i += 1
+
+        res.append(newInterval) # add the interval
+
+        while i < n: 
+            res.append(intervals[i]) # after remains the same
+            i += 1
+
+        return res
+```
+
+[1288. Remove Covered Intervals](https://leetcode.com/problems/remove-covered-intervals/)
+
+
+[986. Interval List Intersections](https://leetcode.com/problems/interval-list-intersections/)
+
+
+[252. Meeting Rooms](https://leetcode.com/problems/meeting-rooms/)
+
+```py
+class Solution:
+    def canAttendMeetings(self, intervals: List[List[int]]) -> bool:
+        # intervals.sort()
+        intervals.sort(key = lambda i : i[0])
+        
+        for i in range(len(intervals) - 1):
+            if intervals[i][1] > intervals[i + 1][0]:
+                return False
+        
+        return True
+```
+
+
+[253. Meeting Rooms II](https://leetcode.com/problems/meeting-rooms-ii/)
+```python
+class Solution:
+    def minMeetingRooms(self, intervals: List[List[int]]) -> int:
+        """
+        2个[]，分别存所有的start和end；双指针比较，如果start<end就count+=1同时start往后走；如果start>=end，就移动end的指针同时count -= 1；双指针走到头的情况就是start到头了；[]存start的方法：sorted([i[0] for i in intervals])
+
+        时间：O(NlogN)
+        空间：O(N)
+        """
+        start = sorted([i[0] for i in intervals])
+        end = sorted([i[1] for i in intervals])
+
+        res, count = 0, 0
+
+        s, e = 0, 0
+
+        while s < len(intervals):
+            if start[s] < end[e]:
+                count += 1
+                s += 1
+                res = max(res, count)
+            else:
+                e += 1
+                count -= 1
+        
+        return res
+
+```
+
+[1229. Meeting Scheduler](https://leetcode.com/problems/meeting-scheduler/)
+
+
