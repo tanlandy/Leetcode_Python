@@ -48,3 +48,108 @@ class Solution:
         
         return False
 ```
+
+[528. Random Pick with Weight](https://leetcode.com/problems/random-pick-with-weight/) (前缀和，可以先做一下LC53、523)
+
+
+用list存所有的前缀和。概率是w[i]/total_sum，可以用找到第一个preSum来代替；用random.random()来获得[0,1);w:[1,3]-> pre_sums:[1, 4] -> target in randomly in [0, 4); find the first index in pre_sums s.t. target < pre_sums[idx]
+时间：构造O(N)，找数O(N)
+空间：构造O(N)，找数O(1)
+```python
+class Solution:
+
+    def __init__(self, w: List[int]):
+        self.prefix_sums = []
+        pre_sum = 0
+        for weight in w:
+            pre_sum += weight
+            self.prefix_sums.append(pre_sum)
+        self.total_sum = pre_sum
+
+    def pickIndex(self) -> int:
+        target = self.total_sum * random.random()
+        for i, pre_sum in enumerate(self.prefix_sums):
+            if target < pre_sum:
+                return i
+```
+
+用list存所有的前缀和。概率是w[i]/total_sum，可以用二分查找找到第一个preSum来代替；用random.random()来获得[0,1); 当右边左右的数都满足的时候，找最左满足的数，最后返回的是l
+时间：构造O(N)，找数O(logN)
+空间：构造O(N)，找数O(1)
+```python 
+class Solution:
+    def __init__(self, w: List[int]):
+        self.prefix_sums = []
+        pre_sum = 0
+        for weight in w:
+            pre_sum += weight
+            self.prefix_sums.append(pre_sum)
+        self.total_sum = pre_sum
+
+    def pickIndex(self) -> int:
+        target = self.total_sum * random.random()
+        l, r = 0, len(self.prefix_sums) - 1
+        while l <= r:
+            mid = l + (r - l) // 2 # 要地板除
+            if (target > self.prefix_sums[mid]):
+                l = mid + 1
+            else: 
+                r = mid - 1
+        return l
+```
+
+[303. Range Sum Query - Immutable](https://leetcode.com/problems/range-sum-query-immutable/)
+```py
+class NumArray:
+
+    def __init__(self, nums: List[int]):
+        self.prefix = [0]
+        cur = 0
+        for n in nums:
+            cur += n
+            self.prefix.append(cur)
+
+    def sumRange(self, left: int, right: int) -> int:
+        # 如果一开始self.prefix = []
+        # if left == 0:
+        #     return self.prefix[right] 
+        # return self.prefix[right] - self.prefix[left - 1]
+        return self.prefix[right + 1] - self.prefix[left]
+```
+
+
+[304. Range Sum Query 2D - Immutable](https://leetcode.com/problems/range-sum-query-2d-immutable/)
+
+```py
+class NumMatrix:
+
+    def __init__(self, matrix: List[List[int]]):
+        """
+        构建前缀和矩阵
+        """
+        rows, cols = len(matrix), len(matrix[0])
+        
+        self.prefix = [[0] * (cols + 1) for x in range(rows + 1)]
+        
+        for r in range(1, rows + 1):
+            for c in range(1, cols + 1):
+                self.prefix[r][c] = self.prefix[r - 1][c] + self.prefix[r][c - 1] - self.prefix[r-  1][c - 1] + matrix[r - 1][c - 1]
+        
+        
+
+    def sumRegion(self, row1: int, col1: int, row2: int, col2: int) -> int:
+        """
+        画图知道方位
+                 c1   c2        
+              1   2   3
+        r1    4   5   6
+        r2    7   8   9
+        sum(2, 2) = prefix(r2, c2) + prefix(r1-1, c2-1) - prefix(r2, c1-1) - prefix(r1-1, c2) 
+        """
+        row1 += 1
+        row2 += 1
+        col1 += 1
+        col2 += 1
+        return self.prefix[row2][col2] + self.prefix[row1 - 1][col1 - 1] - self.prefix[row1 - 1][col2] - self.prefix[row2][col1 - 1]
+
+```

@@ -736,3 +736,86 @@ class TimeMap:
         
         return "" if r == -1 else arr[r][1]
 ```
+
+
+
+[1891. Cutting Ribbons](https://leetcode.com/problems/cutting-ribbons/)
+
+转化思路，题目要求最多切成n次，那n=1到max(ribbon)，这样满足条件的是n最大的那个时候，相当于每次都看是否满足条件，直到找到最后满足条件的值。可以用二分查找找最右侧边界；count >= k是满足的条件，count表示可以提供的数量；最后return right，因为跳出的时候left = right + 1了
+时间：O(Nlog(max(Length))) 
+空间：O(1)
+```python
+class Solution:
+    def maxLength(self, ribbons: List[int], k: int) -> int:
+        left = 1
+        right = max(ribbons)
+        
+        while left <= right: # 左闭右闭
+            mid = left + (right - left) // 2
+            if self.isValid(ribbons, k, mid):
+                left = mid + 1
+            else:
+                right = mid - 1
+        
+        return right # 最后要return right，因为while的终止条件是left += 1
+    
+    def isValid(self, ribbons, k, mid):
+        count = 0
+        for num in ribbons:
+            count += num // mid
+        return count >= k  # 满足的情况，count表示可以提供的数量
+```
+
+
+[528. Random Pick with Weight](https://leetcode.com/problems/random-pick-with-weight/) (前缀和，可以先做一下LC53、523)
+
+
+用list存所有的前缀和。概率是w[i]/total_sum，可以用找到第一个preSum来代替；用random.random()来获得[0,1);w:[1,3]-> pre_sums:[1, 4] -> target in randomly in [0, 4); find the first index in pre_sums s.t. target < pre_sums[idx]
+时间：构造O(N)，找数O(N)
+空间：构造O(N)，找数O(1)
+```python
+class Solution:
+
+    def __init__(self, w: List[int]):
+        self.prefix_sums = []
+        pre_sum = 0
+        for weight in w:
+            pre_sum += weight
+            self.prefix_sums.append(pre_sum)
+        self.total_sum = pre_sum
+
+    def pickIndex(self) -> int:
+        target = self.total_sum * random.random()
+        for i, pre_sum in enumerate(self.prefix_sums):
+            if target < pre_sum:
+                return i
+
+# Your Solution object will be instantiated and called as such:
+# obj = Solution(w)
+# param_1 = obj.pickIndex()
+```
+
+用list存所有的前缀和。概率是w[i]/total_sum，可以用二分查找找到第一个preSum来代替；用random.random()来获得[0,1); 当右边左右的数都满足的时候，找最左满足的数，最后返回的是l
+时间：构造O(N)，找数O(logN)
+空间：构造O(N)，找数O(1)
+```python 
+class Solution:
+    def __init__(self, w: List[int]):
+        self.prefix_sums = []
+        pre_sum = 0
+        for weight in w:
+            pre_sum += weight
+            self.prefix_sums.append(pre_sum)
+        self.total_sum = pre_sum
+
+    def pickIndex(self) -> int:
+        target = self.total_sum * random.random()
+        l, r = 0, len(self.prefix_sums) - 1
+        while l <= r:
+            mid = l + (r - l) // 2 # 要地板除
+            if (target > self.prefix_sums[mid]):
+                l = mid + 1
+            else: 
+                r = mid - 1
+        return l
+```

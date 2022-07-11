@@ -21,3 +21,9 @@ class PeekingIterator:
     def hasNext(self):
         return self._next is not None
 ```
+
+
+
+
+
+

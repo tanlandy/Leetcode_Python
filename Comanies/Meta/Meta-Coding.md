@@ -768,10 +768,6 @@ class Solution:
             else: 
                 r = mid - 1
         return l
-
-# Your Solution object will be instantiated and called as such:
-# obj = Solution(w)
-# param_1 = obj.pickIndex()
 ```
 
 [408. Valid Word Abbreviation](https://leetcode.com/problems/valid-word-abbreviation/)
