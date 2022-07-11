@@ -78,6 +78,55 @@ DFS
 
 
 ## 题目
+
+[199. Binary Tree Right Side View](https://leetcode.com/problems/binary-tree-right-side-view/)
+```py
+class Solution:
+    def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+        """
+        dfs遍历的时候同时传进来level，每次level+1，先看right再看left，添加的条件就是level == len(res)，这样就总是先加入右边的点了
+        """
+        if not root:
+            return []
+        
+        res = []
+        
+        def dfs(node, level):
+            if not node: # dfs总是不要忘记base case
+                return
+            if level == len(res):
+                res.append(node.val)
+            if node.right:
+                dfs(node.right, level + 1) # 如果先加入左边，就是左视图
+            if node.left:
+                dfs(node.left, level + 1)
+        
+        dfs(root, 0)
+        return res
+```
+```py
+class Solution:
+    def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+        if not root:
+            return []
+        
+        queue = collections.deque([root])
+        res = []
+        
+        while queue:
+            size = len(queue)
+            for i in range(size):
+                node = queue.popleft()
+                if i == size - 1:
+                    res.append(node.val)
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+        
+        return res
+```
+
 [111. Minimum Depth of Binary Tree](https://leetcode.com/problems/minimum-depth-of-binary-tree/)
 
 ```py
