@@ -797,6 +797,180 @@ class Solution:
 
 # 迷宫问题
 
+[490. The Maze](https://leetcode.com/problems/the-maze/)
+一次走到底的情况
+```py
+class Solution:
+    def hasPath(self, maze: List[List[int]], start: List[int], destination: List[int]) -> bool:
+        """
+        时间：O(M*N)
+        空间：O(M*N)
+        """
+        rows, cols = len(maze), len(maze[0])
+        visited = set()
+        dirs = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+
+        queue = collections.deque([start])
+        while queue:
+            r, c = queue.popleft()
+            if [r, c] == destination:
+                return True
+            
+            for dx, dy in dirs:
+                nei_r, nei_c = r + dx, c + dy
+                while 0 <= nei_r < rows and 0 <= nei_c < cols and maze[nei_r][nei_c] == 0:
+                    nei_r += dx
+                    nei_c += dy
+                nei_r -= dx # 这时候多走了一步，已经站在墙上了，所以退回来一步
+                nei_c -= dy
+                if (nei_r, nei_c) not in visited:
+                    visited.add((nei_r, nei_c))
+                    queue.append((nei_r, nei_c))
+        
+        return False
+```
+
+```py
+class Solution:
+    def hasPath(self, maze: List[List[int]], start: List[int], destination: List[int]) -> bool:
+        """
+        时间：O(M*N)
+        空间：O(M*N)
+        """
+        rows, cols = len(maze), len(maze[0])
+        visited = set()
+        dirs = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        
+        def dfs(r, c):
+            if [r, c] == destination: # base case
+                return True
+            for dx, dy in dirs: # visit neighbors in four directions
+                nei_r, nei_c = r + dx, c + dy
+                while 0 <= nei_r< rows and 0 <= nei_c< cols and maze[nei_r][nei_c] == 0: # 如果新的位置满足要求，就一直走一直走，走到新的位置
+                    nei_r += dx # 这时候多走了一步，已经站在墙上了，所以退回来一步
+                    nei_c += dy
+                nei_r -= dx
+                nei_c -= dy
+                if (nei_r, nei_c) not in visited: # 如果没走过：加到set里，然后试着走一下
+                    visited.add((nei_r, nei_c))
+                    if dfs(nei_r, nei_c):
+                        return True
+            return False
+        
+        return dfs(start[0], start[1])
+```
+
+[490变形]：问一共转了几次弯
+```py
+class Solution:
+    def shortestDistance(self, maze: List[List[int]], start: List[int], destination: List[int]) -> int:
+        rows, cols = len(maze), len(maze[0])
+        visited = set()
+        dirs = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        res = float("inf")
+        
+        queue = collections.deque([(start[0], start[1], 0)])
+        while queue:
+            r, c, step = queue.popleft()
+            if [r, c] == destination:
+                return step
+            
+            for dx, dy in dirs:
+                nei_r, nei_c = r + dx, c + dy
+                while 0 <= nei_r < rows and 0 <= nei_c < cols and maze[nei_r][nei_c] == 0:
+                    nei_r += dx
+                    nei_c += dy
+                nei_r -= dx # 这时候多走了一步，已经站在墙上了，所以退回来一步
+                nei_c -= dy
+                nei_step = step + 1
+                if (nei_r, nei_c) not in visited:
+                    visited.add((nei_r, nei_c))
+                    queue.append((nei_r, nei_c, nei_step))
+        
+        return -1
+```
+
+[505. The Maze II](https://leetcode.com/problems/the-maze-ii/)
+```py
+class Solution:
+    def shortestDistance(self, maze: List[List[int]], start: List[int], destination: List[int]) -> int:
+        """
+        相比LC490，queue另外记录了距离，由此可以作为条件来判断是否“走过”，以及导出结果
+        visited是一个dict，用来记录走过的位置的步数
+
+        时间：O(M*N*min(M, N))
+        空间：O(M*N)
+        """
+        rows, cols = len(maze), len(maze[0])
+        dirs = [(1,0),(-1,0),(0,1),(0,-1)]
+        if start == destination:
+            return 0
+        
+        # (r, c, distance)
+        queue = deque([(start[0], start[1], 0)])
+        
+        # start position marked visited: {(r, c): dist}
+        visited = {(start[0], start[1]): 0}
+        res = []
+        
+        while queue:
+            r, c, dist = queue.popleft()
+            if [r, c] == destination:
+                res.append(dist)
+                
+            for dx, dy in dirs:
+                nei_r, nei_c, nei_dist = r + dx, c + dy, dist + 1
+                
+                while 0 <= nei_r < rows and 0 <= nei_c < cols and maze[nei_r][nei_c] == 0:
+                    nei_dist += 1
+                    nei_r += dx
+                    nei_c += dy
+                    
+                nei_r -= dx
+                nei_c -= dy
+                nei_dist -= 1
+
+                # TWO CONDITIONS ==> there is better way to visit the previously visited position, mark the distance OR not visited before
+                if ((nei_r, nei_c) not in visited) or (nei_dist < visited[(nei_r, nei_c)]):
+                    visited[(nei_r, nei_c)] = nei_dist
+                    queue.append((nei_r, nei_c, nei_dist))
+
+        return min(res) if res else -1
+```
+
+```py
+class Solution:
+    def shortestDistance(self, maze, start, destination):
+        """
+        用min_heap来存，key是dist，这样第一次走到destination就是最小值
+        时间：O(M*N*log(M*N))
+        空间：O(M*N)
+        """
+        rows, cols = len(maze), len(maze[0])
+        min_heap = [(0, start[0], start[1])]
+        visited = {(start[0], start[1]):0}
+        dirs = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+        while min_heap:
+            dist, r, c = heapq.heappop(min_heap)
+            if [r, c] == destination:
+                return dist
+            for dx, dy in dirs:
+                nei_r, nei_c, nei_dist = r + dx, c + dy, dist + 1
+                
+                while 0 <= nei_r < rows and 0 <= nei_c < cols and maze[nei_r][nei_c] == 0:
+                    nei_dist += 1
+                    nei_r += dx
+                    nei_c += dy
+                    
+                nei_r -= dx
+                nei_c -= dy
+                nei_dist -= 1
+                if ((nei_r, nei_c) not in visited) or (nei_dist < visited[(nei_r, nei_c)]):
+                    visited[(nei_r, nei_c)] = nei_dist
+                    heapq.heappush(min_heap, (nei_dist, nei_r, nei_c))
+        return -1
+```
+
 # Implicit Graph
 
 [752. Open the Lock](https://leetcode.com/problems/open-the-lock/)
@@ -1924,7 +2098,7 @@ class Solution:
             return 0
         
         pattern_word = collections.defaultdict(list)
-        wordList.append(beginWord)
+        wordList.append(beginWord) # 要先把开始的word放进来
         
         # 对于wordList的每个word，把每一个pattern都找到，然后构建adj
         for word in wordList:
@@ -1982,8 +2156,8 @@ class Solution:
                 if word == endWord:
                     paths.append(word_sequence)
                     continue
-                for index in range(word_len):
-                    pattern  = word[ : index] + '*' + word[index + 1: ]
+                for j in range(word_len):
+                    pattern  = word[ : j] + '*' + word[j + 1: ]
                     for adjacent_word in patterns[pattern]:
                         if adjacent_word not in visited:
                             word_queue.append([adjacent_word, word_sequence[:] + [adjacent_word]])
