@@ -795,7 +795,139 @@ class Solution:
 ```
 
 
-# 迷宫问题
+
+[323. Number of Connected Components in an Undirected Graph](https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/)
+```py
+class Solution:
+    def countComponents(self, n: int, edges: List[List[int]]) -> int:
+        """
+        DFS
+        Step1: 构建Adj_list
+        Step2: 利用visited set，dfs所有的点，同时记录数量
+        """
+        graph = collections.defaultdict(list)
+        for x, y in edges:
+            graph[x].append(y)
+            graph[y].append(x)
+        
+        def dfs(node):
+            visit.add(node)
+            for nei in graph[node]:
+                if nei not in visit:
+                    dfs(nei)
+        
+        count = 0
+        visit = set()
+        for node in range(n):
+            if node not in visit:
+                dfs(node)
+                count += 1
+        
+        return count
+```
+
+
+[1091. Shortest Path in Binary Matrix](https://leetcode.com/problems/shortest-path-in-binary-matrix/)
+
+```python
+class Solution:
+    def shortestPathBinaryMatrix(self, grid: List[List[int]]) -> int:
+        """
+        就是八个方向的dfs,queue里面放dist：queue=deque([(0,0,1)])
+
+        时间：O(N*N)
+        空间：O(N*N)
+        """
+        n = len(grid)
+        if grid[0][0] or grid[n-1][n-1]:
+            return -1
+        
+        dirs = [[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,-1],[-1,1]]
+        queue = collections.deque([(0,0,1)]) # (r, c, dist)
+        visit = set()
+        visit.add((0,0))
+        
+        while queue:
+            r, c, dist = queue.popleft()
+            if r == n - 1 and c == n - 1:
+                return dist
+            
+            for dr, dc in dirs:
+                nei_r, nei_c = r + dr, c + dc
+                
+                if nei_r in range(n) and nei_c in range(n) and grid[nei_r][nei_c] == 0 and (nei_r, nei_c) not in visit:
+                    queue.append((nei_r, nei_c, dist + 1))
+                    visit.add((nei_r, nei_c))
+        
+        return -1
+```
+
+[542. 01 Matrix](https://leetcode.com/problems/01-matrix/)
+```py
+class Solution:
+    def updateMatrix(self, mat: List[List[int]]) -> List[List[int]]:
+        """
+        把所有为0的点放进queue，然后开始BFS
+
+        Time: O(M*N)
+        Space: O(M*N)
+        """
+        rows, cols = len(mat), len(mat[0])
+        queue = collections.deque([])
+        
+        for r in range(rows):
+            for c in range(cols):
+                if mat[r][c] == 0:
+                    queue.append((r, c))
+                else: # 不为0的，标记为-1
+                    mat[r][c] = -1
+        
+        dirs = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        while queue:
+            r, c = queue.popleft()
+            
+            for dx, dy in dirs:
+                nei_r, nei_c = r + dx, c + dy
+                if 0 <= nei_r < rows and 0 <= nei_c < cols and mat[nei_r][nei_c] == -1:
+                    mat[nei_r][nei_c] = mat[r][c] + 1 # 新值就是附近的+1
+                    queue.append((nei_r, nei_c))
+                    
+        return mat
+```
+
+```py
+class Solution:  # 520 ms, faster than 96.50%
+    def updateMatrix(self, mat: List[List[int]]) -> List[List[int]]:
+        """
+        四周都“加”一圈float("inf")
+        然后从左上到右下走一遍
+        再从右下到左上走一遍
+        
+        Time: O(M*N)
+        Space: O(1)
+        """
+        rows, cols = len(mat), len(mat[0])
+
+        # from top left to bottom right
+        for r in range(rows):
+            for c in range(cols):
+                if mat[r][c] > 0:
+                    top = mat[r - 1][c] if r > 0 else float("inf")
+                    left = mat[r][c - 1] if c > 0 else float("inf")
+                    mat[r][c] = min(top, left) + 1
+
+        # from bottom right to top left
+        for r in range(rows - 1, -1, -1):
+            for c in range(cols - 1, -1, -1):
+                if mat[r][c] > 0:
+                    bottom = mat[r + 1][c] if r < rows - 1 else float("inf")
+                    right = mat[r][c + 1] if c < cols - 1 else float("inf")
+                    mat[r][c] = min(mat[r][c], bottom + 1, right + 1)
+
+        return mat
+```
+
+### 迷宫问题
 
 [490. The Maze](https://leetcode.com/problems/the-maze/)
 一次走到底的情况
@@ -971,6 +1103,7 @@ class Solution:
         return -1
 ```
 
+
 # Implicit Graph
 
 [752. Open the Lock](https://leetcode.com/problems/open-the-lock/)
@@ -1061,6 +1194,7 @@ class Solution:
 
         return time if fresh == 0 else -1
 ```
+
 
 [773. Sliding Puzzle](https://leetcode.com/problems/sliding-puzzle/)
 ```py
@@ -1179,6 +1313,44 @@ class Solution:
         dfs(0)
         return len(seen) == n     
 ```
+
+[815. Bus Routes](https://leetcode.com/problems/bus-routes/)
+```py
+class Solution:
+    def numBusesToDestination(self, routes: List[List[int]], source: int, target: int) -> int:
+        """
+        画一个决策树，最短路径就是到达终点所需要的最小层数：BFS
+        Step1: 构建一个图{each stop: bus}
+        Step2: bfs放进source，然后开始遍历所有的bus，对于走过的bus就不再遍历，对于走过的stop也不再遍历
+        """
+        graph = collections.defaultdict(list)
+        
+        for idx, route in enumerate(routes):
+            for stop in route:
+                graph[stop].append(idx)
+        
+        visited_bus = set()
+        visited_stop = set()
+        # queue stores (stop, step)
+        queue = collections.deque([(source, 0)])
+        visited_stop.add(source)
+        
+        while queue:
+            stop, steps = queue.popleft()
+            if stop == target: # base case
+                return steps
+            
+            for bus in graph[stop]:
+                if bus not in visited_bus: # new bus
+                    visited_bus.add(bus)
+                    for next_stop in routes[bus]:
+                        if next_stop not in visited_stop: # new stop
+                            visited_stop.add(next_stop)
+                            queue.append((next_stop, steps + 1))                
+        
+        return -1
+```
+
 
 # Un-weighted Graph
 
