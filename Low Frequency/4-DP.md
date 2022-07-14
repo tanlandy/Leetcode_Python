@@ -121,11 +121,6 @@ dp[i] normally means max/min/best value of the sequnce ending at index i
 class Solution:
     def rob(self, nums: List[int]) -> int:
         """
-        每一轮的状态：抢， 不抢
-        抢了的话->下轮不能抢
-        不抢的话->下轮可抢也可以不抢
-        dp[i][0] = dp[i-1][1] + val[i] 抢
-        dp[i][1] = max(dp[i-1][0], dp[i-1][1]) 不抢
 
         dp[i] means the max value we can get using elements from idx 0 up to i
         dp[i] = max(dp[i-2]+nums[i], dp[i-1]): the current dp[i] is determined by whether add this nums[i] or not
@@ -168,7 +163,48 @@ class Solution:
             rob2 = tmp
         
         return rob2
+```
 
+```py
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        """
+        dp[i] maximum money I can get ending at index i
+        每一轮的状态：抢， 不抢
+        抢了的话->下轮不能抢
+        不抢的话->下轮可抢也可以不抢
+        dp[i][0] 表示抢
+        dp[i][1] 表示不抢
+        站在index i：
+        1. dp[i][0] = dp[i-1][1] + nums[i] 抢了
+        2. dp[i][1] = max(dp[i-1][0], dp[i-1][1]) 不抢
+        """
+        
+        dp = [[0, 0] for _ in range(len(nums))]
+        
+        for i in range(len(nums)):
+            dp[i][0] = dp[i-1][1] + nums[i]
+            dp[i][1] = max(dp[i-1][0], dp[i-1][1])
+        
+        return max(dp[-1][0], dp[-1][1])
+
+        """
+        nums = [1, 2, 2, 1]
+        dp:
+        idx     num    0(rob)  1(not rob)
+        0       1       1       0
+        1       2       2       1             
+        2       3       4       2       
+        3       1       3       4
+        
+        nums = [2, 7, 9, 3, 1]
+        num     0(rob)  1(not rob)
+        2       2       0
+        7       2       2
+        9       11      2
+        3       5       11
+        1       12      11
+        """
 ```
 
 [213. House Robber II](https://leetcode.com/problems/house-robber-ii/)
@@ -201,6 +237,27 @@ class Solution:
         return rob2
 ```
 
+```py
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        if len(nums) == 1:
+            return nums[0]
+        
+        def one_way(nums):
+            dp = [[0, 0] for i in range(len(nums))]
+            
+            for i in range(len(nums)):
+                dp[i][0] = dp[i-1][1] + nums[i]
+                dp[i][1] = max(dp[i-1][0], dp[i-1][1])
+            
+            return max(dp[-1][0], dp[-1][1])
+        
+        res1 = one_way(nums[1:])
+        res2 = one_way(nums[:-1])
+        
+        return max(res1, res2)
+```
+
 [123. Best Time to Buy and Sell Stock III](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/)
 ```py
 class Solution:
@@ -224,7 +281,7 @@ class Solution:
 ```
 
 [309. Best Time to Buy and Sell Stock with Cooldown](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/)
-TBD
+
 
 [376. Wiggle Subsequence](https://leetcode.com/problems/wiggle-subsequence/)
 
@@ -401,10 +458,63 @@ dp[i][k] 最小的字符变动，使得s[:i]能够恰能分成k个字串，且�
 
 ## 第二类区间类型
 只给出一个序列S，求一个针对这个序列的最优解
-适用条件：
+适用条件：无法设计一个dp[i]，使其只与dp[j] j < i有关。但大区间的最优解，可以依赖小区间的最优解
 ### 模板
+1. dp[i][j] 是对s[i:j]的子问题的求解
+2. 千方百计将dp[i][j]往小区间dp[i'][j']转移
+   - 第一层循环是区间大小，第二层循环是起点
+3. 最终结果是dp[i][-1]
+### 例题
+
+[516. Longest Palindromic Subsequence](https://leetcode.com/problems/longest-palindromic-subsequence/)
+状态：照抄：dp[i][j] 字符串s[i:j]是回文串的最大subsequence长度
+
+[312. Burst Balloons](https://leetcode.com/problems/burst-balloons/)
+状态：照抄：dp[i][j] 戳爆s[i:j]所有气球，最大化的总得分
+
+
+[375. Guess Number Higher or Lower II](https://leetcode.com/problems/guess-number-higher-or-lower-ii/)
+
+dp[i][j] 最少付多少钱能猜中s[i:j]的数字
+结果就是dp[1][-1]
+
+[1246. Palindrome Removal](https://leetcode.com/problems/palindrome-removal/)
+dp[i][j] 对于s[i:j]，每次删除一个回文串，最少多少次删完
+结果就是dp[1][-1]
+找不到突破口就看最后一个元素
+
+## 一类二类区间合体
+
+[1000. Minimum Cost to Merge Stones](https://leetcode.com/problems/minimum-cost-to-merge-stones/)
+dp[i][j][k] 将区间s[i:j]归并为k堆的最小代价
+
+## 背包类型
+给N件物品，每件可用可不用。求某个有上限C的代价实现最大收益
+### 模板
+dp[i][c] 从前i件物品的子集里选择，代价为c的最大收益。 c = 1...C
+dp[i][c] 往dp[i-1][c']上看
+最终结果是 max(dp[-1][c]), c = 1...C
+
+特点：
+无后效性：在前4件作出的选择，和第5件没有关系：过去不依赖将来，将来不影响过去
 
 ### 例题
+01经典
+dp[i][c] = max(dp[i-1][c], dp[i-1][c-w_i] + v_i)
+最终结果 max(dp[-1][c]), c = 1...C
+
+[494. Target Sum](https://leetcode.com/problems/target-sum/)
+
+dp[i][s] 考虑前i的子集中添加正负号，得到s的方法数量
+
+[1049. Last Stone Weight II](https://leetcode.com/problems/last-stone-weight-ii/)
+
+[474. Ones and Zeroes](https://leetcode.com/problems/ones-and-zeroes/)
+
+[879. Profitable Schemes](https://leetcode.com/problems/profitable-schemes/)
+
+[956. Tallest Billboard](https://leetcode.com/problems/tallest-billboard/)
+
 
 # 待分类
 
@@ -650,9 +760,6 @@ class Solution:
 
 
 
-
-### Neetcode.io
-#### 1D DP
 [70. Climbing Stairs](https://leetcode.com/problems/climbing-stairs/)
 
 ```py
@@ -855,9 +962,6 @@ class Solution:
         return dfs(0)        
 ```
 
-[322. Coin Change](https://leetcode.com/problems/coin-change/) 前有
-
-
 [152. Maximum Product Subarray](https://leetcode.com/problems/maximum-product-subarray/)
 
 ```py
@@ -1033,13 +1137,6 @@ class Solution:
         
         return res
 ```
-
-
-#### 2D DP
-
-
-
-
 
 
 
