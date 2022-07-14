@@ -21,7 +21,11 @@ Time: # of subproblems * time/subproblem
 1. Optimal substructure: the problem can be divided into subproblems. And its optimal solution can be constructed from optimal solutions of the subproblems
 2. The subproblems overlap
 
-
+1. 无后效性
+   - 一旦f(i, j)确定，就不用关心是如何计算出来的f(i, j)
+   - 过去不依赖将来，将来不影响过去
+2. 最优子结构
+   - 大问题的最优解可以由若干个小问题的最优解推出
 
 
 ### Greedy vs DP
@@ -98,16 +102,31 @@ for 状态1 in 状态1的所有取值：
 
 # Problems
 
-## Sequence
+## Sequence时间序列型
 dp[i] normally means max/min/best value of the sequnce ending at index i
+给出一个序列，其中每一个元素可以认为“一天”，并且“今天”的状态只取决于“昨天”的状态
+### 模版
+1. 定义dp[i][j]表示第i轮的第j种状态
+2. 千方百计找出来dp[i][j]与前一轮dp[i-1][j]的关系（状态转移）
+3. 最终结果是dp[-1][j]中的某种aggregation(sum, max, min, ...)
 
-### Algo
+状态的设计：to do or NOT to do
+
+一般一层循环，时间O(N)
+
+### 例题
 [198. House Robber](https://leetcode.com/problems/house-robber/)
 
 ```py
 class Solution:
     def rob(self, nums: List[int]) -> int:
         """
+        每一轮的状态：抢， 不抢
+        抢了的话->下轮不能抢
+        不抢的话->下轮可抢也可以不抢
+        dp[i][0] = dp[i-1][1] + val[i] 抢
+        dp[i][1] = max(dp[i-1][0], dp[i-1][1]) 不抢
+
         dp[i] means the max value we can get using elements from idx 0 up to i
         dp[i] = max(dp[i-2]+nums[i], dp[i-1]): the current dp[i] is determined by whether add this nums[i] or not
 
@@ -152,6 +171,245 @@ class Solution:
 
 ```
 
+[213. House Robber II](https://leetcode.com/problems/house-robber-ii/)
+
+```py
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        """
+        only restriction is cannot use nums[0] and nums[-1] at the same time: 
+        run the LC198 two times  on nums[0:-2] and nums[1:-1], return the max of these 
+
+        Time: O(N)
+        Space: O(1)
+        """
+        if len(nums) == 1:
+            return nums[0]
+
+        res1 = self.helper(nums[0: -1])
+        res2 = self.helper(nums[1:])
+        return max(res1, res2)
+
+    def helper(self, nums):
+        rob1, rob2 = 0, 0
+
+        for n in nums:
+            tmp = max(rob1 + n, rob2)
+            rob1 = rob2
+            rob2 = tmp
+        
+        return rob2
+```
+
+[123. Best Time to Buy and Sell Stock III](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/)
+```py
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        """
+        今天怎么操作，只取决于昨天的操作
+        i-1 day: 持有第一股 售出第一股 持有第二股 售出第二股（4种结果状态）
+        i   day: 持有第一股 售出第一股 持有第二股 售出第二股（4种结果状态）
+        
+        """
+        dp = [[float("-inf")] * 4 for _ in range(len(prices))]
+        for i in range(len(prices)):
+            dp[i][0] = max(dp[i-1][0], -prices[i]) # 不操作或者买入第一股
+            dp[i][1] = max(dp[i-1][1], dp[i-1][0] + prices[i]) # 不操作或售出第一股
+            dp[i][2] = max(dp[i-1][2], dp[i-1][1] - prices[i]) # 不操作或买入第二股
+            dp[i][3] = max(dp[i-1][3], dp[i-1][2] + prices[i]) # 不操作或售出第二股
+        res = 0
+        for i in range(4):
+            res = max(res, dp[-1][i])
+        return res
+```
+
+[309. Best Time to Buy and Sell Stock with Cooldown](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/)
+TBD
+
+[376. Wiggle Subsequence](https://leetcode.com/problems/wiggle-subsequence/)
+
+[487. Max Consecutive Ones II](https://leetcode.com/problems/max-consecutive-ones-ii/)
+状态：以当前为结尾且没反转过1；以当前为结尾且反转过1
+```
+
+
+```
+
+[1186. Maximum Subarray Sum with One Deletion](https://leetcode.com/problems/maximum-subarray-sum-with-one-deletion/)
+
+```py
+class Solution:
+    def maximumSum(self, arr: List[int]) -> int:
+        """
+        状态：以当前元素为结尾没有删除过；以当前元素结尾删除过
+        """
+        dp = [[float("-inf")] * 2 for _ in range(len(arr))]
+        
+        for i in range(len(arr)):
+            dp[i][0] = max(dp[i-1][0] + arr[i], arr[i]) # dp[i][0]是第一种状态：要么加上这个数从上一轮下来，要么从头来
+            dp[i][1] = max(dp[i-1][0], dp[i-1][1] + arr[i]) # dp[i][1]是第二种状态：要么删掉这个数直接就是上一轮的值，要么就从上一轮下来
+        
+        res = float("-inf")
+        for i in range(len(dp)):
+            res = max(res, dp[i][0], dp[i][1])
+        
+        return res
+```
+
+## 时间序列加强版
+给出一个序列，其中每一个元素可以认为是“一天”，“今天”的状态和之前的“某一天”有关，需要进行挑选
+### 模版
+1. dp[i]表示第i天的状态，一般和元素i直接相关
+2. 千方百计把dp[i]和之前的dp[i']联系起来
+3. 最终结果是dp[i]中的某一个
+
+一般两层循环，时间复杂度O(N^2)
+
+### 例题
+
+[300. Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/)
+
+```py
+class Solution:
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        """
+        BF: generate all subsequences: for each value: 2 choices: include or not include -> 2^N all sequencies
+        -> draw a decision tree and memorize the
+        DP: 
+        right to left: dp[i] stores the LIS starting at index i
+        dp[i] = max(1, 1+dp[i+1], 1+dp[i+2], ...), depends on whether dp[i] < dp[i+1}
+
+        Time: O(N^2)
+        Space: O(N)
+        """
+        LIS = [1] * len(nums) # base case
+
+        for i in range(len(nums) - 1, -1, -1): 
+            for j in range(i + 1, len(nums)):
+                if nums[i] < nums[j]: 
+                    LIS[i] = max(LIS[i], 1 + LIS[j]) # transition of the given state
+        
+        return max(LIS) # 要看每个，而不是只看最后一个
+```
+
+```py
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        def dp(i):
+            if i <= 2: 
+                return i
+            if i not in memo:
+                # Instead of just returning dp(i - 1) + dp(i - 2), calculate it once and then
+                # store the result inside a hashmap to refer to in the future.
+                memo[i] = dp(i - 1) + dp(i - 2)
+            
+            return memo[i]
+        
+        memo = {}
+        return dp(n)
+```
+
+[368. Largest Divisible Subset](https://leetcode.com/problems/largest-divisible-subset/)
+
+[1105. Filling Bookcase Shelves](https://leetcode.com/problems/filling-bookcase-shelves/)
+
+换种说法：把arr分成若干个subarray，最小化每个subarray最大值之和
+状态：dp[i]就是以arr[i]为结尾，分成若干个subarray，最小化每个subarray最大值之和。
+第i层有多高：取决于上一层的最后一本书在哪里
+
+## 双序列类型
+给出2个序列来搞事情
+LCS
+Shortest Common Supersequence
+Edit distance
+### 模板
+1. dp[i][j]表示针对s[:i]和t[:j]子问题的最优解
+2. 千方百计把dp[i][j]往之前的状态转移：dp[i-1][j], dp[i][j-1], dp[i-1][j-1]
+3. 最终结果是dp[-1][-1]
+
+### 例题
+[1143. Longest Common Subsequence](https://leetcode.com/problems/longest-common-subsequence/)
+
+```py
+class Solution:
+    def longestCommonSubsequence(self, text1: str, text2: str) -> int:
+        """
+        dp[i][j]就是s[:i]j[:j]的LCS
+        """
+        dp = [[0] * (len(text2) + 1) for i in range(len(text1) + 1)]
+        
+        for i in range(len(text1)) :
+            for j in range(len(text2)):
+                if text1[i] == text2[j]: # 如果相等，就能加一
+                    dp[i + 1][j + 1] = dp[i][j] + 1
+                else: # 如果不等，就看附近的
+                    dp[i + 1][j + 1] = max(dp[i][j + 1], dp[i + 1][j])
+        
+        return dp[-1][-1] 
+
+```
+
+[1092. Shortest Common Supersequence](https://leetcode.com/problems/shortest-common-supersequence/)
+
+```py
+
+```
+
+[72. Edit Distance](https://leetcode.com/problems/edit-distance/)
+dp[i][j] 照抄：s[:i]t[:j]的解
+
+[97. Interleaving String](https://leetcode.com/problems/interleaving-string/)
+dp[i][j] 照抄：s[:i]t[:j]能否交叠组成字符串w[:i+j]
+
+[115. Distinct Subsequences](https://leetcode.com/problems/distinct-subsequences/)
+dp[i][j] 照抄：s[:i]有多少不同的子序列等于t[:j]
+
+[727. Minimum Window Subsequence](https://leetcode.com/problems/minimum-window-subsequence/)
+dp[i][j] 照抄
+
+LCS/SCS变种
+LC583
+LC712
+LC1035
+LC1216
+最少删除多少个字符能变成回文串 
+T = S[:-1] 把不相等的删掉LCS
+LC1312
+一个字符串s最少需要添加多少个字符能变成回文串
+T = S[:-1] 找SCS
+
+## 第一类区间类型
+给一个序列，要求分割成k个连续区间。要计算这些区间的某个最优性质
+### 模板
+1. 状态：dp[i][k]表示针对s[:i]分成k个区间，此时能到的最优解
+2. 搜寻最后一个区间的起始位置j，将dp[i][k]分割成dp[j-1][k-1]和s[j:i]两部分
+3. 最终的结果是dp[-1][k]
+注意两个边界条件：dp[0][0], dp[x][0]
+
+### 例题
+[1278. Palindrome Partitioning III](https://leetcode.com/problems/palindrome-partitioning-iii/)
+dp[i][k] 最小的字符变动，使得s[:i]能够恰能分成k个字串，且每串都是回文串
+
+
+[813. Largest Sum of Averages](https://leetcode.com/problems/largest-sum-of-averages/)
+
+
+[410. Split Array Largest Sum](https://leetcode.com/problems/split-array-largest-sum/)
+
+
+[1335. Minimum Difficulty of a Job Schedule](https://leetcode.com/problems/minimum-difficulty-of-a-job-schedule/)
+
+## 第二类区间类型
+只给出一个序列S，求一个针对这个序列的最优解
+适用条件：
+### 模板
+
+### 例题
+
+# 待分类
+
+
+
 [322. Coin Change](https://leetcode.com/problems/coin-change/)
 
 ```py
@@ -189,6 +447,7 @@ class Solution:
         
         return dp[amount] if dp[amount] != float("inf") else -1
 ```
+
 
 ## Grid
 This is 2D version of the sequence DP. dp[i][j] means max/min/best value for matrix cell ending at index i, j
@@ -383,48 +642,6 @@ class Solution:
 
 
 
-[300. Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/)
-
-```py
-class Solution:
-    def lengthOfLIS(self, nums: List[int]) -> int:
-        """
-        BF: generate all subsequences: for each value: 2 choices: include or not include -> 2^N all sequencies
-        -> draw a decision tree and memorize the
-        DP: right to left: dp[i] stores the LIS starting at index i
-        dp[i] = max(1, 1+dp[i+1], 1+dp[i+2], ...), depends on whether dp[i] < dp[i+1}
-
-        Time: O(N^2)
-        Space: O(N)
-        """
-        LIS = [1] * len(nums) # base case
-
-        for i in range(len(nums) - 1, -1, -1): 
-            for j in range(i + 1, len(nums)):
-                if nums[i] < nums[j]: 
-                    LIS[i] = max(LIS[i], 1 + LIS[j]) # transition of the given state
-        
-        return max(LIS)
-
-```
-
-
-```py
-class Solution:
-    def climbStairs(self, n: int) -> int:
-        def dp(i):
-            if i <= 2: 
-                return i
-            if i not in memo:
-                # Instead of just returning dp(i - 1) + dp(i - 2), calculate it once and then
-                # store the result inside a hashmap to refer to in the future.
-                memo[i] = dp(i - 1) + dp(i - 2)
-            
-            return memo[i]
-        
-        memo = {}
-        return dp(n)
-```
 
 [68. Text Justification](https://www.youtube.com/watch?v=ENyox7kNKeY)
 
@@ -501,35 +718,7 @@ class Solution:
 
 
 
-[213. House Robber II](https://leetcode.com/problems/house-robber-ii/)
 
-```py
-class Solution:
-    def rob(self, nums: List[int]) -> int:
-        """
-        only restriction is cannot use nums[0] and nums[-1] at the same time: 
-        run the LC198 two times  on nums[0:-2] and nums[1:-1], return the max of these 
-
-        Time: O(N)
-        Space: O(1)
-        """
-        if len(nums) == 1:
-            return nums[0]
-
-        res1 = self.helper(nums[0: -1])
-        res2 = self.helper(nums[1:])
-        return max(res1, res2)
-
-    def helper(self, nums):
-        rob1, rob2 = 0, 0
-
-        for n in nums:
-            tmp = max(rob1 + n, rob2)
-            rob1 = rob2
-            rob2 = tmp
-        
-        return rob2
-```
 
 [5. Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/)
 
@@ -796,9 +985,6 @@ class Solution:
 ```
 
 
-[300. Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/) 前面出现
-
-
 [416. Partition Equal Subset Sum](https://leetcode.com/problems/partition-equal-subset-sum/)
 
 ```py
@@ -854,23 +1040,7 @@ class Solution:
 
 
 
-[1143. Longest Common Subsequence](https://leetcode.com/problems/longest-common-subsequence/)
 
-```py
-class Solution:
-    def longestCommonSubsequence(self, text1: str, text2: str) -> int:
-        dp = [[0 for j in range(len(text2) + 1)] for i in range(len(text1) + 1)]
-        
-        for i in range(len(text1) - 1, -1, -1):
-            for j in range(len(text2) - 1, -1, -1):
-                if text1[i] == text2[j]:
-                    dp[i][j] = 1 + dp[i + 1][j + 1]
-                else:
-                    dp[i][j] = max(dp[i][j + 1], dp[i + 1][j])
-        
-        return dp[0][0]   
-
-```
 
 
 [10. Regular Expression Matching](https://leetcode.com/problems/regular-expression-matching/)
@@ -910,3 +1080,51 @@ class Solution:
         return dfs(0, 0)
 ```
 
+# 待分类直通硅谷
+
+
+## 简介
+给定状态S和代价函数cost(S1, S2)，计算min(f(S))的值：以状态为自变量，计算函数的值
+**f和cost只与状态S有关** 和如何到达这个状态无关
+状态可以是一个整数，一对整数等等
+
+以下是常见的4种状态表示方法
+
+第一题
+dp[n]表示s[:n]是否是好的字符串
+转移：
+1. 从s[n-1]走到s[n]: s[n-1] == 1 
+2. 从s[n-2]走到s[n]
+
+第二题 用ABCD构造字符串
+cost("ABXXXXX") <= cost("CBXXXXX")的话，就不用存"CB"了
+-> 对长度相同，最后一个字符串相同的字符串，只存代价最小的
+dp[i][j] 0<= j < 4
+
+dp[0] = cost[0]
+dp[i][j] = min(dp[i-1][k] + cost[i][j])， k != j
+解min(dp[-1])
+
+第三题 lc1444
+剩余部分的右下角永远不变：如果横切是给上面，如果竖切是给左边
+dp[x][y][z]表示左上角在[x, y]，分成z份的合法方法数
+dp[x][y][1] = 1 或0 取决于该披萨有没有苹果
+
+第四题 LC1349       
+dp[i][j] 表示前i行，分配人的情况为j时的最大人数
+dp[0][0] = 1
+dp[i][j] = max(dp[i-1][x] + 第j行坐的人数)
+
+一般框架：
+1. 定义状态：base case和状态
+2. 递推
+3. 解是什么
+
+面试时交互的过程，要学会讲清楚
+
+Google常见题目
+dp
+图：代码相对比较长，考察实现能力，知道怎么做
+string, array, sequency：two pointers, sliding windows, prefix sum, 快速求值，单调队列
+
+dry run：把树画出来，把每个值填到节点里
