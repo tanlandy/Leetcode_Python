@@ -280,15 +280,151 @@ class Solution:
         return res
 ```
 
-[309. Best Time to Buy and Sell Stock with Cooldown](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/)
+```py
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        """
+        压缩到O(1)的时间复杂度
+        """
+        t1_cost = t1_profit = t2_cost = t2_profit = float("-inf")
+        for price in prices:
+            t1_cost = max(t1_cost, - price)
+            t1_profit = max(t1_profit, t1_cost + price)
+            t2_cost = max(t2_cost, t1_profit - price)
+            t2_profit = max(t2_profit, t2_cost + price)
+        
+        return max(0, t2_profit)
+```
 
+[309. Best Time to Buy and Sell Stock with Cooldown](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/)
+```py
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        """
+        i-1: 刚持有 刚清空 清空2天以上
+        i  : 刚持有 刚清空 清空2天以上
+        """
+        if len(prices) == 1:
+            return 0
+        
+        dp = [[float("-inf"), float("-inf"), 0] for _ in range(len(prices))]
+        
+        for i in range(len(prices)):
+            dp[i][0] = max(dp[i-1][0], dp[i-1][2] - prices[i])
+            dp[i][1] = max(dp[i-1][1], dp[i-1][0] + prices[i])
+            dp[i][2] = max(dp[i-1][2], dp[i-1][1])
+        
+        res = 0
+        for i in range(3):
+            res = max(res, dp[-1][i])
+        
+        return res
+```
 
 [376. Wiggle Subsequence](https://leetcode.com/problems/wiggle-subsequence/)
+```py
+class Solution:
+    def wiggleMaxLength(self, nums: List[int]) -> int:
+        """
+        i-1: 以当前元素结尾且上升的最长wiggle pattern    以当前元素结尾且下降的最长wiggle pattern 
+        i:   dp[i-1][1] += 1如果这个数更大             dp[i-1][0] += 1如果这个数更小
+        
+        """
+        dp = [[0, 0] for _ in range(len(nums)) ]
+        dp[0][0] = dp[0][1] = 1
+        for i in range(1, len(nums)):
+            if nums[i] < nums[i - 1]:
+                dp[i][1] = max(dp[i - 1][0] + 1, dp[i-1][1])
+            elif nums[i] > nums[i - 1]:
+                dp[i][0] = max(dp[i-1][0], dp[i - 1][1] + 1)
+            else:
+                dp[i] = dp[i-1]
+                
+        return max(dp[-1])
+```
+
+
+
+[265. Paint House II](https://leetcode.com/problems/paint-house-ii/)
+```py
+class Solution:
+    def minCostII(self, costs: List[List[int]]) -> int:
+        """
+        dp[i][j] 第i间房子喷涂j种颜色的目前为止最小代价
+        第i房子的颜色只被i-1房子限制
+        i-1: j1, j2, j3, ..., jk 
+        i- : j1, j2, j3, ..., jk   
+        res: max(dp[-1])
+        
+        dp[i][j] = min(dp[i-1][j'] + cost[i][j]), where j' != j
+        """
+        
+        dp = [[0] * len(costs[0])] * len(costs)
+        
+        for i in range(len(costs)):
+            
+            min_color = min(dp[i-1])
+            min_idx = dp[i-1].index(min_color)
+            sec_min_color = min(dp[i-1][:min_idx] + dp[i-1][min_idx + 1:])
+            
+            for j in range(len(costs[0])):
+                if j != min_idx:
+                    dp[i][j] = costs[i][j] + min_color 
+                else:
+                    dp[i][j] = costs[i][j] + sec_min_color
+        
+        return min(dp[-1])
+```
+
+
+[1289. Minimum Falling Path Sum II](https://leetcode.com/problems/minimum-falling-path-sum-ii/)
+```py
+class Solution:
+    def minFallingPathSum(self, grid: List[List[int]]) -> int:
+        """
+        和LC265一模一样
+        """
+        if len(grid[0]) == 1:
+            return grid[0][0]
+        
+        dp = [[0] * len(grid[0])] * len(grid)
+
+        for i in range(len(grid)):
+            min_num = min(dp[i - 1])
+            min_idx = dp[i - 1].index(min_num)
+            sec_min_num = min(dp[i - 1][:min_idx] + dp[i - 1][min_idx + 1:])
+            for j in range(len(grid[0])):
+                if j != min_idx:
+                    dp[i][j] = grid[i][j] + min_num
+                else:
+                    dp[i][j] = grid[i][j] + sec_min_num
+        
+        return min(dp[-1])
+```
+
+
 
 [487. Max Consecutive Ones II](https://leetcode.com/problems/max-consecutive-ones-ii/)
 状态：以当前为结尾且没反转过1；以当前为结尾且反转过1
-```
+```py
+class Solution:
+    def findMaxConsecutiveOnes(self, nums: List[int]) -> int:
+        """
+        dp: 以i为结尾且没翻转过的最长1  以i为结尾且 翻转过的最长1 
+        """
+        dp = [[0, 0]] * len(nums)
+        res = 0
+        for i in range(len(nums)):
+            if nums[i] == 0:
+                dp[i][0] = 0
+                dp[i][1] = dp[i-1][0] + 1
+            else:
+                dp[i][0] = dp[i-1][0] + 1
+                dp[i][1] = dp[i-1][1] + 1
 
+            res = max(res, dp[i][0], dp[i][1])
+        
+        return res
 
 ```
 
@@ -1138,7 +1274,29 @@ class Solution:
         return res
 ```
 
+[276. Paint Fence](https://leetcode.com/problems/paint-fence/)
 
+```py
+class Solution:
+    def numWays(self, n: int, k: int) -> int:
+        """
+        dp[i] number of different colors ending at post i
+        dp[i] = (k-1)dp[i-1] + (k-1)dp[i-2]
+        final res: dp[n]
+        """
+        if n == 1:
+            return k
+        if n == 2:
+            return k * k
+        dp = [0] * (n + 1)
+        dp[1] = k
+        dp[2] = k * k
+        for i in range(3, n + 1):
+            dp[i] = (k - 1) * dp[i - 1] + (k - 1) * dp[i - 2]
+        
+        return dp[n]
+        
+```
 
 [10. Regular Expression Matching](https://leetcode.com/problems/regular-expression-matching/)
 
