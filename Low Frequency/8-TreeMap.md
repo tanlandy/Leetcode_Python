@@ -96,3 +96,8 @@ obj.get("fruit", 3) # => "orange"
 obj.get("fruit", 5) # => "melon"
 
 ```
+
+[729. My Calendar I](https://leetcode.com/problems/my-calendar-i/)
+
+[731. My Calendar II](https://leetcode.com/problems/my-calendar-ii/)
+

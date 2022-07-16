@@ -502,6 +502,54 @@ class Solution:
         return dp(n)
 ```
 
+```py
+class Solution:
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        """
+        dp[i]: 以s[i]为结尾的，最长子序列的长度
+        res: max(dp)
+        """
+        dp = [1 for _ in range(len(nums))] # 1 is base case
+        
+        for i in range(len(nums)):
+            for j in range(i):
+                if nums[j] < nums[i]:
+                    dp[i] = max(dp[i], dp[j] + 1)
+        
+        return max(dp)
+```
+
+[673. Number of Longest Increasing Subsequence](https://leetcode.com/problems/number-of-longest-increasing-subsequence/)
+```py
+class Solution:
+    def findNumberOfLIS(self, nums: List[int]) -> int:
+        """
+        dp[i]: the length of the Longest Increasing Subsequence which ends with nums[i].
+        cnt[i]: the number of the Longest Increasing Subsequence which ends with nums[i].
+        the res is the sum of each cnt[i] while its corresponding dp[i] is the maximum length
+        """
+        dp = [1 for _ in range(len(nums))]
+        cnt = [1 for _ in range(len(nums))]        
+        max_len = res = 0
+        
+        for i in range(len(nums)):
+            for j in range(i):
+                if nums[j] < nums[i]:
+                    if dp[i] == dp[j] + 1:
+                        cnt[i] += cnt[j]
+                    if dp[i] < dp[j] + 1:
+                        dp[i] = dp[j] + 1
+                        cnt[i] = cnt[j]
+            if max_len == dp[i]:
+                res += cnt[i]
+            if max_len < dp[i]:
+                res = cnt[i]
+                max_len = dp[i]
+        
+        return res
+```
+
+
 [368. Largest Divisible Subset](https://leetcode.com/problems/largest-divisible-subset/)
 
 [1105. Filling Bookcase Shelves](https://leetcode.com/problems/filling-bookcase-shelves/)

@@ -82,3 +82,22 @@ class Solution:
         return res
 
 ```
+
+[991. Broken Calculator](https://leetcode.com/problems/broken-calculator/)
+
+```py
+class Solution:
+    def brokenCalc(self, startValue: int, target: int) -> int:
+        """
+        solve it backward greedly
+        """
+        res = 0
+        while target > startValue:
+            res += 1
+            if target % 2 == 1:
+                target += 1
+            else:
+                target //= 2
+        
+        return res - target + startValue
+```
