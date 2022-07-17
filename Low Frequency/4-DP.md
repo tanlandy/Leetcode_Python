@@ -552,6 +552,13 @@ class Solution:
 
 [368. Largest Divisible Subset](https://leetcode.com/problems/largest-divisible-subset/)
 
+给一个数组，求最大子集，使里面左右元素都能互相整除
+dp[i]：在s[:i]中以s[i]结尾的，满足要求的数量
+res：max(dp)
+
+
+
+
 [1105. Filling Bookcase Shelves](https://leetcode.com/problems/filling-bookcase-shelves/)
 
 换种说法：把arr分成若干个subarray，最小化每个subarray最大值之和

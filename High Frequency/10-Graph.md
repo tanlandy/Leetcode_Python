@@ -2093,6 +2093,56 @@ class Solution:
         
 ```
 
+[329. Longest Increasing Path in a Matrix](https://leetcode.com/problems/longest-increasing-path-in-a-matrix/)
+
+```py
+class Solution:
+    def longestIncreasingPath(self, matrix: List[List[int]]) -> int:
+        """
+        Topological sort:
+        1. initial a 2D grid with 0, give 1 to those have a larger value than neighbor.
+        2. add grid with 0 to queue
+        3. start kahn's algo
+        
+        """
+        rows, cols = len(matrix), len(matrix[0])
+        indegree = [[0 for _ in range(cols)] for _ in range(rows)]
+        
+        dirs = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        
+        for r in range(rows):
+            for c in range(cols):
+                for dx, dy in dirs:
+                    nr, nc = r + dx, c + dy
+                    if 0 <= nr < rows and 0 <= nc < cols:
+                        if matrix[nr][nc] < matrix[r][c]:
+                            indegree[r][c] += 1
+        
+        queue = collections.deque()
+        for r in range(rows):
+            for c in range(cols):
+                if indegree[r][c] == 0:
+                    queue.append((r, c))
+        
+        res = 0
+        
+        while queue:
+            size = len(queue)
+            for i in range(size):
+                r, c = queue.popleft()
+                for dx, dy in dirs:
+                    nr, nc = r + dx, c + dy
+                    if 0 <= nr < rows and 0 <= nc < cols:
+                        if matrix[nr][nc] > matrix[r][c]:
+                            indegree[nr][nc] -= 1
+                            if indegree[nr][nc] == 0:
+                                queue.append((nr, nc))
+            res += 1
+        
+        return res
+```
+
+
 # MST
 It is a graph that connects all the vertices together, withoug cycles and with the minimum total edge weight
 ## Kruskal's Algo

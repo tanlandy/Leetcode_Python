@@ -1433,6 +1433,14 @@ class Solution:
         return backtrack(0, 0, 0)
 ```
 
+
+https://leetcode.com/problems/longest-increasing-path-in-a-matrix/discuss/2052360/Python%3A-Beginner-Friendly-%22Recursion-to-DP%22-Intuition-Explained 
+
+https://leetcode.com/problems/out-of-boundary-paths/discuss/1293697/python-easy-to-understand-explanation-recursion-and-memoization-with-time-and-space-complexity 
+
+https://leetcode.com/problems/number-of-matching-subsequences/discuss/1289549/python-explained-all-possible-solutions-with-time-and-space-complexity 
+
+
 # Backtracking
 ## Template
 ```shell
