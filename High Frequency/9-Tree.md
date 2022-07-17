@@ -443,6 +443,9 @@ class Codec:
 ```
 
 
+
+[1130. Minimum Cost Tree From Leaf Values](https://leetcode.com/problems/minimum-cost-tree-from-leaf-values/)
+
 # BST
 BST is often used to look up the existence of certain objects. Compared to sorted arrays, the insertion has way lower time complexity, so it's good for dynamic insertion of items. If you don't need to dynamically insert new items, then you can simply sort the collection first and use binary search to look up.
 
