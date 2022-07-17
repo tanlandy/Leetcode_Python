@@ -1,4 +1,6 @@
-# Hashtable
+# 基础知识
+
+# 例题
 
 [1. Two Sum](https://leetcode.com/problems/two-sum/)
 
@@ -349,6 +351,8 @@ class Solution:
         return "{}A{}B".format(bulls, cows)
 ```
 
+## Tic-Tac-Toe
+
 [348. Design Tic-Tac-Toe](https://leetcode.com/problems/design-tic-tac-toe/)
 
 ```py
@@ -379,11 +383,12 @@ class TicTacToe:
             return player
         
         return 0
-        
-# Your TicTacToe object will be instantiated and called as such:
-# obj = TicTacToe(n)
-# param_1 = obj.move(row,col,player)
 ```
+
+[1275. Find Winner on a Tic Tac Toe Game](https://leetcode.com/problems/find-winner-on-a-tic-tac-toe-game/)
+
+
+[794. Valid Tic-Tac-Toe State](https://leetcode.com/problems/valid-tic-tac-toe-state/)
 
 
 

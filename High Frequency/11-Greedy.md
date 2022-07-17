@@ -37,6 +37,7 @@ class Solution:
 
         for i in range(len(gas)):
             total += (gas[i] - cost[i])
+            # 从i出发走到j恰好变成负数，那么i-j之间其他的都无法走到终点，所以再从i+1开始走，看能否走到终点
             if total < 0:
                 total = 0
                 res = i + 1

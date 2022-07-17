@@ -854,3 +854,126 @@ class NumArray(object):
         
         return rangeSum(self.root, i, j)
 ```
+
+
+
+# MST
+It is a graph that connects all the vertices together, withoug cycles and with the minimum total edge weight
+## Kruskal's Algo
+Kruskal's algorithm generates the Minimum Spanning Tree by always choosing the smallest weigthed edge in the graph and consistently growing the tree by one edge.
+1. Sort the edge besed on weights
+2. Try every edge, add the edge to res as long as they are not connected -> Disjoint Sets
+3. Repeat until have connected n-1 edges
+
+Time: O(ElogE) union find is logE, do it E times. we also sort the graph
+
+```py
+class UnionFind:
+    def __init__(self):
+        self.id = {}
+
+    def find(self, x):
+        y = self.id.get(x, x)
+        if y != x:
+            self.id[x] = y = self.find(y)
+        return y
+
+    def union(self, x, y):
+        self.id[self.find(x)] = self.find(y)
+
+class Edge:
+    def __init__(self, weight, a, b):
+        self.weight = weight
+        self.a = a
+        self.b = b
+def cmp():
+    def compare(x, y):
+        return x.weight < y.weight
+    return compare
+def minimum_spanning_tree(n : int, edges : List[edge]) -> int:
+    # sort list, make sure to define custom comparator class cmp to sort edge based on weight from lowest to highest
+    edges.sort(key = cmp)
+    dsu = UnionFind()
+    ret, cnt = 0, 0
+    for edge in edges:
+      # check if edges belong to same set before merging and adding edge to mst
+      if dsu.find(edge.a) != dsu.find(edge.b):
+        dsu.union(edge.a, edge.b)
+        ret = ret + edge.weight
+        cnt += 1
+        if cnt == n - 1:
+          break
+    return ret
+```
+## 例题
+
+[1584. Min Cost to Connect All Points](https://leetcode.com/problems/min-cost-to-connect-all-points/)
+
+```py
+class Solution:
+    def minCostConnectPoints(self, points: List[List[int]]) -> int:
+        """
+        step1: create edges
+        step2: Prim's algo
+        
+        Time: O(N^2logN)
+        """
+        N = len(points)
+        adj = {i: [] for i in range(N)} # i : list of [cost, node]
+        
+        for i in range(N):
+            x1, y1 = points[i]
+            for j in range(i + 1, N):
+                x2, y2 = points[j]
+                dist = abs(x1 - x2) + abs(y1 - y2)
+                adj[i].append([dist, j])
+                adj[j].append([dist, i])
+        
+        # Prim's
+        res = 0
+        visited = set()
+        minH = [[0, 0]] # [cost, point]
+
+        while len(visited) < N:
+            cost, i = heapq.heappop(minH)
+            if i in visited:
+                continue
+            res += cost
+            visited.add(i)
+            for nei_cost, nei in adj[i]:
+                if nei not in visited:
+                    heapq.heappush(minH, [nei_cost, nei])
+        
+        return res
+```
+
+[1135. Connecting Cities With Minimum Cost](https://leetcode.com/problems/connecting-cities-with-minimum-cost/)
+
+```py
+class Solution:
+    def minimumCost(self, n: int, connections: List[List[int]]) -> int:
+        """
+        step1: build adj_list
+        """
+        adj = {i:[] for i in range(1, n + 1)} # 这些点都从1开始
+        for x, y, cost in connections:
+            adj[x].append([cost, y]) # i: [cost, node]
+            adj[y].append([cost, x])
+        
+        minH = [(0, 1)] # (cost, node) start with node 1
+        visited = set()
+        res = 0
+        
+        while minH:
+            cost, node = heapq.heappop(minH) # always deal with the mimimum node first
+            if node in visited:
+                continue
+                
+            visited.add(node)
+            res += cost
+            for nei_cost, nei in adj[node]: # add all unvisited nodes
+                if nei not in visited:
+                    heapq.heappush(minH, (nei_cost, nei))
+        
+        return res if len(visited) == n else -1
+```
