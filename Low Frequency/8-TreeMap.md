@@ -1,3 +1,9 @@
+# 基础知识
+https://grantjenks.com/docs/sortedcontainers/ 
+
+# 例题
+
+
 [981. Time Based Key-Value Store](https://leetcode.com/problems/time-based-key-value-store/)
 ```py
 class TimeMap:
@@ -99,5 +105,89 @@ obj.get("fruit", 5) # => "melon"
 
 [729. My Calendar I](https://leetcode.com/problems/my-calendar-i/)
 
+```py
+from sortedcontainers import SortedList
+
+class MyCalendar:
+    """
+    use SortedList() to store the (start, end) pair
+    """
+
+    def __init__(self):
+        self.calendar = SortedList()
+
+    def book(self, start: int, end: int) -> bool:
+        if not self.calendar:
+            self.calendar.add((start, end))
+            return True
+        
+        pre = self.calendar.bisect_left((start, end)) - 1
+        nxt = self.calendar.bisect_right((start, end))
+        
+        if (start, end) in self.calendar:
+            return False
+        
+        if (pre == -1 or self.calendar[pre][1] <= start) and (nxt == len(self.calendar) or self.calendar[nxt][0] >= end):
+            self.calendar.add((start, end))
+            return True
+        
+        return False
+
+
+# Your MyCalendar object will be instantiated and called as such:
+# obj = MyCalendar()
+# param_1 = obj.book(start,end)
+```
+
+```py
+import bisect
+
+class MyCalendar:
+    """
+    Use two lists that are sorted using bisect
+    each time find the starting and ending index of them and see if they are the same
+    only if they are the same, means that is a valid insert
+    """
+
+    def __init__(self):
+        self.starts = []
+        self.ends = []
+
+    def book(self, start: int, end: int) -> bool:
+        start_idx = bisect.bisect_left(self.starts, end)
+        end_idx = bisect.bisect_right(self.ends, start)
+        if start_idx == end_idx:
+            self.starts.insert(start_idx, start)
+            self.ends.insert(end_idx, end)
+            return True
+        return False
+
+
+# Your MyCalendar object will be instantiated and called as such:
+# obj = MyCalendar()
+# param_1 = obj.book(start,end)
+```
+
 [731. My Calendar II](https://leetcode.com/problems/my-calendar-ii/)
 
+```py
+class MyCalendarTwo:
+    """
+    use two lists: overlaps and calendar
+    for new (start, end), if intersect with the overlaps, return false
+    if not: find the correct (new_start, new_end) to add to overlaps, and add(start, end) to calendar
+    """
+    def __init__(self):
+        self.overlaps = []
+        self.calendar = []
+
+    def book(self, start, end):
+        for i, j in self.overlaps:
+            if start < j and end > i:
+                return False
+        for i, j in self.calendar:
+            if start < j and end > i:
+                self.overlaps.append((max(start, i), min(end, j)))
+        self.calendar.append((start, end))
+        return True
+```
