@@ -1,3 +1,19 @@
+# 基础知识
+
+## 除法相关
+
+20 / 3 = 6 ... 2
+20: dividend
+3: divisor
+6: quotient
+2: remainder
+
+range of primitive number in Java and C++: (32-bit number)
+[-2 ** 31, 2 ** 31 - 1]
+abs(-2**31) = 2 ** 31, which is out of bound
+
+# 例题
+
 [263. Ugly Number]([Loading...](https://leetcode.com/problems/ugly-number/))
 
 ```py
@@ -78,6 +94,132 @@ class Solution:
 
 [166. Fraction to Recurring Decimal](https://leetcode.com/problems/fraction-to-recurring-decimal/)
 
+```py
+class Solution:
+    def fractionToDecimal(self, numerator: int, denominator: int) -> str:
+        """
+        Idea is to put every remainder into the hash table as a key, and the current length of the result string as the value. When the same remainder shows again, it's circulating from the index of the value in the table.
+        """
+        if numerator % denominator == 0:
+            return str(numerator//denominator)
+        sign = "" if numerator * denominator >= 0 else "-"
+        numerator, denominator = abs(numerator), abs(denominator)
+        res = sign + str(numerator//denominator) + '.' # finished before "." part
+        # the decimal part
+        numerator %= denominator
+        i, part = 0, ''
+        rem_size = {numerator: i}
+        while numerator % denominator != 0:
+            numerator *= 10
+            i += 1
+            rem = numerator % denominator
+            part += str(numerator // denominator)
+            if rem in rem_size: # 如果重复出现过，就可以返回结果
+                part = part[:rem_size[rem]]+"("+part[rem_size[rem]:]+")"
+                return res + part
+            rem_size[rem] = i
+            numerator = rem
+        return res + part
+```
 
 [29. Divide Two Integers](https://leetcode.com/problems/divide-two-integers/)
 
+```py
+class Solution:
+    def divide(self, dividend: int, divisor: int) -> int:
+        """
+        Linear scan: slow, but basic
+        """
+        MAX_INT = 2 ** 31 - 1
+        MIN_INT = -2 ** 31
+        
+        # overflow: 32 bit integer: [[-2 ** 31, 2 ** 31 - 1]]
+        if dividend == MIN_INT and divisor == -1:
+            return MAX_INT
+        
+        # convert both numbers to negative, as it has a larger scope
+        negatives = 2
+        if dividend > 0:
+            negatives -= 1
+            dividend = -dividend
+        if divisor > 0:
+            negatives -= 1
+            divisor = -divisor
+        
+        # count how many times the divisor has to be added
+        quotient = 0
+        while dividend - divisor <= 0:
+            quotient -= 1
+            dividend -= divisor
+        
+        return -quotient if negatives != 1 else quotient
+```
+
+```py
+class Solution:
+    def divide(self, dividend: int, divisor: int) -> int:
+        """
+        try and subtract multiple copies of the divisor each time: double the divisor each time
+        
+        (10, 3)             while   while
+        negatives = 0                           
+        dividend = -10          -4      -1
+        divisor = -3
+        quotient = 0            -2      -3  return 3
+        power_of_two = -1   -2      -1
+        value = -3          -6      -3  
+        Time: O(logN)
+        Space: O(1)
+        """
+        MAX_INT = 2 ** 31 - 1
+        MIN_INT = -2 ** 31
+        HALF_MIN_INT = MIN_INT // 2
+        
+        if dividend == MIN_INT and divisor == -1:
+            return MAX_INT
+        
+        negatives = 2
+        if dividend > 0:
+            negatives -= 1
+            dividend = -dividend
+        if divisor > 0:
+            negatives -= 1
+            divisor = -divisor
+        
+        quotient = 0
+        while divisor >= dividend:
+            power_of_two = -1
+            value = divisor
+            
+            # while away from divisor, move nearer
+            while value >= HALF_MIN_INT and value + value >= dividend:
+                value += value
+                power_of_two += power_of_two
+            
+            # subtract divisor another power_of_two times
+            quotient += power_of_two
+            # remove value so far, and continue to deal with remainder
+            dividend -= value
+        
+        return -quotient if negatives != 1 else quotient
+```
+
+[172. Factorial Trailing Zeroes](https://leetcode.com/problems/factorial-trailing-zeroes/)
+
+```py
+class Solution:
+    def trailingZeroes(self, n: int) -> int:
+        """
+        末尾的0肯定来源于因子2*5，因为因子2比5多得多，所以只考虑n最后能分解到多少个因子5
+        25!中，5可以提供1个，10可以1个，15可以1个，20可以1个，25可以2个，总共有6个因子5，所以结果末尾有6个0
+        对于125!，除了每5可以提供一个，每25还可以提供多一个5，每125又可以提供多一个5
+        """
+        res = 0
+        divisor = 5
+        
+        while divisor <= n:
+            res += (n // divisor)
+            divisor *= 5
+        
+        return res
+```

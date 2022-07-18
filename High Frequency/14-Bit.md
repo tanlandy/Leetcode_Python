@@ -1,3 +1,10 @@
+# 基础知识
+
+
+
+
+# 例题
+
 [136. Single Number](https://leetcode.com/problems/single-number/)
 
 ```py
@@ -15,15 +22,6 @@ class Solution:
         return res        
 
 ```
-
-
-
-
-
-
-
-
-
 
 [338. Counting Bits](https://leetcode.com/problems/counting-bits/)
 

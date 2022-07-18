@@ -36,6 +36,9 @@ class PeekingIterator:
 
 [251. Flatten 2D Vector](https://leetcode.com/problems/flatten-2d-vector/)
 
+[900. RLE Iterator](https://leetcode.com/problems/rle-iterator/)
+
+[1286. Iterator for Combination](https://leetcode.com/problems/iterator-for-combination/)
 
 
 
