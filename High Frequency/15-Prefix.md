@@ -160,5 +160,10 @@ class NumMatrix:
 [560. Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/)
 
 
-
 [1074. Number of Submatrices That Sum to Target](https://leetcode.com/problems/number-of-submatrices-that-sum-to-target/)
+
+
+[1423. Maximum Points You Can Obtain from Cards](https://leetcode.com/problems/maximum-points-you-can-obtain-from-cards/)
+
+
+[1031. Maximum Sum of Two Non-Overlapping Subarrays](https://leetcode.com/problems/maximum-sum-of-two-non-overlapping-subarrays/)

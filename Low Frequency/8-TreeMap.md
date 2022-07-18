@@ -191,3 +191,11 @@ class MyCalendarTwo:
         self.calendar.append((start, end))
         return True
 ```
+
+[846. Hand of Straights](https://leetcode.com/problems/hand-of-straights/)
+
+[218. The Skyline Problem](https://leetcode.com/problems/the-skyline-problem/)
+
+[480. Sliding Window Median](https://leetcode.com/problems/sliding-window-median/)
+
+[315. Count of Smaller Numbers After Self](https://leetcode.com/problems/count-of-smaller-numbers-after-self/)
