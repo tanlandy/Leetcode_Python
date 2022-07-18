@@ -460,15 +460,6 @@ Dynamic hash tables usually have a lot of unused memory in order to make the ins
 
 [510. Inorder Successor in BST II](https://leetcode.com/problems/inorder-successor-in-bst-ii/)
 ```py
-"""
-# Definition for a Node.
-class Node:
-    def __init__(self, val):
-        self.val = val
-        self.left = None
-        self.right = None
-        self.parent = None
-"""
 
 class Solution:
     def inorderSuccessor(self, node: 'Node') -> 'Optional[Node]':
@@ -487,6 +478,28 @@ class Solution:
             node = node.parent
         return node.parent
 ```
+
+[285. Inorder Successor in BST](https://leetcode.com/problems/inorder-successor-in-bst/)
+
+```py
+class Solution:
+    def inorderSuccessor(self, root: TreeNode, p: TreeNode) -> Optional[TreeNode]:
+        """
+        从root开始往右一直走，直到走到左子树
+        然后往左边走直到遇到这个点
+        """
+        successor = None
+        
+        while root:
+            if p.val >= root.val:
+                root = root.right
+            else:
+                successor = root
+                root = root.left
+        
+        return successor
+```
+
 
 
 

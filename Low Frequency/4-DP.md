@@ -321,6 +321,26 @@ class Solution:
         return res
 ```
 
+[122. Best Time to Buy and Sell Stock II](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/)
+```py
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        """
+        i-1 th day: 刚买入，刚卖出
+        i th day: 刚买入，刚卖出
+        
+        """
+        dp = [[float("-inf"), 0] for _ in range(len(prices))] # 注意刚买入的状态是-inf，这样就可以直接买入第一笔了
+        
+        for i in range(len(prices)):
+            dp[i][0] = max(dp[i-1][0], dp[i-1][1] - prices[i])
+            dp[i][1] = max(dp[i-1][0] + prices[i], dp[i-1][1])
+            print(dp[i])
+        
+        return max(dp[-1])
+```
+
+
 [376. Wiggle Subsequence](https://leetcode.com/problems/wiggle-subsequence/)
 ```py
 class Solution:

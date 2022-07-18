@@ -737,3 +737,31 @@ class Solution:
         
         return count
 ```
+
+
+# String
+[1592. Rearrange Spaces Between Words](https://leetcode.com/problems/rearrange-spaces-between-words/)
+```py
+class Solution:
+    def reorderSpaces(self, text: str) -> str:
+        words = text.split()
+        cnt = len(words)
+        spaces = text.count(' ')
+        gap = 0 if cnt == 1 else spaces // (cnt - 1)
+        trailing_spaces = spaces - gap * (cnt - 1) 
+        return (' ' * gap).join(words) + ' ' * trailing_spaces   
+```
+
+[929. Unique Email Addresses](https://leetcode.com/problems/unique-email-addresses/)
+```py
+class Solution:
+    def numUniqueEmails(self, emails: List[str]) -> int:
+        uniqueEmails = set()
+        
+        for email in emails:
+            name, domain = email.split("@") # 先按照@分开
+            local = name.split("+")[0].replace(".", "") # 然后按照+分开的同时，把“，”替换成“”（删除）
+            uniqueEmails.add(local + "@" + domain) # 最后合并起来，添加到set里面
+        
+        return len(uniqueEmails)
+```

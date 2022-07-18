@@ -1,4 +1,7 @@
+# 基础知识
 前缀和本质上是在一个list当中，用O（N）的时间提前算好从第0个数字到第i个数字之和，在后续使用中可以在O（1）时间内计算出第i到第j个数字之和
+
+# 题目
 
 [53. Maximum Subarray](https://leetcode.com/problems/maximum-subarray/)
 
@@ -153,3 +156,9 @@ class NumMatrix:
         return self.prefix[row2][col2] + self.prefix[row1 - 1][col1 - 1] - self.prefix[row1 - 1][col2] - self.prefix[row2][col1 - 1]
 
 ```
+
+[560. Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/)
+
+
+
+[1074. Number of Submatrices That Sum to Target](https://leetcode.com/problems/number-of-submatrices-that-sum-to-target/)

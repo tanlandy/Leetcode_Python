@@ -622,3 +622,36 @@ class Solution:
                 return [start2, start2 + duration]
         return []
 ```
+
+[280. Wiggle Sort](https://leetcode.com/problems/wiggle-sort/)
+```py
+class Solution:
+    def wiggleSort(self, nums: List[int]) -> None:
+        """
+        Approach1: sort and then swap one pair by one pair, with a step of two
+        Approach2: one pass: compare the odd index, swap two times each step if needed
+        
+        """
+        if not nums:
+            return
+        n = len(nums)
+        for i in range(1, n, 2):
+            if nums[i] < nums[i-1]:
+                nums[i], nums[i-1] = nums[i-1], nums[i]
+            
+            if i + 1 < n and nums[i] < nums[i+1]:
+                nums[i], nums[i+1] = nums[i+1], nums[i]
+```
+
+[324. Wiggle Sort II](https://leetcode.com/problems/wiggle-sort-ii/)
+
+```py
+class Solution:
+    def wiggleSort(self, nums: List[int]) -> None:
+        """
+        要求严格nums[0] < nums[1] > nums[2]
+        """
+        arr = sorted(nums)
+        for i in range(1, len(nums), 2): nums[i] = arr.pop() 
+        for i in range(0, len(nums), 2): nums[i] = arr.pop() 
+```
