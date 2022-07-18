@@ -50,3 +50,34 @@ class Solution:
         
         return res
 ```
+
+[149. Max Points on a Line](https://leetcode.com/problems/max-points-on-a-line/)
+
+```py
+class Solution:
+    def maxPoints(self, points: List[List[int]]) -> int:
+        """
+        Given a point p, we compute the slopes of all lines connecting p and other points. Points corresponding to the same slope will fall on the same line.
+        In this way, we can figure out the maximum number of points on lines containing p
+
+        Time: O(N^2)
+        Space: O(N)
+        """
+        res = 0
+        
+        for i, (x1, y1) in enumerate(points):
+            slopes = collections.defaultdict(int)
+            for j, (x2, y2) in enumerate(points[i + 1:]):
+                slope = (y2 - y1) / (x2 - x1) if x1 != x2 else float("inf")
+                slopes[slope] += 1
+                res = max(res, slopes[slope])
+        
+        # 最后还要加上自己的这个点
+        return res + 1
+```
+
+[166. Fraction to Recurring Decimal](https://leetcode.com/problems/fraction-to-recurring-decimal/)
+
+
+[29. Divide Two Integers](https://leetcode.com/problems/divide-two-integers/)
+

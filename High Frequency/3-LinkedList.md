@@ -59,6 +59,26 @@ llist.print_list()
 3. Merge Two Sorted Linked Lists
 4. Remove duplicates
 
+
+[237. Delete Node in a Linked List](https://leetcode.com/problems/delete-node-in-a-linked-list/)
+
+```py
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def deleteNode(self, node):
+        """
+        实际上是删掉了node.next这个node
+        """
+        
+        node.val = node.next.val # 把node的值变成node.next
+        node.next = node.next.next # 把node.next删掉
+```
+
 ## Doubly Linked List
 Implementation
 ```py

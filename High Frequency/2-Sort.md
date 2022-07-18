@@ -655,3 +655,15 @@ class Solution:
         for i in range(1, len(nums), 2): nums[i] = arr.pop() 
         for i in range(0, len(nums), 2): nums[i] = arr.pop() 
 ```
+
+## Merge Sort
+
+[315. Count of Smaller Numbers After Self](https://leetcode.com/problems/count-of-smaller-numbers-after-self/)
+
+也可以用segment tree
+
+[327. Count of Range Sum](https://leetcode.com/problems/count-of-range-sum/)
+
+[493. Reverse Pairs](https://leetcode.com/problems/reverse-pairs/)
+
+https://leetcode.com/problems/reverse-pairs/discuss/97268/General-principles-behind-problems-similar-to-%22Reverse-Pairs%22 
