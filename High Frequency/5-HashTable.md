@@ -351,6 +351,34 @@ class Solution:
         return "{}A{}B".format(bulls, cows)
 ```
 
+
+## Hashset
+
+[2133. Check if Every Row and Column Contains All Numbers](https://leetcode.com/problems/check-if-every-row-and-column-contains-all-numbers/)
+
+```py
+class Solution:
+    def checkValid(self, matrix: List[List[int]]) -> bool:
+        unique_nums = set()
+        rows, cols = len(matrix), len(matrix[0])
+        
+        for r in range(rows):
+            unique_nums.clear()
+            for c in range(cols):
+                unique_nums.add(matrix[r][c])
+            if len(unique_nums) != rows:
+                return False
+        
+        for c in range(rows):
+            unique_nums.clear()
+            for r in range(cols):
+                unique_nums.add(matrix[r][c])
+            if len(unique_nums) != cols:
+                return False
+        
+        return True
+```
+
 ## Tic-Tac-Toe
 
 [348. Design Tic-Tac-Toe](https://leetcode.com/problems/design-tic-tac-toe/)
@@ -387,10 +415,84 @@ class TicTacToe:
 
 [1275. Find Winner on a Tic Tac Toe Game](https://leetcode.com/problems/find-winner-on-a-tic-tac-toe-game/)
 
+```py
+class Solution:
+    def tictactoe(self, moves: List[List[int]]) -> str:
+        """
+        check for each row/col/diag if all three are the same
+        """
+        n = 3
+        ver = [0] * n
+        hori = [0] * n
+        diag1 = 0
+        diag2 = 0
+        
+        player = 1
+        
+        for row, col in moves:
+            ver[row] += player
+            hori[col] += player
+            if row == col:
+                diag1 += player
+            if (row + col) == n - 1:
+                diag2 += player
+            
+            if abs(ver[row]) == n or abs(hori[col]) == n or abs(diag1) == n or abs(diag2) == n:
+                return "A" if player == 1 else "B"
+            
+            # use this to take turns
+            player *= -1
+        
+        return "Draw" if len(moves) == n * n else "Pending"
+```
 
 [794. Valid Tic-Tac-Toe State](https://leetcode.com/problems/valid-tic-tac-toe-state/)
 
-
+```py
+class Solution:
+    def validTicTacToe(self, board: List[str]) -> bool:
+        """
+        Since 'X' always play first, we need to guarantee below conditions:
+        1. the number of 'X' must be larger than one or equal to the number of 'O'
+        2. if winner is 'X', the number of 'X' must be equal to the number of 'O' +1
+           if winner is 'O', the number of 'O' must be equal to the number of 'X'
+        """
+        count_X, count_O = 0, 0
+        
+        for s in board:
+            for ch in s:
+                if ch == "X":
+                    count_X += 1
+                elif ch == "O":
+                    count_O += 1
+        
+        # Condition 1 提前判断
+        if count_O not in {count_X, count_X - 1}:
+            return False
+        
+        # Condition 2 看行列情况
+        def isWinner(player):
+            for i in range(3):
+                if board[i][0] == board[i][1] == board[i][2] == player:
+                    return True
+                if board[0][i] == board[1][i] == board[2][i] == player:
+                    return True
+                
+            if board[0][0] == board[1][1] == board[2][2] == player:
+                return True
+            if board[0][2] == board[1][1] == board[2][0] == player:
+                return True
+            
+            return False
+        
+        if isWinner("X") and (count_X - count_O != 1):
+            return False
+        if isWinner("O") and (count_X != count_O):
+            return False
+        
+        # 包括了有人赢，或者没有人赢但是合理的情况
+        return True
+```
 
 
 
