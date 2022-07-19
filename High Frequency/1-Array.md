@@ -72,6 +72,33 @@ class Codec:
 # codec.decode(codec.encode(strs))
 ```
 
+
+[334. Increasing Triplet Subsequence](https://leetcode.com/problems/increasing-triplet-subsequence/)
+
+```py
+class Solution:
+    def increasingTriplet(self, nums: List[int]) -> bool:
+        """
+        keep track of the smallest two numbers in increasing order, and find the last number which will be bigger than the first two. 
+        first two smallest numbers can be updated with conditional checks while scanning.
+        
+        even though the "first" number can be updated to be after the idx of "second" smallest, we can tell that there is a smaller one before the "second" smallest
+        """
+        
+        first = second = float("inf")
+        
+        for n in nums:
+            if n <= first:
+                first = n
+            elif n <= second:
+                second = n
+            else: # n > first and n > second
+                return True
+        
+        return False
+```
+
+
 # Others
 [189. Rotate Array](https://leetcode.com/problems/rotate-array/)
 Given an array, rotate the array to the right by k steps, where k is non-negative.
@@ -737,6 +764,9 @@ class Solution:
         
         return count
 ```
+
+
+
 
 
 # String
