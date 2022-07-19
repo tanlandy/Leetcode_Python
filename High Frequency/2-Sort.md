@@ -658,12 +658,112 @@ class Solution:
 
 ## Merge Sort
 
+https://leetcode.com/problems/reverse-pairs/discuss/97268/General-principles-behind-problems-similar-to-%22Reverse-Pairs%22 
+
 [315. Count of Smaller Numbers After Self](https://leetcode.com/problems/count-of-smaller-numbers-after-self/)
 
-也可以用segment tree
+```py
+class Solution:
+    def countSmaller(self, nums: List[int]) -> List[int]:
+        n = len(nums)
+        arr = [[v, i] for i, v in enumerate(nums)]  # record value and index
+        result = [0] * n
+
+        def merge_sort(arr, left, right):
+            # merge sort [left, right) from small to large, in place
+            if right - left <= 1:
+                return
+            mid = (left + right) // 2
+            merge_sort(arr, left, mid)
+            merge_sort(arr, mid, right)
+            merge(arr, left, right, mid)
+
+        def merge(arr, left, right, mid):
+            # merge [left, mid) and [mid, right)
+            i = left  # current index for the left array
+            j = mid  # current index for the right array
+            # use temp to temporarily store sorted array
+            temp = []
+            while i < mid and j < right:
+                if arr[i][0] <= arr[j][0]:
+                    # j - mid numbers jump to the left side of arr[i]
+                    result[arr[i][1]] += j - mid
+                    temp.append(arr[i])
+                    i += 1
+                else:
+                    temp.append(arr[j])
+                    j += 1
+            # when one of the subarrays is empty
+            while i < mid:
+                # j - mid numbers jump to the left side of arr[i]
+                result[arr[i][1]] += j - mid
+                temp.append(arr[i])
+                i += 1
+            while j < right:
+                temp.append(arr[j])
+                j += 1
+            # restore from temp
+            for i in range(left, right):
+                arr[i] = temp[i - left]
+
+        merge_sort(arr, 0, n)
+
+        return result
+```
 
 [327. Count of Range Sum](https://leetcode.com/problems/count-of-range-sum/)
 
-[493. Reverse Pairs](https://leetcode.com/problems/reverse-pairs/)
+```py
+class Solution:
 
-https://leetcode.com/problems/reverse-pairs/discuss/97268/General-principles-behind-problems-similar-to-%22Reverse-Pairs%22 
+    # prefix-sum + merge-sort | time complexity: O(nlogn)
+    def countRangeSum(self, nums: List[int], lower: int, upper: int) -> int:
+        cumsum = [0]
+        for n in nums:
+            cumsum.append(cumsum[-1]+n)
+            
+		# inclusive
+        def mergesort(l,r):
+            if l == r:
+                return 0
+            mid = (l+r)//2
+            cnt = mergesort(l,mid) + mergesort(mid+1,r)
+			
+            i = j = mid+1
+            # O(n)
+            for left in cumsum[l:mid+1]:
+                while i <= r and cumsum[i] - left < lower:
+                    i+=1
+                while j <= r and cumsum[j] - left <= upper:
+                    j+=1
+                cnt += j-i
+                
+            cumsum[l:r+1] = sorted(cumsum[l:r+1])
+            return cnt
+			
+        return mergesort(0,len(cumsum)-1)
+```
+
+[493. Reverse Pairs](https://leetcode.com/problems/reverse-pairs/)
+In each round, we divide our array into two parts and sort them. So after "int cnt = mergeSort(nums, s, mid) + mergeSort(nums, mid+1, e); ", the left part and the right part are sorted and now our only job is to count how many pairs of number (leftPart[i], rightPart[j]) satisfies leftPart[i] <= 2*rightPart[j].
+For example,
+left: 4 6 8 right: 1 2 3
+so we use two pointers to travel left and right parts. For each leftPart[i], if j<=e && nums[i]/2.0 > nums[j], we just continue to move j to the end, to increase rightPart[j], until it is valid. Like in our example, left's 4 can match 1 and 2; left's 6 can match 1, 2, 3, and left's 8 can match 1, 2, 3. So in this particular round, there are 8 pairs found, so we increases our total by 8.
+```py
+class Solution:
+    def reversePairs(self, nums):
+        return self.mergeSort(nums, 0, len(nums)-1)
+
+    def mergeSort(self, nums, start, end):
+        if start >= end:
+            return 0
+        mid = (start+end)//2 + 1
+        count = self.mergeSort(nums, start, mid-1) + self.mergeSort(nums, mid, end)
+        j = mid 
+        for i in range(start, mid):
+            while j<=end and nums[j]*2 < nums[i]:
+                j += 1
+            count += (j-mid)
+        nums[start:end+1] = sorted(nums[start:end+1])
+        return count
+```

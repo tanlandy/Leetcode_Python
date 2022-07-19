@@ -129,6 +129,42 @@ class PeekingIterator:
 
 [251. Flatten 2D Vector](https://leetcode.com/problems/flatten-2d-vector/)
 
+```py
+class Vector2D:
+
+    def __init__(self, vec: List[List[int]]):
+        """
+        用两个指针，分别指向内部和外部的list
+        每次先移动内部的j
+        如果j走到了最后，就要移动i并将j重置为0
+        """
+        self.arr = vec
+        self.i = 0 # idx of vec(outer)
+        self.j = 0 # idx of element(inner)
+        
+    def next(self) -> int:
+        res = self.arr[self.i][self.j]
+        if self.j < len(self.arr[self.i]):
+            self.j += 1
+        while self.i < len(self.arr) and self.j == len(self.arr[self.i]): # 注意不要越界
+            self.i += 1
+            self.j = 0
+        return res
+
+    def hasNext(self) -> bool:
+        while self.i < len(self.arr) and self.j == len(self.arr[self.i]): # 移到满足条件的点
+            self.i += 1
+            self.j = 0
+        return self.i < len(self.arr)
+
+# Your Vector2D object will be instantiated and called as such:
+# obj = Vector2D(vec)
+# param_1 = obj.next()
+# param_2 = obj.hasNext()
+```
+
+
+
 [900. RLE Iterator](https://leetcode.com/problems/rle-iterator/)
 
 [1286. Iterator for Combination](https://leetcode.com/problems/iterator-for-combination/)

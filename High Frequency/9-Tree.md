@@ -764,13 +764,30 @@ class Solution:
 也可以用bitmask
 
 # Segment Tree
+## what is
 Segment Trees allow us to quickly perform range queries as well as range updates。
 
 update: O(logN)
 query: O(logN) <-> Comparing with a basic array, this can be O(N)
 
+## how to use
+
+[2, 4, 5, 7]
+segment tree: 
+            18
+           /    \ 
+        6          12
+      /  \        /   \
+    2       4   5       7
+leaves are numbers: nums[0] to nums[-1]
+
+each node contains: left, sum, right
+
+
 ## when to use
 range query problems like finding minimum, maximum, sum, greatest common divisor, least common denominator in array in logarithmic time.
+
+https://leetcode.com/articles/a-recursive-approach-to-segment-trees-range-sum-queries-lazy-propagation/ 
 
 ## 例题
 
