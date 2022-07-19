@@ -505,6 +505,25 @@ class Solution:
 
 # 多叉树
 
+[1490. Clone N-ary Tree](https://leetcode.com/problems/clone-n-ary-tree/)
+
+```py
+class Solution:
+    def cloneTree(self, root: 'Node') -> 'Node':
+        """
+        traverse a tree: for each node, make a copy and then link together
+        """
+        if not root:
+            return root
+        
+        new = Node(root.val)
+        
+        for child in root.children:
+            new.children.append(self.cloneTree(child))
+        
+        return new
+```
+
 
 
 # Trie Tree

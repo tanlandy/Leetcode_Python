@@ -128,3 +128,29 @@ class Solution:
                 free = max(free, e)
         return res
 ```
+
+[1272. Remove Interval](https://leetcode.com/problems/remove-interval/)
+
+```py
+class Solution:
+    def removeInterval(self, intervals: List[List[int]], toBeRemoved: List[int]) -> List[List[int]]:
+        """
+        Time: O(N)
+        Space: O(1)
+        """
+        res = []
+        
+        r_start, r_end = toBeRemoved
+        
+        for start, end in intervals:
+            if end < r_start or start > r_end: # there's no overlap at all
+                res.append([start, end])
+            else: # there's overlap now
+                # 从toBeRemoved的角度，看最前之前和最前之后，这样默认就省略了了中间完全包括的
+                if start < r_start:
+                    res.append([start, r_start])
+                if end > r_end:
+                    res.append([r_end, end])
+        
+        return res
+```

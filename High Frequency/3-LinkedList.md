@@ -691,14 +691,18 @@ class Solution:
 
 [138. Copy List with Random Pointer](https://leetcode.com/problems/copy-list-with-random-pointer/)
 
-Two Passes: 第一遍只复制node，不管指针，形成一个map{old : new}；第二遍把node的指针连起来；注意连的map里没考虑最后是None的情况，所以一开始map={ None : None}；遍历是while cur
-
-时间：O(N)
-空间：O(N)
-
 ```python
 class Solution:
     def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
+        """
+        Two Passes: 
+        第一遍只复制node，不管指针，形成一个map{old : new}；
+        第二遍把node的指针连起来；
+        注意连的map里没考虑最后是None的情况，所以一开始map={ None : None}；遍历是while cur
+
+        时间：O(N)
+        空间：O(N)
+        """
         oldToCopy = {None : None} # 为了在复制的时候，如果cur.next是None， copy.next也可以是None
 
         cur = head

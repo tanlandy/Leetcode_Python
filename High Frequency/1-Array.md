@@ -765,3 +765,165 @@ class Solution:
         
         return len(uniqueEmails)
 ```
+
+[243. Shortest Word Distance](https://leetcode.com/problems/shortest-word-distance/)
+
+```py
+class Solution:
+    def shortestDistance(self, wordsDict: List[str], word1: str, word2: str) -> int:
+        """
+        走一遍，用一个指针分别指向l, r，每当遇到了单词就存下来位置，当都第一次遇到之后就可以计算
+        Time: O(N)
+        Space: O(1)
+        """
+        l = r = -1
+        res = len(wordsDict)
+        
+        for i in range(len(wordsDict)):
+            if wordsDict[i] == word1:
+                l = i
+            elif wordsDict[i] == word2:
+                r = i
+            
+            if (l != -1 and r != -1):
+                res = min(res, abs(l - r))
+        
+        return res
+```
+
+[244. Shortest Word Distance II](https://leetcode.com/problems/shortest-word-distance-ii/)
+
+```py
+class WordDistance:
+    """
+    word_idx = {word: [idx]}
+    when call shortest(), find the shortest in two idx(sorted array), use two pointers
+    """
+
+    def __init__(self, wordsDict: List[str]):
+        self.word_idx = collections.defaultdict(list)
+        for idx, w in enumerate(wordsDict):
+            self.word_idx[w].append(idx)
+    
+    def shortest(self, word1: str, word2: str) -> int:
+        idxs1, idxs2 = self.word_idx[word1], self.word_idx[word2]
+        l = r = 0
+        min_diff = float("inf")
+        
+        while l < len(idxs1) and r < len(idxs2):
+            min_diff = min(min_diff, abs(idxs1[l] - idxs2[r]))
+            if idxs1[l] < idxs2[r]:
+                l += 1
+            else:
+                r += 1
+        
+        return min_diff
+
+```
+
+
+[339. Nested List Weight Sum](https://leetcode.com/problems/nested-list-weight-sum/)
+
+```python
+class Solution:
+    def depthSum(self, nestedList: List[NestedInteger]) -> int:
+        """
+        用dfs，如果是数字就total +=，如果不是就深度加一继续。
+        因为每次需要nestedList和depth，所以dfs()的参数有这两个
+
+        时间：O(N), N is size of nestedList
+        空间：O(K), K is largest List
+        """
+        def dfs(nestedList, depth):
+            total = 0
+            for nested in nestedList:
+                if nested.isInteger():
+                    total += nested.getInteger() * depth
+                else:
+                    total += dfs(nested.getList(), depth + 1)
+            return total
+        return dfs(nestedList, 1)
+```
+
+```py
+
+class Solution:
+    def depthSum(self, nestedList: List[NestedInteger]) -> int:
+        queue = collections.deque(nestedList)
+        depth = 1
+        total = 0
+        
+        while queue:
+            for _ in range(len(queue)):
+                item = queue.popleft()
+                if item.isInteger():
+                    total += item.getInteger() * depth
+                else:
+                    for elem in item.getList():
+                        queue.append(elem)
+            
+            depth += 1
+        
+        return total
+```
+
+[364. Nested List Weight Sum II](https://leetcode.com/problems/nested-list-weight-sum-ii/)
+
+```py
+class Solution:
+    def depthSumInverse(self, nestedList: List[NestedInteger]) -> int:
+        """
+        先找到maxDepth，然后逐个计算
+        """
+        maxDepth = self.findMaxDepth(nestedList)
+        return self.weightedSum(nestedList, 1, maxDepth)
+    
+    def findMaxDepth(self, nestedList):
+        maxDepth = 1
+        
+        for item in nestedList:
+            if not item.isInteger() and item.getList():
+                maxDepth = max(maxDepth, 1 + self.findMaxDepth(item.getList()))    
+        return maxDepth
+    
+    def weightedSum(self, nestedList, depth, maxDepth):
+        total = 0
+        
+        for item in nestedList:
+            if item.isInteger():
+                total += item.getInteger() * (maxDepth + 1 - depth)
+            else:
+                total += self.weightedSum(item.getList(), depth + 1, maxDepth)
+        
+        return total
+```
+
+```py
+class Solution:
+    def depthSumInverse(self, nestedList: List[NestedInteger]) -> int:
+        """
+        [1, [4, [6]]]
+
+        res += 1
+        res += 1 + 4
+        res += 1 + 4 + 6
+        use level_sum to store the previous cumulative sum, add those to res multiple times depending on the level
+
+        Time: O(N), N is len(nestedList)
+        Space: O(N)
+        """
+        queue = collections.deque(nestedList)
+        res = 0
+        level_sum = 0
+        
+        while queue:
+            for _ in range(len(queue)):
+                item = queue.popleft()                
+                if item.isInteger():
+                    level_sum += item.getInteger()
+                else:
+                    for elem in item.getList():
+                        queue.append(elem)
+            res += level_sum
+        return res
+```

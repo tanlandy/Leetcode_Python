@@ -1504,6 +1504,41 @@ class Solution:
 
 
 
+
+[133. Clone Graph](https://leetcode.com/problems/clone-graph/)
+
+```python
+class Solution:
+    def cloneGraph(self, node: 'Node') -> 'Node':
+        """
+        HashMap:{oldNode: newNode}；
+        dfs(node)返回node对应的copy
+        每次如果在map里面就直接返回copy后的node，如果不在就copy然后copy自己的neighbors；
+        复制neighbors: for nei in node.neighbors: copy.neighbors.append(dfs(nei))
+
+
+        时间：O(V+E)
+        空间：O(V)
+        """
+        if node is None:
+            return None
+        oldToNew = {}
+
+        def dfs(node):
+            if node in oldToNew:
+                return oldToNew[node]
+
+            copy = Node(node.val)
+            oldToNew[node] = copy
+
+            for nei in node.neighbors:
+                copy.neighbors.append(dfs(nei))
+            
+            return copy
+        
+        return dfs(node)
+```
+
 # Dijkstra
 
 ## 基础知识
