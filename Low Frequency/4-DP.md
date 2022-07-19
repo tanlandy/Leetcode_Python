@@ -115,6 +115,29 @@ dp[i] normally means max/min/best value of the sequnce ending at index i
 一般一层循环，时间O(N)
 
 ### 例题
+
+[118. Pascal's Triangle](https://leetcode.com/problems/pascals-triangle/)
+
+```py
+class Solution:
+    def generate(self, numRows: int) -> List[List[int]]:
+        """
+        每一行的数和上一行的关系：每一个行的新数是上一行相邻两个数的和
+        """
+        triangle = []
+        
+        for row_idx in range(numRows):
+            row = [None for _ in range(row_idx + 1)]
+            row[0] = row[-1] = 1
+            
+            for j in range(1, len(row) - 1):
+                row[j] = triangle[row_idx - 1][j - 1] + triangle[row_idx - 1][j]
+            triangle.append(row)
+        
+        return triangle
+```
+
+
 [198. House Robber](https://leetcode.com/problems/house-robber/)
 
 ```py
