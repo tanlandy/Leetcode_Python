@@ -79,6 +79,41 @@ DFS
 
 ## 题目
 
+[104. Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
+
+```py
+class Solution:
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+        """
+        分治：从下到上返回当前节点的最大深度
+        """
+        if not root:
+            return 0
+        left_max = self.maxDepth(root.left)
+        right_max = self.maxDepth(root.right)
+        
+        return 1 + max(left_max, right_max)
+```
+
+```py
+class Solution:
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        
+        stack = [[root, 1]]
+        res = 1
+        
+        while stack:
+            node, depth = stack.pop()
+            if node:
+                res = max(res, depth)
+                stack.append([node.left, depth + 1])
+                stack.append([node.right, depth + 1])
+        
+        return res
+```
+
 [199. Binary Tree Right Side View](https://leetcode.com/problems/binary-tree-right-side-view/)
 ```py
 class Solution:
@@ -525,6 +560,32 @@ class Solution:
 ```
 
 
+
+[559. Maximum Depth of N-ary Tree](https://leetcode.com/problems/maximum-depth-of-n-ary-tree/)
+```py
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, val=None, children=None):
+        self.val = val
+        self.children = children
+"""
+
+class Solution:
+    def maxDepth(self, root: 'Node') -> int:
+        """
+        参考LC104
+        分治的思路：从下往上返回高度，每个点返回目前为止的最大深度
+        """
+        if not root:
+            return 0
+            
+        height = 0
+        for child in root.children:
+            height = max(height, self.maxDepth(child))
+        
+        return 1 + height
+```
 
 # Trie Tree
 [208. Implement Trie (Prefix Tree)](https://leetcode.com/problems/implement-trie-prefix-tree/)
