@@ -223,3 +223,25 @@ class Solution:
         
         return res
 ```
+
+## Geometry
+
+[939. Minimum Area Rectangle](https://leetcode.com/problems/minimum-area-rectangle/)
+
+```py
+class Solution:
+    def minAreaRect(self, points: List[List[int]]) -> int:
+        point_set = set()
+        
+        for x, y in points:
+            point_set.add((x, y))
+        
+        res = float("inf")
+        for x1, y1 in points:
+            for x2, y2 in points:
+                if x1 > x2 and y1 > y2 and (x1, y2) in point_set and (x2, y1) in point_set:
+                    area = abs(x1 - x2) * abs(y1 - y2)
+                    res = min(res, area)
+        
+        return res if res != float("inf") else 0
+```

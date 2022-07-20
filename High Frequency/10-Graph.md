@@ -1365,6 +1365,27 @@ class Solution:
         return -1
 ```
 
+
+[841. Keys and Rooms](https://leetcode.com/problems/keys-and-rooms/)
+```py
+class Solution:
+    def canVisitAllRooms(self, rooms: List[List[int]]) -> bool:
+        """
+        graph traverse
+        """
+        visited = set()
+        
+        def dfs(room):
+            if room in visited:
+                return
+            visited.add(room)
+            for v in rooms[room]:
+                dfs(v)
+        
+        dfs(0)
+        return len(visited) == len(rooms)
+```
+
 # Un-weighted Graph
 
 [261. Graph Valid Tree](https://leetcode.com/problems/graph-valid-tree/)
@@ -1998,6 +2019,63 @@ class Solution:
 
 [269. Alien Dictionary](https://leetcode.com/problems/alien-dictionary/) 先做LC953
 
+
+```py
+class Solution:
+    def alienOrder(self, words: List[str]) -> str:
+        """
+        compare word pairs one by one. no need to compare n^2 times.
+        t<f
+        w<e
+        r<t
+        e<r
+        
+        w<e<r<t<f
+        
+        step1: adj_list, indegree
+        step2: start from nodes which indegree == 0, then go from its neighbor
+        """
+        
+        graph = {c: set() for w in words for c in w}
+        indegree = {c: 0 for w in words for c in w}
+        
+        # step1: build graph and indegree
+        for i in range(len(words) - 1):
+            w1, w2 = words[i], words[i + 1]
+            minLen = min(len(w1), len(w2))
+            if len(w1) > len(w2) and w1[:minLen] == w2[:minLen]:
+                return ""
+            for j in range(minLen):
+                if w1[j] != w2[j]: # 当有不同就比较，同时break
+                    if w2[j] not in graph[w1[j]]: # ["ac", "ab", "zc", "zb"] 避免两次计算c->b
+                        graph[w1[j]].add(w2[j])
+                        indegree[w2[j]] += 1
+                    break                        
+
+        # step2: initialize queue
+        queue = collections.deque()
+        for ch in indegree:
+            if indegree[ch] == 0:
+                queue.append(ch)
+
+        # step3: topological sort
+        res = []
+        while queue:
+            ch = queue.popleft()
+            res.append(ch)
+            for nei in graph[ch]:
+                indegree[nei] -= 1
+                if indegree[nei] == 0:
+                    queue.append(nei)
+
+        # if there are any loop, the length of res would be shorter
+        if len(res) < len(indegree):
+            return ""
+        
+        return "".join(res)
+```
+
+
 ```python
 class Solution:
     def alienOrder(self, words: List[str]) -> str:
@@ -2180,6 +2258,43 @@ class Solution:
 
 [310. Minimum Height Trees](https://leetcode.com/problems/minimum-height-trees/)
 
+```py
+class Solution:
+    def findMinHeightTrees(self, n: int, edges: List[List[int]]) -> List[int]:
+        """
+        build the adjlist, then trim out the node with indegree of 1, layer by layer
+        ==> trim out the leaf nodes again and again. At the end, the process terminates at the centroids nodes
+        """
+        if n <= 2:
+            return [i for i in range(n)]
+        graph = {x: [] for x in range(n)}
+        
+        for start, end in edges:
+            graph[start].append(end)
+            graph[end].append(start)
+        
+        # add node with indgree of 1 to queue
+        queue = collections.deque()
+        for i in range(n):
+            if len(graph[i]) == 1:
+                queue.append(i)
+        
+        remaining_nodes = n
+        
+        while remaining_nodes > 2:
+            remaining_nodes -= len(queue) # trim out leaf nodes layer by layer
+            for _ in range(len(queue)):
+                leaf = queue.popleft()
+                nei = graph[leaf][0] # the only node the linked with leaf
+                # remove the edge
+                graph[nei].remove(leaf)
+                graph[leaf].remove(nei)
+                if len(graph[nei]) == 1: # update queue for next trimming round
+                    queue.append(nei)
+        
+        return queue
+```
+
 # Word 系列
 
 ## 模版
@@ -2245,7 +2360,27 @@ class Solution:
         return dfs(s)
 ```
 
-[140. Word Break II](https://leetcode.com/problems/word-break-ii/)
+[140. Word Break II](https://leetcode.com/problems/word-break-ii/) 
+
+
+```python
+class Solution(object):
+    def wordBreak(self, s, wordDict):
+        def backtrack(res, one_res, s):
+            if len(s) == 0:
+                res.append(" ".join(one_res))
+                return
+            
+            for w in wordDict:
+                if s.startswith(w):
+                    one_res.append(w)
+                    backtrack(res, one_res, s[len(w):])
+                    one_res.pop()
+                    
+        res = []
+        backtrack(res, [], s)
+        return res
+```
 
 [79. Word Search](https://leetcode.com/problems/word-search/)
 
