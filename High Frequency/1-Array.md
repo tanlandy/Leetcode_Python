@@ -957,3 +957,75 @@ class Solution:
             res += level_sum
         return res
 ```
+
+[792. Number of Matching Subsequences](https://leetcode.com/problems/number-of-matching-subsequences/)
+
+```py
+class Solution:
+    def numMatchingSubseq(self, s: str, words: List[str]) -> int:
+        """
+        把每个word都比较一遍，看是不是s的subsequence
+        因为可能words中有重复，就用一个map来存已经比对过的结果
+        
+        每次比对：
+        stack存这个word，然后从后往前遍历s，遇到相同的就pop，最后stack空了就说明都呼应上了
+        
+        """
+        def issubseq(s,t):
+            stack = []
+            for i in t:
+                stack.append(i)
+            
+            n = len(s)
+            for i in range(n-1,-1,-1):
+                if not stack:
+                    return True
+                if stack[-1] == s[i]:
+                    stack.pop()
+            return stack == []
+        
+        
+        hashmap = {}
+        
+        count = 0
+        for word in words:
+            if word not in hashmap:
+                if issubseq(s,word):
+                    count += 1
+                    hashmap[word] = True
+                else:
+                    hashmap[word] = False
+            else:
+                if hashmap[word]:
+                    count += 1
+        return count
+```
+
+```py
+class Solution:
+    def numMatchingSubseq(self, s: str, words: List[str]) -> int:
+        """
+        store the first letter of word in dict
+        """
+        ch_word = collections.defaultdict(list)
+        
+        # words = ["a","bb","acd","ace"]
+        # ch_word: {a:["a", "acd", "ace"], b:["bb"]}
+        for word in words:
+            ch_word[word[0]].append(word)
+        
+        count = 0
+        
+        # s = "abcde"
+        for ch in s:
+            word_remains = ch_word[ch]
+            del ch_word[ch] # 要删掉，否则会重复计算。比如s="aa", words = ["a"]
+            for word in word_remains:
+                if len(word) == 1:
+                    count += 1
+                else: # {c: "cd", c:"ce"}
+                    ch_word[word[1]].append(word[1:])
+        
+        return count
+```
+

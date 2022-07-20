@@ -39,7 +39,6 @@ matrix be a V*V matrix, aij = 1 iff (i, j) in E; space: $V^2$
 a path in G(V, E) from u to v is a sequence of vertecies from u to v
 v and v are connected if there is a path
 
-
 ## BFS
 
 input: G(V, E), and source vertex s
@@ -53,7 +52,6 @@ basic idea:
 2. expand a fronter greedly one edge distance at a time
 
 Since the difference between a tree and a graph is the possibility of having a cycle, we just have to handle this situation. We use an extra visited variable to keep track of vertices we have already visited to prevent re-visiting and getting into infinite loops
-
 
 ```shell
 BFS(G, s): 
@@ -75,7 +73,6 @@ Space: graph space: Adjlist: O(V+E)
 queue: O(V)
 distance array: O(V)
 
-
 ## Single source shortest path(SSSP)
 
 1. unweighted/weight of all edges is 1 -> BFS
@@ -91,25 +88,28 @@ d[s] = 0
 d[v] = estimate so far how to get to v
 if d[u] + w(u, v) < d[v]:
     d[v] = d[u] + w(u, v)
-
 ```
 
 ## BFS vs DFS
+
 BFS:
+
 1. find the shortest distance
 2. graph of unknown size (word ladder), or infinite size (knight shortest path)
 
 DFS:
+
 1. less memory. as BFS has to keep all the nodes in the queue for wide graph
 2. find nodes far away from the root, eg looking for an exit in a maze
 
-
-
 ## 模版
+
 ### BFS
+
 In an adjacency list representation, this would be returning the list of neighbors for the node. 
 If the problem is about a matrix, this would be the surrounding valid cells as we will see in number of islands and knight shortest path. 
 If the graph is implicit, we have to generate the neighbors as we traverse. We will see this in word ladder.
+
 ```python
 from collections import deque
 
@@ -124,9 +124,11 @@ def bfs(root):
             queue.append(neighbor)
             visited.add(neighbor)
 ```
+
 使用：shortest path, graph of unknown or even infinite size
 
 ### DFS
+
 ```py
 def dfs(root, visited):
     if not root:
@@ -137,11 +139,15 @@ def dfs(root, visited):
         visited.add(neighbor)
         dfs(neighbor, visited)
 ```
+
 # 2D Grid
+
 ## 模版
 
 ### BFS
+
 shortest path btw A and B
+
 ```py
 def shortest_path(graph: List[List[int]], a: int, b: int) -> int:
     queue = collections.deque([a])
@@ -158,10 +164,12 @@ def shortest_path(graph: List[List[int]], a: int, b: int) -> int:
                     queue.append(nei)
                     visited.add(nei)
         res += 1
-    
+
     return -1
 ```
+
 一般情况下的BFS
+
 ```py
 class Solution:
     def numIslands(self, grid: List[List[str]]) -> int:
@@ -172,7 +180,7 @@ class Solution:
         rows, cols = len(grid), len(grid[0])
         visited = set()
         dirs = [(0, 1), (0, -1), (1, 0), (-1, 0)]
-       
+
         # BFS方法
         def bfs(r, c):
             queue = collections.deque([(r, c)])
@@ -186,20 +194,22 @@ class Solution:
                     if 0 <= nei_r < rows and 0 <= nei_c < cols and (nei_r, nei_c) not in visited and grid[nei_r][nei_c] == "1":
                         queue.append((nei_r, nei_c))
                         visited.add((nei_r, nei_c))
-        
-        # 调用DFS的时机
+
+        # 调用BFS的时机
         count = 0
         for r in range(rows):
             for c in range(cols):
                 if grid[r][c] == "1" and (r, c) not in visited:
                     count += 1
                     bfs(r, c)
-        
+
         return count
 ```
 
 ### DFS
+
 一般情况下的DFS
+
 ```py
 class Solution:
     def numIslands(self, grid: List[List[str]]) -> int:
@@ -209,18 +219,18 @@ class Solution:
         """
         rows, cols = len(grid), len(grid[0])
         visit = set()
-        
+
         # DFS方法
         def dfs(r, c):
             if (r < 0 or r == rows or c < 0 or c == cols or (r, c) in visit or grid[r][c] != "1"):
                 return
-            
+
             visit.add((r, c)) # can also flood fill to "0"
             dfs(r + 1, c)
             dfs(r - 1, c)
             dfs(r, c + 1)
             dfs(r, c - 1)
-            
+
         # 调用DFS的时机
         count = 0
         for r in range(rows):
@@ -229,8 +239,8 @@ class Solution:
                     count += 1
                     dfs(r, c)      
         return count
-
 ```
+
 ## 例题
 
 [733. Flood Fill](https://leetcode.com/problems/flood-fill/)
@@ -265,7 +275,7 @@ class Solution(object):
         """
         rows, cols = len(image), len(image[0])
         color = image[sr][sc]
-        
+
         def dfs(r, c):
             if 0 <= r < rows and 0 <= c < cols and image[r][c] == color:
                 image[r][c] = newColor
@@ -273,7 +283,7 @@ class Solution(object):
                 dfs(r+1, c)
                 dfs(r, c-1)
                 dfs(r, c+1)
-        
+
         if color == newColor:
             return image
         dfs(sr, sc)
@@ -282,6 +292,7 @@ class Solution(object):
 
 [200. Number of Islands](https://leetcode.com/  problems/number-of-islands/)
 BFS
+
 ```py
 class Solution:
     def numIslands(self, grid: List[List[str]]) -> int:
@@ -292,7 +303,7 @@ class Solution:
         rows, cols = len(grid), len(grid[0])
         visited = set()
         dirs = [(0, 1), (0, -1), (1, 0), (-1, 0)]
-       
+
         def bfs(r, c):
             queue = collections.deque([(r, c)])
             visited.add((r, c))
@@ -305,18 +316,19 @@ class Solution:
                     if 0 <= nei_r < rows and 0 <= nei_c < cols and (nei_r, nei_c) not in visited and grid[nei_r][nei_c] == "1":
                         queue.append((nei_r, nei_c))
                         visited.add((nei_r, nei_c))
-        
+
         count = 0
         for r in range(rows):
             for c in range(cols):
                 if grid[r][c] == "1" and (r, c) not in visited:
                     count += 1
                     bfs(r, c)
-        
+
         return count
 ```
 
 DFS
+
 ```py
 class Solution:
     def numIslands(self, grid: List[List[str]]) -> int:
@@ -326,17 +338,17 @@ class Solution:
         """
         rows, cols = len(grid), len(grid[0])
         visit = set()
-        
+
         def dfs(r, c):
             if (r < 0 or r == rows or c < 0 or c == cols or (r, c) in visit or grid[r][c] != "1"):
                 return
-            
+
             visit.add((r, c)) # can also flood fill to "0"
             dfs(r + 1, c)
             dfs(r - 1, c)
             dfs(r, c + 1)
             dfs(r, c - 1)
-        
+
         count = 0
         for r in range(rows):
             for c in range(cols):
@@ -354,7 +366,7 @@ class Solution:
         """
         BFS one-direction
         """
-        
+
         queue = collections.deque([(0, 0, 0)])
         x, y, visited = abs(x), abs(y), set([(0, 0)])
         dirs = [(1, 2), (2, 1), (1, -2), (-2, 1), (-1, 2), (2, -1)]
@@ -362,15 +374,14 @@ class Solution:
             a, b, step = queue.popleft()
             if (a, b) == (x, y):
                 return step
-            
+
             for dx, dy in dirs:
                 nei_x, nei_y = a + dx, b + dy
                 if (nei_x, nei_y) not in visited and -1 <= nei_x <= x + 2 and -1 <= nei_y <= y + 2:
                     visited.add((nei_x, nei_y))
                     queue.append((nei_x, nei_y, step + 1))
-            
-        return -1
 
+        return -1
 ```
 
 ```py
@@ -378,7 +389,7 @@ class Solution:
     def minKnightMoves(self, x: int, y: int) -> int:
         """
         BFS two-direction: Start BFS from both origin and target position
-        
+
         Time: O(|x|*|y|)
         Space: O(|x|*|y|)
         """
@@ -388,7 +399,7 @@ class Solution:
         # use two dicts to map the position to step
         d_ori, d_tar = {(0, 0): 0}, {(x, y): 0}
         dirs = [(1, 2), (2, 1), (1, -2), (-2, 1), (-1, 2), (2, -1), (-1, -2), (-2, -1)]
-        
+
         while True:
             # if already visited in the other dict: return 
             ox, oy, ostep = queue_ori.popleft()
@@ -397,19 +408,19 @@ class Solution:
             tx, ty, tstep = queue_tar.popleft()
             if (tx, ty) in d_ori:
                 return tstep + d_ori[(tx, ty)]
-            
+
             # visit new nodes, add it to queue and dict
             for dx, dy in dirs:
                 nei_ox, nei_oy = ox + dx, oy + dy
                 if (nei_ox, nei_oy) not in d_ori and -1 <= nei_ox <= x + 2 and -1 <= nei_oy <= y + 2:
                     queue_ori.append((nei_ox, nei_oy, ostep + 1))
                     d_ori[(nei_ox, nei_oy)] = ostep + 1
-                    
+
                 nei_tx, nei_ty = tx + dx, ty + dy
                 if (nei_tx, nei_ty) not in d_tar and -1 <= nei_tx <= x + 2 and -1 <= nei_ty <= y + 2:
                     queue_tar.append((nei_tx, nei_ty, tstep + 1))
                     d_tar[(nei_tx, nei_ty)] = tstep + 1
-        
+
         return -1
 ```
 
@@ -424,20 +435,20 @@ class Solution:
         rows, cols = len(rooms), len(rooms[0])
         queue = collections.deque()
         visit = set()
-        
+
         def addRoom(r, c):
             if (r < 0 or r == rows or c < 0 or c == cols or (r, c) in visit or rooms[r][c] == -1):
                 return
             queue.append((r, c))
             visit.add((r, c))
-        
+
         # 先把gates都添加到queue中，然后同时的bfs
         for r in range(rows):
             for c in range(cols):
                 if rooms[r][c] == 0:
                     queue.append((r, c))
                     visit.add((r, c))
-                    
+
         dist = 0
         while queue:
             size = len(queue)
@@ -451,9 +462,8 @@ class Solution:
             dist += 1
 ```
 
-
-
 [1293. Shortest Path in a Grid with Obstacles Elimination](https://leetcode.com/problems/shortest-path-in-a-grid-with-obstacles-elimination/)
+
 ```py
 class Solution:
     def shortestPath(self, grid: List[List[int]], k: int) -> int:
@@ -467,20 +477,20 @@ class Solution:
         Space: O(NK)
         """
         rows, cols = len(grid), len(grid[0])
-        
+
         if k >= rows + cols - 2:
             return rows + cols - 2
-        
+
         state = (0, 0, k)
         queue = collections.deque([(0, state)])
         visited = set([state])
         dirs = [(1, 0), (-1, 0), (0, 1), (0, -1)]
-        
+
         while queue:
             steps, (r, c, k) = queue.popleft()
             if r == rows - 1 and c == cols - 1:
                 return steps
-            
+
             for dx, dy in dirs:
                 nei_r, nei_c = r + dx, c + dy
                 if 0 <= nei_r < rows and 0 <= nei_c < cols:
@@ -489,10 +499,9 @@ class Solution:
                     if nei_k >= 0 and nei_state not in visited:
                         visited.add(nei_state)
                         queue.append((steps + 1, nei_state))
-        
+
         return -1
 ```
-
 
 [1254. Number of Closed Islands](https://leetcode.com/problems/number-of-closed-islands/)
 
@@ -506,30 +515,30 @@ class Solution:
         Time: O(M*N)
         Space: O(M*N)
         """
-        
+
         rows, cols = len(grid), len(grid[0])
-        
+
         visit = set()
-        
+
         def dfs(r, c):
             if r < 0 or r == rows or c < 0 or c == cols or grid[r][c] != 0 or (r, c) in visit:
                 return
-            
+
             visit.add((r, c))
             dfs(r + 1, c)
             dfs(r - 1, c)            
             dfs(r, c + 1)            
             dfs(r, c - 1)
-        
+
         # step1
         for r in range(rows):
             dfs(r, 0)
             dfs(r, cols - 1)
-        
+
         for c in range(cols):
             dfs(0, c)
             dfs(rows - 1, c)
-        
+
         # step2
         count = 0
         for r in range(rows):
@@ -537,7 +546,7 @@ class Solution:
                 if grid[r][c] == 0 and (r, c) not in visit:
                     dfs(r, c)
                     count += 1
-        
+
         return count
 ```
 
@@ -548,44 +557,44 @@ class Solution:
     def numEnclaves(self, grid: List[List[int]]) -> int:
         """
         The same as LC1254
-        
+
         Step1: visit all the cells that can walk off the boundary
         Step2: count the remaining cells
-        
+
         Time: O(M*N)
         Space: O(M*N)
         """
-        
+
         rows, cols = len(grid), len(grid[0])
-        
+
         visit = set()
-        
+
         def dfs(r, c):
             if r < 0 or r == rows or c < 0 or c == cols or (r, c) in visit or grid[r][c] != 1:
                 return
-            
+
             visit.add((r, c))
             dfs(r + 1, c)
             dfs(r - 1, c)            
             dfs(r, c + 1)            
             dfs(r, c - 1)
-            
+
         # step1
         for r in range(rows):
             dfs(r, 0)
             dfs(r, cols - 1)
-        
+
         for c in range(cols):
             dfs(0, c)
             dfs(rows - 1, c)
-        
+
         # step2
         count = 0
         for r in range(rows):
             for c in range(cols):
                 if grid[r][c] == 1 and (r, c) not in visit:
                     count += 1
-        
+
         return count
 ```
 
@@ -602,11 +611,11 @@ class Solution:
         """
         rows, cols = len(grid), len(grid[0])
         visit = set()
-        
+
         def dfs(r, c): # return the current area while traversing the island
             if (r < 0 or r == rows or c < 0 or c == cols or grid[r][c] != 1 or (r, c) in visit):
                 return 0 # reach the end, the current area is 0
-            
+
             visit.add((r, c))
             return (1 +  # 1 is the current area
                    dfs(r+1, c) + # add the possible adjcent area
@@ -614,7 +623,7 @@ class Solution:
                    dfs(r, c+1) +
                    dfs(r, c-1) 
                    )
-        
+
         area = 0
         for r in range(rows):
             for c in range(cols):
@@ -631,31 +640,31 @@ class Solution:
         """
         Step1: iterate through all islands in grid2, if any cell is not island in grid1, flood or visit the entire island of grid2
         Step2: count the num of islands in grid2
-        
+
         Time: O(M*N)
         Space: O(M*N)
         """
         rows, cols = len(grid1), len(grid1[0])
-        
+
         visit = set()
-        
+
         def dfs(r, c):
             if r < 0 or r == rows or c < 0 or c == cols or (r, c) in visit or grid2[r][c] != 1:
                 return
-            
+
             visit.add((r, c))
             dfs(r + 1, c)
             dfs(r - 1, c)
             dfs(r, c + 1)
             dfs(r, c - 1)
-            
-        
+
+
         # step1
         for r in range(rows):
             for c in range(cols):
                 if grid2[r][c] == 1 and grid1[r][c] == 0 and (r, c) not in visit:
                     dfs(r, c)
-        
+
         # step2
         count = 0
         for r in range(rows):
@@ -663,7 +672,7 @@ class Solution:
                 if grid2[r][c] == 1 and (r, c) not in visit:
                     dfs(r, c)
                     count += 1
-            
+
         return count
 ```
 
@@ -674,37 +683,36 @@ class Solution:
     def numDistinctIslands(self, grid: List[List[int]]) -> int:
         """
         dfs() returns the current path of the island
-        
+
         Time: O(M*N)
         Space: O(M*N)
         """
         rows, cols = len(grid), len(grid[0])
         visit = set()
-        
+
         def dfs(r, c, path):
             if r < 0 or r == rows or c < 0 or c == cols or (r, c) in visit or grid[r][c] == 0:
                 return "0"
-            
+
             visit.add((r, c)) # enter the traverse
             d = dfs(r + 1, c, path)
             u = dfs(r - 1, c, path)            
             right = dfs(r, c + 1, path)            
             l = dfs(r, c - 1, path)            
             path = d + u + right + l + "1" # exit the traverse
-            
+
             return path
-        
+
         count = set()
-        
+
         for r in range(rows):
             for c in range(cols):
                 if grid[r][c] == 1 and (r, c) not in visit:
                     one_path = dfs(r, c, "o")
                     count.add(one_path)
-        
+
         return len(count)
 ```
-
 
 [130. Surrounded Regions](https://leetcode.com/problems/surrounded-regions/)
 
@@ -719,13 +727,13 @@ class Solution:
         时间：O(M*N) 每个都会走到
         空间：O(M*N)
         """
-        
+
         rows, cols = len(board), len(board[0])
 
         def capture(r, c):
             if r < 0 or c < 0 or r == rows or c == cols or board[r][c] != "O":
                 return
-            
+
             board[r][c] = "T"
 
             capture(r + 1, c)
@@ -738,7 +746,7 @@ class Solution:
             for c in range(cols):
                 if board[r][c] == "O" and (r in [0, rows - 1] or c in [0, cols - 1]):
                     capture(r, c)
-        
+
         # O -> X
         for r in range(rows):
             for c in range(cols):
@@ -765,26 +773,26 @@ class Solution:
         """
         pac, atl = set(), set()
         rows, cols = len(heights), len(heights[0])
-        
+
         def dfs(r, c, visit, pre_height):
             if (r < 0 or r == rows or c < 0 or c == cols or (r, c) in visit or heights[r][c] < pre_height):
                 return
             visit.add((r, c))
-            
+
             dfs(r + 1, c, visit, heights[r][c])
             dfs(r - 1, c, visit, heights[r][c])
             dfs(r, c + 1, visit, heights[r][c])
             dfs(r, c - 1, visit, heights[r][c])
-        
+
         # 第一行最后一行，第一列最后一列分别找满足的点
         for c in range(cols):
             dfs(0, c, pac, heights[0][c]) # 第一行Pac
             dfs(rows - 1, c, atl, heights[rows - 1][c]) # 最后一行Atl
-        
+
         for r in range(rows):
             dfs(r, 0, pac, heights[r][0]) # 第一列Pac
             dfs(r, cols - 1, atl, heights[r][cols - 1]) # 最后一列Atl
-            
+
         # 都满足的点就是最终的点
         res = []
         for r in range(rows):
@@ -794,9 +802,8 @@ class Solution:
         return res
 ```
 
-
-
 [323. Number of Connected Components in an Undirected Graph](https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/)
+
 ```py
 class Solution:
     def countComponents(self, n: int, edges: List[List[int]]) -> int:
@@ -809,23 +816,22 @@ class Solution:
         for x, y in edges:
             graph[x].append(y)
             graph[y].append(x)
-        
+
         def dfs(node):
             visit.add(node)
             for nei in graph[node]:
                 if nei not in visit:
                     dfs(nei)
-        
+
         count = 0
         visit = set()
         for node in range(n):
             if node not in visit:
                 dfs(node)
                 count += 1
-        
+
         return count
 ```
-
 
 [1091. Shortest Path in Binary Matrix](https://leetcode.com/problems/shortest-path-in-binary-matrix/)
 
@@ -841,28 +847,29 @@ class Solution:
         n = len(grid)
         if grid[0][0] or grid[n-1][n-1]:
             return -1
-        
+
         dirs = [[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,-1],[-1,1]]
         queue = collections.deque([(0,0,1)]) # (r, c, dist)
         visit = set()
         visit.add((0,0))
-        
+
         while queue:
             r, c, dist = queue.popleft()
             if r == n - 1 and c == n - 1:
                 return dist
-            
+
             for dr, dc in dirs:
                 nei_r, nei_c = r + dr, c + dc
-                
+
                 if nei_r in range(n) and nei_c in range(n) and grid[nei_r][nei_c] == 0 and (nei_r, nei_c) not in visit:
                     queue.append((nei_r, nei_c, dist + 1))
                     visit.add((nei_r, nei_c))
-        
+
         return -1
 ```
 
 [542. 01 Matrix](https://leetcode.com/problems/01-matrix/)
+
 ```py
 class Solution:
     def updateMatrix(self, mat: List[List[int]]) -> List[List[int]]:
@@ -874,24 +881,24 @@ class Solution:
         """
         rows, cols = len(mat), len(mat[0])
         queue = collections.deque([])
-        
+
         for r in range(rows):
             for c in range(cols):
                 if mat[r][c] == 0:
                     queue.append((r, c))
                 else: # 不为0的，标记为-1
                     mat[r][c] = -1
-        
+
         dirs = [(0, 1), (0, -1), (1, 0), (-1, 0)]
         while queue:
             r, c = queue.popleft()
-            
+
             for dx, dy in dirs:
                 nei_r, nei_c = r + dx, c + dy
                 if 0 <= nei_r < rows and 0 <= nei_c < cols and mat[nei_r][nei_c] == -1:
                     mat[nei_r][nei_c] = mat[r][c] + 1 # 新值就是附近的+1
                     queue.append((nei_r, nei_c))
-                    
+
         return mat
 ```
 
@@ -902,7 +909,7 @@ class Solution:  # 520 ms, faster than 96.50%
         四周都“加”一圈float("inf")
         然后从左上到右下走一遍
         再从右下到左上走一遍
-        
+
         Time: O(M*N)
         Space: O(1)
         """
@@ -931,6 +938,7 @@ class Solution:  # 520 ms, faster than 96.50%
 
 [490. The Maze](https://leetcode.com/problems/the-maze/)
 一次走到底的情况
+
 ```py
 class Solution:
     def hasPath(self, maze: List[List[int]], start: List[int], destination: List[int]) -> bool:
@@ -947,7 +955,7 @@ class Solution:
             r, c = queue.popleft()
             if [r, c] == destination:
                 return True
-            
+
             for dx, dy in dirs:
                 nei_r, nei_c = r + dx, c + dy
                 while 0 <= nei_r < rows and 0 <= nei_c < cols and maze[nei_r][nei_c] == 0:
@@ -958,7 +966,7 @@ class Solution:
                 if (nei_r, nei_c) not in visited:
                     visited.add((nei_r, nei_c))
                     queue.append((nei_r, nei_c))
-        
+
         return False
 ```
 
@@ -972,7 +980,7 @@ class Solution:
         rows, cols = len(maze), len(maze[0])
         visited = set()
         dirs = [(1, 0), (-1, 0), (0, 1), (0, -1)]
-        
+
         def dfs(r, c):
             if [r, c] == destination: # base case
                 return True
@@ -988,11 +996,12 @@ class Solution:
                     if dfs(nei_r, nei_c):
                         return True
             return False
-        
+
         return dfs(start[0], start[1])
 ```
 
 [490变形]：问一共转了几次弯
+
 ```py
 class Solution:
     def shortestDistance(self, maze: List[List[int]], start: List[int], destination: List[int]) -> int:
@@ -1000,13 +1009,13 @@ class Solution:
         visited = set()
         dirs = [(1, 0), (-1, 0), (0, 1), (0, -1)]
         res = float("inf")
-        
+
         queue = collections.deque([(start[0], start[1], 0)])
         while queue:
             r, c, step = queue.popleft()
             if [r, c] == destination:
                 return step
-            
+
             for dx, dy in dirs:
                 nei_r, nei_c = r + dx, c + dy
                 while 0 <= nei_r < rows and 0 <= nei_c < cols and maze[nei_r][nei_c] == 0:
@@ -1018,11 +1027,12 @@ class Solution:
                 if (nei_r, nei_c) not in visited:
                     visited.add((nei_r, nei_c))
                     queue.append((nei_r, nei_c, nei_step))
-        
+
         return -1
 ```
 
 [505. The Maze II](https://leetcode.com/problems/the-maze-ii/)
+
 ```py
 class Solution:
     def shortestDistance(self, maze: List[List[int]], start: List[int], destination: List[int]) -> int:
@@ -1037,27 +1047,27 @@ class Solution:
         dirs = [(1,0),(-1,0),(0,1),(0,-1)]
         if start == destination:
             return 0
-        
+
         # (r, c, distance)
         queue = deque([(start[0], start[1], 0)])
-        
+
         # start position marked visited: {(r, c): dist}
         visited = {(start[0], start[1]): 0}
         res = []
-        
+
         while queue:
             r, c, dist = queue.popleft()
             if [r, c] == destination:
                 res.append(dist)
-                
+
             for dx, dy in dirs:
                 nei_r, nei_c, nei_dist = r + dx, c + dy, dist + 1
-                
+
                 while 0 <= nei_r < rows and 0 <= nei_c < cols and maze[nei_r][nei_c] == 0:
                     nei_dist += 1
                     nei_r += dx
                     nei_c += dy
-                    
+
                 nei_r -= dx
                 nei_c -= dy
                 nei_dist -= 1
@@ -1088,12 +1098,12 @@ class Solution:
                 return dist
             for dx, dy in dirs:
                 nei_r, nei_c, nei_dist = r + dx, c + dy, dist + 1
-                
+
                 while 0 <= nei_r < rows and 0 <= nei_c < cols and maze[nei_r][nei_c] == 0:
                     nei_dist += 1
                     nei_r += dx
                     nei_c += dy
-                    
+
                 nei_r -= dx
                 nei_c -= dy
                 nei_dist -= 1
@@ -1108,9 +1118,6 @@ class Solution:
 [339. Nested List Weight Sum](https://leetcode.com/problems/nested-list-weight-sum/)
 
 [364. Nested List Weight Sum II](https://leetcode.com/problems/nested-list-weight-sum-ii/)
-
-
-
 
 # Implicit Graph
 
@@ -1127,7 +1134,7 @@ class Solution:
         # edge case
         if "0000" in deadends:
             return -1
-        
+
         # find the adjacent locks
         def children(wheel):
             res = []
@@ -1137,7 +1144,7 @@ class Solution:
                 digit = str((int(wheel[i]) + 10 - 1) % 10) # down 1
                 res.append(wheel[:i] + digit + wheel[i+1:])
             return res    
-        
+
         # BFS structrue
         queue = collections.deque()
         visit = set(deadends)
@@ -1147,14 +1154,13 @@ class Solution:
             # target to return
             if wheel == target:
                 return turns
-            
+
             # traverse other
             for child in children(wheel):
                 if child not in visit:
                     visit.add(child)
                     queue.append([child, turns + 1])
         return -1 
-
 ```
 
 [994. Rotting Oranges](https://leetcode.com/problems/rotting-oranges/)
@@ -1203,8 +1209,8 @@ class Solution:
         return time if fresh == 0 else -1
 ```
 
-
 [773. Sliding Puzzle](https://leetcode.com/problems/sliding-puzzle/)
+
 ```py
 class Solution:
     def slidingPuzzle(self, board: List[List[int]]) -> int:
@@ -1218,7 +1224,7 @@ class Solution:
                 for j in range(cols):
                     if board[i][j] == 0:
                         return i, j
-        
+
         steps = 0
         queue = collections.deque([board])
         visited = set([str(board)]) # list is unhashable, so converted to string
@@ -1241,9 +1247,8 @@ class Solution:
                             queue.append(new_board)
                             visited.add(str(new_board))
             steps += 1
-        
-        return -1
 
+        return -1
 ```
 
 ```py
@@ -1264,7 +1269,7 @@ class Solution:
             visited = set([str(board)])
 
             while queue:
-                
+
                 for _ in range(len(queue)):
                     board = queue.popleft()
                     i, j = find_zero(board)
@@ -1309,7 +1314,7 @@ class Solution:
         for n1, n2 in edges:
             graph[n1].append(n2)
             graph[n2].append(n1)
-        
+
         seen = set()
 
         def dfs(node):
@@ -1323,6 +1328,7 @@ class Solution:
 ```
 
 [815. Bus Routes](https://leetcode.com/problems/bus-routes/)
+
 ```py
 class Solution:
     def numBusesToDestination(self, routes: List[List[int]], source: int, target: int) -> int:
@@ -1332,22 +1338,22 @@ class Solution:
         Step2: bfs放进source，然后开始遍历所有的bus，对于走过的bus就不再遍历，对于走过的stop也不再遍历
         """
         graph = collections.defaultdict(list)
-        
+
         for idx, route in enumerate(routes):
             for stop in route:
                 graph[stop].append(idx)
-        
+
         visited_bus = set()
         visited_stop = set()
         # queue stores (stop, step)
         queue = collections.deque([(source, 0)])
         visited_stop.add(source)
-        
+
         while queue:
             stop, steps = queue.popleft()
             if stop == target: # base case
                 return steps
-            
+
             for bus in graph[stop]:
                 if bus not in visited_bus: # new bus
                     visited_bus.add(bus)
@@ -1355,10 +1361,9 @@ class Solution:
                         if next_stop not in visited_stop: # new stop
                             visited_stop.add(next_stop)
                             queue.append((next_stop, steps + 1))                
-        
+
         return -1
 ```
-
 
 # Un-weighted Graph
 
@@ -1377,12 +1382,12 @@ class Solution:
         """       
         if not n:
             return True
-        
+
         graph = [[] for _ in range(n)]
         for n1, n2 in edges:
             graph[n1].append(n2)
             graph[n2].append(n1)
-        
+
         visit = set()
         def hasCycle(i, prev):
             if i in visit: # detect a loop
@@ -1394,14 +1399,11 @@ class Solution:
                     continue
                 if hasCycle(j, i):
                     return True
-            
+
             return False
-        
+
         return not hasCycle(0, -1) and n == len(visit)
-
 ```
-
-
 
 ## 图的遍历
 
@@ -1414,19 +1416,19 @@ class Solution:
         traverse the graph from graph[0], while maintaining an one_res path, the base case is reaching the end of the graph
         """
         res = []
-        
+
         def dfs(cur_node, one_res):
             # base case
             if cur_node == len(graph)-1:
                 res.append(one_res.copy())
                 return
-            
+
             # traverse neighbors
             for node in graph[cur_node]:
                 one_res.append(node)
                 dfs(node, one_res) 
                 one_res.pop()
-        
+
         # initiate one_res with [0], as the first element is not added from dfs()：only added 0'neighbors at the beginning
         dfs(0, [0])
         return res
@@ -1466,7 +1468,6 @@ class Solution(object):
         return True
 ```
 
-
 [886. Possible Bipartition](https://leetcode.com/problems/possible-bipartition/)
 
 ```py
@@ -1474,36 +1475,33 @@ class Solution:
     def possibleBipartition(self, N: int, dislikes: List[List[int]]) -> bool:
         """
         与LC785一样，只是多了一个建图的过程
-        
+
         时间：O(V+E)
         空间：O(V) 用来存visit
         """
         def traverse(v, color):                
             if v in visit:
                 return visit[v] == color
-            
+
             visit[v] = color        
             for nei in graph[v]:                
                 if not traverse(nei, -color):
                     return False
             return True
-        
+
         graph = collections.defaultdict(list)
         visit = {}      
 
         for a,b in dislikes: 
             graph[a].append(b)
             graph[b].append(a)
-        
+
         for i in range(1,N+1):            
             if i not in visit:
                 if not traverse(i, 1):
                     return False
         return True
 ```
-
-
-
 
 [133. Clone Graph](https://leetcode.com/problems/clone-graph/)
 
@@ -1533,15 +1531,16 @@ class Solution:
 
             for nei in node.neighbors:
                 copy.neighbors.append(dfs(nei))
-            
+
             return copy
-        
+
         return dfs(node)
 ```
 
 # Dijkstra
 
 ## 基础知识
+
 类似于BFS，但是要去掉while中的for循环：
 对于加权图，for循环遍历帮助维护depth层数，但是在Dijkstra中层数无意义，要考虑的是路径的权重和
 -> 去掉for循环，在queue中存[node, depth]
@@ -1601,8 +1600,8 @@ In total: $V+E+V^2+E -> O(V^2)$
 | Array   | V*V            | E              | $V^2$ | $V^2$       | $V^2$          |
 | Bellman |                |                | EV    | $V^2$       | $V^3$          |
 
-
 ## 模板
+
 ```py
 def shortest_path(graph: List[List[Tuple[int, int]]], a: int, b: int) -> int:
 
@@ -1628,21 +1627,22 @@ def shortest_path(graph: List[List[Tuple[int, int]]], a: int, b: int) -> int:
 ## 例题
 
 [743. Network Delay Time](https://leetcode.com/problems/network-delay-time/)
+
 ```py
 class Solution:
     def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
         """
         Dijstra: find the shortest single path in weighted graph
-        
+
         Time: O(ElogV)
         Space: O(E)
         """
-        
+
         # build a graph: adjacency list
         graph = collections.defaultdict(list)
         for u, v, w in times:
             graph[u].append((v, w)) # {n1:[(n2, w2), (n3, w3)], n2:[], n3:[]}
-            
+
         # Dijkstra
         min_heap = [(0, k)] # (time, node)
         visited = set()
@@ -1654,44 +1654,44 @@ class Solution:
                 continue
             res = t1
             visited.add(n1)
-            
+
             # traverse its unvisited neighbors
             for n2, w2 in graph[n1]:
                 if n2 not in visited:
                     heapq.heappush(min_heap, (t1 + w2, n2))
-        
+
         return res if len(visited) == n else -1
 ```
 
 [1514. Path with Maximum Probability](https://leetcode.com/problems/path-with-maximum-probability/)
 
-
 [1631. Path With Minimum Effort](https://leetcode.com/problems/path-with-minimum-effort/)
+
 ```py
 class Solution:
     def minimumEffortPath(self, heights: List[List[int]]) -> int:
         """
         The absolute difference between adjacent cells A and B can be perceived as the weight of an edge from cell A to cell B.
-        
+
         Time: O(ElogV), E = 4MN, V = MN
         Space: O(MN)
         """
         rows, cols = len(heights), len(heights[0])
-        
+
         # dist[r][c] stores max diff btw (r, c) and (0, 0)
         dist = [[float("inf")] * cols for _ in range(rows)]
         dist[0][0] = 0
         visited = set()
         minHeap = [(0, 0, 0)] # (dist, r, c)
         dirs = [(0, 1), (0, -1), (-1, 0), (1, 0)]
-        
+
         while minHeap:
             d, r, c = heapq.heappop(minHeap)
             visited.add((r, c)) # 在这里add而不是在加入的时候add，是因为只有在现在才pop出来并且查看
-            
+
             if r == rows - 1 and c == cols - 1:
                 return d
-            
+
             for dx, dy in dirs:
                 nei_r, nei_c = r + dx, c + dy
                 if 0 <= nei_r < rows and 0 <= nei_c < cols and (nei_r, nei_c) not in visited:
@@ -1699,7 +1699,7 @@ class Solution:
                     if dist[nei_r][nei_c] > new_d:
                         dist[nei_r][nei_c] = new_d
                         heapq.heappush(minHeap, (new_d, nei_r, nei_c))
-        
+
         return -1
 ```
 
@@ -1708,13 +1708,13 @@ class Solution:
     def minimumEffortPath(self, heights: List[List[int]]) -> int:
         """
         Using binary search to find the minimum threadshold: [False, ..., True, True, True...] find the left most valid position
-        
+
         Time: O(M*N)
         Space: O(M*N)
         """
         rows, cols = len(heights), len(heights[0])
         dirs = [(0, 1), (0, -1), (1, 0), (-1, 0)]
-        
+
         def canReach(k): # check whether the maximum diff is smaller than k
             """BFS, check whether can reach to the target position within k"""
             queue = collections.deque([(0, 0)]) # (r, c)
@@ -1723,7 +1723,7 @@ class Solution:
                 r, c = queue.popleft()
                 if r == rows - 1 and c == cols - 1:
                     return True
-                
+
                 for dx, dy in dirs:
                     nr, nc = r + dx, c + dy
                     if 0 <= nr < rows and 0 <= nc < cols and (nr, nc) not in visited:
@@ -1732,7 +1732,7 @@ class Solution:
                             queue.append((nr, nc))
                             visited.add((nr, nc))
             return False
-        
+
         l, r = 0, 10000000
         while l <= r:
             mid = (l + r) // 2
@@ -1740,10 +1740,9 @@ class Solution:
                 r = mid - 1
             else:
                 l = mid + 1
-        
+
         return l
 ```
-
 
 ## All pairs shortest path
 
@@ -1760,14 +1759,10 @@ output: min weight of path btw every two nodes
 
 [1334. Find the City With the Smallest Number of Neighbors at a Threshold Distance]([Loading...](https://leetcode.com/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/))
 
-
-
-
-
-
-
 # Topological Sort
+
 ## 基础知识
+
 Topological sort or topological ordering of a directed graph is an ordering of nodes such that every node appears in the ordering before all the nodes it points to.
 
 Topological sort is not unique
@@ -1810,7 +1805,7 @@ class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
         """
         Algorithm: BFS Topological Sorting
-        
+
         Time: O(E + V) This is because we have to go through every connection and node once when we sort the graph.
         Space: O(E + V)
         """
@@ -1846,6 +1841,7 @@ class Solution:
 ```
 
 DFS成环问题
+
 ```py
 class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
@@ -1861,7 +1857,7 @@ class Solution:
         graph = [[] for _ in range(numCourses)]
         for course, pre in prerequisites:
             graph[course].append(pre)
-        
+
         # visit = all courses along the curr DFS path
         visit = set()
 
@@ -1871,22 +1867,21 @@ class Solution:
                 return True
             if graph[course] == []:
                 return False
-            
+
             visit.add(course)
             for pre in graph[course]: # 对于每个点，走到底
                 if hasCycle(pre): # 发现一个是False，就返回False
                     return True
-            
+
             visit.remove(course)
             graph[course] = []
             return False
-        
+
         for course in range(numCourses): # graph可能不是fully connected，所以要从每个点开始走
             if hasCycle(course):
                 return False
-        
-        return True
 
+        return True
 ```
 
 [210. Course Schedule II](https://leetcode.com/problems/course-schedule-ii/)
@@ -1933,7 +1928,7 @@ class Solution:
     def sequenceReconstruction(self, nums: List[int], sequences: List[List[int]]) -> bool:
         """
         We can try to construct a topological ordering and see if it's the same as original
-        
+
         The key to determine uniqueness is checking the number of nodes in the queue at each step. If there is more than one node in the queue, we can pop any of them and still obtain a valid ordering and that means there will be more than one way to reconstruct the original sequence and therefore not unique.
         """
         # build graph and indgree
@@ -1946,13 +1941,13 @@ class Solution:
                 from_, to_ = seq[i], seq[i + 1]
                 graph[from_].append(to_)
                 indegree[to_] += 1
-        
+
         # add valid nodes to queue
         queue = collections.deque()
         for node in indegree:
             if indegree[node] == 0:
                 queue.append(node)
-        
+
         # check using topological sort
         res = []
         while queue:
@@ -1964,12 +1959,12 @@ class Solution:
                 indegree[to_] -= 1
                 if indegree[to_] == 0:
                     queue.append(to_)
-        
+
         return len(res) == len(nums)
 ```
 
-
 [953. Verifying an Alien Dictionary](https://leetcode.com/problems/verifying-an-alien-dictionary/)
+
 ```python
 class Solution:
     def isAlienSorted(self, words: List[str], order: str) -> bool:
@@ -1980,10 +1975,10 @@ class Solution:
         空间：O(1)
         """
         letter_order = {}
-        
+
         for idx, val in enumerate(order):
             letter_order[val] = idx
-        
+
         # 两两比较
         for i in range(len(words) - 1):
             w1, w2 = words[i], words[i+1]
@@ -1997,10 +1992,9 @@ class Solution:
                     if letter_order[w1[j]] > letter_order[w2[j]]:
                         return False
                     break
-                    
+
         return True
 ```
-
 
 [269. Alien Dictionary](https://leetcode.com/problems/alien-dictionary/) 先做LC953
 
@@ -2027,7 +2021,7 @@ class Solution:
                 if w1[j] != w2[j]:
                     adj[w1[j]].add(w2[j])
                     break
-        
+
         # DFS来遍历postorder，根据排好的顺序来画图
         # 用visit来看是否有loop->
         # visit{character: False/True} 给每个字母一个映射
@@ -2046,14 +2040,14 @@ class Solution:
             for nei in adj[c]: # 看这个ch的每一个neighbor
                 if dfs(nei):
                     return True
-            
+
             visit[c] = False # 已经看过，但是不在当前路径了就
             res.append(c)
-        
+
         for c in adj:
             if dfs(c):
                 return ""
-        
+
         res.reverse()
         return "".join(res)
 ```
@@ -2068,22 +2062,22 @@ class Solution:
         graph: {ingredients: recipies}
         indegree: recipes
         遍历一遍recipes和ingredients，构建出来graph和indegree
-        
+
         queue装所有的supplies，然后更新indegree，把indegree[i]==0的放进queue
         res是拓扑排序之后indegree[i]==0的那些i
         """
-        
+
         # graph: {ingredients: recipies}
         graph = collections.defaultdict(list)
         # indegree: required for recipes
         indegree = collections.defaultdict(int)
-        
+
         for i in range(len(recipes)):
             for ing in ingredients[i]:
                 indegree[recipes[i]] += 1
                 graph[ing].append(recipes[i])
-        
-        
+
+
         # 拓扑排序
         queue = collections.deque(supplies)
         while queue:
@@ -2092,12 +2086,12 @@ class Solution:
                 indegree[nei] -= 1
                 if indegree[nei] == 0:
                     queue.append(nei)
-        
+
         res = []
         for recipe in recipes:
             if indegree[recipe] == 0:
                 res.append(recipe)
-        
+
         return res
 ```
 
@@ -2110,13 +2104,13 @@ class Solution:
         suppliesSet = set(supplies)
         recipesMap = {recipes[i]: ingredients[i] for i in range(0, len(recipes))}
         ans = []
-        
+
         for recipe in recipesMap:
             if self.canMake(recipe, suppliesSet, recipesMap, set()):
                 ans.append(recipe)
-                
+
         return ans
-    
+
     def canMake(self, target, suppliesSet, recipesMap, seen):
         if target in suppliesSet:
             return True
@@ -2124,16 +2118,15 @@ class Solution:
             return False
         if target not in recipesMap:
             return False
-        
+
         seen.add(target)
-        
+
         for ingredient in recipesMap[target]:
             if not self.canMake(ingredient, suppliesSet, recipesMap, seen):
                 return False
-        
+
         suppliesSet.add(target)
         return True
-        
 ```
 
 [329. Longest Increasing Path in a Matrix](https://leetcode.com/problems/longest-increasing-path-in-a-matrix/)
@@ -2146,13 +2139,13 @@ class Solution:
         1. initial a 2D grid with 0, give 1 to those have a larger value than neighbor.
         2. add grid with 0 to queue
         3. start kahn's algo
-        
+
         """
         rows, cols = len(matrix), len(matrix[0])
         indegree = [[0 for _ in range(cols)] for _ in range(rows)]
-        
+
         dirs = [(0, 1), (0, -1), (1, 0), (-1, 0)]
-        
+
         for r in range(rows):
             for c in range(cols):
                 for dx, dy in dirs:
@@ -2160,15 +2153,15 @@ class Solution:
                     if 0 <= nr < rows and 0 <= nc < cols:
                         if matrix[nr][nc] < matrix[r][c]:
                             indegree[r][c] += 1
-        
+
         queue = collections.deque()
         for r in range(rows):
             for c in range(cols):
                 if indegree[r][c] == 0:
                     queue.append((r, c))
-        
+
         res = 0
-        
+
         while queue:
             size = len(queue)
             for i in range(size):
@@ -2181,11 +2174,14 @@ class Solution:
                             if indegree[nr][nc] == 0:
                                 queue.append((nr, nc))
             res += 1
-        
+
         return res
 ```
 
+[310. Minimum Height Trees](https://leetcode.com/problems/minimum-height-trees/)
+
 # Word 系列
+
 ## 模版
 
 ## 例题
@@ -2202,10 +2198,10 @@ class Solution:
         Time: O(N*M*N), N is len(s), M is len(wordDict)
         Space: O(N+M)
         """
-        
+
         dp = [False] * (len(s) + 1)
         dp[len(s)] = True
-        
+
         for i in range(len(s) - 1, -1, -1):
             for w in wordDict:
                 if (i + len(w) <= len(s)) and s[i:i + len(w)] == w:
@@ -2220,7 +2216,7 @@ class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
         """
         DFS + Memo
-        
+
         Time: O(N^3)
         Space: O(N)
         """
@@ -2228,7 +2224,7 @@ class Solution:
             return False
         words = set(wordDict)
         memo = {}
-        
+
         def dfs(s):
             if s in memo:
                 return memo[s]
@@ -2245,9 +2241,10 @@ class Solution:
                     return True
             memo[s] = False
             return False
-        
+
         return dfs(s)
 ```
+
 [140. Word Break II](https://leetcode.com/problems/word-break-ii/)
 
 [79. Word Search](https://leetcode.com/problems/word-search/)
@@ -2264,16 +2261,16 @@ class Solution:
         rows = len(board)
         cols = len(board[0])
         visit = set()
-        
+
         def dfs(r, c, i):
             # Base case
             if i == len(word):
                 return True
-            
+
             # 排除的条件
             if r < 0 or r >= rows or c < 0 or c >= cols or (r, c) in visit or board[r][c] != word[i]:
                 return False
-            
+
             # 做选择
             visit.add((r, c))
             # Backtrack
@@ -2285,12 +2282,12 @@ class Solution:
             # 回溯
             visit.remove((r, c))            
             return res
-        
+
         for r in range(rows):
             for c in range(cols):
                 if dfs(r, c, 0):
                     return True
-        
+
         return False
 ```
 
@@ -2310,26 +2307,26 @@ class Solution:
         """
         if endWord not in wordList:
             return 0
-        
+
         pattern_word = collections.defaultdict(list)
         wordList.append(beginWord) # 要先把开始的word放进来
-        
+
         # 对于wordList的每个word，把每一个pattern都找到，然后构建adj
         for word in wordList:
             for j in range(len(word)):
                 pattern = word[:j] + "*" + word[j+1:]
                 pattern_word[pattern].append(word)
-        
+
         visited = set([beginWord])
         queue = collections.deque([beginWord])
         res = 1
-        
+
         while queue:
             for i in range(len(queue)):
                 word = queue.popleft()
                 if word == endWord:
                     return res
-                
+
                 # 对于每一个word, 如果在map对应的pattern里面，说明是一个选择，就queue加进去visited加进去
                 for j in range(len(word)):
                     pattern = word[:j] + "*" + word[j+1:]
@@ -2338,33 +2335,34 @@ class Solution:
                             visited.add(nei_word)
                             queue.append(nei_word)
             res += 1
-        
+
         return 0
 ```
 
 [126. Word Ladder II](https://leetcode.com/problems/word-ladder-ii/)
+
 ```py
 class Solution:
     def findLadders(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
-        
+
         if endWord not in wordList:
             return []
-        
+
         word_queue = deque([[beginWord, [beginWord]]])
         visited = set([beginWord])
-        
+
         patterns = defaultdict(list)
         paths = []
         word_len = len(beginWord)
-        
+
         for word in wordList:
             for index in range(word_len):
                 patterns[word[:index] + '*' + word[index + 1:]].append(word)
-        
+
         while word_queue:
             current_level_length = len(word_queue)
             current_level_visited = set()
-            
+
             for _ in range(current_level_length):
                 word, word_sequence = word_queue.popleft()
                 if word == endWord:
@@ -2377,7 +2375,7 @@ class Solution:
                             word_queue.append([adjacent_word, word_sequence[:] + [adjacent_word]])
                             current_level_visited.add(adjacent_word)
             visited.update(current_level_visited)
-        
+
         return paths
 ```
 
@@ -2388,13 +2386,13 @@ class Solution:
         for word in wordList:
             for i in range(0,len(word)):
                 prefix_d[word[0:i]+"*"+word[i+1:]].append(word)
-        
+
         order = {beginWord: []}
         queue = deque([beginWord])
         temp_q = deque()
         go_on = True
         end_list = []
-        
+
         while queue and go_on:  # There is no node even added to temp_q
             temp_d = {}
             while queue:        # Pop every node on this level
@@ -2413,9 +2411,9 @@ class Solution:
             queue = temp_q
             temp_q = deque()
             order.update(temp_d)
-        
+
         ret = []
-        
+
         # DFS to restore the paths
         def dfs(path, node):
             path = path + [node]    # add the node(Deepcopy)
@@ -2428,6 +2426,6 @@ class Solution:
             dfs([], endWord)
         else:
             return []
-        
+
         return ret
 ```
