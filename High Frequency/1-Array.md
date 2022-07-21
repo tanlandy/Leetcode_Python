@@ -1029,3 +1029,20 @@ class Solution:
         return count
 ```
 
+[1554. Strings Differ by One Character](https://leetcode.com/problems/strings-differ-by-one-character/)
+
+```py
+class Solution:
+    def differByOne(self, dict: List[str]) -> bool:
+        # only need one pass to solve the problem using hashset:
+        seens = set()
+        for word in dict:
+            for i, c in enumerate(word):
+			    # change 'abcd' into the form of '.bcd', 'a.cd' ...
+                masked_word = word[:i] + '.' + word[i+1:]
+                if masked_word in seens:
+                    return True
+                else:
+                    seens.add(masked_word)
+        return False
+```

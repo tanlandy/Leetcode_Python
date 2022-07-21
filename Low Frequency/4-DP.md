@@ -608,6 +608,19 @@ res：max(dp)
 状态：dp[i]就是以arr[i]为结尾，分成若干个subarray，最小化每个subarray最大值之和。
 第i层有多高：取决于上一层的最后一本书在哪里
 
+[1218. Longest Arithmetic Subsequence of Given Difference](https://leetcode.com/problems/longest-arithmetic-subsequence-of-given-difference/)
+```py
+class Solution:
+    def longestSubsequence(self, arr: List[int], difference: int) -> int:
+        """
+        Let dp[i] be the maximum length of a subsequence of the given difference whose last element is i.
+        """
+        dp = collections.defaultdict(int)
+        for num in arr:
+            dp[num] = max(dp[num], 1+dp[num-difference])
+        return max(dp.values())
+```
+
 ## 双序列类型
 给出2个序列来搞事情
 LCS

@@ -1119,6 +1119,26 @@ class Solution:
 
 [364. Nested List Weight Sum II](https://leetcode.com/problems/nested-list-weight-sum-ii/)
 
+[419. Battleships in a Board](https://leetcode.com/problems/battleships-in-a-board/)
+
+```py
+class Solution:
+    def countBattleships(self, board):
+        """
+        as battleships are 1*k or k*1:
+        we only count the top-left corner "X", we move on if there's "X" to the top or to the left
+        """
+        total = 0
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                if board[i][j] == 'X':
+                    flag = 1
+                    if j > 0 and board[i][j-1] == 'X': flag = 0
+                    if i > 0 and board[i-1][j] == 'X': flag = 0
+                    total += flag
+        return total
+```
+
 # Implicit Graph
 
 [752. Open the Lock](https://leetcode.com/problems/open-the-lock/)
@@ -1384,6 +1404,27 @@ class Solution:
         
         dfs(0)
         return len(visited) == len(rooms)
+```
+
+
+[1376. Time Needed to Inform All Employees](https://leetcode.com/problems/time-needed-to-inform-all-employees/)
+
+```py
+
+class Solution:
+    def numOfMinutes(self, n: int, headID: int, manager: List[int], informTime: List[int]) -> int:
+        q = collections.deque([(headID, 0)])
+        subordinates = collections.defaultdict(list)
+        res = 0
+        for i, v in enumerate(manager):
+            subordinates[v].append(i)
+            
+        while q:
+            u, time = q.popleft()
+            res = max(res, time)
+            for v in subordinates[u]:
+                q.append((v, time + informTime[u]))
+        return res
 ```
 
 # Un-weighted Graph
