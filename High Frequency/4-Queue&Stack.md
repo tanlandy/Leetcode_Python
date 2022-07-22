@@ -435,12 +435,10 @@ class Solution:
                 a, b = stack.pop(), stack.pop()
                 stack.append(int(b / a)) # a, b = 3, 11, -11: b/a = 3.666,  int(b/a)=3, int(c/a) = -3
             else:
-                stack.append(int(c)) # convert data type to int
+                stack.append(int(c)) # convert data type to int，每次都可以加，因为就是个数字
         
         return stack[0]
 ```
-
-
 
 
 [227. Basic Calculator II](https://leetcode.com/problems/basic-calculator-ii/)
@@ -456,7 +454,7 @@ class Solution:
             if sign == "+":
                 stack.append(num)
             elif sign == "-":
-                    stack.append(-num)
+                stack.append(-num)
             elif sign == "*":
                 stack.append(stack.pop()*num)
             else:
@@ -464,8 +462,8 @@ class Solution:
 
         idx, num, stack, sign = 0, 0, [], "+"
         while idx < len(s):
-            if s[idx].isdigit():
-                num = num * 10 + int(s[idx])
+            if s[idx].isdigit(): 
+                num = num * 10 + int(s[idx]) # 不是每次都可以加，可能是多位数字
             elif s[idx] in "+-*/":
                 update(sign, num)
                 num = 0
@@ -710,37 +708,41 @@ class Solution:
 
 [739. Daily Temperatures](https://leetcode.com/problems/daily-temperatures/)
 
-单调递减栈（非增）monotonic decreasing stack；如果下一个数更大，就一直弹栈，直到找到能把这个数放进去；弹栈的时候就可以idx的差值就是被删除栈的output；如果下一个数更大，就压栈
-
-时间：O(N)
-空间：O(N)
-
 ```python
 class Solution:
     def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
+        """
+        单调递减栈（非增）monotonic decreasing stack；如果下一个数更大，就一直弹栈，直到找到能把这个数放进去；弹栈的时候就可以idx的差值就是被删除栈的output；如果下一个数更大，就压栈
+
+        时间：O(N)
+        空间：O(N)
+        """
         res = [0] * len(temperatures)
         stack = [] # pair:[temp, index]
 
         for idx, t in enumerate(temperatures):
             while stack and t > stack[-1][0]:
                 stackTemp, stackIdx = stack.pop()
-                res[stackIdx] = (i - stackIdx)
+                res[stackIdx] = (idx - stackIdx)
             stack.append([t, idx])
         
         return res    
 ```
 
 [853. Car Fleet](https://leetcode.com/problems/car-fleet/)
-计算出每辆车到达所需要的时间，按照position从后往前来比较，如果下一辆车所需时间更短，就说明会相撞并形成一个车队，然后一直和那个position最后的比较。因为总是和上一个比较，所以使用stack。最后的解说就是stack的大小
 
 ```py
 class Solution:
     def carFleet(self, target: int, position: List[int], speed: List[int]) -> int:
+        """
+        计算出每辆车到达所需要的时间，按照position从后往前来比较，如果下一辆车所需时间更短，就说明会相撞并形成一个车队，然后一直和那个position最后的比较。因为总是和上一个比较，所以使用stack。最后的结果就是stack的大小
+        """
+
         pair = [[p, s] for p, s in zip(position, speed)]
 
         stack = []
         for p, s in sorted(pair)[::-1]: # reverse sorted order
-            stack.append((target - p) / s)
+            stack.append((target - p) / s) # 每次计算位置靠前的一辆车的到达所需要的时间
             if len(stack) >= 2 and stack[-1] <= stack[-2]:
                 stack.pop()
         
@@ -749,13 +751,16 @@ class Solution:
 
 
 [84. Largest Rectangle in Histogram](https://leetcode.com/problems/largest-rectangle-in-histogram/)
-stack存idx和height
 
-时间：O(N)
-空间：O(N)
 ```py
 class Solution:
     def largestRectangleArea(self, heights: List[int]) -> int:
+        """
+        stack存idx和height
+
+        时间：O(N)
+        空间：O(N)
+        """
         max_area = 0
         stack = [] # pair: (idx, height)
 
@@ -786,9 +791,7 @@ class Solution:
         # this will let us know if there are no more instances of s[i] left in s
         last_occurrence = {c: i for i, c in enumerate(s)}
 
-
         for i, c in enumerate(s):
-
             # we can only try to add c if it's not already in our solution
             # this is to maintain only one of each character
             if c not in seen:
