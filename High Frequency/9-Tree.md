@@ -68,15 +68,6 @@ def BFS(root):
         step += 1
 ```
 
-DFS
-
-
-
-
-
-
-
-
 ## 题目
 
 [104. Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
@@ -616,7 +607,6 @@ class Trie:
         
         cur.end_of_word = True
 
-
     def search(self, word: str) -> bool:
         cur = self.root
 
@@ -672,7 +662,7 @@ class WordDictionary:
         def dfs(j, root):
             cur = root
             
-            for i in range(j, (len(word)):
+            for i in range(j, (len(word))):
                 c = word[i]
 
                 if c == ".":

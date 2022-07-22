@@ -983,7 +983,6 @@ class SnapshotArray:
         return 0 if right < 0 else arr[right][1]
 ```
 
-
 [150. Evaluate Reverse Polish Notation](https://leetcode.com/problems/evaluate-reverse-polish-notation/)
 
 ```py

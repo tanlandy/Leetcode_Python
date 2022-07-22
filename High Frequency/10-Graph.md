@@ -366,8 +366,7 @@ class Solution:
         """
         BFS one-direction
         """
-
-        queue = collections.deque([(0, 0, 0)])
+        queue = collections.deque([(0, 0, 0)]) # (r, c, step)
         x, y, visited = abs(x), abs(y), set([(0, 0)])
         dirs = [(1, 2), (2, 1), (1, -2), (-2, 1), (-1, 2), (2, -1)]
         while queue:
@@ -377,7 +376,7 @@ class Solution:
 
             for dx, dy in dirs:
                 nei_x, nei_y = a + dx, b + dy
-                if (nei_x, nei_y) not in visited and -1 <= nei_x <= x + 2 and -1 <= nei_y <= y + 2:
+                if (nei_x, nei_y) not in visited and -1 <= nei_x <= x + 2 and -1 <= nei_y <= y + 2: # inbound的条件要注意
                     visited.add((nei_x, nei_y))
                     queue.append((nei_x, nei_y, step + 1))
 
@@ -481,22 +480,22 @@ class Solution:
         if k >= rows + cols - 2:
             return rows + cols - 2
 
-        state = (0, 0, k)
-        queue = collections.deque([(0, state)])
+        state = (0, 0, k) # (r, c, remaining obstacle that can remove)
+        queue = collections.deque([(0, state)]) # (step, state)
         visited = set([state])
         dirs = [(1, 0), (-1, 0), (0, 1), (0, -1)]
 
         while queue:
             steps, (r, c, k) = queue.popleft()
-            if r == rows - 1 and c == cols - 1:
+            if r == rows - 1 and c == cols - 1: # reaches the end
                 return steps
 
             for dx, dy in dirs:
                 nei_r, nei_c = r + dx, c + dy
-                if 0 <= nei_r < rows and 0 <= nei_c < cols:
+                if 0 <= nei_r < rows and 0 <= nei_c < cols: # in bound
                     nei_k = k - grid[nei_ar][nei_c]
                     nei_state = (nei_r, nei_c, nei_k)
-                    if nei_k >= 0 and nei_state not in visited:
+                    if nei_k >= 0 and nei_state not in visited: # 除了visited条件外，还有一个remaining k的条件
                         visited.add(nei_state)
                         queue.append((steps + 1, nei_state))
 
@@ -890,13 +889,15 @@ class Solution:
                     mat[r][c] = -1
 
         dirs = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+
+        # 从所有0开始BFS往四周走，因为已经赋值-1，所以不用visited set
         while queue:
             r, c = queue.popleft()
 
             for dx, dy in dirs:
                 nei_r, nei_c = r + dx, c + dy
-                if 0 <= nei_r < rows and 0 <= nei_c < cols and mat[nei_r][nei_c] == -1:
-                    mat[nei_r][nei_c] = mat[r][c] + 1 # 新值就是附近的+1
+                if 0 <= nei_r < rows and 0 <= nei_c < cols and mat[nei_r][nei_c] == -1: #条件不用visited set，因为-1肯定就是没走过的点
+                    mat[nei_r][nei_c] = mat[r][c] + 1 # 附近的新值就是原来的+1
                     queue.append((nei_r, nei_c))
 
         return mat
@@ -953,12 +954,12 @@ class Solution:
         queue = collections.deque([start])
         while queue:
             r, c = queue.popleft()
-            if [r, c] == destination:
+            if [r, c] == destination: # 找到了
                 return True
 
             for dx, dy in dirs:
                 nei_r, nei_c = r + dx, c + dy
-                while 0 <= nei_r < rows and 0 <= nei_c < cols and maze[nei_r][nei_c] == 0:
+                while 0 <= nei_r < rows and 0 <= nei_c < cols and maze[nei_r][nei_c] == 0: # 一直走
                     nei_r += dx
                     nei_c += dy
                 nei_r -= dx # 这时候多走了一步，已经站在墙上了，所以退回来一步
