@@ -358,7 +358,6 @@ class Solution:
 
 [424. Longest Repeating Character Replacement](https://leetcode.com/problems/longest-repeating-character-replacement/)
 
-
 ```py
 class Solution:
     def characterReplacement(self, s: str, k: int) -> int:
@@ -389,7 +388,6 @@ class Solution:
 
         return res
 ```
-
 
 [76. Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring/)
 
@@ -455,9 +453,6 @@ class Solution:
         return res
 ```
 
-
-
-
 [121. Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)
 同向双指针,L=buy, R=sell：当buy>sell，L=R，否则移动R，同时一直更新profit
 
@@ -481,9 +476,6 @@ class Solution:
 
         return res
 ```
-
-
-
 
 [53. Maximum Subarray](https://leetcode.com/problems/maximum-subarray/)
 Sliding window一直计算当前的window_sum，当<0的时候就清零
@@ -534,7 +526,6 @@ class Solution:
 
         return False
 ```
-
 
 [438. Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/)
 
@@ -648,7 +639,6 @@ class Solution:
         return res
 ```
 
-
 [1004. Max Consecutive Ones III](https://leetcode.com/problems/max-consecutive-ones-iii/)
 
 ```py
@@ -674,8 +664,6 @@ class Solution:
         return res
 ```
 
-
-
 [487. Max Consecutive Ones II](https://leetcode.com/problems/max-consecutive-ones-ii/)
 ```py
 class Solution:
@@ -695,30 +683,7 @@ class Solution:
             r += 1
         
         return res
-```s
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```
 
 
 
@@ -850,14 +815,15 @@ class Solution:
 
 [42. Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/)
 
-对于位置i能存储的水: min(maxL, maxR) - h[i]；相向双指针，加上两个变量maxL, maxR来时刻保存左右两边的最大值；每次移动maxL, maxR之间较小那个数的指针，然后新位置i能存储的水：被移动指针之前的值-h[i]：不用考虑另外一个值，因为那个值肯定比较大；移动指针之后计算这个指针所在位置能存储的水
-
-时间：O(N)
-空间：O(1) -> two pointers
-
 ```python
 class Solution:
     def trap(self, height: List[int]) -> int:
+        """
+        对于位置i能存储的水: min(maxL, maxR) - h[i]；相向双指针，加上两个变量maxL, maxR来时刻保存左右两边的最大值；每次移动maxL, maxR之间较小那个数的指针，然后新位置i能存储的水：被移动指针之前的值-h[i]：不用考虑另外一个值，因为那个值肯定比较大；移动指针之后计算这个指针所在位置能存储的水
+
+        时间：O(N)
+        空间：O(1) -> two pointers
+        """
         res = 0
         if not height: # input is empty
             return res
