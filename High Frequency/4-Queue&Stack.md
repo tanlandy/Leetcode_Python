@@ -750,7 +750,7 @@ class Solution:
 ```
 
 
-[84. Largest Rectangle in Histogram](https://leetcode.com/problems/largest-rectangle-in-histogram/)
+[84. Largest Rectangle in Histogram](https://leetcode.com/problems/largest-rectangle-in-histogram/) 再看看
 
 ```py
 class Solution:
@@ -766,7 +766,7 @@ class Solution:
 
         for i, h in enumerate(heights):
             start = i
-            while stack and stack[-1][1] > h:
+            while stack and stack[-1][1] > h: # 遇到了下降的情况，一直走直到遇到上升；每次area都是当前h*(i-index) ：上次满足的
                 index, height = stack.pop()
                 max_area = max(max_area, height * (i - index))
                 start = index

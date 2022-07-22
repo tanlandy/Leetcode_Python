@@ -18,7 +18,6 @@ class Solution:
             hashmap[nums[i]] = i
 ```
 
-
 [146. LRU Cache](https://leetcode.com/problems/lru-cache/)
 
 ```py
@@ -50,7 +49,6 @@ class LRUCache:
             self.cache.popitem(last = False) # FIFO order like a queue
 ```
 
-
 ```py
 """
 需要记录的：capacity;Node: key, val, pre, next; LRU class: cap, left, right, cache还要把left, right连起来 ;如果要get在O(1)：HashMap：{val: pointer to the node}；用left, right pointer来记录LRU和Most freqently used：double linkedlist;当第三个node来了：更新hashMap， 更新left, right pointer，更新第二使用的node和这个node的双向链接；每次get: 删除，添加操作；每次put：如果存在要删除，总要添加操作，如果大小不够，就找到lru(最左），然后删除
@@ -58,42 +56,32 @@ class LRUCache:
 class Node:
     def __init__(self, key, val):
         self.key = key
-        self.val = val
+        self.val = val # value is stored in Node
         self.prev = self.next = None
 
-
 class LRUCache:
-
     def __init__(self, capacity: int):
         self.cap = capacity
         self.cache = {} # map key to node
 
-        self.left, self.right = Node(0, 0), Node(0, 0)
+        self.left, self.right = Node(0, 0), Node(0, 0) # left, right是两个node，并且开始时候相互连起来
         self.left.next, self.right.prev = self.right, self.left # left = LRU, right = most recent
 
-    # remove from the linkedlist
+    # remove "node" from the linkedlist
     def remove(self, node):
         prev, next = node.prev, node.next
         prev.next, next.prev = next, prev
 
-    # insert node at right
+    # insert "node" at right
     def insert(self, node):
         # insert at the right most position, before the right pointer
         prev, next = self.right.prev, self.right
         prev.next = next.prev = node
         node.next, node.prev = next, prev
 
-    def get(self, key: int) -> int:
-        if key in self.cache:
-            # remove + insert为了更新顺序
-            self.remove(self.cache[key])
-            self.insert(self.cache[key])
-            return self.cache[key].val
-        return -1
-
     def put(self, key: int, value: int) -> None:
         if key in self.cache:
-            self.remove(self.cache[key]
+            self.remove(self.cache[key]) # 先删除掉，这样就可以保证待会儿插入在最右边
         node = Node(key, value)
         self.cache[key] = node
         self.insert(node)
@@ -103,8 +91,14 @@ class LRUCache:
             lru = self.left.next
             self.remove(lru)
             del self.cache[lru.key]
-
-
+    
+    def get(self, key: int) -> int:
+        if key in self.cache:
+            # remove + insert为了更新顺序
+            self.remove(self.cache[key])
+            self.insert(self.cache[key])
+            return self.cache[key].val
+        return -1
 
 # Your LRUCache object will be instantiated and called as such:
 # obj = LRUCache(capacity)
@@ -215,7 +209,6 @@ class RandomizedSet:
         return self.list[rand_idx]
 
 ```
-
 
 [49. Group Anagrams](https://leetcode.com/problems/group-anagrams/)
 
@@ -494,28 +487,6 @@ class Solution:
         return True
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Others
 
 [535. Encode and Decode TinyURL](https://leetcode.com/problems/encode-and-decode-tinyurl/)
@@ -548,8 +519,6 @@ class Codec:
 
 ```
 
-
-
 [238. Product of Array Except Self](https://leetcode.com/problems/product-of-array-except-self/)
 
 走左右两遍
@@ -575,13 +544,16 @@ class Solution:
 ```
 
 [36. Valid Sudoku](https://leetcode.com/problems/valid-sudoku/)
-用index标记每个九宫格，index=(r//3, c//3)；或者index=3 * (r//3) + c//3
 
-时间：O(9^2)
-空间：O(9^2)
 ```py
 class Solution:
     def isValidSudoku(self, board: List[List[str]]) -> bool:
+        """
+        用index标记每个九宫格，index=(r//3, c//3)；或者index=3 * (r//3) + c//3
+
+        时间：O(9^2)
+        空间：O(9^2)
+        """
         cols = collections.defaultdict(set)
         rows = collections.defaultdict(set)
         squares = collections.defaultdict(set) # key = (r//3, c//3)
@@ -625,13 +597,16 @@ class Solution:
 ```
 
 [205. Isomorphic Strings](https://leetcode.com/problems/isomorphic-strings/)
-用map记录映射关系，用set保证只有映射是唯一的
 
-时间：O(N)
-空间：O(1) 最多就是26个字母
 ```py
 class Solution:
     def isIsomorphic(self, s: str, t: str) -> bool:
+        """
+        用map记录映射关系，用set保证只有映射是唯一的
+
+        时间：O(N)
+        空间：O(1) 最多就是26个字母
+        """
         if len(s) != len(t):
             return False
         
