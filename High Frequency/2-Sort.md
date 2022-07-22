@@ -405,7 +405,6 @@ class Solution:
         return res
 ```
 
-
 ## Intervals
 ### 模版
 
@@ -439,8 +438,6 @@ class Solution:
                 res.append([start, end])
 
         return res 
-
-
 ```
 
 [57. Insert Interval](https://leetcode.com/problems/insert-interval/)
@@ -584,7 +581,7 @@ class Solution:
         heapq.heappush(min_heap, intervals[0][1])
         
         for interval in intervals[1:]:
-            if min_heap[0] <= interval[0]: # if no new room needed, free up the space
+            if min_heap[0] <= interval[0]: # min_end <= cur_start: if no new room needed, free up the space(no overlap)
                 heapq.heappop(min_heap)
             # push to room all the time
             heapq.heappush(min_heap, interval[1])
@@ -708,9 +705,9 @@ class Solution:
             # use temp to temporarily store sorted array
             temp = []
             while i < mid and j < right:
-                if arr[i][0] <= arr[j][0]:
-                    # j - mid numbers jump to the left side of arr[i]
-                    result[arr[i][1]] += j - mid
+                if arr[i][0] <= arr[j][0]: # 比较数字大小
+                    # j - mid numbers jump to the left side of arr[i] ==> 精华
+                    result[arr[i][1]] += j - mid # 直接更新坐标结果
                     temp.append(arr[i])
                     i += 1
                 else:
@@ -718,7 +715,7 @@ class Solution:
                     j += 1
             # when one of the subarrays is empty
             while i < mid:
-                # j - mid numbers jump to the left side of arr[i]
+                # j - mid numbers jump to the left side of arr[i] ==> 精华
                 result[arr[i][1]] += j - mid
                 temp.append(arr[i])
                 i += 1
