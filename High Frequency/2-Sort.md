@@ -383,6 +383,29 @@ class Solution:
         return select(0, len(nums) - 1)
 ```
 
+
+[1996. The Number of Weak Characters in the Game](https://leetcode.com/problems/the-number-of-weak-characters-in-the-game/)
+```py
+class Solution:
+    def numberOfWeakCharacters(self, properties: List[List[int]]) -> int:
+        """
+        按第一位降序排列，第一位相同就升序排列第二位
+        从左往右比较第二位，同时记录见过的最大值，如果比见过的最大值小，那就双小了
+        """
+        properties.sort(key=lambda x: (-x[0],x[1]))
+
+        res = 0
+        curr_max = 0
+        
+        for _, d in properties:
+            if d < curr_max:
+                res += 1
+            else:
+                curr_max = d
+        return res
+```
+
+
 ## Intervals
 ### 模版
 

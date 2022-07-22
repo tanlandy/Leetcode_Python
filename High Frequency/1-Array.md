@@ -1046,3 +1046,90 @@ class Solution:
                     seens.add(masked_word)
         return False
 ```
+
+[777. Swap Adjacent in LR String](https://leetcode.com/problems/swap-adjacent-in-lr-string/)
+```py
+class Solution:
+    def canTransform(self, start: str, end: str) -> bool:
+        """
+        同LC2337
+
+        分别找start和end里所有的L和R，然后一一比较start和end里的L，start的L不能在end的L的左边
+        """
+        
+        # 先判断里面的L和R的数量是否相等
+        if start.replace("X", "") != end.replace("X", ""):
+            return False
+        
+        startL = [i for i in range(len(start)) if start[i] == "L"]
+        endL = [i for i in range(len(end)) if end[i] == "L"]        
+        startR = [i for i in range(len(start)) if start[i] == "R"]        
+        endR = [i for i in range(len(end)) if end[i] == "R"]        
+        
+        for i, j in zip(startL, endL):
+            if i < j:
+                return False
+        
+        for i, j in zip(startR, endR):
+            if i > j:
+                return False
+        
+        return True
+```
+
+[68. Text Justification](https://leetcode.com/problems/text-justification/)
+
+```py
+class Solution:
+    def fullJustify(self, words: List[str], maxWidth: int) -> List[str]:
+        """
+        1, how many words in each line
+        2, how many space btw each word
+        """
+        
+        n = len(words)
+        L = maxWidth
+
+        i = 0 # index of current word
+        
+        # return # of words in a line
+        def getWords(i):
+            k = 0
+            l = " ".join(words[i:i+k])
+            while len(l) <= L and i + k <= n:
+                k += 1
+                l = " ".join(words[i:i+k])
+            k -= 1 # 最后总是多走了一步
+            return k # k words in a line
+        
+        # insert space btw words in a line
+        def insertSpace(i, k):
+            """
+            reconstruct k words in a line
+            """
+            l = " ".join(words[i:i+k])
+            
+            if k == 1 or i + k == n: # if only one word, or is the last line
+                spaces = L - len(l)
+                line = l + " " * spaces
+            else:
+                spaces = L - len(l) + (k - 1) # total number of spaces we have in a line: total_length - words_length + (k-1) spaces btw k words
+                space = spaces // (k - 1) # # of space btw words in this line
+                left = spaces % (k - 1) # if odd, # of left words
+                
+                if left > 0:
+                    line = (" " * (space + 1)).join(words[i:i + left]) # left words
+                    line += " " * (space + 1)
+                    line += (" " * space).join(words[i+left: i+k]) # right words
+                else:
+                    line = (" " * space).join(words[i: i+k])
+            return line
+        
+        res = []
+        while i < n:
+            k = getWords(i)
+            res.append(insertSpace(i, k))
+            i += k
+        
+        return res
+```

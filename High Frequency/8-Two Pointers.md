@@ -298,7 +298,7 @@ class Solution:
 ```
 
 
-# 同向双指针-Sliding Window
+# 同向双指针
 
 -> 扩大的条件和结果；缩小的条件和结果；更新res的条件和结果
 1、当移动right扩大窗口，即加入字符时，应该更新哪些数据？
@@ -309,6 +309,7 @@ class Solution:
 
 4、我们要的结果应该在扩大窗口时还是缩小窗口时进行更新？
 
+## Sliding Window
 [283. Move Zeroes](https://leetcode.com/problems/move-zeroes/)
 
 ```py
@@ -875,4 +876,35 @@ class Solution:
                 res += max_r - height[r]
 
         return res
+```
+
+## Other
+[161. One Edit Distance](https://leetcode.com/problems/one-edit-distance/)
+
+```py
+class Solution(object):
+    def isOneEditDistance(self, s, t):
+        """
+        i, j往后走，如果第二次发现不相同的：return False
+        如果第一次：根据s, t相对length来往回退i,j一步
+        """
+        if abs(len(s) - len(t)) > 1 or s == t:
+            return False
+        
+        found_inequality = False
+        i = j = 0
+        
+        while i < len(s) and j < len(t):
+            if s[i] != t[j]:
+                if found_inequality: 
+                    return False
+                found_inequality = True
+                if len(s) < len(t): 
+                    i -= 1
+                elif len(s) > len(t): 
+                    j -= 1
+            i += 1
+            j += 1
+        
+        return True
 ```

@@ -501,7 +501,31 @@ class Solution:
 
 一般两层循环，时间复杂度O(N^2)
 
+
+
 ### 例题
+
+
+[1048. Longest String Chain](https://leetcode.com/problems/longest-string-chain/)
+
+```py
+class Solution:
+    def longestStrChain(self, words: List[str]) -> int:
+        dp = {} # dp[i]: longest str chain ending at words[i]
+        words.sort(key = len) # sort based on length
+    
+        for word in words:
+            dp[word] = 1
+
+            for i in range(len(word)): # check for previous words
+                prev = word[:i] + word[i + 1:] # all possible previous words
+
+                if prev in dp:
+                    dp[word] = max(dp[prev] + 1, dp[word])
+
+        return max(dp.values())
+```
+
 
 [300. Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/)
 

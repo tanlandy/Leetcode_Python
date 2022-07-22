@@ -170,6 +170,35 @@ class Solution:
         return slow
 ```
 
+
+[86. Partition List](https://leetcode.com/problems/partition-list/)
+
+```py
+class Solution:
+    def partition(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
+        """
+        新建2个链表。把比x小的放第一个，其他的放在第二个，最后把两个链表连接起来
+        """
+        # 要提前存2个头，一个用来链接，另一个用来return
+        before = before_head =  ListNode(-1)
+        after = after_head = ListNode(-1)
+        
+        while head:
+            if head.val < x:
+                before.next = head
+                before = before.next
+            else:
+                after.next = head
+                after = after.next
+            head = head.next
+        
+        after.next = None
+        before.next = after_head.next
+        
+        return before_head.next
+```
+
+
 # 进阶题目
 
 [160. Intersection of Two Linked Lists](https://leetcode.com/problems/intersection-of-two-linked-lists/)
