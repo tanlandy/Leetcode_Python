@@ -1713,7 +1713,7 @@ class Solution:
         while min_heap:
             # pop and visit the node with minimum time
             t1, n1 = heapq.heappop(min_heap)
-            if n1 in visited:
+            if n1 in visited: # if visited from other nodes
                 continue
             res = t1
             visited.add(n1)
