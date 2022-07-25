@@ -119,6 +119,40 @@ class ZigzagIterator:
 
 [1429. First Unique Number](https://leetcode.com/problems/first-unique-number/)
 
+```py
+class FirstUnique:
+
+    def __init__(self, nums: List[int]):
+        self.queue = collections.deque() # first num if the unique number
+        self.is_unique = {} # {one_num: unique_or_not}
+        for n in nums:
+            self.add(n)
+
+    def showFirstUnique(self) -> int:
+        # queue的第一个总是first unique，如果不是，就一直删除
+        while self.queue and not self.is_unique[self.queue[0]]:
+            self.queue.popleft()
+        if self.queue:
+            return self.queue[0]
+        return -1
+        
+    def add(self, value: int) -> None:
+        # new number
+        if value not in self.is_unique:
+            self.is_unique[value] = True
+            self.queue.append(value)
+        # seen before
+        else:
+            self.is_unique[value] = False
+            
+
+# Your FirstUnique object will be instantiated and called as such:
+# obj = FirstUnique(nums)
+# param_1 = obj.showFirstUnique()
+# obj.add(value)
+```
+
+
 
 ## Spiral Matrix 
 
