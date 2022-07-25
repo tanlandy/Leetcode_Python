@@ -80,6 +80,8 @@ for i in range(len(nums)):
 
 ```
 
+# 例题
+
 [22. Generate Parentheses](https://leetcode.com/problems/generate-parentheses/)
 添加close的条件：close<open
 
