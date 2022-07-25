@@ -499,7 +499,37 @@ class Solution:
 
 [540. Single Element in a Sorted Array](https://leetcode.com/problems/single-element-in-a-sorted-array/)
 
+The pairs which are on the left of the single element, will have the first element in an even position and the second element at an odd position. All the pairs which are on the right side of the single element will have the first position at an odd position and the second element at an even position.
 
+```py
+class Solution:
+    def singleNonDuplicate(self, nums: List[int]) -> int:
+        """
+        the nums must always have an odd number of elements
+        """
+        if len(nums) == 1:
+            return nums[0]
+        
+        
+        l, r = 0, len(nums) - 1
+        while l < r:
+            mid = (l + r) // 2
+            before_is_even = (r - mid) % 2 == 0
+            if nums[mid] == nums[mid + 1]:
+                if before_is_even: # find after: find the odd part
+                    l = mid + 1
+                else:
+                    r = mid - 1
+            elif nums[mid] == nums[mid - 1]:
+                if before_is_even: # [:mid-1] is odd, find the odd part
+                    r = mid - 2
+                else:
+                    l = mid + 1
+            else:
+                return nums[mid]
+        
+        return nums[l]
+```
 
 
 
@@ -709,6 +739,65 @@ class Solution:
                 l = mid + 1
                 
         return letters[l]
+```
+
+[1062. Longest Repeating Substring](https://leetcode.com/problems/longest-repeating-substring/)
+二分法和移动窗口的结合
+
+```py
+class Solution:
+    def search(self, L: int, n: int, S: str) -> str:
+        """
+        Search a substring of given length
+        that occurs at least 2 times.
+        @return start position if the substring exits and -1 otherwise.
+        """
+        seen = set()
+        for start in range(0, n - L + 1):
+            tmp = S[start:start + L]
+            if tmp in seen:
+                return start
+            seen.add(tmp)
+        return -1
+        
+    def longestRepeatingSubstring(self, S: str) -> str:
+        n = len(S)
+        
+        # binary search, L = repeating string length
+        left, right = 1, n
+        while left <= right:
+            L = left + (right - left) // 2
+            if self.search(L, n, S) != -1:
+                left = L + 1
+            else:
+                right = L - 1
+               
+        return left - 1
+```
+
+
+
+
+[1060. Missing Element in Sorted Array](https://leetcode.com/problems/missing-element-in-sorted-array/)
+
+```python
+class Solution:
+    def missingElement(self, nums: List[int], k: int) -> int:
+        """
+        nums[i]之前的missing个数是nums[i] - nums[0] - i; 找到nums[i] < k < nums[i+1]的missing个数的位置; 返回nums[i] + k - (nums[i] - nums[0] - i) = k + nums[0] + i
+
+        时间：O(logN)
+        空间：O(1)
+        """
+        l, r = 0, len(nums) - 1
+        while l <= r:
+            mid = l + (r - l) // 2
+            if nums[mid] - nums[0] - mid < k:
+                l = mid + 1
+            else:
+                r = mid - 1
+        return k + nums[0] + r
+
 ```
 
 

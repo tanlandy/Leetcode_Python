@@ -310,6 +310,13 @@ class Solution:
 4、我们要的结果应该在扩大窗口时还是缩小窗口时进行更新？
 
 ## Sliding Window
+
+[643. Maximum Average Subarray I](https://leetcode.com/problems/maximum-average-subarray-i/)
+
+
+
+
+
 [283. Move Zeroes](https://leetcode.com/problems/move-zeroes/)
 
 ```py
