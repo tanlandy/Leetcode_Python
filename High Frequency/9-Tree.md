@@ -472,6 +472,71 @@ class Codec:
 
 [1130. Minimum Cost Tree From Leaf Values](https://leetcode.com/problems/minimum-cost-tree-from-leaf-values/)
 
+
+[1485. Clone Binary Tree With Random Pointer](https://leetcode.com/problems/clone-binary-tree-with-random-pointer/)
+
+```py
+# Definition for Node.
+# class Node:
+#     def __init__(self, val=0, left=None, right=None, random=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+#         self.random = random
+
+class Solution:
+    def copyRandomBinaryTree(self, root: 'Node') -> 'NodeCopy':
+        nodeArr = {}
+
+        def dfs(root):
+            if not root: 
+                return None
+            if root in nodeArr: 
+                return nodeArr[root]
+            nRoot = NodeCopy(root.val)
+            nodeArr[root] = nRoot
+            nRoot.left = dfs(root.left)
+            nRoot.right = dfs(root.right)
+            nRoot.random = dfs(root.random)
+            return nRoot
+
+        return dfs(root)
+```
+
+
+[863. All Nodes Distance K in Binary Tree](https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/)
+
+```py
+class Solution:
+    def distanceK(self, root, target, K):
+        """
+        Convert to a graph, then dfs
+
+        """
+        adj, res, visited = collections.defaultdict(list), [], set()
+        def dfs(node):
+            if node.left:
+                adj[node].append(node.left)
+                adj[node.left].append(node)
+                dfs(node.left)
+            if node.right:
+                adj[node].append(node.right)
+                adj[node.right].append(node)
+                dfs(node.right)
+        dfs(root)
+        def dfs2(node, d):
+            if d < K:
+                visited.add(node)
+                for v in adj[node]:
+                    if v not in visited:
+                        dfs2(v, d + 1)
+            else:
+                res.append(node.val)
+        dfs2(target, 0)
+        return res
+```
+
+
 # BST
 BST is often used to look up the existence of certain objects. Compared to sorted arrays, the insertion has way lower time complexity, so it's good for dynamic insertion of items. If you don't need to dynamically insert new items, then you can simply sort the collection first and use binary search to look up.
 
@@ -482,28 +547,6 @@ It's easy to look up the first element in the BST that is greater/smaller than a
 It's easy to find the k-th largest/smallest element.
 Dynamic hash tables usually have a lot of unused memory in order to make the insertion/deletion time approach O(1), whereas BST uses all the memory they requested.
 
-
-
-[510. Inorder Successor in BST II](https://leetcode.com/problems/inorder-successor-in-bst-ii/)
-```py
-
-class Solution:
-    def inorderSuccessor(self, node: 'Node') -> 'Optional[Node]':
-        """
-        往右找，如果右边没有，就是自己的父
-        """
-        # 往右找：右一步，然后一直往左
-        if node.right:
-            node = node.right
-            while node.left:
-                node = node.left
-            return node
-        
-        # 往上找：一直往左上，走到头之后再上一个就是successor
-        while node.parent and node == node.parent.right:
-            node = node.parent
-        return node.parent
-```
 
 [285. Inorder Successor in BST](https://leetcode.com/problems/inorder-successor-in-bst/)
 
@@ -526,7 +569,81 @@ class Solution:
         return successor
 ```
 
+[510. Inorder Successor in BST II](https://leetcode.com/problems/inorder-successor-in-bst-ii/)
+```py
 
+class Solution:
+    def inorderSuccessor(self, node: 'Node') -> 'Optional[Node]':
+        """
+        往右找，如果右边没有，就是自己的父
+        """
+        # 往右找：右一步，然后一直往左
+        if node.right:
+            node = node.right
+            while node.left:
+                node = node.left
+            return node
+        
+        # 往上找：一直往左上，走到头之后再上一个就是successor
+        while node.parent and node == node.parent.right:
+            node = node.parent
+        return node.parent
+```
+
+[108. Convert Sorted Array to Binary Search Tree](https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/)
+
+```py
+class Solution:
+    def sortedArrayToBST(self, nums: List[int]) -> TreeNode:    
+        """
+        always choose the left middle node as root
+        
+        """
+        def helper(left, right):
+            if left > right:
+                return None
+
+            # always choose left middle node as a root
+            p = (left + right) // 2
+
+            # preorder traversal: node -> left -> right
+            root = TreeNode(nums[p])
+            root.left = helper(left, p - 1)
+            root.right = helper(p + 1, right)
+            return root
+        
+        return helper(0, len(nums) - 1)
+```
+
+[333. Largest BST Subtree](https://leetcode.com/problems/largest-bst-subtree/) 类似LC98
+
+```py
+class SubTree(object):
+    def __init__(self, largest, n, min, max):
+        self.largest = largest  # largest BST
+        self.n = n              # number of nodes in this ST
+        self.min = min          # min val in this ST
+        self.max = max          # max val in this ST
+
+class Solution(object):
+    def largestBSTSubtree(self, root):
+        res = self.dfs(root)
+        return res.largest
+    
+    def dfs(self, root):
+        if not root:
+            return SubTree(0, 0, float('inf'), float('-inf'))
+        left = self.dfs(root.left)
+        right = self.dfs(root.right)
+        
+        if root.val > left.max and root.val < right.min:  # valid BST
+            n = left.n + right.n + 1
+        else:
+            n = float('-inf')
+            
+        largest = max(left.largest, right.largest, n)
+        return SubTree(largest, n, min(left.min, root.val), max(right.max, root.val))
+```
 
 
 # 多叉树
