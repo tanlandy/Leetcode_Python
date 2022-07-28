@@ -542,7 +542,7 @@ LC官方讲解好
 ```py
 # Definition for a binary tree node.
 # class TreeNode:
-#     def __init__(self, x):
+#     def __init__(self, x):a
 #         self.val = x
 #         self.left = None
 #         self.right = None
