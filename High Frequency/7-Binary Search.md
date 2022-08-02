@@ -157,10 +157,7 @@ def find_highest_number(A):
     return None
 ```
 
-
-
 [34. Find First and Last Position of Element in Sorted Array](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/)
-
 
 ```python
 class Solution:
@@ -172,9 +169,9 @@ class Solution:
         right = self.binSearch(nums, target, False)
         return [left, right]
 
-    def binSearch(self, nums, target, firstPos):
+    def binSearch(self, nums, target, find_left):
         l, r = 0, len(nums) - 1
-        i = -1
+        res = -1
         while l <= r:
             mid = l + (r - l) // 2
             if target > nums[mid]:
@@ -182,13 +179,12 @@ class Solution:
             elif target < nums[mid]:
                 r = mid - 1
             else:
-                i = mid
-                if firstPos:
+                res = mid
+                if find_left:
                     r = mid - 1
                 else:
                     l = mid + 1
-        return i
-
+        return res
 ```
 
 [1182. Shortest Distance to Target Color](https://leetcode.com/problems/shortest-distance-to-target-color/)
@@ -298,17 +294,51 @@ class Solution:
                 return mid
 
             if nums[l] <= nums[mid]: # 说明mid左边是sorted
-                if nums[l] <= target and target < nums[mid]:
+                if nums[l] <= target and target < nums[mid]: # target is in left part's left
                     r = mid - 1
                 else:
                     l = mid + 1            
             else: # 说明mid右边是Sorted
-                if nums[mid] < target and target <= nums[r]:
+                if nums[mid] < target and target <= nums[r]: # target is in right part's right
                     l = mid + 1
                 else:
                     r = mid - 1
 
         return -1
+```
+
+[81. Search in Rotated Sorted Array II](https://leetcode.com/problems/search-in-rotated-sorted-array-ii/)
+
+```py
+class Solution:
+    def search(self, nums: List[int], target: int) -> bool:
+        """
+        因为会有重复，所以在nums[mid] == nums[r]的时候就不能判断target在哪边，所以这时候直接r-=1。然后通过nums[mid]和nums[r]的大小比较，来确认哪边是sorted
+
+        时间：O(N)
+        空间：O(1)
+        """
+        l, r = 0, len(nums) - 1
+
+        while l <= r:
+            mid = (l + r) // 2
+
+            if nums[mid] == target:
+                return True
+            elif nums[mid] == nums[r]: # failed to determine which side is sorted, as well as which side the target is located
+                r -= 1
+            elif nums[mid] > nums[r]: # 说明mid左边是sorted
+                if nums[l] <= target and target < nums[mid]: # target is in left part's left
+                    r = mid - 1
+                else:
+                    l = mid + 1            
+            else: # 说明mid右边是Sorted
+                if nums[mid] < target and target <= nums[r]: # target is in right part's right
+                    l = mid + 1
+                else:
+                    r = mid - 1
+
+        return False
 ```
 
 [1095. Find in Mountain Array](https://leetcode.com/problems/find-in-mountain-array/)
@@ -366,7 +396,7 @@ class Solution:
         return -1
 ```
 
-[162. Find Peak Element](https://leetcode.com/problems/find-peak-element/)
+[162. Find Peak Element](https://leetcode.com/problems/find-peak-element/) 好题
 
 ```py
 class Solution:
@@ -389,6 +419,47 @@ class Solution:
                 r = mid - 1
         return -1
 
+```
+
+[1901. Find a Peak Element II](https://leetcode.com/problems/find-a-peak-element-ii/)
+
+```py
+class Solution:
+    def findPeakGrid(self, mat: List[List[int]]) -> List[int]:
+        """
+        Say we took the largest element in a column, if any of adjacent
+        element is greater than the current Largest, we can just greedily go through
+        the largest elements till we find a Peak Element
+        
+        In my Solution I am splitting column wise because in the hint it is given that width is more than the height.
+        简而言之：每一列找最大值，然后看是否是该行的peak，不是的话再找另一列的最大值
+
+        Time: O(MlogN) 最多找M次，每次是LogN
+        Space: O(1)
+        """
+        start, end = 0, len(mat[0]) - 1 # leftMost and rightMost col
+        while start <= end:
+            cmid = (start + end) // 2 # column mid
+            
+            # Finding the largest element in the middle Column
+            ridx, curLargest = 0, float('-inf')
+            for i in range(len(mat)):
+                if mat[i][cmid] > curLargest:
+                    curLargest = mat[i][cmid]
+                    ridx= i 
+            
+            # Checking the adjacent element
+            leftisBig = cmid > start and mat[ridx][cmid - 1] > mat[ridx][cmid]
+            rightisBig = cmid < end and mat[ridx][cmid + 1] > mat[ridx][cmid]
+            
+            if not leftisBig and not rightisBig:
+                return [ridx, cmid]
+            
+            # binary search 
+            if leftisBig:
+                end = cmid - 1
+            else:
+                start = cmid + 1
 ```
 
 [278. First Bad Version](https://leetcode.com/problems/first-bad-version/)
@@ -422,8 +493,7 @@ class Solution:
         时间：O(logM + logN)
         空间：O(1)
         """
-        rows = len(matrix)
-        cols = len(matrix[0])
+        rows, cols = len(matrix), len(matrix[0])
 
         # 先找到所在行
         top, bot = 0, rows - 1
@@ -431,15 +501,15 @@ class Solution:
             cur_row = (top + bot) // 2
             if matrix[cur_row][-1] < target:
                 top = cur_row + 1
-            elif matrix[cur_row][0] > target:
+            elif matrix[cur_row][0] > target: # 最小的数都更大
                 bot = cur_row - 1
             else:
                 break
 
-        if top > bot:
+        if top > bot: # 可有可无：提前返回
             return False
 
-        # 在所在行里面找target
+        # 再在所在行里面找target
         l, r = 0, cols - 1
         while l <= r:
             mid = (l + r) // 2
@@ -775,16 +845,14 @@ class Solution:
         return left - 1
 ```
 
-
-
-
-[1060. Missing Element in Sorted Array](https://leetcode.com/problems/missing-element-in-sorted-array/)
+[1060. Missing Element in Sorted Array](https://leetcode.com/problems/missing-element-in-sorted-array/) 好题
 
 ```python
 class Solution:
     def missingElement(self, nums: List[int], k: int) -> int:
         """
-        nums[i]之前的missing个数是nums[i] - nums[0] - i; 找到nums[i] < k < nums[i+1]的missing个数的位置; 返回nums[i] + k - (nums[i] - nums[0] - i) = k + nums[0] + i
+        nums[i]之前的missing个数是nums[i] - nums[0] - i（如果不missing，idx=i的位置数字应该是nums[0] + i）; 那么要找第k个数，那么就是找位置i，满足nums[i] - nums[0] - i < k < nums[i+1] - nums[0] - (i+1)
+        返回nums[i] + k - (nums[i] - nums[0] - i) = k + nums[0] + i
 
         时间：O(logN)
         空间：O(1)
@@ -802,8 +870,6 @@ class Solution:
 
 
 [1011. Capacity To Ship Packages Within D Days](https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/)
-
-
 
 ```python
 class Solution:

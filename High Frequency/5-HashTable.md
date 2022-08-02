@@ -625,3 +625,24 @@ class Solution:
         
         return True
 ```
+
+[242. Valid Anagram](https://leetcode.com/problems/valid-anagram/)
+
+```py
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+        """
+        count the frequency of each letter in s, iterate through t while decreament the counter. 
+        keep in mind of cases: 
+        s = "a", t = "ab"
+        s = "ab", t = "a"
+        """
+        counter = collections.Counter(s)
+
+        for ch in t:
+            counter[ch] -= 1
+            if counter[ch] < 0:
+                return False
+        
+        return len(s) == len(t)
+```

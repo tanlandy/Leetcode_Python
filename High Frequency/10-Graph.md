@@ -145,6 +145,29 @@ def dfs(root, visited):
 ## 模版
 
 ### BFS
+BFS层序遍历
+```py
+def BFS(root):
+    if not root:
+        return root
+
+    queue = collections.deque([root]) # initate queue and add root
+    visit = set()  # use a set to keep track of visited node, no need for traversing a tree
+    visit.add((root))
+    step = 0 # depends on the target
+
+    while queue:
+        size = len(queue)
+        for i in range(size):
+            node = queue.popleft()
+            if node is target: # depends on the target
+                return
+            for nei in node.adj(): # traverse the graph or the tree
+                if nei not in visit: # no cycle
+                    queue.append(nei)
+                    visit.add(nei)
+        step += 1
+```
 
 shortest path btw A and B
 
@@ -284,13 +307,13 @@ class Solution(object):
                 dfs(r, c-1)
                 dfs(r, c+1)
 
-        if color == newColor:
+        if color == newColor: # 要注意这个特殊情况：一开始的点就和color一样，这样直接返回
             return image
         dfs(sr, sc)
         return image
 ```
 
-[200. Number of Islands](https://leetcode.com/  problems/number-of-islands/)
+[200. Number of Islands](https://leetcode.com/problems/number-of-islands/)
 BFS
 
 ```py
@@ -759,6 +782,40 @@ class Solution:
                     board[r][c] = "O"
 ```
 
+[1730. Shortest Path to Get Food](https://leetcode.com/problems/shortest-path-to-get-food/)
+
+```py
+class Solution:
+    def getFood(self, grid: List[List[str]]) -> int:
+        rows, cols = len(grid), len(grid[0])
+        
+        queue = collections.deque()
+        visited = set()
+        
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == "*":
+                    queue.append((r, c))
+                    visited.add((r, c))
+                    break
+        dirs = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        step = 0
+        
+        while queue:
+            for _ in range(len(queue)):
+                r, c = queue.popleft()
+                if grid[r][c] == "#":
+                    return step
+                for dx, dy in dirs:
+                    nr, nc = r + dx, c + dy
+                    if nr in range(rows) and nc in range(cols) and (nr, nc) not in visited and grid[nr][nc] != "X":
+                        queue.append((nr, nc))
+                        visited.add((nr, nc))
+            step += 1
+        
+        return -1
+```
+
 [417. Pacific Atlantic Water Flow](https://leetcode.com/problems/pacific-atlantic-water-flow/)
 
 ```py
@@ -1197,12 +1254,9 @@ class Solution:
         时间：O(M*N)
         空间：O(M*N)
         """
-
+        rows, cols = len(grid), len(grid[0])
         queue = collections.deque()
         time, fresh = 0, 0
-
-        rows = len(grid)
-        cols = len(grid[0])
 
         for r in range(rows):
             for c in range(cols):
@@ -1229,6 +1283,45 @@ class Solution:
 
         return time if fresh == 0 else -1
 ```
+
+```py
+class Solution:
+    def orangesRotting(self, grid: List[List[int]]) -> int:
+        """
+        add all rotten oranges to queue
+        do bfs: pop oranges from queue, change the adj fresh oranges to rotten, while maintaining a timer
+        iterate through all oranges and see if there are any remaining fresh one, if so, return -1, else return timer
+        """
+        
+        rows, cols = len(grid), len(grid[0])
+        queue = collections.deque()
+        dirs = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == 2:
+                    queue.append((r, c))
+        
+        timer = 0
+        while queue:
+            for _ in range(len(queue)):
+                r, c = queue.popleft()
+                for dx, dy in dirs:
+                    nr, nc = r + dx, c + dy
+                    if nr in range(rows) and nc in range(cols) and grid[nr][nc] == 1:
+                        queue.append((nr, nc))
+                        grid[nr][nc] = 2
+            timer += 1
+        
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == 1:
+                    return -1
+
+        return timer - 1 if timer > 0 else 0 # 如果有的话，每次最后都会多走一个timer，所以要-1。其他的bfs题目都是提前在while queue里面就返回了，不会再走一个多的timer+=1
+```
+
+
 
 [773. Sliding Puzzle](https://leetcode.com/problems/sliding-puzzle/)
 
@@ -2557,7 +2650,7 @@ class Solution:
             return 0
 
         pattern_word = collections.defaultdict(list)
-        wordList.append(beginWord) # 要先把开始的word放进来
+        # wordList.append(beginWord) # 开始的word可放可不放进来
 
         # 对于wordList的每个word，把每一个pattern都找到，然后构建adj
         for word in wordList:
@@ -2592,37 +2685,34 @@ class Solution:
 ```py
 class Solution:
     def findLadders(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
-
         if endWord not in wordList:
             return []
 
-        word_queue = deque([[beginWord, [beginWord]]])
+        queue = deque([(beginWord, [beginWord])]) # 同时存(word,path)
         visited = set([beginWord])
 
-        patterns = defaultdict(list)
+        pattern_word = defaultdict(list)
         paths = []
-        word_len = len(beginWord)
 
         for word in wordList:
-            for index in range(word_len):
-                patterns[word[:index] + '*' + word[index + 1:]].append(word)
+            for i in range(len(word)):
+                pattern = word[:i] + "*" + word[i + 1:]
+                pattern_word[pattern].append(word)
 
-        while word_queue:
-            current_level_length = len(word_queue)
+        while queue:
             current_level_visited = set()
-
-            for _ in range(current_level_length):
-                word, word_sequence = word_queue.popleft()
+            for _ in range(len(queue)):
+                word, path = queue.popleft()
                 if word == endWord:
-                    paths.append(word_sequence)
+                    paths.append(path)
                     continue
-                for j in range(word_len):
-                    pattern  = word[ : j] + '*' + word[j + 1: ]
-                    for adjacent_word in patterns[pattern]:
-                        if adjacent_word not in visited:
-                            word_queue.append([adjacent_word, word_sequence[:] + [adjacent_word]])
-                            current_level_visited.add(adjacent_word)
-            visited.update(current_level_visited)
+                for i in range(len(word)):
+                    pattern  = word[:i] + '*' + word[i + 1: ]
+                    for nei in pattern_word[pattern]:
+                        if nei not in visited: # 只要不在visited，就可以加进来
+                            queue.append([nei, path[:] + [nei]])
+                            current_level_visited.add(nei)
+            visited.update(current_level_visited) # 把这层见过的set加到visited里
 
         return paths
 ```

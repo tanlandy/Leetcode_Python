@@ -203,31 +203,7 @@ class Solution:
 
 
 #### Tree
-[543. Diameter of Binary Tree](https://leetcode.com/problems/diameter-of-binary-tree/)
-```py
-class Solution:
-    def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
-        """
-        每一条二叉树的「直径」长度，就是一个节点的左右子树的最大深度之和
-        遇到子树问题，首先想到的是给函数设置返回值，然后在后序位置做文章
-        
-        Time: O(N)
-        Space: O(N)
-        """
-        res = [0]
-        def dfs(root): # 返回该节点最大深度
-            if not root:
-                return 0
-            left = dfs(root.left) # 左子树最大深度
-            right = dfs(root.right) # 右子树最大深度
-            cur_max = left + right
-            res[0] = max(res[0], cur_max)
-            
-            return 1 + max(left, right)
-        
-        dfs(root)
-        return res[0]
-```
+
 
 
 [226. Invert Binary Tree](https://leetcode.com/problems/invert-binary-tree/)

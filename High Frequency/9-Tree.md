@@ -44,31 +44,105 @@ tree.root.right.right = Node(7)
 # Binary Tree
 
 ## 模板
-BFS层序遍历
-```py
-def BFS(root):
-    if not root:
-        return root
+queue放元素：queue = deque([root])
 
-    queue = collections.deque([root]) # initate queue and add root
-    visit = set()  # use a set to keep track of visited node, no need for traversing a tree
-    visit.add((root))
-    step = 0 # depends on the target
+```python
+class Node:
+    def __init__(self, val, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
 
+def level_order_traversal(root: Node) -> List[List[int]]:
+    res = [] 
+    if root is None:
+        return res
+    
+    queue = deque([root])
+    
     while queue:
+        oneRes = []
         size = len(queue)
-        for i in range(size):
+        for _ in range(size):
             node = queue.popleft()
-            if node is target: # depends on the target
-                return
-            for nei in node.adj(): # traverse the graph or the tree
-                if nei not in visit: # no cycle
-                    queue.append(nei)
-                    visit.add(nei)
-        step += 1
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+            oneRes.append(node.val)
+        res.append(oneRes)
+                      
+    return res
 ```
 
+
+
 ## 题目
+
+[103. Binary Tree Zigzag Level Order Traversal](https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/)
+
+```python
+def zig_zag_traversal(root: Node) -> List[List[int]]:
+    """
+    反转list: oneRes.reverse()；翻转isOdd: isOdd = not isOdd
+    """
+    res = []
+    isOdd = True
+    
+    if root is None:
+        return res
+    
+    queue = deque([root])
+    
+    while queue:
+        oneRes = []
+        size = len(queue)
+        
+        for _ in range(size):
+            node = queue.popleft()
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+            oneRes.append(node.val)
+       
+        if not isOdd:
+            oneRes.reverse()
+        
+        isOdd = not isOdd
+        res.append(oneRes)
+     
+    return res
+```
+
+
+[543. Diameter of Binary Tree](https://leetcode.com/problems/diameter-of-binary-tree/)
+```py
+class Solution:
+    def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
+        """
+        每一条二叉树的「直径」长度，就是一个节点的左右子树的最大深度之和
+        遇到子树问题，首先想到的是给函数设置返回值，然后在后序位置做文章
+        
+        Time: O(N)
+        Space: O(N)
+        """
+        res = [0] # wrap in a list, to pass by reference
+        def dfs(root): # 返回该节点最大深度
+            if not root:
+                return 0
+            left = dfs(root.left) # 左子树最大深度
+            right = dfs(root.right) # 右子树最大深度
+            cur_max = left + right
+            res[0] = max(res[0], cur_max)
+            
+            return 1 + max(left, right)
+        
+        dfs(root)
+        return res[0]
+```
+
+
 
 [104. Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
 
@@ -377,14 +451,14 @@ class Solution:
 
 [297. Serialize and Deserialize Binary Tree](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/)
 
-preorder遍历
 
 ```python
 class Codec:
 
     def serialize(self, root):
         """
-        用一个list记录，最后转为string导出：前序遍历，空节点计作N，然后用,连接
+        用一个list记录，最后转为string导出：
+        前序遍历，空节点计作N，然后用","连接
         """
         res = []
         def dfs(node):
