@@ -2762,15 +2762,13 @@ class Solution:
 
 [31. Next Permutation](https://leetcode.com/problems/next-permutation/)
 
-从后往前找，找到下降序列左边的值k；找到k右边最后一个比k小的数，交换；把k右边的数倒序排列
-
-时间：O(N)
-空间：O(1)
 ```python
 class Solution:
     def nextPermutation(self, nums: List[int]) -> None:
         """
-        Do not return anything, modify nums in-place instead.
+        从后往前找，找到下降序列左边的值k；找到k右边最后一个比k小的数，交换；把k右边的数倒序排列
+        时间：O(N)
+        空间：O(1)
         """
         i = len(nums)-1
         
@@ -2788,12 +2786,11 @@ class Solution:
             j -= 1 
         nums[k], nums[j] = nums[j], nums[k]  
         
-        # step3: 把k右边的树倒序排列
+        # step3: 把k右边的数倒序排列
         l, r = k+1, len(nums)-1  
         while l < r:
             nums[l], nums[r] = nums[r], nums[l]
             l +=1 ; r -= 1
-
 ```
 
 

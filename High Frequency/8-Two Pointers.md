@@ -32,7 +32,7 @@ def isPalindrome(s: str) -> bool:
     l, r = 0, len(s) - 1
     
     while l < r:
-        while l < r and not s[l].isalnum():
+        while l < r and not s[l].isalnum(): # l < r的条件不能少，否则s=".,"会out of index
             l += 1
         while l < r and not s[r].isalnum():
             r -= 1
@@ -257,18 +257,18 @@ class Solution:
         Space: O(1)
         """
         l, r = 0, len(height) - 1
-        res = 0
+        area = 0
         
         while l < r:
-            cur_size = (r - l) * min(height[l], height[r])
-            res = max(res, cur_size)
+            cur_area = (r - l) * min(height[l], height[r])
+            area = max(res, cur_area)
             
             if height[l] < height[r]: # move the smaller edge, to make the area larger
                 l += 1
             else:
                 r -= 1
         
-        return res
+        return area
 ```
 
 [277. Find the Celebrity](https://leetcode.com/problems/find-the-celebrity/)
@@ -698,6 +698,40 @@ class Solution:
 
 
 # Others
+[31. Next Permutation](https://leetcode.com/problems/next-permutation/)
+
+```python
+class Solution:
+    def nextPermutation(self, nums: List[int]) -> None:
+        """
+        从后往前找，找到下降序列左边的值k；找到k右边最后一个比k小的数，交换；把k右边的数倒序排列
+        时间：O(N)
+        空间：O(1)
+        """
+        i = len(nums)-1
+        
+        # step1: find the last "ascending" position: k
+        while i > 0 and nums[i-1] >= nums[i]:
+            i -= 1 
+        if i == 0:   # nums are in descending order
+            nums.reverse()
+            return 
+        k = i - 1   
+        
+        # step2: 找到k右边比k大的最后一个数，和k交换
+        j = len(nums) - 1
+        while nums[j] <= nums[k]:
+            j -= 1 
+        nums[k], nums[j] = nums[j], nums[k]  
+        
+        # step3: 把k右边的数倒序排列
+        l, r = k + 1, len(nums) - 1  
+        while l < r:
+            nums[l], nums[r] = nums[r], nums[l]
+            l += 1
+            r -= 1
+```
+
 [88. Merge Sorted Array]([Loading...](https://leetcode.com/problems/merge-sorted-array/))
 
 ```py
