@@ -43,26 +43,28 @@ len(minHeap)
 
 [973. K Closest Points to Origin](https://leetcode.com/problems/k-closest-points-to-origin/)
 
-方法一：minHeap
-先形成一个minHeap, key是dist，另外还要保存x,y用来之后导出，然后根据要求取数字
-
 ```py
 class Solution:
     def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
-        minHeap = []
-
+        """
+        max_heap with a size of k. key是dist，另外还要保存x,y用来之后导出
+        
+        Time: O(NlogK)
+        Space: O(N)
+        """
+        # k smallest points
+        max_heap = []
         for x, y in points:
             dist = x * x + y * y
-            minHeap.append([dist, x, y])
-
-        heapq.heapify(minHeap)
-
+            heapq.heappush(max_heap, (-dist, x, y))
+            if len(max_heap) > k:
+                heapq.heappop(max_heap)
+        
         res = []
-        while k > 0:
-            dist, x, y = heapq.heappop(minHeap)
+        while max_heap:
+            dist, x, y = heapq.heappop(max_heap)
             res.append([x, y])
-            k -= 1
-
+        
         return res
 ```
 
@@ -111,26 +113,29 @@ class Solution:
 class Solution:
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
         """
+        [1,1,1,2,2,2,100]
         bucket sort
-        i(count)  0 |  1  | 2  | 3 | 4 | 5 | ... | len(input) 
+        i(freq)  0 |  1  | 2  | 3 | 4 | 5 | ... | len(input) 
         values       [100]     [1,2]
 
-        用map来记录num: count的数量，之后构建一个count:values的array，；最后array从后往前往res里加，直到len(res) == k；构建array: freq = [[] for i in range(len(nums) + 1)]; 从后往前遍历: for i in range(len(freq) -1, 0, -1)
+        用map来记录num: freq的数量，之后构建freq :values的array.最后array从后往前往res里加，直到len(res) == k；
+        构建array: freq = [[] for i in range(len(nums) + 1)]
+        从后往前遍历: for i in range(len(freq) -1, 0, -1)
         时间：O(N)
         空间：O(N)
         """
-        # count: {each num:freq}
-        count = collections.Counter(nums)
-        # freq: [freq:[nums have same freq]]
-        freq = [[] for i in range(len(nums) + 1)] # 大小是len(nums) + 1，注意如何构建values是list的list
+        # counter: {num: freq}
+        counter = collections.Counter(nums)
+        # freqs: [freq:[nums have same freq]]
+        freqs = [[] for i in range(len(nums) + 1)] # 大小是len(nums) + 1，因为可能[1,1,1]的时候，freq=3
 
-        for n, count in count.items():
-            freq[count].append(n)
+        for num, count in counter.items():
+            freqs[count].append(num)
 
         res = []
-        for i in range(len(freq) -1, 0, -1): # 注意如何从后往前遍历
-            for n in freq[i]:
-                res.append(n)
+        for i in range(len(freqs) -1, 0, -1): # 注意如何从后往前遍历
+            for num in freqs[i]:
+                res.append(num)
                 if len(res) == k:
                     return res 
 ```
@@ -139,21 +144,51 @@ class Solution:
 class Solution:
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
         """
-        maxHeap: {count: key}
-        O(KlogN)
+        use counter:{num:freq}
+        then push them to a maxHeap, based on freq
+        finally pop heap according to k
+
+        Time: O(NlogN)
+        Space: O(N)
         """
-        # count: {each num:freq}
-        count = collections.Counter(nums)
+        # counter: {each num:freq}
+        counter = collections.Counter(nums)
 
         maxHeap = []
 
-        for key in count:
-            heapq.heappush(maxHeap, (-count[key], key))
+        for num, freq in counter.items():
+            heapq.heappush(maxHeap, (-freq, num))
 
         res = []
         while k > 0:
-            value, key = heapq.heappop(maxHeap)
-            res.append(key)
+            freq, num = heapq.heappop(maxHeap)
+            res.append(num)
+            k -= 1
+        return res
+```
+
+```py
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        """
+        as the res can be in any order: maintain a min_heap with a size of k, that always contains the top k largest elem.
+
+        Time: O(NlogK)
+        Space: O(N)
+        """
+        counter = collections.Counter(nums)
+        
+        min_heap = []
+        
+        for num, freq in counter.items():
+            heapq.heappush(min_heap, (freq, num))
+            if len(min_heap) > k: # always pop the smallest element
+                heapq.heappop(min_heap)
+        res = []
+        
+        while k > 0:
+            freq, num = heapq.heappop(min_heap)
+            res.append(num)
             k -= 1
         return res
 ```
@@ -437,30 +472,35 @@ class MedianFinder:
 """
 用两个size最多差1的Heap，每次新数字先加到minHeap，然后pop minHeap到maxHeap，最后永远保证minHeap的大小比maxHeap大于等于1；找数的时候，要么直接看minHeap，要么就是看二者的平均数
 
+always maintain a min_heap and a max_heap, where elems in min_heap > max_heap: to make this come true, each new num should be put into min_heap first, then pop the smallest in min_heap to max_heap.
+in order to find the median, each time, push the largest in max_heap back to min_heap
+
 时间：addNum: O(logN)，找数O(1)
 空间：O(N)
 """
 
     def __init__(self):
-        # all nums in small < all nums in large
-        # small is a maxHeap, large is a minHeap
-        self.maxHeap, self.minHeap = [], []
+        # all nums in max_heap < all nums in min_heap
+        self.max_heap, self.min_heap = [], []
 
     def addNum(self, num: int) -> None:
         # add each element to minHeap first
         # pop minHeap and add it to maxHeap 
         # balance the size 
-        # In this case, all nums in small < large
-        heapq.heappush(self.maxHeap, -heapq.heappushpop(self.minHeap, num))
-
-        if len(self.maxHeap) > len(self.minHeap):
-            heapq.heappush(self.minHeap, -heapq.heappop(self.maxHeap))
+        # In this case, all nums in max_heap < min_heap
+        heapq.heappush(self.min_heap, num)
+        elem = heapq.heappop(self.min_heap)
+        heapq.heappush(self.max_heap, -elem)
+        
+        if len(self.max_heap) > len(self.min_heap):
+            elem = heapq.heappop(self.max_heap)
+            heapq.heappush(self.min_heap, -elem)
 
     def findMedian(self) -> float:
         if len(self.maxHeap) < len(self.minHeap):
-            return self.minHeap[0]
+            return self.min_heap[0]
         else:
-            return (self.minHeap[0] - self.small[0]) / 2
+            return (self.min_heap[0] - self.max_heap[0]) / 2
 
 
 # Your MedianFinder object will be instantiated and called as such:

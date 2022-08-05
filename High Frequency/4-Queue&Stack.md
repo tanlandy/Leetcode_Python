@@ -584,12 +584,12 @@ class Solution:
         when close: use a dictionary to map close to open, and check if new one matches the top, if so pop the old
         """
         stack = []
-        closeToOpen = { ")":"(", "]":"[", "}":"{" }
+        closeToOpen = { ")":"(", "]":"[", "}":"{" } # 非常好的解决比对好几次的情况
 
         for c in s:
             if c in "({[":
                 stack.append(c)
-            elif stack and stack[-1] == closeToOpen[c]:
+            elif stack and stack[-1] == closeToOpen[c]: # 比较栈顶，总是要看看stack是否为空
                 stack.pop()
             else:
                 return False

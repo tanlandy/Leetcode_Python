@@ -299,35 +299,36 @@ class Solution:
 ```
 
 [2. Add Two Numbers](https://leetcode.com/problems/add-two-numbers/)
-计算出来每次的数字，然后相加，最后更新指针；注意while循环的条件
 
-时间：O(max(l1, l2))
-空间：O(max(l1, l2))
 ```py
 class Solution:
     def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        """
+        计算出来每次的数字，然后相加，最后更新指针；注意while循环的条件
+
+        时间：O(max(l1, l2))
+        空间：O(max(l1, l2))
+        """
         dummy = ListNode(-1) # edge case when insert into LinkedList
         cur = dummy
 
         carry = 0
         while l1 or l2 or carry: # 这个条件非常重要
-            v1 = l1.val if l1 else 0
+            v1 = l1.val if l1 else 0 # 根据条件取数字
             v2 = l2.val if l2 else 0
             
-            num = (carry + v1 + v2) % 10
+            num = (carry + v1 + v2) % 10 # 计算的时候要加上上一层的carry
             carry = (carry + v1 + v2) // 10
             
             cur.next = ListNode(num) # 形成LinkedList
             
             # 更新指针
             cur = cur.next
-            l1 = l1.next if l1 else None
+            l1 = l1.next if l1 else None # 根据条件移动指针
             l2 = l2.next if l2 else None
         
         return dummy.next
-
 ```
-
 
 [92. Reverse Linked List II](https://leetcode.com/problems/reverse-linked-list-ii/)
 
@@ -384,7 +385,7 @@ class Solution:
         even = head.next
         even_head = even
         
-        while even and even.next: # 需要even.next; 因为odd.next = even.next，同时even.next = odd.next，也就是说
+        while even and even.next: # 需要even.next
             odd.next = even.next # 1->3
             odd = odd.next # odd is 3, 3->4->5
             

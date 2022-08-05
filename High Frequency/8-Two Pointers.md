@@ -692,11 +692,6 @@ class Solution:
         return res
 ```
 
-
-
-
-
-
 # Others
 [31. Next Permutation](https://leetcode.com/problems/next-permutation/)
 
@@ -711,7 +706,7 @@ class Solution:
         i = len(nums)-1
         
         # step1: find the last "ascending" position: k
-        while i > 0 and nums[i-1] >= nums[i]:
+        while i > 0 and nums[i-1] >= nums[i]: # 要加上=号：直到找到不大于的那个数
             i -= 1 
         if i == 0:   # nums are in descending order
             nums.reverse()
@@ -720,7 +715,7 @@ class Solution:
         
         # step2: 找到k右边比k大的最后一个数，和k交换
         j = len(nums) - 1
-        while nums[j] <= nums[k]:
+        while nums[j] <= nums[k]: # 要加=：直到找到不小于的
             j -= 1 
         nums[k], nums[j] = nums[j], nums[k]  
         
