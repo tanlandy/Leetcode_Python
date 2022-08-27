@@ -1,4 +1,4 @@
-# 06/06/2202
+# 06/06/2022
 ## Intro
 the intro has to be up to 2min
 
@@ -87,3 +87,54 @@ why amazon?
 
 
 LRU再看看
+
+# 08/26/2022
+
+## Coding
+### 题目
+Given a phone with classical telephone keypad made of numbers from 0 to 9 which also have letters on it (1=abc, 2=def, 3=ghi, 4=jkl, 5=mno, 6=pqr, 7=stu, 8=vwx, 9=yz, 0=space).
+Write a program in your favorite programming language that allows to create memos or any free text messages.
+
+This can be useful for users of non-smart-phones or for people with motor or visual disabilities who need help to write faster.
+
+While typing on number keys with the keypad the user sees suggestions of words that have those letters. The suggestions come from a PREDEFINED dictionary.
+
+For example, given a dictionary with the following words: ‘absolute’, ‘amazon’, ‘basket’, ‘bat’, ‘cat’, ‘catalog’, when the user types 117 then the word suggestions will be: ‘bat’ and ‘cat’ 
+(considering that key 1 could represent ‘a’ or ‘b’ or ‘c’ and key 7 could represent ‘s’ or ‘t’ or ‘u’).
+
+### 思路
+#### 思路一
+1. generate all combinations of words using numbers: O
+2. find the intersection of the dictionary and combinbation: O(min(M, N))
+==> O(3^length(input))
+
+#### 思路二
+1. for each word in the dictionary, check if it's a valid suggestion
+   1. check the length
+   2. iterate through the word, check if can be find through number
+   3. when reaches to the end, add it to final result
+2. combine all valid suggestions from step 2
+==> O(length(word)) * O(size of dict)
+
+#### 思路三
+预处理把dictionary转换成数字
+117 -> {"cat", "bat"}
+==> O(length(word)) * O(size of dict)
+
+### test case
+bat, bbo, cat, 117
+
+## 整理回顾
+it reminds me to use map, please give me a sec to think about it.
+流程要把控好：1. 对于题目要问问题，可以确认一下signature 2. follow-up 自己举test case进一步确认问题 3. 要交流思维过程 4. 要把solution想完备之后再写 5. brute force至少要实现出来，不用非得写出来最优的方法，可以在follow up的时候再提出来，而不用敲
+
+ng：根据OA1, OA2结果
+两种：一轮30分钟结束
+另一种：三轮每一轮1小时（很可能有一轮OOD面试）去leedcode discuss看most votes板块
+BQ：搜leadership principle看面试往里套
+
+内推的话，2-3天就会有回复
+
+非ng有一个team match过程，ng是随机分配
+
+
