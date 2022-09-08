@@ -79,6 +79,8 @@ def level_order_traversal(root: Node) -> List[List[int]]:
 
 ## 题目
 
+
+
 [103. Binary Tree Zigzag Level Order Traversal](https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/)
 
 ```python
@@ -542,6 +544,37 @@ class Codec:
         return root
 ```
 
+[298. Binary Tree Longest Consecutive Sequence](https://leetcode.com/problems/binary-tree-longest-consecutive-sequence/)
+
+```py
+class Solution:
+    def longestConsecutive(self, root: Optional[TreeNode]) -> int:
+        """
+        在每个节点，需要和上个节点比较大小，同时更新length和最终的res。因为不需要之后自己自节点的情况，所以不需要分治，直接遍历就可以了
+        
+        时间：O(N)
+        空间：O(N)
+        """
+        
+        res = [0]
+        
+        def dfs(node, parent, length):
+            if not node:
+                return
+            
+            if parent and node.val == parent.val + 1:
+                length += 1
+            else:
+                length = 1
+            
+            res[0] = max(length, res[0])
+            
+            dfs(node.left, node, length)
+            dfs(node.right, node, length)            
+        
+        dfs(root, None, 0)
+        return res[0]
+```
 
 
 [1130. Minimum Cost Tree From Leaf Values](https://leetcode.com/problems/minimum-cost-tree-from-leaf-values/)

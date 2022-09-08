@@ -82,3 +82,12 @@ current project/this summer intern in 2 sentence
 thanks for the opportunity: related experience in 2 sentence
 
 所有写在简历上的都要非常了解：尤其是越靠前的内容，最近的1、2个，记住细节，用了什么架构、模块、方法，对自己做的非常了解，对别人做的要懂
+
+# Coding Interview
+1. Confirm the meaning of the question
+2. Discuss your solution
+3. Write down your solution
+4. Run through a test case
+5. Talk about the running time
+
+
