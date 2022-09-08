@@ -363,7 +363,7 @@ class Solution:
         visit = set()
 
         def dfs(r, c):
-            if (r < 0 or r == rows or c < 0 or c == cols or (r, c) in visit or grid[r][c] != "1"):
+            if (r < 0 or r == rows or c < 0 or c == cols or (r, c) in visit or grid[r][c] != "1"): # grid[r][c] != "1"要放在最后，避免提前因为out of index而报错
                 return
 
             visit.add((r, c)) # can also flood fill to "0"

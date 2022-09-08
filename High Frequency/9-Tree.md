@@ -75,18 +75,21 @@ def level_order_traversal(root: Node) -> List[List[int]]:
     return res
 ```
 
+遍历
+```py
 
+
+
+```
 
 ## 题目
-
-
 
 [103. Binary Tree Zigzag Level Order Traversal](https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/)
 
 ```python
 def zig_zag_traversal(root: Node) -> List[List[int]]:
     """
-    反转list: oneRes.reverse()；翻转isOdd: isOdd = not isOdd
+    反转list: oneRes.reverse()；翻转isOdd: isOdd = not isOdd 
     """
     res = []
     isOdd = True
@@ -116,7 +119,6 @@ def zig_zag_traversal(root: Node) -> List[List[int]]:
      
     return res
 ```
-
 
 [543. Diameter of Binary Tree](https://leetcode.com/problems/diameter-of-binary-tree/)
 ```py
