@@ -1197,6 +1197,40 @@ class Solution:
         return total
 ```
 
+[59. Spiral Matrix II](https://leetcode.com/problems/spiral-matrix-ii/)
+
+```py
+class Solution:
+    def generateMatrix(self, n: int) -> List[List[int]]:
+        """
+        走到头的时候换方向：
+        1. 走到边界
+        2. 走到走过的点
+        
+        dx, dy的位置，组合起来对应着右、下、左、上
+        
+        """
+        res = [[0] * n for _ in range(n)]
+        
+        dx = [0, 1, 0, -1]
+        dy = [1, 0, -1, 0]
+        r, c = 0, 0
+        d = 0
+        
+        for num in  range(1, n * n + 1):
+            res[r][c] = num
+            nr, nc = r + dx[d], c + dy[d]
+            if nr < 0 or nr >= n or nc < 0 or nc >= n or res[nr][nc] != 0:
+                d = (d + 1) % 4
+                nr, nc = r + dx[d], c + dy[d]
+            r, c = nr, nc
+        
+        return res
+```
+
+
+
+
 # Implicit Graph
 
 [752. Open the Lock](https://leetcode.com/problems/open-the-lock/)

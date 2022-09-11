@@ -1017,8 +1017,14 @@ class Solution:
                 dfs(r, c, root, "")
         
         return list(res)
-
 ```
+
+
+[1268. Search Suggestions System](https://leetcode.com/problems/search-suggestions-system/)
+
+
+
+以上是必须掌握题
 
 [820. Short Encoding of Words](https://leetcode.com/problems/short-encoding-of-words/)
 ```py
@@ -1037,8 +1043,6 @@ class Solution:
                 cur = next_node
             leaves.append((cur, len(word) + 1))
         return sum(depth for node, depth in leaves if len(node) == 0)
-
-
 ```
 
 [2135. Count Words Obtained After Adding a Letter](https://leetcode.com/problems/count-words-obtained-after-adding-a-letter/)
@@ -1131,6 +1135,11 @@ class Solution(object):
         for w in words: trie.insert(w)
         return trie.bfs()
 ```
+
+
+
+[745. Prefix and Suffix Search](https://leetcode.com/problems/design-add-and-search-words-data-structure/)
+
 
 # Segment Tree
 ## what is

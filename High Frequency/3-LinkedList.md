@@ -198,6 +198,50 @@ class Solution:
         return before_head.next
 ```
 
+[148. Sort List](https://leetcode.com/problems/sort-list/)
+
+```py
+class Solution:
+    def sortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        """
+        Top down Mergesort: divide into subproblems, solve each, then merge together
+        
+        Time: O(NlogN)
+        Space: O(NlogN)
+        """
+        def getMid(head):
+            slow, fast = head, head
+            while fast.next and fast.next.next:
+                slow = slow.next
+                fast = fast.next.next
+            mid = slow.next
+            slow.next = None
+            return mid
+        
+        def merge(l, r):
+            """Merge two lists"""
+            if not l or not r:
+                return l or r
+            dummy = p = ListNode(0)
+            while l and r:
+                if l.val < r.val:
+                    p.next = l
+                    l = l.next
+                else:
+                    p.next = r
+                    r = r.next
+                p = p.next
+            p.next = l or r
+            return dummy.next
+        
+        if not head or not head.next:
+            return head
+        
+        mid = getMid(head)
+        left = self.sortList(head)
+        right = self.sortList(mid)
+        return merge(left, right)
+```
 
 # 进阶题目
 

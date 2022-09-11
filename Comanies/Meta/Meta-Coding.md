@@ -4078,7 +4078,7 @@ class Solution:
 
 
 
-# my own: OA1
+# my own: VO1
 [moving average]
 ```py
 def movingAve(nums, window_size):
@@ -4122,6 +4122,6 @@ def movingAverage(nums, window):
 
 [735. Asteroid Collision](https://leetcode.com/problems/asteroid-collision/)
 
-# OA2
+# VO2
 [236]
 [921]
