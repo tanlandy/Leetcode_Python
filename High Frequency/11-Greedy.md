@@ -101,3 +101,31 @@ class Solution:
         
         return res - target + startValue
 ```
+
+[948. Bag of Tokens](https://leetcode.com/problems/bag-of-tokens/)
+```py
+class Solution:
+    def bagOfTokensScore(self, tokens: List[int], power: int) -> int:
+        """
+        从最小的token开始来+score，power不够用之后从最大的token来-score再从最小的token+score
+        """
+        tokens.sort()
+        
+        queue = collections.deque(tokens)
+        
+        res = 0
+        score = 0
+        
+        while queue and (power >= queue[0] or score):
+            while queue and power >= queue[0]:
+                score += 1
+                power -= queue.popleft()
+            
+            res = max(res, score)
+            
+            if queue and score:
+                score -= 1
+                power += queue.pop()
+        
+        return res
+```
