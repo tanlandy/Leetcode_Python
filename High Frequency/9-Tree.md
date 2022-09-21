@@ -43,6 +43,17 @@ tree.root.right.right = Node(7)
 
 # Binary Tree
 
+## Think like a node
+when you are a node, only things you know are:
+1. your value
+2. how to get to your children
+
+two things needed to think of when writing dfs()
+1. Return value (Passing value up from child to parent)
+   - Ask what information we need at the current node to make a decision 
+2. Identify states (Passing value down from parent to child)
+   - what states do we need to maintain to compute the return value for the current node
+
 ## 模板
 queue放元素：queue = deque([root])
 
@@ -74,6 +85,10 @@ def level_order_traversal(root: Node) -> List[List[int]]:
                       
     return res
 ```
+### Pre-order, In-order, and Post-order
+1. Pre-order: make the decision before looking at your children
+2. Post-order: make the dicision after collecting information on children
+
 
 遍历
 ```py
@@ -695,6 +710,116 @@ class Solution:
         self.flattenTree(root)
 ```
 
+
+[104. Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
+
+```py
+class Node:
+    def __init__(self, val, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def tree_max_depth(root: Node) -> int:
+    """
+    1. Return value: return the depth for the current subtree after we visit a node
+    2. Identify states: to decide the depth of current node, we only need depth from its children, don't need info from parents
+
+    Time: O(N)
+    Space: O(N)
+    """
+    if not root:
+        return 0
+    left_max = tree_max_depth(root.left)
+    right_max = tree_max_depth(root.right)
+    return max(left_max, right_max) + 1
+    
+
+def build_tree(nodes, f):
+    val = next(nodes)
+    if val == 'x': return None
+    left = build_tree(nodes, f)
+    right = build_tree(nodes, f)
+    return Node(f(val), left, right)
+
+tree = [5, 4, 3, "x", "x", 8, "x", "x", 6, "x", "x"]
+
+if __name__ == '__main__':
+    root = build_tree(iter(tree), int)
+    res = tree_max_depth(root)
+    print(res)
+```
+
+Iterative Solution:
+```py
+class Solution:
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        
+        stack = [[root, 1]]
+        res = 1
+        
+        while stack:
+            node, depth = stack.pop()
+            if node:
+                res = max(res, depth)
+                stack.append([node.left, depth + 1])
+                stack.append([node.right, depth + 1])
+        
+        return res
+```
+
+[1448. Count Good Nodes in Binary Tree](https://leetcode.com/problems/count-good-nodes-in-binary-tree/)
+```py
+class Solution:
+    def goodNodes(self, root: TreeNode) -> int:
+        """
+        只需要遍历一遍
+        """
+        res = [0]
+        def dfs(root, path_max):
+            if not root:
+                return
+            if root.val >= path_max:
+                res[0] += 1
+            path_max = max(root.val, path_max)
+            dfs(root.left, path_max)
+            dfs(root.right, path_max)
+        dfs(root, float("-inf"))
+        return res[0]
+```
+
+[110. Balanced Binary Tree](https://www.youtube.com/watch?v=QfJsau0ItOY)
+
+```py
+class Solution:
+    def isBalanced(self, root: Optional[TreeNode]) -> bool:
+        """
+        站在每个节点：知道两边子树的高度差，并比较；
+        返回什么：要返回当前节点的高度
+        -> 后序遍历，返回当前高度
+
+        时间：O(N)
+        空间：O(N)
+        """
+        def node_height(node):
+            if not node:
+                return 0
+            left_h = node_height(node.left)
+            right_h = node.height(node.right)
+
+            if left_h == -1 or right_h == -1:
+                return -1
+
+            if abs(left_h - right_h) > 1:
+                return -1
+            
+            return 1 + max(left_h, right_h)
+        
+        return node_height(root) != -1
+
+```
 
 
 

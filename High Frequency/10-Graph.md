@@ -73,6 +73,31 @@ Space: graph space: Adjlist: O(V+E)
 queue: O(V)
 distance array: O(V)
 
+# DFS
+
+1. capture cycles
+2. identify connected components
+
+input: G(V, E)
+output: two timestamps for every v in V, d[v]=time you first enter or discover a node, f[v]=time finish with that node, classification of edges
+
+idea:
+go as deep as you can and then backup
+
+dfs(G):
+    for each v in V:
+        if v not visited:
+            dfsVisit(v)
+
+dfsVisit(v):
+    for each u in adj[v]:
+        if u not visited:
+            dfsVisit(u)
+    u is now visited
+
+
+Time: O(V+E): only visit vertex and edges once
+
 ## Single source shortest path(SSSP)
 
 1. unweighted/weight of all edges is 1 -> BFS
@@ -1889,6 +1914,36 @@ class Solution:
                 if n2 not in visited:
                     heapq.heappush(min_heap, (t1 + w2, n2))
 
+        return res if len(visited) == n else -1
+```
+
+[1135. Connecting Cities With Minimum Cost](https://leetcode.com/problems/connecting-cities-with-minimum-cost/)
+也可以用MST来做
+```py
+class Solution:
+    def minimumCost(self, n: int, connections: List[List[int]]) -> int:
+        # build a adjcency list with N nodes
+        adj = {i:[] for i in range(1, n + 1)} # 这些点都从1开始
+        for x, y, cost in connections:
+            adj[x].append([cost, y]) # i: [cost, node]
+            adj[y].append([cost, x])
+        
+        # dijkstra to find the min cost to visit all nodes
+        minH = [(0, 1)] # (cost, node)
+        visited = set()
+        res = 0
+        
+        while minH:
+            cost, node = heapq.heappop(minH)
+            if node in visited:
+                continue
+                
+            visited.add(node)
+            res += cost
+            for nei_cost, nei in adj[node]:
+                if nei not in visited:
+                    heapq.heappush(minH, (nei_cost, nei))
+        
         return res if len(visited) == n else -1
 ```
 
