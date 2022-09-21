@@ -27,3 +27,8 @@ one-on-one session is gold: show you understand the bigger picture, look for opp
 landed a new job, right after that covid-19 happened -> you gonna know what to do the right thing
 
 
+understand you path: focu on what you want to do, ask good question, provide value, understand people their motivation
+
+any good books?
+"peopleware"
+
