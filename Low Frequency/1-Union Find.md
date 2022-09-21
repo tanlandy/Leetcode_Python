@@ -24,7 +24,6 @@ class Solution:
         return len({find(i) for i in range(n)}) # 返回连通个数
 ```
 
-
 ```py
 class Solution:
     def countComponents(self, n: int, edges: List[List[int]]) -> int:
@@ -53,14 +52,17 @@ class Solution:
 
 ```
 
+[684. Redundant Connection](https://leetcode.com/problems/redundant-connection/)
+
 [721. Accounts Merge](https://leetcode.com/problems/accounts-merge/)
+
+[261. Graph Valid Tree](https://leetcode.com/problems/graph-valid-tree/)
 
 [547. Number of Provinces](https://leetcode.com/problems/number-of-provinces/)
 
-
+[737. Sentence Similarity II](https://leetcode.com/problems/sentence-similarity-ii/)
 
 [305. Number of Islands II](https://leetcode.com/problems/number-of-islands-ii/)
-
 ```py
 class Solution:
     def numIslands2(self, m: int, n: int, positions: List[List[int]]) -> List[int]:
