@@ -1166,4 +1166,69 @@ class Solution:
         return current_string
 ```
 
+[541. Reverse String II](https://leetcode.com/problems/reverse-string-ii/)
 
+```py
+class Solution:
+    def reverseStr(self, s: str, k: int) -> str:
+        slist = list(s)
+        
+        for i in range(0, len(s), 2 * k):
+            l = i
+            r = min(i + k - 1, len(s) - 1) # 要注意的点
+            while l < r:
+                slist[l], slist[r] = slist[r], slist[l]
+                l += 1
+                r -= 1
+        
+        return "".join(slist)
+```
+
+
+[557. Reverse Words in a String III](https://leetcode.com/problems/reverse-words-in-a-string-iii/)
+
+```py
+class Solution:
+    def reverseWords(self, s: str) -> str:
+        last = -1
+        slist = list(s)
+        for i in range(len(s) + 1):
+            if i == len(s) or slist[i] == " ": # 走到了空格，即word的后一位
+                l = last + 1 # l是上一个空格+1
+                r = i - 1 # r是空格-1
+                while l < r:
+                    slist[l], slist[r] = slist[r], slist[l]
+                    l += 1
+                    r -= 1
+                last = i # last是空格
+        
+        return "".join(slist)
+```
+
+# Nums
+
+[985. Sum of Even Numbers After Queries](https://leetcode.com/problems/sum-of-even-numbers-after-queries/)
+
+```py
+class Solution:
+    def sumEvenAfterQueries(self, nums: List[int], queries: List[List[int]]) -> List[int]:
+        """
+        maintain the sum of even numbers in each operation. 
+        因为要修改一个数，如果这个数是偶数，那么就已经加在S里了，在修改前先从S里删掉。如果是奇数那就不用管
+
+        Time: O(max(M, N)), M is len(nums), N is len(queries)
+        Space: O(N), with O(1) additional space
+        """
+        S = sum(x for x in nums if x % 2 == 0)
+        res = []
+        
+        for n, i in queries:
+            if nums[i] % 2 == 0:
+                S -= nums[i]
+            nums[i] += n
+            if nums[i] % 2 == 0:
+                S += nums[i]
+            res.append(S)
+        
+        return res
+```
