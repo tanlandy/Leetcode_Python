@@ -612,3 +612,221 @@ class Solution:
             if 0 <= int(s[start:i+1]) <= 255:
                 self.backtrack(s, current + [s[start:i+1]], i + 1)
 ```
+
+# DFS + Memorization
+
+[91. Decode Ways](https://leetcode.com/problems/decode-ways/)
+
+```py
+class Solution:
+    def numDecodings(self, s: str) -> int:
+        """
+        BF: when str has more than two digits: draw a desicion tree
+        Example: "121" can only branch to 1-26 -> O(2^N)
+                 121
+             /          \
+            1            12
+          /   \         /
+         2    21       1
+        /
+        1
+
+        subproblem: once solve 21, the subproblem is 1, solve from right to left
+        dp[i] = dp[i + 1] + dp[i + 2]
+
+        Time: O(N)
+        Space: O(N), O(1) if only use two variables
+        """
+        dp = [1] * (len(s) + 1)
+
+        for i in range(len(s) - 1, -1, -1):
+            if s[i] == "0":
+                dp[i] = 0
+            else:
+                dp[i] = dp[i + 1]
+
+            if ((i + 1) < len(s)) and ((s[i] == "1") or s[i] == "2" and s[i + 1] in "0123456"): # double digit
+            # if 10 <= int(s[i:i+2]) <= 26:
+                dp[i] += dp[i + 2]
+        
+        return dp[0]
+```
+
+```py
+class Solution:
+    def numDecodings(self, s: str) -> int:
+        """
+        Time: O(N)
+        Space: O(N)
+        """
+        memo = {}
+        
+        def dfs(idx):
+            if idx in memo:
+                return memo[idx]
+            
+            # 走到头了
+            if idx == len(s):
+                return 1
+            
+            # 这个string以0开头
+            if s[idx] == "0":
+                return 0
+            
+            # 走到前一位：只有1种方式了
+            if idx == len(s) - 1:
+                return 1
+            
+            res = dfs(idx + 1)
+            if int(s[idx: idx + 2]) <= 26:
+                res += dfs(idx + 2)
+            
+            memo[idx] = res       
+                 
+            return res
+        
+        return dfs(0)        
+```
+
+[97. Interleaving String](https://leetcode.com/problems/interleaving-string/)
+```py
+class Solution:
+    def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
+        """
+        双指针遍历，遇到相同情况下走哪一个？->走每一个
+        DFS + Memo
+        
+        时间：O(MN)
+        空间：O(MN)
+        """
+        if len(s3) != len(s1) + len(s2):
+            return False
+        
+        memo = {}
+        
+        def dfs(i, j, k):
+            if (i, j) in memo:
+                return memo[(i, j)]
+            
+            if i == len(s1):
+                return s2[j:] == s3[k:]
+            if j == len(s2):
+                return s1[i:] == s3[k:]
+            
+            if s1[i] == s3[k]:
+                if dfs(i + 1, j, k + 1):
+                    memo[(i, j)] = True
+                    return True
+            
+            if s2[j] == s3[k]:
+                if dfs(i, j + 1, k + 1):
+                    memo[(i, j)] = True
+                    return True
+            
+            memo[(i, j)] = False
+            return False
+        
+        return dfs(0, 0, 0)
+```
+
+
+[526. Beautiful Arrangement](https://leetcode.com/problems/beautiful-arrangement/)
+
+```py
+class Solution:
+    def countArrangement(self, N):
+        """
+        :type N: int
+        :rtype: int
+        """
+        cache = {}
+        def helper(X):
+            if len(X) == 1:
+                # Any integer can be divide by 1
+                return 1
+            
+            if X in cache:
+                return cache[X]
+            total = 0
+            for j in range(len(X)):
+                if X[j] % len(X) == 0 or len(X) % X[j] == 0:
+                    total += helper(X[:j] + X[j+1:])
+                    
+            cache[X] = total 
+            return total 
+        
+        return helper(tuple(range(1, N+1)))
+```
+
+[[698. Partition to K Equal Sum Subsets](https://leetcode.com/problems/partition-to-k-equal-sum-subsets/) 好题
+]
+```py
+class Solution:
+    def canPartitionKSubsets(self, arr: List[int], k: int) -> bool:
+        n = len(arr)
+    
+        total_array_sum = sum(arr)
+        
+        # If the total sum is not divisible by k, we can't make subsets.
+        if total_array_sum % k != 0:
+            return False
+
+        target_sum = total_array_sum // k
+
+        # Sort in decreasing order.
+        arr.sort(reverse=True)
+
+        taken = ['0'] * n
+        
+        memo = {}
+        
+        def backtrack(index, count, curr_sum):
+            n = len(arr)
+            
+            taken_str = ''.join(taken)
+      
+            # We made k - 1 subsets with target sum and the last subset will also have target sum.
+            if count == k - 1:
+                return True
+            
+            # No need to proceed further.
+            if curr_sum > target_sum:
+                return False
+            
+            # If we have already computed the current combination.
+            if taken_str in memo:
+                return memo[taken_str]
+            
+            # When curr sum reaches target then one subset is made.
+            # Increment count and reset current sum.
+            if curr_sum == target_sum:
+                memo[taken_str] = backtrack(0, count + 1, 0)
+                return memo[taken_str]
+            
+            # Try not picked elements to make some combinations.
+            for j in range(index, n):
+                if taken[j] == '0':
+                    # Include this element in current subset.
+                    taken[j] = '1'
+                    # If using current jth element in this subset leads to make all valid subsets.
+                    if backtrack(j + 1, count, curr_sum + arr[j]):
+                        return True
+                    # Backtrack step.
+                    taken[j] = '0'
+                    
+            # We were not able to make a valid combination after picking 
+            # each element from the array, hence we can't make k subsets.
+            memo[taken_str] = False
+            return memo[taken_str] 
+        
+        return backtrack(0, 0, 0)
+```
+
+
+https://leetcode.com/problems/longest-increasing-path-in-a-matrix/discuss/2052360/Python%3A-Beginner-Friendly-%22Recursion-to-DP%22-Intuition-Explained 
+
+https://leetcode.com/problems/out-of-boundary-paths/discuss/1293697/python-easy-to-understand-explanation-recursion-and-memoization-with-time-and-space-complexity 
+
+https://leetcode.com/problems/number-of-matching-subsequences/discuss/1289549/python-explained-all-possible-solutions-with-time-and-space-complexity 
+
+
