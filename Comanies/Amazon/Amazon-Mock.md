@@ -137,4 +137,135 @@ BQ：搜leadership principle看面试往里套
 
 非ng有一个team match过程，ng是随机分配
 
+# 09/22/2022
+Learn and Be Curious
+tell me about a time when you didn't know what to do next or how to solve a challenging problem. How do you learn what you don't know? what were the options you considered? How did you decide the best path forward? What was the outcome?
 
+Bias for Action / Deliver Results
+Give me a time when you were able to deliver an important project under a tight deadline. What sacridices did you have to make to meet the deadline? What was thefinal outcome?
+
+- finished before, but after that was told to give a presentation
+- sacrafice between meeting deadline and your work
+
+## coding
+implement a file searching library:
+1. find all files that have a given size requirement: eg. find all files over 5 MB under a directory
+2. find all files that match a specified string pattern: eg. find all files with "Grocery" in the name
+
+File file
+   String getPath()
+   int getSize()
+   List<File> children()
+   boolena isDir()
+
+
+leadership principle
+
+```java
+// I would like you to implement a file searching library. That can do the following:
+
+//     Find all files that have a given size requirement, eg "Find all files over 5 MB somewhere under a directory"
+//     Find all files that match a specified string pattern eg. "Find all files with Grocery in the name"
+
+// Keep in mind that these are just 2 uses cases and that the library should be flexible. Asking a new question, such as finding all pdf files modified less then 2 days ago, shouldn't be too difficult.
+
+
+File file
+  String getPath() -> /tmp/var/log/
+  int getSize() -> 1024
+  Date getLastModifiedTime() -> 2022/01/01 10:24:10.123
+  List<File> children() -> [File(/tmp/var/log/1.log, /tmp/var/log/2.log, ...)]
+  boolean isDir();
+  
+  
+public Solu {
+			
+      public Lis<File> BFS(File root, Rule rule) {
+      		Queue<File> queue = new LinkedList<>();
+          List<File> res = new LinkedList<>();
+          queue.offer(root);
+          while(!queue.isEmpty()) {
+          		File curr = queue.poll();
+              if(!curr.isDir()) {
+              	res.add(curr);
+              	
+                continue;
+              }
+            	List<File> childs = curr.children();
+              for(File f:childs) {
+              	queue.add(f);
+              }
+          }
+          return res;
+      }
+      
+      
+      public void main() {
+      		File root = new File("/home/xxx")
+          Rule rule = new OversizeRule(1024.0);
+          List<File> res = BFS(root, newrule);
+      }
+}
+
+public Rule {
+		public boolean compare(File f, String str) {
+    		return ture;
+    }
+}
+
+public OverSize extend Rule {
+		public boolean compare(File f, String weight) {
+    	 return f.getSize() > Integer.valueOf(weight);
+    }
+}
+public Smaller extend OverSize {
+		public boolean compare(File f, String larger, String smaller) {
+    		if(super.compare(f, weight)) {
+        		return f.getsize() < smaller;
+        }
+        return false;
+    }
+}
+
+public Contains extend Rule {
+
+	public boolean compare(File f, String str) {
+      // String.contains(string);
+  		return f.getPath().contains(str);
+  }
+}
+
+ > 5 MB && .contains("hello")
+
+2 MB < size < 5 MB
+
+public interface Rule {
+	  boolean compare(File f);
+}
+
+public OverSizeRule implements Rule {
+	private double threshold;
+  
+  public OverSizeRule(double threshold) {
+  	this.threshold = threshold;
+  }
+  
+  public boolean compare(File f) {
+  	return f.getSize() > this.threshold;
+  }
+}
+
+public AndRule implements Rule {
+	List<Rule> rules;
+  
+  public boolean compare(File f) {
+  	for(Rule r: this.rules) {
+          if(!r.compare(f)) {
+          	return false;
+          }
+    }
+    return true;
+  }
+}
+
+```
