@@ -38,3 +38,5 @@ Why us?
 个人：重点在于技能匹配
 发展：与未来发展规划契合：就是想学习，技术栈也喜欢，在这个岗位至少有3-5年成长期，之后如果有更强的能力，open to更多的responsibility
 
+No PAIN. NO GAIN.
+努力+认真=Dream offer
