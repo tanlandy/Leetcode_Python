@@ -62,6 +62,9 @@ class Solution:
 
 [737. Sentence Similarity II](https://leetcode.com/problems/sentence-similarity-ii/)
 
+[990. Satisfiability of Equality Equations](https://leetcode.com/problems/satisfiability-of-equality-equations/)
+
+
 [305. Number of Islands II](https://leetcode.com/problems/number-of-islands-ii/)
 ```py
 class Solution:
@@ -89,3 +92,4 @@ class Solution:
             res.append(count)
         return res
 ```
+
