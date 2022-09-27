@@ -1205,6 +1205,56 @@ class Solution:
         return "".join(slist)
 ```
 
+[821. Shortest Distance to a Character](https://leetcode.com/problems/shortest-distance-to-a-character/)
+
+```py
+class Solution(object):
+    def shortestToChar(self, S, C):
+            n = len(S)
+            res = [n] * n
+            pos = -n
+            for i in list(range(n)) + list(range(n)[::-1]):
+                if(S[i] == C):  pos = i
+                res[i] = min(res[i], abs(i - pos))
+            return res  
+```
+
+[838. Push Dominoes](https://leetcode.com/problems/push-dominoes/)
+
+```py
+class Solution(object):
+    def pushDominoes(self, dominoes):
+        """
+        :type dominoes: str
+        :rtype: str
+        """
+        lst = list(dominoes)
+        dist = [0] * len(dominoes)
+        rDist = None
+        for i, val in enumerate(lst):
+            if val == 'R':
+                rDist = 0
+            elif val == 'L':
+                rDist = None
+            elif rDist != None:
+                rDist += 1
+                dist[i] = rDist
+                lst[i] = 'R'
+        lDist = None
+        for i in range(len(lst) - 1, -1, -1):
+            if dominoes[i] == 'L':
+                lDist = 0
+            elif dominoes[i] == 'R':
+                lDist = None
+            elif lDist != None:
+                lDist += 1
+                if lDist < dist[i] or lst[i] == '.':
+                    lst[i] = 'L'
+                elif lDist == dist[i]:
+                    lst[i] = '.'
+        return ''.join(lst)
+```
+
 # Nums
 
 [985. Sum of Even Numbers After Queries](https://leetcode.com/problems/sum-of-even-numbers-after-queries/)

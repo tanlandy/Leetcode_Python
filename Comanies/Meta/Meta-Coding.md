@@ -3778,7 +3778,7 @@ class Solution:
         for i, val in enumerate(self.nums):
             if val == target:
                 count += 1
-                if random.randint(1, count) == count:
+                if random.randint(1, count) == count: # for the ith number, the probability of been chosn is 1/count
                     idx = i
         return idx
 ```
@@ -3790,16 +3790,16 @@ class Solution:
 
 ```python
 class Solution:
-
+    
     def __init__(self, nums: List[int]):
-        self.numToIdx = collections.defaultdict(list)
+        self.num_to_idx = collections.defaultdict(list)
         for i, val in enumerate(nums):
-            self.numToIdx[val].append(i)
+            self.num_to_idx[val].append(i)
 
     def pick(self, target: int) -> int:
-        size = len(self.numToIdx[target]) - 1
+        size = len(self.num_to_idx[target]) - 1
         idx = random.randint(0, size)
-        res = self.numToIdx[target][idx]
+        res = self.num_to_idx[target][idx]
         
         return res
 ```
