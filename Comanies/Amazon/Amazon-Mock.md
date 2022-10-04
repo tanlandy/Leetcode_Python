@@ -269,3 +269,48 @@ public AndRule implements Rule {
 }
 
 ```
+
+
+
+# 10/03/22
+
+introduction
+
+## BQ
+
+tell me a time that you find you cannot meet your commitment. What was that, how did you risk, and how did you communicate
+--> STAR + Learnt
+timeline!
+
+tell me time when you need to understand some complicated problem? --> 看怎么dive deep，如何debug，而不是直接放弃，怎么意识到是complicated然后如何去做的
+--> clarify why that is not the best approach
+--> why do you use the other one
+
+--> STAR + Learnt
+what is the most challenging part
+
+--> follow STAR to answer
+ownership answer should focus on when you relized you cannot meet the commitment, how do you communicate to other people and how to do tradeoffs to make the right decisions
+you should proactively move things forward by discussing with managers / peers, doing research to dive deep, etc.
+
+## Coding via codeshare
+
+Given an array of intervals where intervals[i] = [starti, endi], merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input
+
+对于复制来的题，也要自己给面试官讲一遍题目确保自己了解了题目。问clarifying questions: positive number? sorted?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

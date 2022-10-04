@@ -430,7 +430,7 @@ class Solution:
         # intervals.sort()
         res = [intervals[0]] # 一开始把第一个放进去，这样好直接进行第一次比较
 
-        for start, end in intervals[1:] :
+        for start, end in intervals[1:]:
             lastEnd = res[-1][1]
             if start <= lastEnd:
                 res[-1][1] = max(lastEnd, end)
