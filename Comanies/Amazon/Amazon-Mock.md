@@ -300,7 +300,11 @@ Given an array of intervals where intervals[i] = [starti, endi], merge all overl
 对于复制来的题，也要自己给面试官讲一遍题目确保自己了解了题目。问clarifying questions: positive number? sorted?
 
 
-
+对于4轮
+1. LP + coding (data structure and algo)
+2. LP + coding (logical and maintainable) -> break into helper function
+3. LP + coding (problem solving) -> edge cases: "Mary spends $5.5 this week. Bob spends $10" -> discount amount by 20%: $1,000, %5.5有小数点，有大数的 -> follow up是其他钱
+4. LP only
 
 
 
