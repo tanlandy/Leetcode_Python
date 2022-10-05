@@ -1300,10 +1300,97 @@ class Solution:
 ```
 
 
+### Path Sum系列
 
-[230. Kth Smallest Element in a BST](https://leetcode.com/problems/kth-smallest-element-in-a-bst/) 上面有
+[112. Path Sum](https://leetcode.com/problems/path-sum/)
 
+```py
+class Solution:
+    def hasPathSum(self, root: Optional[TreeNode], targetSum: int) -> bool:
+        """
+        遍历时候更新targetSum的值，返回这个点是否满足要求
+        """
+        if not root:
+            return False
+        
+        targetSum -= root.val
+        
+        if not root.left and not root.right: # reach a leaf
+            return targetSum == 0 # only check when reaches a leaf
+        
+        return self.hasPathSum(root.left, targetSum) or self.hasPathSum(root.right, targetSum)
+```
 
+[113. Path Sum II](https://leetcode.com/problems/path-sum-ii/)
+```py
+class Solution:
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> List[List[int]]:
+        """
+        execute the dfs and maintain the running sum of node traversed and the list of those nodes
+        
+        Time: O(N^2)
+        Space: O(N)
+        需要注意，如果是问root to node的话，就不需要满足位置关系。
+        如果不全是positive value的话，不能提前break，一定要找到底
+        """
+        res = []
+        def dfs(node, cur_sum, cur_path):
+            if not node:
+                return
+            cur_sum += node.val
+            cur_path.append(node.val)
+            
+            if cur_sum == targetSum and not node.left and not node.right: # 同时满足大小和位置关系
+                res.append(cur_path.copy())
+            else:
+                dfs(node.left, cur_sum, cur_path)
+                dfs(node.right, cur_sum, cur_path)
+            
+            cur_path.pop()
+        
+        dfs(root, 0, [])
+        return res
+```
+
+[437. Path Sum III](https://leetcode.com/problems/path-sum-iii/)
+
+```py
+class Solution:
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> int:
+        """
+        Time: O(N^2)
+        """
+        res = [0]
+        
+        def dfs(node, cur_sum):
+            if not node:
+                return
+            
+            cur_sum += node.val
+            if cur_sum == targetSum:
+                res[0] += 1
+                
+            dfs(node.left, cur_sum)
+            dfs(node.right, cur_sum)
+        
+        def d(node): # traverse the tree
+            if not node:
+                return
+            dfs(node, 0) # dfs each node
+            d(node.left)
+            d(node.right)
+        
+        d(root)
+        return res[0]
+```
+
+更好的方法Prefix_sum
+
+```py
+
+```
+
+[129. Sum Root to Leaf Numbers](https://leetcode.com/problems/sum-root-to-leaf-numbers/)
 
 
 
@@ -1339,38 +1426,8 @@ class Solution:
         return res[0]
 ```
 
-[113. Path Sum II](https://leetcode.com/problems/path-sum-ii/)
-```py
-class Solution:
-    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> List[List[int]]:
-        """
-        execute the dfs and maintain the running sum of node traversed and the list of those nodes
-        
-        Time: O(N^2)
-        Space: O(N)
-        """
-        res = []
-        def dfs(node, cur_sum, cur_path):
-            if not node:
-                return
-            cur_sum += node.val
-            cur_path.append(node.val)
-            
-            if cur_sum == targetSum and not node.left and not node.right: # 同时满足大小和位置关系
-                res.append(cur_path.copy())
-            else:
-                dfs(node.left, cur_sum, cur_path)
-                dfs(node.right, cur_sum, cur_path)
-            
-            cur_path.pop()
-        
-        dfs(root, 0, [])
-        return res
-```
 
-
-
-## 公共祖先
+### 公共祖先系列
 
 [236. Lowest Common Ancestor of a Binary Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/)
 
@@ -1570,6 +1627,43 @@ class Solution:
         
         return False
 ```
+
+[623. Add One Row to Tree](https://leetcode.com/problems/add-one-row-to-tree/)
+
+```py
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def addOneRow(self, root: Optional[TreeNode], val: int, depth: int) -> Optional[TreeNode]:
+        if depth == 1:
+            new_root = TreeNode(val)
+            new_root.left = root
+            return new_root
+        
+        def dfs(root, d): # traverse while keep track of cur_depth d
+            if not root:
+                return
+            if d < depth - 1:
+                dfs(root.left, d + 1)
+                dfs(root.right, d + 1)
+            else:
+                left_node = TreeNode(val)
+                left_node.left = root.left
+                right_node = TreeNode(val)
+                right_node.right = root.right
+                root.left = left_node
+                root.right = right_node
+        
+        dfs(root, 1)
+        return root
+```
+
+
+
 
 
 

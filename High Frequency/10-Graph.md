@@ -1255,6 +1255,33 @@ class Solution:
 
 
 
+[531. Lonely Pixel I](https://leetcode.com/problems/lonely-pixel-i/)
+```py
+class Solution:
+    def findLonelyPixel(self, picture: List[List[str]]) -> int:
+        """
+        先算出来每行每列有几个B，然后同时满足是B且行列都是1的就是需要的点
+        """
+        rows, cols = len(picture), len(picture[0])
+        row_count = [0] * cols
+        col_count = [0] * rows
+        
+        for r in range(rows):
+            for c in range(cols):
+                if picture[r][c] == "B":
+                    row_count[c] += 1
+                    col_count[r] += 1
+        
+        res = 0
+        for r in range(rows):
+            for c in range(cols):
+                if picture[r][c] == "B" and row_count[c] == col_count[r] == 1:
+                    res += 1
+        
+        return res
+```
+
+
 
 # Implicit Graph
 
