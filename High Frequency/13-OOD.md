@@ -2,6 +2,37 @@
 
 # 例题
 
+[981. Time Based Key-Value Store](https://leetcode.com/problems/time-based-key-value-store/)
+
+```py
+class TimeMap:
+    """
+    添加进去之后，用二分查找
+    """
+
+    def __init__(self):
+        self.dic = collections.defaultdict(list)
+
+    def set(self, key: str, value: str, timestamp: int) -> None:
+        self.dic[key].append([timestamp, value])
+
+    def get(self, key: str, timestamp: int) -> str:
+        arr = self.dic[key]
+        l, r = 0, len(arr) - 1
+        while l <= r:
+            mid = (l + r) // 2
+            if arr[mid][0] <= timestamp:
+                l = mid + 1
+            else:
+                r = mid - 1
+        
+        return "" if r == -1 else arr[r][1]
+```
+
+[2034. Stock Price Fluctuation](https://leetcode.com/problems/stock-price-fluctuation/)
+
+
+
 [362. Design Hit Counter](https://leetcode.com/problems/design-hit-counter/)
 
 ```py
