@@ -1,7 +1,91 @@
 # 基础知识
 前缀和本质上是在一个list当中，用O（N）的时间提前算好从第0个数字到第i个数字之和，在后续使用中可以在O（1）时间内计算出第i到第j个数字之和
 
+Find a number of continuous subarrays/submatrices/tree paths that sum to target
+
+
 # 题目
+
+[560. Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/)
+
+```py
+class Solution:
+    def subarraySum(self, nums: List[int], k: int) -> int:
+        """
+        BF
+        Time: O(N^2)
+        Space: O(1)
+        """
+        res = 0
+        
+        for i in range(len(nums)):
+            cur_sum = 0
+            
+            for j in range(i, len(nums)):
+                cur_sum += nums[j]
+                if cur_sum == k:
+                    res += 1
+        
+        return res
+```
+
+
+```py
+class Solution:
+    def subarraySum(self, nums: List[int], k: int) -> int:
+        """
+        Prefix Sum
+        Time: O(N)
+        Space: O(N)
+        """
+        cur_sum = 0
+        count = 0
+        prefix_freq = collections.defaultdict(int)
+        
+        for n in nums:
+            cur_sum += n
+            if cur_sum == k: # 第一种情况：从第一个数开始前缀和等于k
+                count += 1
+            count += prefix_freq[cur_sum - k] # 第二种情况：之前某个数i的从零开始前缀和是cur_sum - k，那么从i开始到这个数的和就是cur_sum - (cur_sum - k) = k
+            prefix_freq[cur_sum] += 1 # 存下来当前前缀和出现的次数
+        
+        return count
+```
+
+[437. Path Sum III](https://leetcode.com/problems/path-sum-iii/)
+
+```py
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> int:
+        """
+        remove the last cur_sum from dict before processing the parallel subtree
+        """
+        prefix_freq = collections.defaultdict(int)
+        res = [0]
+        def dfs(node, cur_sum): # cur_sum is the prefix_sum from the previous node
+            if not node:
+                return
+            
+            cur_sum += node.val
+            
+            if cur_sum == targetSum:
+                res[0] += 1
+            res[0] += prefix_freq[cur_sum - targetSum]
+            prefix_freq[cur_sum] += 1
+            
+            dfs(node.left, cur_sum)
+            dfs(node.right, cur_sum)
+            prefix_freq[cur_sum] -= 1
+        
+        dfs(root, 0)
+        return res[0]
+```
 
 [53. Maximum Subarray](https://leetcode.com/problems/maximum-subarray/)
 
@@ -175,7 +259,6 @@ class Solution(object):
         return ans
 ```
 
-[560. Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/)
 
 
 [1074. Number of Submatrices That Sum to Target](https://leetcode.com/problems/number-of-submatrices-that-sum-to-target/)

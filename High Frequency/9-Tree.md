@@ -1300,7 +1300,96 @@ class Solution:
 ```
 
 
-### Path Sum系列
+### Path系列
+
+[257. Binary Tree Paths](https://leetcode.com/problems/binary-tree-paths/)
+
+```py
+class Solution:
+    def binaryTreePaths(self, root: Optional[TreeNode]) -> List[str]:
+        """
+        string manipulation: "1" + "->" + str(node.val)
+        """
+        res = []
+        
+        def dfs(node, cur_path):
+            if not node:
+                return
+            
+            cur_path += str(node.val)
+            
+            if not node.left and not node.right:
+                res.append(cur_path)
+            
+            dfs(node.left, cur_path + "->")
+            dfs(node.right, cur_path + "->")
+        
+        dfs(root, "")
+        
+        return res
+```
+
+[988. Smallest String Starting From Leaf](https://leetcode.com/problems/smallest-string-starting-from-leaf/)
+
+```py
+class Solution:
+    def smallestFromLeaf(self, root: Optional[TreeNode]) -> str:
+        res = [None]
+
+        def dfs(node, cur):
+            if not node:
+                return
+            
+            cur = cur + chr(ord("a") + node.val) # ord("a") returns ASCII of a, chr(97) return "a" from ASCII
+            
+            if not node.left and not node.right:
+                if res[0] == None:
+                    res[0] = cur[::-1] # in a reversed way
+                else:
+                    res[0] = min(cur[::-1], res[0]) # compare strings
+            
+            dfs(node.left, cur)
+            dfs(node.right, cur)
+            
+        dfs(root, "")
+        return res[0]
+```
+
+[1022. Sum of Root To Leaf Binary Numbers](https://leetcode.com/problems/sum-of-root-to-leaf-binary-numbers/)
+
+```py
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def sumRootToLeaf(self, root: Optional[TreeNode]) -> int:
+        """
+        
+        int(value, base [optional]) return an integer representation of a number with a given base
+        
+        """
+        
+        res = [0]
+        
+        def dfs(node, num):
+            if not node:
+                return
+            
+            num = num * 10 + node.val
+            
+            if not node.left and not node.right:
+                res[0] += int(str(num), 2) # (value, base) where value should be str
+            
+            dfs(node.left, num)
+            dfs(node.right, num)
+        
+        dfs(root, 0)
+        return res[0]
+
+```
 
 [112. Path Sum](https://leetcode.com/problems/path-sum/)
 
@@ -1387,12 +1476,92 @@ class Solution:
 更好的方法Prefix_sum
 
 ```py
-
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> int:
+        """
+        remove the last cur_sum from dict before processing the parallel subtree
+        """
+        prefix_freq = collections.defaultdict(int)
+        res = [0]
+        def dfs(node, cur_sum): # cur_sum is the prefix_sum from the previous node
+            if not node:
+                return
+            
+            cur_sum += node.val
+            
+            if cur_sum == targetSum:
+                res[0] += 1
+            res[0] += prefix_freq[cur_sum - targetSum]
+            prefix_freq[cur_sum] += 1
+            
+            dfs(node.left, cur_sum)
+            dfs(node.right, cur_sum)
+            prefix_freq[cur_sum] -= 1
+        
+        dfs(root, 0)
+        return res[0]
 ```
 
 [129. Sum Root to Leaf Numbers](https://leetcode.com/problems/sum-root-to-leaf-numbers/)
 
+```py
+class Solution:
+    def sumNumbers(self, root: Optional[TreeNode]) -> int:
+        res = [0]
+        
+        def dfs(node, cur_sum):
+            if not node:
+                return
+            cur_sum = 10 * cur_sum + node.val
+            
+            if not node.left and not node.right:
+                res[0] += cur_sum
+            dfs(node.left, cur_sum)
+            dfs(node.right, cur_sum)
+        
+        dfs(root, 0)
+        
+        return res[0]
+```
 
+[687. Longest Univalue Path](https://leetcode.com/problems/longest-univalue-path/)
+
+```py
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def longestUnivaluePath(self, root: Optional[TreeNode]) -> int:
+        res = [0]
+        
+        def dfs(node): # 返回node为根且满足大小相同的最大深度
+            if not node:
+                return 0
+            
+            left_len = dfs(node.left)
+            right_len = dfs(node.right)
+            left_a = right_a = 0
+            
+            if node.left and node.left.val == node.val:
+                left_a = left_len + 1 # 满足条件的深度 += 1
+            if node.right and node.right.val == node.val:
+                right_a = right_len + 1
+            res[0] = max(res[0], left_a + right_a) # node为根的longest path
+            
+            return max(left_a, right_a) # 大小相同
+    
+        dfs(root)
+        return res[0]
+```
 
 [124. Binary Tree Maximum Path Sum](https://leetcode.com/problems/binary-tree-maximum-path-sum/)
 
@@ -1406,7 +1575,7 @@ class Solution:
         Time: O(N)
         Space: O(H)
         """
-        res = [root.val]
+        res = [root.val] # may have negative number, so add root.val at the beginning
         
         # return max path sum without split
         def dfs(root):
@@ -1420,11 +1589,15 @@ class Solution:
             
             # compute max path sum WITH split
             res[0] = max(res[0], root.val + leftMax + rightMax)
+
             return root.val + max(leftMax, rightMax)
         
         dfs(root)
         return res[0]
 ```
+
+
+
 
 
 ### 公共祖先系列
