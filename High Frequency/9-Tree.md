@@ -1951,6 +1951,39 @@ Dynamic hash tables usually have a lot of unused memory in order to make the ins
 
 基本性质：对于每个node，左子树节点的值都更小，右子树节点的值都更大；中序遍历结果是有序的
 
+[653. Two Sum IV - Input is a BST](https://leetcode.com/problems/two-sum-iv-input-is-a-bst/)
+
+```py
+class Solution:
+    def findTarget(self, root: Optional[TreeNode], k: int) -> bool:
+        """
+        inorder traversal of BST is a sorted array
+        """
+        arr = []
+        
+        def dfs(node):
+            if not node:
+                return
+            
+            dfs(node.left)
+            arr.append(node.val)
+            dfs(node.right)
+            
+        dfs(root)
+        
+        l, r = 0, len(arr) - 1
+        while l < r:
+            sum = arr[l] + arr[r]
+            if sum == k:
+                return True
+            elif sum < k:
+                l += 1
+            else:
+                r -= 1
+        
+        return False
+```
+
 [285. Inorder Successor in BST](https://leetcode.com/problems/inorder-successor-in-bst/)
 
 ```py
@@ -1991,6 +2024,77 @@ class Solution:
         while node.parent and node == node.parent.right:
             node = node.parent
         return node.parent
+```
+
+[1214. Two Sum BSTs](https://leetcode.com/problems/two-sum-bsts/)
+
+```py
+class Solution:
+    def twoSumBSTs(self, root1: Optional[TreeNode], root2: Optional[TreeNode], target: int) -> bool:
+        arr1 = arr2 = []
+        
+        def dfs(node, arr):
+            if not node:
+                return
+            
+            dfs(node.left, arr)
+            arr.append(node.val)
+            dfs(node.right, arr)
+        
+        dfs(root1, arr1)
+        dfs(root2, arr2)
+        
+        l, r = 0, len(arr2) - 1
+        
+        while l < r:
+            sum = arr1[l] + arr2[r]
+            
+            if sum == target:
+                return True
+            elif sum < target:
+                l += 1
+            else:
+                r -= 1
+        
+        return False
+```
+
+```py
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def twoSumBSTs(self, root1: Optional[TreeNode], root2: Optional[TreeNode], target: int) -> bool:
+        """
+        更好的方法，直接用predecessor和successor来移动遍历
+        """
+        
+        stack1, stack2 = [], []
+        
+        while True:
+            while root1:
+                stack1.append(root1)
+                root1 = root1.left
+            while root2:
+                stack2.append(root2)
+                root2 = root2.right
+                
+            if not stack1 or not stack2:
+                break
+            
+            sum = stack1[-1].val + stack2[-1].val
+            
+            if sum == target:
+                return True
+            elif sum < target: # move stack1
+                root1 = stack1.pop().right
+            else:
+                root2 = stack2.pop().left
+        
+        return False
 ```
 
 

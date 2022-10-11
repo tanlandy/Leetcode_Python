@@ -1274,6 +1274,88 @@ class Solution:
 
 # Nums
 
+[1. Two Sum](https://leetcode.com/problems/two-sum/)
+
+```py
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        """
+        因为最后要返回idx，所以用dict()来存一下值对应的坐标
+        """
+        seen = dict() # {val: idx}
+        
+        for idx, n in enumerate(nums):
+            remain = target - n
+            if remain in seen:
+                return [idx, seen[remain]]
+            seen[n] = idx
+```
+
+[167. Two Sum II - Input Array Is Sorted](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/)
+
+```py
+class Solution:
+    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        """
+        ask if need to consider integer overflow
+        ask if no valid output
+        ask if duplicate
+        ask if multiple valid output
+        """
+        l, r = 0, len(numbers) - 1
+        
+        while l < r:
+            if numbers[l] + numbers[r] == target:
+                l += 1
+                r += 1
+                return [l, r]
+            elif numbers[l] + numbers[r] < target:
+                l += 1
+            else:
+                r -= 1
+        
+        return [-1, -1]
+```
+
+[170. Two Sum III - Data structure design](https://leetcode.com/problems/two-sum-iii-data-structure-design/)
+
+```py
+class TwoSum:
+
+    def __init__(self):
+        self.seen = collections.defaultdict(int)
+
+    def add(self, number: int) -> None:
+        self.seen[number] += 1
+
+    def find(self, value: int) -> bool:
+        """
+        处理重复出现的情况
+        同时要注意add(0), find(0)的情况
+        """
+        
+        for n in self.seen.keys():
+            remain = value - n
+            if remain != n:
+                if remain in self.seen:
+                    return True
+            elif self.seen[remain] > 1: # 处理重复出现，并且刚好是二倍
+                return True
+            
+        
+        return False
+```
+
+[653. Two Sum IV - Input is a BST](https://leetcode.com/problems/two-sum-iv-input-is-a-bst/)
+
+
+[15. 3Sum](https://leetcode.com/problems/3sum/)
+
+[16. 3Sum Closest](https://leetcode.com/problems/3sum-closest/)
+
+[259. 3Sum Smaller](https://leetcode.com/problems/3sum-smaller/)
+
+
 [985. Sum of Even Numbers After Queries](https://leetcode.com/problems/sum-of-even-numbers-after-queries/)
 
 ```py
