@@ -35,3 +35,61 @@ function f(int bitmask, int [] dp) {
 ```
 Bitmask is helpful with problems that would normally require factorial complexity (something like n!) but can instead reduce the computational complexity to 2^n by storing the dp state. 
 
+[136. Single Number](https://leetcode.com/problems/single-number/)
+
+```py
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        a = 0
+        for n in nums:
+            a = a ^ n 
+            # 0 XOR a = a
+            # a XOR a = 0
+        
+        return a
+
+```
+
+[137. Single Number II](https://leetcode.com/problems/single-number-ii/)
+
+```py
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        
+        seen_once = seen_twice = 0
+        
+        for n in nums:
+            seen_once = ~seen_twice & (seen_once ^ n)
+            seen_twice = ~seen_once & (seen_twice ^ n)
+            
+        return seen_once
+```
+
+[1457. Pseudo-Palindromic Paths in a Binary Tree](https://leetcode.com/problems/pseudo-palindromic-paths-in-a-binary-tree/)
+
+```py
+class Solution:
+    def pseudoPalindromicPaths (self, root: Optional[TreeNode]) -> int:
+        """
+        O(1) space complexity solution
+        """
+        
+        res = [0]
+        
+        def dfs(node, path):
+            if not node:
+                return
+            
+            path = path ^ (1 << node.val) # left shift operator to define the bit. XOR to compute the digit frequency
+            
+            if not node.left and not node.right: # reach the leaf
+                if path & (path - 1) == 0: # path & (path - 1) set the rightmost 1 to 0, if is equals 0, means there's only one 1 in path
+                    res[0] += 1
+                return
+            
+            dfs(node.left, path)
+            dfs(node.right, path)
+        
+        dfs(root, 0)
+        return res[0]
+```

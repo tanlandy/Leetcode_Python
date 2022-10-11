@@ -1300,6 +1300,105 @@ class Solution:
 ```
 
 
+
+
+[1457. Pseudo-Palindromic Paths in a Binary Tree](https://leetcode.com/problems/pseudo-palindromic-paths-in-a-binary-tree/)
+
+```py
+class Solution:
+    def pseudoPalindromicPaths (self, root: Optional[TreeNode]) -> int:
+        """
+        最普通的方法，记录root-leaf的路径，到达leaf之后计算元素的奇偶
+        """
+        
+        res = [0]
+        
+        def dfs(node, path):
+            if not node:
+                return
+            
+            path[node.val] += 1
+            
+            if not node.left and not node.right: # reach the leaf
+                odd = even = 0
+                for val in path.values():
+                    if val % 2 == 1:
+                        odd += 1
+                    else:
+                        even += 1
+                if odd <= 1:
+                    res[0] += 1
+                return
+            dfs(node.left, path.copy()) # 需要用path.copy()来分割
+            dfs(node.right, path.copy())
+            
+        path = collections.defaultdict(int)
+        
+        dfs(root, path)
+        return res[0]
+```
+
+```py
+class Solution:
+    def pseudoPalindromicPaths (self, root: Optional[TreeNode]) -> int:
+        """
+        更好的方法，用set来解决奇偶性：第二次见到就删掉，第一次见到就加进来
+        """
+        
+        res = [0]
+        
+        def dfs(node, path):
+            
+            if not node:
+                return
+            
+            if node.val in path:
+                path.remove(node.val)
+            else:
+                path.add(node.val)
+            
+            if not node.left and not node.right: # reach the leaf
+                if len(path) <= 1:
+                    res[0] += 1
+                return
+            
+            dfs(node.left, path.copy())
+            dfs(node.right, path.copy())
+            
+        path = set()
+        
+        dfs(root, path)
+        return res[0]
+```
+
+```py
+class Solution:
+    def pseudoPalindromicPaths (self, root: Optional[TreeNode]) -> int:
+        """
+        O(1) space complexity solution
+        """
+        
+        res = [0]
+        
+        def dfs(node, path):
+            if not node:
+                return
+            
+            path = path ^ (1 << node.val) # left shift operator to define the bit. XOR to compute the digit frequency
+            
+            if not node.left and not node.right: # reach the leaf
+                if path & (path - 1) == 0: # path & (path - 1) set the rightmost 1 to 0, if is equals 0, means there's only one 1 in path
+                    res[0] += 1
+                return
+            
+            dfs(node.left, path)
+            dfs(node.right, path)
+        
+        dfs(root, 0)
+        return res[0]
+```
+
+
 ### Path系列
 
 [257. Binary Tree Paths](https://leetcode.com/problems/binary-tree-paths/)

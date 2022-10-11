@@ -259,6 +259,34 @@ class Solution(object):
         return ans
 ```
 
+[1352. Product of the Last K Numbers](https://leetcode.com/problems/product-of-the-last-k-numbers/)
+
+```py
+class ProductOfNumbers:
+
+    def __init__(self):
+        """
+        初始化数组为[1]
+        关键是处理0
+        -> 当是0的时候，直接重置
+        """
+        self.queue = [1]
+        
+
+    def add(self, num: int) -> None:
+        if num == 0:
+            self.queue = [1]
+        else:
+            self.queue.append(num * self.queue[-1])
+
+    def getProduct(self, k: int) -> int:
+
+        if k >= len(self.queue):
+            return 0
+            
+        return self.queue[-1] // self.queue[-1 - k]
+
+```
 
 
 [1074. Number of Submatrices That Sum to Target](https://leetcode.com/problems/number-of-submatrices-that-sum-to-target/)

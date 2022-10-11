@@ -1255,6 +1255,23 @@ class Solution(object):
         return ''.join(lst)
 ```
 
+[1328. Break a Palindrome](https://leetcode.com/problems/break-a-palindrome/)
+
+```py
+class Solution:
+    def breakPalindrome(self, palindrome: str) -> str:
+        s = list(palindrome)
+        if len(s) <= 1:
+            return ""
+        for idx, ch in enumerate(s):
+            if idx > len(s) // 2 - 1: # there's only "a" in the input
+                s[-1] = "b"
+                return "".join(s)
+            if ch != "a": # change the first non-"a" element to "a"
+                s[idx] = "a"
+                return "".join(s)
+```
+
 # Nums
 
 [985. Sum of Even Numbers After Queries](https://leetcode.com/problems/sum-of-even-numbers-after-queries/)
