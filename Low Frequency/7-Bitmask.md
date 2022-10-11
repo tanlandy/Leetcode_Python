@@ -65,6 +65,31 @@ class Solution:
         return seen_once
 ```
 
+[260. Single Number III](https://leetcode.com/problems/single-number-iii/)
+
+```py
+class Solution:
+    def singleNumber(self, nums: int) -> List[int]:
+        # difference between two numbers (x and y) which were seen only once
+        bitmask = 0
+        for num in nums:
+            bitmask ^= num
+        # bitmask = 0 ^ x ^ y
+        
+        # rightmost 1-bit diff between x and y
+        diff = bitmask & (-bitmask) # a & (-a) keeps the rightmost 1-bit and sets all the others to 0
+        # -bitmask == ~bitmask + 1
+        
+        x = 0
+        for num in nums:
+            # bitmask which will contain only x
+            if num & diff: # y & diff == 0
+                x ^= num
+        
+        return [x, bitmask ^ x]
+```
+
+
 [1457. Pseudo-Palindromic Paths in a Binary Tree](https://leetcode.com/problems/pseudo-palindromic-paths-in-a-binary-tree/)
 
 ```py
