@@ -367,6 +367,23 @@ class Solution:
         return res * sign
 ```
 
+[976. Largest Perimeter Triangle](https://leetcode.com/problems/largest-perimeter-triangle/)
+
+```py
+class Solution:
+    def largestPerimeter(self, nums: List[int]) -> int:
+        nums.sort(reverse = True)
+        
+        for i in range(len(nums) - 2):
+            if nums[i] < nums[i + 1] + nums[i + 2]:
+                return nums[i] + nums[i + 1] + nums[i + 2]
+            else:
+                i += 1
+        
+        return 0
+```
+
+
 ## Time 相关
 
 [2224. Minimum Number of Operations to Convert Time](https://leetcode.com/problems/minimum-number-of-operations-to-convert-time/)
@@ -1274,6 +1291,8 @@ class Solution:
 
 # Nums
 
+## two sum类型
+
 [1. Two Sum](https://leetcode.com/problems/two-sum/)
 
 ```py
@@ -1348,13 +1367,128 @@ class TwoSum:
 
 [653. Two Sum IV - Input is a BST](https://leetcode.com/problems/two-sum-iv-input-is-a-bst/)
 
+```py
+class Solution:
+    def findTarget(self, root: Optional[TreeNode], k: int) -> bool:
+        """
+        inorder traversal of BST is a sorted array
+        """
+        arr = []
+        
+        def dfs(node):
+            if not node:
+                return
+            
+            dfs(node.left)
+            arr.append(node.val)
+            dfs(node.right)
+            
+        dfs(root)
+        
+        l, r = 0, len(arr) - 1
+        while l < r:
+            sum = arr[l] + arr[r]
+            if sum == k:
+                return True
+            elif sum < k:
+                l += 1
+            else:
+                r -= 1
+        
+        return False
+```
 
 [15. 3Sum](https://leetcode.com/problems/3sum/)
 
-[16. 3Sum Closest](https://leetcode.com/problems/3sum-closest/)
+```py
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        res = []
+        nums.sort()
+        
+        for i, n in enumerate(nums):
+            if i > 0 and nums[i-1] == nums[i]: # avoid duplicate
+                continue
+            
+            l, r = i + 1, len(nums) - 1
+            while l < r:
+                cur_sum = n + nums[l] + nums[r]
+                if cur_sum < 0:
+                    l += 1
+                elif cur_sum > 0:
+                    r -= 1
+                else:
+                    res.append([n, nums[l], nums[r]])
+                    # keep moving to find other possibilities
+                    l += 1
+                    r -= 1
+                    while l < r and nums[l] == nums[l - 1]: # avoid duplicate triplets
+                        l += 1
+        
+        return res
+```
+
+[16. 3Sum Closest](https://leetcode.com/problems/3sum-closest/) 好题，逻辑比较丰富
+
+```py
+class Solution:
+    def threeSumClosest(self, nums: List[int], target: int) -> int:
+        """
+        记录目标值的差
+        """
+        nums.sort()
+        diff = float("inf")
+        for i in range(len(nums) - 2):
+            one_diff = self.twoSC(nums, i + 1, target - nums[i])
+            if abs(diff) > abs(one_diff):
+                diff = one_diff
+            
+        return target - diff
+    
+    def twoSC(self, nums, i, target):
+        l, r = i, len(nums) - 1
+        one_diff = float("inf")
+        while l < r:
+            cur_sum = nums[l] + nums[r]
+            if abs(one_diff) > abs(target - cur_sum):
+                one_diff = target - cur_sum
+            if cur_sum < target:
+                l += 1
+            else:
+                r -= 1
+        
+        return one_diff
+```
 
 [259. 3Sum Smaller](https://leetcode.com/problems/3sum-smaller/)
 
+```py
+class Solution:
+    def threeSumSmaller(self, nums: List[int], target: int) -> int:
+        if len(nums) < 3: 
+            return 0
+        
+        nums.sort()
+        res = 0
+        
+        for i in range(len(nums)):
+            res += self.twoSmaller(nums, i + 1, target - nums[i]) # 点睛之笔3: 固定nums[i]是最小的数，接下来的从i+1开始找
+        
+        return res
+
+    def twoSmaller(self, nums, i, target):
+        l, r = i, len(nums) - 1
+        count = 0
+        
+        while l < r:
+            cur_sum = nums[l] + nums[r]
+            if cur_sum < target:
+                count += r - l # 点睛之笔1：两者之间都是满足条件的
+                l += 1 # 点睛之笔2：只移动右边的
+            else:
+                r -= 1
+        return count
+```
 
 [985. Sum of Even Numbers After Queries](https://leetcode.com/problems/sum-of-even-numbers-after-queries/)
 
