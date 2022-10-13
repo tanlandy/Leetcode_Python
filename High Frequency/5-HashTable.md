@@ -347,6 +347,25 @@ class Solution:
 
 ## Hashset
 
+[1207. Unique Number of Occurrences](https://leetcode.com/problems/unique-number-of-occurrences/)
+
+```py
+class Solution:
+    def uniqueOccurrences(self, arr: List[int]) -> bool:
+        """
+        this can exit earlier 
+        不是把所有的放到set之后再一一比较，而是边往里放边比较
+        """
+        seen = set()
+        
+        for freq in collections.Counter(arr).values():
+            if freq in seen:
+                return False
+            seen.add(freq)
+        
+        return True
+```
+
 [2133. Check if Every Row and Column Contains All Numbers](https://leetcode.com/problems/check-if-every-row-and-column-contains-all-numbers/)
 
 ```py

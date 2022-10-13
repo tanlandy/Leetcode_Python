@@ -1253,8 +1253,6 @@ class Solution:
         return res
 ```
 
-
-
 [531. Lonely Pixel I](https://leetcode.com/problems/lonely-pixel-i/)
 ```py
 class Solution:
@@ -1280,8 +1278,6 @@ class Solution:
         
         return res
 ```
-
-
 
 # Implicit Graph
 
@@ -1406,8 +1402,6 @@ class Solution:
 
         return timer - 1 if timer > 0 else 0 # 如果有的话，每次最后都会多走一个timer，所以要-1。其他的bfs题目都是提前在while queue里面就返回了，不会再走一个多的timer+=1
 ```
-
-
 
 [773. Sliding Puzzle](https://leetcode.com/problems/sliding-puzzle/)
 

@@ -687,9 +687,7 @@ class Solution:
         return root
 ```
 
-
 [297. Serialize and Deserialize Binary Tree](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/)
-
 
 ```python
 class Codec:
@@ -733,7 +731,6 @@ class Codec:
 ```
 
 ```py
-
 class Codec:
 
     def serialize(self, root):
@@ -820,14 +817,6 @@ class Solution:
 [1485. Clone Binary Tree With Random Pointer](https://leetcode.com/problems/clone-binary-tree-with-random-pointer/)
 
 ```py
-# Definition for Node.
-# class Node:
-#     def __init__(self, val=0, left=None, right=None, random=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
-#         self.random = random
-
 class Solution:
     def copyRandomBinaryTree(self, root: 'Node') -> 'NodeCopy':
         nodeArr = {}
@@ -846,7 +835,6 @@ class Solution:
 
         return dfs(root)
 ```
-
 
 [863. All Nodes Distance K in Binary Tree](https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/)
 
@@ -884,13 +872,6 @@ class Solution:
 LC官方讲解好
 
 ```py
-# Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, x):a
-#         self.val = x
-#         self.left = None
-#         self.right = None
-
 class Solution:
     
     def flattenTree(self, node):
@@ -929,7 +910,6 @@ class Solution:
         
         self.flattenTree(root)
 ```
-
 
 [104. Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
 
@@ -1038,9 +1018,7 @@ class Solution:
             return 1 + max(left_h, right_h)
         
         return node_height(root) != -1
-
 ```
-
 
 [101. Symmetric Tree](https://leetcode.com/problems/symmetric-tree/)
 
@@ -1113,8 +1091,7 @@ class Solution:
             
             return (dfs(node1.left, node2.left) and dfs(node1.right, node2.right)) or 
                     (dfs(node1.left, node2.right) and dfs(node1.right, node2.left))
-                
-        
+                        
         return dfs(root1, root2)
 ```
 
@@ -1232,8 +1209,7 @@ class Solution:
         Time: O(N)
         Space: O(H)
         """
-        
-        
+                
         # trim()返回满足条件的root
         def trim(node):
             if not node:
@@ -1252,7 +1228,6 @@ class Solution:
 ```
 
 [100. Same Tree](https://www.youtube.com/watch?v=vRbbcKXCxOw)
-
 
 ```py
 class Solution:
@@ -1298,9 +1273,6 @@ class Solution:
         
         return dfs(root, root.val)
 ```
-
-
-
 
 [1457. Pseudo-Palindromic Paths in a Binary Tree](https://leetcode.com/problems/pseudo-palindromic-paths-in-a-binary-tree/)
 
@@ -1457,18 +1429,10 @@ class Solution:
 [1022. Sum of Root To Leaf Binary Numbers](https://leetcode.com/problems/sum-of-root-to-leaf-binary-numbers/)
 
 ```py
-# Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
 class Solution:
     def sumRootToLeaf(self, root: Optional[TreeNode]) -> int:
         """
-        
         int(value, base [optional]) return an integer representation of a number with a given base
-        
         """
         
         res = [0]
@@ -1487,7 +1451,6 @@ class Solution:
         
         dfs(root, 0)
         return res[0]
-
 ```
 
 [112. Path Sum](https://leetcode.com/problems/path-sum/)
@@ -1575,12 +1538,6 @@ class Solution:
 更好的方法Prefix_sum
 
 ```py
-# Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
 class Solution:
     def pathSum(self, root: Optional[TreeNode], targetSum: int) -> int:
         """
@@ -1632,12 +1589,6 @@ class Solution:
 [687. Longest Univalue Path](https://leetcode.com/problems/longest-univalue-path/)
 
 ```py
-# Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
 class Solution:
     def longestUnivaluePath(self, root: Optional[TreeNode]) -> int:
         res = [0]
@@ -1694,10 +1645,6 @@ class Solution:
         dfs(root)
         return res[0]
 ```
-
-
-
-
 
 ### 公共祖先系列
 

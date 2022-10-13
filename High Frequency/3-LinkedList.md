@@ -128,6 +128,42 @@ class DoublyLinkedList:
 
 
 # 基础题目
+
+[203. Remove Linked List Elements](https://leetcode.com/problems/remove-linked-list-elements/)
+
+```py
+class Solution:
+    def removeElements(self, head: Optional[ListNode], val: int) -> Optional[ListNode]:
+        dummy = ListNode(-1)
+        dummy.next = head
+        
+        # 总是需要把之前的节点和下一个节点联系到一起，所以用两个节点来删除某一个数
+        pre = dummy
+        cur = head
+        while cur:
+            if cur.val == val:
+                pre.next = cur.next
+            else:
+                pre = cur
+            cur = cur.next
+        
+        return dummy.next
+```
+
+[237. Delete Node in a Linked List](https://leetcode.com/problems/delete-node-in-a-linked-list/)
+
+```py
+class Solution:
+    def deleteNode(self, node):
+        # copy the next node to this one
+        next_node = node.next
+        node.val = next_node.val
+        
+        # delete next node
+        node.next = next_node.next
+        next_node.next = None
+```
+
 [206. Reverse Linked List](https://leetcode.com/problems/reverse-linked-list/)
 
 ```py
