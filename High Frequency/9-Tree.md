@@ -146,7 +146,6 @@ class Solution:
         return root
 ```
 
-
 [103. Binary Tree Zigzag Level Order Traversal](https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/)
 
 ```python
@@ -208,8 +207,6 @@ class Solution:
         dfs(root)
         return res[0]
 ```
-
-
 
 [104. Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
 
@@ -293,7 +290,6 @@ class Solution:
         
         return res
 ```
-
 
 [652. Find Duplicate Subtrees](https://leetcode.com/problems/find-duplicate-subtrees/)
 
@@ -381,7 +377,6 @@ class Solution:
         return stack[0]
 ```
 
-
 [116. Populating Next Right Pointers in Each Node](https://leetcode.com/problems/populating-next-right-pointers-in-each-node/)
 ```py
 class Solution:
@@ -464,7 +459,6 @@ class Solution:
         
         return root
 ```
-
 
 [111. Minimum Depth of Binary Tree](https://leetcode.com/problems/minimum-depth-of-binary-tree/)
 
@@ -2221,7 +2215,6 @@ class Solution:
         return 1 + self.countNodes(root.left) + self.countNodes(root.right)
 ```
 
-
 [108. Convert Sorted Array to Binary Search Tree](https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/)
 
 ```py
@@ -2246,8 +2239,6 @@ class Solution:
         
         return helper(0, len(nums) - 1)
 ```
-
-
 
 [333. Largest BST Subtree](https://leetcode.com/problems/largest-bst-subtree/) 类似LC98
 
@@ -2464,8 +2455,6 @@ class WordDictionary:
             return cur.end_of_word
         
         return dfs(0, self.root)
-
-    
 ```
 
 [212. Word Search II](https://www.youtube.com/watch?v=asbcE9mZz_U)
@@ -2525,10 +2514,7 @@ class Solution:
         return list(res)
 ```
 
-
 [1268. Search Suggestions System](https://leetcode.com/problems/search-suggestions-system/)
-
-
 
 以上是必须掌握题
 

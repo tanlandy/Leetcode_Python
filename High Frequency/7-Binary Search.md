@@ -602,42 +602,6 @@ class Solution:
 ```
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 [875. Koko Eating Bananas](https://leetcode.com/problems/koko-eating-bananas/)
 向上取整: ceil(a/b)
 

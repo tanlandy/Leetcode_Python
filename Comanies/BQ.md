@@ -1,3 +1,10 @@
+# 准备
+
+https://docs.google.com/document/u/0/d/112HBiMNvu6TYbDUOfVRe_MS4A-fKaWYrpMlmnsiMNiA/mobilebasic 
+
+
+
+
 ## 推荐问题
 1. what is your daily work flow?
 2. How many people are currently in your team? What is the distribution between senior and junior engineers?
@@ -48,4 +55,5 @@ reviewing the organization’s website. This is the bare minimum for interviews;
 
 # intro
 "Tell me about your journey into tech. How did you get interested in coding, and why was web development (or replace with other job-specific skills) a good fit for you? How is that applicable to our role or company goals?"
+
 
