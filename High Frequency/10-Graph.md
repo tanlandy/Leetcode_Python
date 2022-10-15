@@ -1017,6 +1017,23 @@ class Solution:  # 520 ms, faster than 96.50%
         return mat
 ```
 
+求两对角线之和的差
+
+```py
+def diagonalDifference(arr):
+    diag1 = 0
+    diag2 = 0
+    rows, cols = len(arr), len(arr[0])
+    for i in range(rows):
+        for j in range(cols):
+            if i == j:
+                diag1 += arr[i][j]
+            if i + j == rows - 1: # 唯一新颖的点：反对角线的和相同
+                diag2 += arr[i][j]
+    res = abs(diag1 - diag2)
+    return res
+```
+
 ### 迷宫问题
 
 [490. The Maze](https://leetcode.com/problems/the-maze/)

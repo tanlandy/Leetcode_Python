@@ -1289,6 +1289,29 @@ class Solution:
                 return "".join(s)
 ```
 
+
+## Time相关
+
+Time convertion: Given a time in -hour AM/PM format, convert it to military (24-hour) time.
+
+```py
+def timeConversion(s):
+    """
+    注意字符串的使用
+    """
+    if s[0:2] == "12":
+        if s[-2:] == "AM":
+            return "00" + s[2:-2]
+        else:
+            return s[:-2]
+    else:
+        if s[-2:] == "AM":
+            return s[:-2]
+        else:
+            return str(int(s[:2]) + 12) + s[2:-2]
+```
+
+
 # Nums
 
 ## two sum类型

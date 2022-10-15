@@ -19,6 +19,22 @@ class Solution:
         return res
 ```
 
+Permute A, B in some way that A'[i] + B'[i] >= k for all i
+
+```py
+def twoArrays(k, A, B):
+    A.sort()
+    B.sort()
+    l, r = 0, len(B) - 1
+    while l < len(A):
+        if A[l] + B[r] < k:
+            return "NO"
+        l += 1
+        r -= 1
+    
+    return "YES"
+```
+
 [134. Gas Station](https://leetcode.com/problems/gas-station/)
 计算出diff
 

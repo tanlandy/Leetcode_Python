@@ -311,6 +311,26 @@ class Solution:
 
 ## Sliding Window
 
+s = [2,2,1,3,2], d = 4, m = 2
+find how many ways to make it to d with a size of m
+
+```py
+def birthday(s, d, m):
+    l = r = 0
+    cur_sum = 0
+    res = 0
+    while r < len(s):
+        cur_sum += s[r]
+        if r - l + 1 == m:
+            if cur_sum == d:
+                res += 1
+            cur_sum -= s[l]
+            l += 1
+        r += 1
+    return res
+```
+
+
 [643. Maximum Average Subarray I](https://leetcode.com/problems/maximum-average-subarray-i/)
 
 [159. Longest Substring with At Most Two Distinct Characters](https://leetcode.com/problems/longest-substring-with-at-most-two-distinct-characters/)

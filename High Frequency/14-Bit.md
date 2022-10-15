@@ -23,6 +23,16 @@ class Solution:
 
 ```
 
+Flip all the bits and return the result as an unsigned integer.
+
+```py
+def flippingBits(n):
+    ones = ["1"] * 32
+    ones = "".join(ones)
+    return int(n) ^ int(ones, 2)
+```
+
+
 [338. Counting Bits](https://leetcode.com/problems/counting-bits/)
 
 ```py
