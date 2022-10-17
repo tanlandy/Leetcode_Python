@@ -1289,6 +1289,30 @@ class Solution:
                 return "".join(s)
 ```
 
+[Caesar Cipher]
+string s is rotated by k
+
+```py
+def caesarCipher(s, k):
+    k %= 26
+    s = list(s)
+    for idx, ch in enumerate(s):
+        # ord("a") = 97, chr(97) = "a"
+        # ord("A") = 65
+        if ord("a") <= ord(ch) <= ord("z"):
+            pos = ord(ch) + k
+            if pos > ord("z"):
+                pos -= 26
+            s[idx] = chr(pos)
+        elif ord("A") <= ord(ch) <= ord("Z"):
+            pos = ord(ch) + k
+            if pos > ord("Z"):
+                pos -= 26
+            s[idx] = chr(pos)
+    
+    return "".join(s)
+```
+
 
 ## Time相关
 
@@ -1313,6 +1337,19 @@ def timeConversion(s):
 
 
 # Nums
+
+[Max Min]
+```py
+def maxMin(k, arr):
+    # for a range k, find the min_diff
+    arr.sort()
+    res = float("inf")
+    k -= 1
+    for i in range(len(arr) - k):
+        res = min(res, arr[i + k] - arr[i])
+    
+    return res
+```
 
 ## two sum类型
 

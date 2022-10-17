@@ -949,90 +949,59 @@ class Solution:
         return -1
 ```
 
-[542. 01 Matrix](https://leetcode.com/problems/01-matrix/)
+
+Given a square grid of characters in the range ascii[a-z], rearrange elements of each row alphabetically, ascending. Determine if the columns are also in ascending alphabetical order, top to bottom. 
 
 ```py
-class Solution:
-    def updateMatrix(self, mat: List[List[int]]) -> List[List[int]]:
-        """
-        把所有为0的点放进queue，然后开始BFS
-
-        Time: O(M*N)
-        Space: O(M*N)
-        """
-        rows, cols = len(mat), len(mat[0])
-        queue = collections.deque([])
-
-        for r in range(rows):
-            for c in range(cols):
-                if mat[r][c] == 0:
-                    queue.append((r, c))
-                else: # 不为0的，标记为-1
-                    mat[r][c] = -1
-
-        dirs = [(0, 1), (0, -1), (1, 0), (-1, 0)]
-
-        # 从所有0开始BFS往四周走，因为已经赋值-1，所以不用visited set
-        while queue:
-            r, c = queue.popleft()
-
-            for dx, dy in dirs:
-                nei_r, nei_c = r + dx, c + dy
-                if 0 <= nei_r < rows and 0 <= nei_c < cols and mat[nei_r][nei_c] == -1: #条件不用visited set，因为-1肯定就是没走过的点
-                    mat[nei_r][nei_c] = mat[r][c] + 1 # 附近的新值就是原来的+1
-                    queue.append((nei_r, nei_c))
-
-        return mat
+def gridChallenge(grid):
+    s = [sorted(i) for i in grid] # 解决行
+    for i in (zip(*s)): # 解决列
+        if list(i) != sorted(i):
+            return "NO"
+    return "YES"
 ```
+
+Find an element of the array such that the sum of all elements to the left is equal to the sum of all elements to the right.
+input: arr = [5,6,8,11], return "YES" as the sum before and after 8 are the same
 
 ```py
-class Solution:  # 520 ms, faster than 96.50%
-    def updateMatrix(self, mat: List[List[int]]) -> List[List[int]]:
-        """
-        四周都“加”一圈float("inf")
-        然后从左上到右下走一遍
-        再从右下到左上走一遍
-
-        Time: O(M*N)
-        Space: O(1)
-        """
-        rows, cols = len(mat), len(mat[0])
-
-        # from top left to bottom right
-        for r in range(rows):
-            for c in range(cols):
-                if mat[r][c] > 0:
-                    top = mat[r - 1][c] if r > 0 else float("inf")
-                    left = mat[r][c - 1] if c > 0 else float("inf")
-                    mat[r][c] = min(top, left) + 1
-
-        # from bottom right to top left
-        for r in range(rows - 1, -1, -1):
-            for c in range(cols - 1, -1, -1):
-                if mat[r][c] > 0:
-                    bottom = mat[r + 1][c] if r < rows - 1 else float("inf")
-                    right = mat[r][c + 1] if c < cols - 1 else float("inf")
-                    mat[r][c] = min(mat[r][c], bottom + 1, right + 1)
-
-        return mat
+def balancedSums(arr):
+    if len(arr) <= 1:
+        return "YES"
+    prefix = [0] # add[0] for [2,0,0] case
+    cur_sum = 0
+    for n in arr:
+        cur_sum += n
+        prefix.append(cur_sum)
+    
+    # start from idx 1:
+    # [1,2,3]
+    # pre [0,1,3,6]
+    
+    for i in range(1, len(prefix)):
+        if prefix[i - 1] == prefix[-1] - prefix[i]:
+            return "YES"
+    
+    return "NO"
 ```
 
-求两对角线之和的差
+num 和 str的相互转化
 
 ```py
-def diagonalDifference(arr):
-    diag1 = 0
-    diag2 = 0
-    rows, cols = len(arr), len(arr[0])
-    for i in range(rows):
-        for j in range(cols):
-            if i == j:
-                diag1 += arr[i][j]
-            if i + j == rows - 1: # 唯一新颖的点：反对角线的和相同
-                diag2 += arr[i][j]
-    res = abs(diag1 - diag2)
-    return res
+def superDigit(n, k):
+    """
+    总是用str，算完和之后赶紧再转回str进行操作
+    """
+    # input n is str
+    n = list(n) * k #['1', '4', '8', '1', '4', '8', '1', '4', '8']
+    a = float("inf")
+    while a >= 10:
+        a = sum([int(x) for x in n]) # 39
+        n = str(a) # n = "39"
+        n = list(n) # n = ["3", "9"]
+    return a
 ```
+
 
 ### 迷宫问题
 
@@ -1239,6 +1208,38 @@ class Solution:
         return total
 ```
 
+
+[531. Lonely Pixel I](https://leetcode.com/problems/lonely-pixel-i/)
+```py
+class Solution:
+    def findLonelyPixel(self, picture: List[List[str]]) -> int:
+        """
+        先算出来每行每列有几个B，然后同时满足是B且行列都是1的就是需要的点
+        """
+        rows, cols = len(picture), len(picture[0])
+        row_count = [0] * cols
+        col_count = [0] * rows
+        
+        for r in range(rows):
+            for c in range(cols):
+                if picture[r][c] == "B":
+                    row_count[c] += 1
+                    col_count[r] += 1
+        
+        res = 0
+        for r in range(rows):
+            for c in range(cols):
+                if picture[r][c] == "B" and row_count[c] == col_count[r] == 1:
+                    res += 1
+        
+        return res
+
+```
+
+
+### Matrix
+
+
 [59. Spiral Matrix II](https://leetcode.com/problems/spiral-matrix-ii/)
 
 ```py
@@ -1270,30 +1271,114 @@ class Solution:
         return res
 ```
 
-[531. Lonely Pixel I](https://leetcode.com/problems/lonely-pixel-i/)
+
+[542. 01 Matrix](https://leetcode.com/problems/01-matrix/)
+
 ```py
 class Solution:
-    def findLonelyPixel(self, picture: List[List[str]]) -> int:
+    def updateMatrix(self, mat: List[List[int]]) -> List[List[int]]:
         """
-        先算出来每行每列有几个B，然后同时满足是B且行列都是1的就是需要的点
+        把所有为0的点放进queue，然后开始BFS
+
+        Time: O(M*N)
+        Space: O(M*N)
         """
-        rows, cols = len(picture), len(picture[0])
-        row_count = [0] * cols
-        col_count = [0] * rows
-        
+        rows, cols = len(mat), len(mat[0])
+        queue = collections.deque([])
+
         for r in range(rows):
             for c in range(cols):
-                if picture[r][c] == "B":
-                    row_count[c] += 1
-                    col_count[r] += 1
-        
-        res = 0
+                if mat[r][c] == 0:
+                    queue.append((r, c))
+                else: # 不为0的，标记为-1
+                    mat[r][c] = -1
+
+        dirs = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+
+        # 从所有0开始BFS往四周走，因为已经赋值-1，所以不用visited set
+        while queue:
+            r, c = queue.popleft()
+
+            for dx, dy in dirs:
+                nei_r, nei_c = r + dx, c + dy
+                if 0 <= nei_r < rows and 0 <= nei_c < cols and mat[nei_r][nei_c] == -1: #条件不用visited set，因为-1肯定就是没走过的点
+                    mat[nei_r][nei_c] = mat[r][c] + 1 # 附近的新值就是原来的+1
+                    queue.append((nei_r, nei_c))
+
+        return mat
+```
+
+```py
+class Solution:  # 520 ms, faster than 96.50%
+    def updateMatrix(self, mat: List[List[int]]) -> List[List[int]]:
+        """
+        四周都“加”一圈float("inf")
+        然后从左上到右下走一遍
+        再从右下到左上走一遍
+
+        Time: O(M*N)
+        Space: O(1)
+        """
+        rows, cols = len(mat), len(mat[0])
+
+        # from top left to bottom right
         for r in range(rows):
             for c in range(cols):
-                if picture[r][c] == "B" and row_count[c] == col_count[r] == 1:
-                    res += 1
-        
-        return res
+                if mat[r][c] > 0:
+                    top = mat[r - 1][c] if r > 0 else float("inf")
+                    left = mat[r][c - 1] if c > 0 else float("inf")
+                    mat[r][c] = min(top, left) + 1
+
+        # from bottom right to top left
+        for r in range(rows - 1, -1, -1):
+            for c in range(cols - 1, -1, -1):
+                if mat[r][c] > 0:
+                    bottom = mat[r + 1][c] if r < rows - 1 else float("inf")
+                    right = mat[r][c + 1] if c < cols - 1 else float("inf")
+                    mat[r][c] = min(mat[r][c], bottom + 1, right + 1)
+
+        return mat
+```
+
+求两对角线之和的差
+
+```py
+def diagonalDifference(arr):
+    diag1 = 0
+    diag2 = 0
+    rows, cols = len(arr), len(arr[0])
+    for i in range(rows):
+        for j in range(cols):
+            if i == j:
+                diag1 += arr[i][j]
+            if i + j == rows - 1: # 唯一新颖的点：反对角线的和相同
+                diag2 += arr[i][j]
+    res = abs(diag1 - diag2)
+    return res
+```
+
+求可以调整顺序的N*N最大和
+
+```py
+
+# find the maximum value
+# of top N/2 x N/2 matrix using row and column reverse operations
+def maxSum(mat):
+ 
+    Sum = 0
+    for i in range(0, R // 2):
+        for j in range(0, C // 2):
+         
+            r1, r2 = i, R - i - 1
+            c1, c2 = j, C - j - 1
+                 
+            # We can replace current cell [i, j]
+            # with 4 cells without changing/affecting
+            # other elements.
+            Sum += max(max(mat[r1][c1], mat[r1][c2]),
+                       max(mat[r2][c1], mat[r2][c2]))
+         
+    return Sum
 ```
 
 # Implicit Graph
