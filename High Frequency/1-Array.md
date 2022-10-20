@@ -384,6 +384,46 @@ class Solution:
 ```
 
 
+[13. Roman to Integer](https://leetcode.com/problems/roman-to-integer/)
+
+```py
+class Solution:
+    def romanToInt(self, s: str) -> int:
+        sym_val = {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000, "IV": 4, "IX": 9, "XL": 40, "XC": 90, "CD": 400, "CM": 900}
+        
+        res = 0
+        i = 0
+        while i < len(s):
+            if i < len(s) - 1 and s[i: i + 2] in sym_val: # 要注意i的取值范围
+                res += sym_val[s[i:i + 2]]
+                i += 2
+            else:
+                res += sym_val[s[i]]
+                i += 1
+        return res
+```
+
+[12. Integer to Roman](https://leetcode.com/problems/integer-to-roman/)
+
+```py
+class Solution:
+    def intToRoman(self, num: int) -> str:
+        digits = [(1000, "M"), (900, "CM"), (500, "D"), (400, "CD"), (100, "C"), 
+                  (90, "XC"), (50, "L"), (40, "XL"), (10, "X"), (9, "IX"), 
+                  (5, "V"), (4, "IV"), (1, "I")] # 从大到小排序
+        
+        res = []
+        
+        for val, symbol in digits:
+            if num == 0:
+                break
+            
+            count, num = divmod(num, val) # 计算出商和余数
+            res.append(symbol * count)
+        
+        return "".join(res)
+```
+
 ## Time 相关
 
 [2224. Minimum Number of Operations to Convert Time](https://leetcode.com/problems/minimum-number-of-operations-to-convert-time/)
@@ -1314,6 +1354,61 @@ def caesarCipher(s, k):
 ```
 
 
+
+## Palindrome类型
+
+[125. Valid Palindrome](https://leetcode.com/problems/valid-palindrome/)
+
+```py
+class Solution:
+    def isPalindrome(self, s: str) -> bool:
+        s = s.lower()
+        
+        l, r = 0, len(s) - 1
+        while l < r:
+            while l < r and not s[l].isalnum():
+                l += 1
+            while l < r and not s[r].isalnum():
+                r -= 1
+            if s[l] != s[r]:
+                return False
+            l += 1
+            r -= 1
+        
+        return True
+```
+
+[680. Valid Palindrome II](https://leetcode.com/problems/valid-palindrome-ii/)
+
+```py
+class Solution:
+    def validPalindrome(self, s: str) -> bool:
+        def check_pad(l, r):
+            while l < r:
+                if s[l] != s[r]:
+                    return False
+                l += 1
+                r -= 1
+            return True
+        
+        l, r = 0, len(s) - 1
+        while l < r:
+            if s[l] != s[r]:
+                return check_pad(l, r - 1) or check_pad(l + 1, r)
+            l += 1
+            r -= 1
+        
+        return True
+```
+
+palindrome index:
+determine the index of a character that can be removed to make the string a palindrome
+
+
+anagram:
+split into two substrings. determine the minimum number of characters to change to make the two substrings into anagrams of one another
+
+
 ## Time相关
 
 Time convertion: Given a time in -hour AM/PM format, convert it to military (24-hour) time.
@@ -1350,6 +1445,37 @@ def maxMin(k, arr):
     
     return res
 ```
+
+determine all integers that satisfy the floowing two conditions:
+1. the elements of the first array are all factores of the interger being considered
+2. the integer being considered is a factor of all elements of the second array
+
+```py
+def getTotalX(a, b):
+    min_a = min(a)
+    min_b = min(b)
+    end = max(min_a, min_b)
+    
+    res = 0
+    for i in range(1, end + 1):
+        a_ok = b_ok = True
+        for n in a:
+            if i % n != 0:
+                a_ok = False
+                break
+        if not a_ok:
+            continue
+        for n in b:
+            if n % i != 0:
+                b_ok = False
+                break
+        if not b_ok:
+            continue
+        res += 1
+    
+    return res
+```
+
 
 ## two sum类型
 
