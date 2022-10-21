@@ -352,6 +352,42 @@ class Solution:
 
 ## Hashset
 
+[217. Contains Duplicate](https://leetcode.com/problems/contains-duplicate/)
+
+```py
+class Solution:
+    def containsDuplicate(self, nums: List[int]) -> bool:
+        seen = set()
+        
+        for n in nums:
+            if n in seen:
+                return True
+            seen.add(n)
+            
+        return False
+```
+
+[219. Contains Duplicate II](https://leetcode.com/problems/contains-duplicate-ii/)
+
+```py
+class Solution:
+    def containsNearbyDuplicate(self, nums: List[int], k: int) -> bool:
+        seen = set()
+        
+        for i in range(len(nums)):
+            if nums[i] in seen:
+                return True
+            seen.add(nums[i])
+            if len(seen) > k:
+                seen.remove(nums[i - k])
+        
+        return False
+```
+
+[220. Contains Duplicate III](https://leetcode.com/problems/contains-duplicate-iii/)
+
+
+
 [1207. Unique Number of Occurrences](https://leetcode.com/problems/unique-number-of-occurrences/)
 
 ```py
