@@ -1041,6 +1041,56 @@ def superDigit(n, k):
     return a
 ```
 
+[766. Toeplitz Matrix](https://leetcode.com/problems/toeplitz-matrix/)
+
+```py
+class Solution:
+    def isToeplitzMatrix(self, matrix: List[List[int]]) -> bool:
+        """
+        for every element, check whether it is the same as it's top-left neighbor when in bound
+        """
+        
+        rows, cols = len(matrix), len(matrix[0])
+        
+        for r in range(rows):
+            for c in range(cols):
+                # if (r - 1, c - 1) in bound
+                if 0 <= r - 1 < rows and 0 <= c - 1 < cols:
+                    # check if they are the same
+                    if matrix[r - 1][c - 1] != matrix[r][c]:
+                        return False
+        
+        return True
+```
+Follow-up:
+当流数据每次只能来一行的时候，用一个deque存expected values，每次把最右边的删掉，然后把下一行第一个放到最左边
+
+
+[1706. Where Will the Ball Fall](https://leetcode.com/problems/where-will-the-ball-fall/)
+
+```py
+class Solution:
+    def findBall(self, grid: List[List[int]]) -> List[int]:
+        """
+        simulate the condition
+        """
+        rows, cols = len(grid), len(grid[0])
+
+        def drop(i,j):
+            if i == rows: # reaches to the end 
+                return j
+            if j == cols-1 and grid[i][j] == 1: # hit right bound
+                return -1
+            if j == 0 and grid[i][j] == -1: # hit left bound
+                return -1
+            if grid[i][j] == 1 and grid[i][j + 1] == -1: # v shape
+                return -1
+            if grid[i][j] == -1 and grid[i][j - 1] == 1: # v shape
+                return -1
+            return drop(i + 1, j + grid[i][j]) # to the next row
+        
+        return [drop(0, j) for j in range(cols)]
+```
 
 ### 迷宫问题
 

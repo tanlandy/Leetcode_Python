@@ -1355,6 +1355,53 @@ def caesarCipher(s, k):
 
 
 
+
+[1662. Check If Two String Arrays are Equivalent](https://leetcode.com/problems/check-if-two-string-arrays-are-equivalent/)
+
+```py
+class Solution:
+    def arrayStringsAreEqual(self, word1: List[str], word2: List[str]) -> bool:
+        p1 = p2 = 0
+        w1 = w2 = 0
+        
+        while w1 < len(word1) and w2 < len(word2):
+            if word1[w1][p1] != word2[w2][p2]:
+                return False
+            p1 += 1 # 重点：移动pointer的时机在比较length之前，用"a"来举例就知道了
+            p2 += 1
+            if p1 == len(word1[w1]):
+                p1 = 0
+                w1 += 1
+            if p2 == len(word2[w2]):
+                p2 = 0
+                w2 += 1
+
+        
+        return w1 == len(word1) and w2 == len(word2)
+```
+
+
+## Prefix相关
+
+[14. Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/)
+
+```py
+class Solution:
+    def longestCommonPrefix(self, strs: List[str]) -> str:
+        if not strs:
+            return ""
+        
+        shortest = min(strs, key = len) # find the possible one
+        
+        for i, ch in enumerate(shortest): # check idx one by one 
+            for other in strs: # compare this idx with other strs one by one
+                if other[i] != ch:
+                    return shortest[:i] # as long as find an invalid, return
+        
+        return shortest
+```
+
+
 ## Palindrome类型
 
 [125. Valid Palindrome](https://leetcode.com/problems/valid-palindrome/)
