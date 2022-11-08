@@ -306,6 +306,83 @@ Given an array of intervals where intervals[i] = [starti, endi], merge all overl
 3. LP + coding (problem solving) -> edge cases: "Mary spends $5.5 this week. Bob spends $10" -> discount amount by 20%: $1,000, %5.5有小数点，有大数的 -> follow up是其他钱
 4. LP only
 
+# 11/5/23 - internship
+1. ownership
+tell me a time when you need to help your teammate. why did you help, what did you do, and what's the result?
+加进了一个新人
+how much time you spent on your own tasks, and how much time you spent for the teammate
+take lead on project: 发现问题，开会解决问题
+willingness to take tasks not your task
+demonstrate impact
+
+2. 
+a time you need to make a quick decision when you don't have time
+bias
+
+
+```py
+"""
+
+When customers place orders on Amazon, 
+they can choose to deliver the packages to lockers located at Amazon pick up locations. 
+Packages can come in many different sizes. We have lockers of different sizes as well. 
+The bigger size locker can fit smaller/same size package, but not the other way. 
+Can you implement an algorithm to efficiently find the best possible empty locker for a given package? 
+You are given 3 helper classes to begin with. Feel free to change the class, add members, etc. as necessary.
+
+"""
+
+class Package(packageId):
+    String packageId;
+    int size;
+    
+class Locker:
+    String LockerId;
+    String packageId;
+    int size;
+
+class PickupLocation:
+    String pickupLocation;
+    lockers;
+
+# a list of sorted lockers by size
+
+
+def fit(package, lockers):
+    locker = ''
+    for i, c in enumerate(lockers):
+        if c.size > package.size and c.packageId == '': 
+            locker = c.LockerId
+            c.packageId = package.packageId
+            break
+    if locker == '': return "Cannot fit package"
+    
+    return locker
+
+def pickup(Lockers, lId):
+    pId = ''
+    for i in Lockers:
+        if i.LockerId == lId: 
+            pId = i.packageId
+            i.packageId = ''
+            return pId
+    
+    return "package not found"
+            
+
+def newFit(package, lockersUnUsed, lockersUsed):
+    if lockersUnUsed[package.size]:
+        lockersUnUsed[package.size][0].packgeId = package.packageId
+        id = lockersUnUsed[package.size][0].lockerId
+        lockerUsed[package.size].append(lockersUnUsed.pop(0))
+        return id
+    else: return ''
+
+```
+
+
+
+
 
 
 

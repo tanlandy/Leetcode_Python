@@ -2776,6 +2776,29 @@ class Solution:
 
 ## 例题
 
+[433. Minimum Genetic Mutation](https://leetcode.com/problems/minimum-genetic-mutation/)
+
+```py
+class Solution:
+    def minMutation(self, start: str, end: str, bank: List[str]) -> int:
+        queue = deque([(start, 0)])
+        seen = set(start)
+        
+        while queue:
+            node, steps = queue.popleft()
+            if node == end:
+                return steps
+            
+            for c in "ACGT":
+                for i in range(len(node)):
+                    nei = node[: i] + c  + node[i + 1:]
+                    if nei not in seen and nei in bank:
+                        queue.append((nei, steps + 1))
+                        seen.add(nei)
+        
+        return -1
+```
+
 
 [290. Word Pattern](https://leetcode.com/problems/word-pattern/)
 

@@ -97,3 +97,21 @@ feedback:
 2. 最优解：keep 所有preorder number
 
 BQ 考察是否fit in google culture, positve impact, collaborate, (leadership)
+
+
+# 11/1/2022
+## BQ
+Introduce yourself a little bit
+introduce past intership experience in Microsoft
+one of the most difficulties, how did you encounter
+deadline: 不能说加班，涉及到学校的team work不能说队友坏话： track每个人的进度，周会，发现有人没跟上，然后就重新分配根据擅长的地方
+
+working in a team, disagree with teammate, how did you face and work out?
+
+what is your biggest motivation in CS study
+what is the frustration
+
+## Coding
+
+
+

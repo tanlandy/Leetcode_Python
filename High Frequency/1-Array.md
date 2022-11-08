@@ -825,6 +825,24 @@ class Solution:
 
 
 # String
+
+[1323. Maximum 69 Number](https://leetcode.com/problems/maximum-69-number/description/)
+
+```py
+class Solution:
+    def maximum69Number (self, num: int) -> int:
+        """
+        输入的是digit，digit转换为list of string: s = list(str(num))
+        """
+        s = list(str(num))
+        for idx, ch in enumerate(s):
+            if ch == "6":
+                s[idx] = "9"
+                return "".join(s)
+        
+        return num
+```
+
 [1592. Rearrange Spaces Between Words](https://leetcode.com/problems/rearrange-spaces-between-words/)
 ```py
 class Solution:
@@ -1380,6 +1398,22 @@ class Solution:
         return w1 == len(word1) and w2 == len(word2)
 ```
 
+
+
+[899. Orderly Queue](https://leetcode.com/problems/orderly-queue/description/)
+
+```py
+class Solution:
+    def orderlyQueue(self, s: str, k: int) -> str:
+        """
+        if k == 1: can only be rorated 
+        if k > 1: can be formed to any permutations, return the smallest
+        """
+        if k == 1:
+            return min(s[i:] + s[:i] for i in range(len(s)))
+        else:
+            return "".join(sorted(s))
+```
 
 ## Prefix相关
 

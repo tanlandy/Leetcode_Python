@@ -306,6 +306,9 @@ print(convert_int_to_bin(10))
 print(int(convert_int_to_bin(56),2)==56)
 ```
 
+
+
+
 ## Zhihu        
 [155. Min Stack](https://leetcode.com/problems/min-stack/)
 
@@ -703,7 +706,32 @@ class Solution:
         return stack
 ```
 
+
+
+
+
 ## Other
+
+[1544. Make The String Great](https://leetcode.com/problems/make-the-string-great/description/)
+
+```py
+class Solution:
+    def makeGood(self, s: str) -> str:
+        """
+        大小写字母的ord码相差32，维护一个stack
+        """
+        res = []
+
+        for ch in s:
+            if res and abs(ord(ch) - ord(res[-1])) == 32:
+                res.pop()
+            else:
+                res.append(ch)
+
+        return "".join(res)
+```
+
+
 
 [22. Generate Parentheses](https://leetcode.com/problems/generate-parentheses/)
 添加close的条件：close<open
