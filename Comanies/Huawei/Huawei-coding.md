@@ -332,6 +332,88 @@ print("".join(msg))
 ```
 也可以把每个ch转为ascii，排序之后，再转换回来输出
 
+
+35. 蛇形矩阵
+
+input = 4
+output = 
+1 3 6 10
+2 5 9
+4 8
+7
+
+先普通设置成
+1
+2 3 
+4 5 6
+7 8 9 10
+然后每一行取最后一个元素，形成输出的行
+
+```py
+while 1:
+    try:
+        n = int(input())
+        list1 = []
+        for i in range(1, n + 1):
+            list1.append([0] * i)
+        a = 0
+        for i in range(n):
+            for j in range(i + 1):
+                a += 1
+                list1[i][j] = a
+        
+        list2, res = [], []
+        for i in range(1, n + 1):
+            for line in list1:
+                if line:
+                    list2.append(line.pop())
+            res.append(' '.join(map(str, list2)))
+            list2 = []
+        for i in res:
+            print(i)
+
+    except:
+        break
+```
+
+37. 统计每个月兔子的总数
+
+```py
+def count(month):
+    if month == 1 or month == 2:
+        return 1
+    month = count(month - 1) + count(month - 2)
+    return month
+
+month = int(input())
+print(count(month))
+```
+
+40. 统计字符
+
+```py
+while True:
+    try:
+        s = input()
+        letter, space, num, others = 0, 0, 0, 0
+        for ch in s:
+            if ch.isalpha():
+                letter += 1
+            elif ch.isalnum():
+                num += 1
+            elif ch == ' ':
+                space += 1
+            else:
+                others += 1
+        print(letter)
+        print(space)
+        print(num)
+        print(others)
+
+    except:
+        break
+```
+
 46. 截取字符串
 
 ```py
@@ -344,6 +426,24 @@ while True:
         break
 ```
 
+56. 完全数计算
+
+simulate
+```py
+n = int(input())
+count = 0
+for i in range(1, n):
+    # 查看i是否是完全数
+    sum_factor = 0
+    for factor in range(1, i):
+        if i % factor == 0:
+            sum_factor += factor 
+    if sum_factor == i:
+        count += 1
+
+print(count)
+```
+
 58. 输出最小k个数
 
 ```py
@@ -353,6 +453,99 @@ num = list(map(int, input().split()))
 num.sort()
 for i in range(k):
     print(num[i], end = ' ')
+```
+
+62. 查找二进制中1的个数
+
+```py
+while True:
+    try:
+        n = int(input())
+        count = 0
+        while n:
+            count += (n & 1) # 看最后一位是不是1，如果是的话就+= 1
+            n >>= 1 # 最后一位处理过了
+        print(count)
+    except:
+        break
+```
+
+
+76. 尼科彻斯定理
+
+```py
+# 开始和结束的数分别就是下面的start和end
+n = int(input())
+start = n * (n - 1) + 1
+end = n * (n + 1) - 1
+arr = []
+for i in range(start, end + 1, 2):
+    arr.append(i)
+print('+'.join(map(str, arr)))
+```
+
+84. 统计大写字母个数
+
+```py
+s = list(input())
+res = 0
+for ch in s:
+    if ord("A") <= ord(ch) <= ord("Z"):
+        res += 1
+print(res)
+```
+
+96. 表示数字
+
+```py
+"""
+同时看当前和前面的ch
+"""
+
+while True:
+    try:
+        s = input()
+        res = ""
+        pre_ch = ""
+        for ch in s:
+            if ch.isdigit(): # 这个是数字
+                if not pre_ch.isdigit(): # 如果之前的不是，就加*
+                    res += "*"
+            else:
+                if pre_ch.isdigit(): # 如果之前是，就加*
+                    res += "*"
+            res += ch
+            pre_ch = ch
+        if pre_ch.isdigit(): # 最后一个是数字
+            res += "*"
+        print(res)
+
+    except:
+        break
+```
+
+99. 自守数
+按照题目意思一个一个确定
+```py
+while 1:
+    try:
+        n = int(input())
+        count = 0
+        for i in range(n + 1):
+            if str(i) == str(i ** 2)[-len(str(i)):]:
+                count += 1
+        print(count)
+    except:
+        break
+```
+
+100. 等差数列
+
+```py
+n = int(input())
+last = 2 + 3 * (n - 1)
+total = (2 + last) * n // 2
+print(total)
 ```
 
 101. 排序后输出
@@ -370,4 +563,50 @@ else:
 
 for n in nums:
     print(n, end = ' ')
+```
+
+105. 记负均正
+
+```py
+neg = []
+non_neg = []
+
+while True:
+    try:
+        n = int(input())
+        if n < 0:
+            neg.append(n)
+        else:
+            non_neg.append(n)
+    except:
+        print(len(neg))
+
+        if len(non_neg) != 0:
+            # format(num, '.1f;): 只保留一位小数
+            print(format(sum(non_neg) / len(non_neg), '.1f'))
+        else:
+            print(0.0)
+        break
+```
+
+106. 字符逆序
+
+```py
+msg = input()
+msg = msg[::-1]
+print(msg)
+```
+
+108. 最小公倍数
+
+```py
+# 在大的数的倍数里，找能被小的数整除的最小的数
+a, b = map(int, input().split())
+if a < b:
+    a, b = b, a
+
+for i in range(a, a * b + 1, a):
+    if i % b == 0:
+        print(i)
+        break
 ```
