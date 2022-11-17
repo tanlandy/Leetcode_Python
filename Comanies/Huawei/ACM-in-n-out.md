@@ -5,6 +5,11 @@ last = input().split()[-1]
 msg = input() # msg = "hello nowcoder"
 ```
 
+input: 2012 12 31
+```py
+y, m, d = map(int, input().split())
+```
+
 # 输入两行
 ## 依次输入两行
 input: ABCabc
