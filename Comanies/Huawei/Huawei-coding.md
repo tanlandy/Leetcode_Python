@@ -23,6 +23,42 @@ leetcode也可以自己找题练>
 2.练习/正式考试时务必点击【保存并调试】，同时
 也可以多次点击【保存并调试】随时查看通过率。
 
+1. 字符串最后一个单词的长度
+
+```py
+last = input().split()[-1]
+print(len(last))
+```
+
+2. 计算某字符出现次数
+
+```py
+from collections import Counter
+
+msg = input().upper()
+freq = Counter(msg)
+need = input().upper()
+print(freq[need])
+```
+
+
+3. 明明的随机数
+
+```py
+while True:
+    try:
+        n = int(input())
+        nums = []
+        for i in range(n):
+            nums.append(int(input()))
+        uni_nums = set(nums)
+        nums = list(uni_nums)
+        nums.sort()
+        for n in nums:
+            print(n)
+    except:
+        break
+```
 
 4. 字符串分隔
 ```py
@@ -157,6 +193,26 @@ for key in sorted(dict):
 
 ```
 
+9. 提取不重复的整数
+
+```py
+num = list(input())
+
+seen = set()
+res = []
+for i in range(len(num) - 1, -1, -1):
+    n = num[i]
+    if n not in seen:
+        res.append(n)
+        seen.add(n)
+    else:
+        continue        
+
+res = "".join(res)
+print(res)
+```
+
+
 10. 字符个数统计
 
 ```py
@@ -213,6 +269,198 @@ for i in range(size):
 num = int(input())
 
 print(bin(num).count('1')) # bin(num) 转换成二进制数
+```
+
+16. 购物车
+
+```py
+n, m = map(int,input().split())
+primary, annex = {}, {}
+for i in range(1,m+1):
+    x, y, z = map(int, input().split())
+    if z==0:#主件
+        primary[i] = [x, y]
+    else:#附件
+        if z in annex:#第二个附件
+            annex[z].append([x, y])
+        else:#第一个附件
+            annex[z] = [[x,y]]
+m = len(primary)#主件个数转化为物品个数
+dp = [[0]*(n+1) for _ in range(m+1)]
+w, v= [[]], [[]]
+for key in primary:
+    w_temp, v_temp = [], []
+    w_temp.append(primary[key][0])#1、主件
+    v_temp.append(primary[key][0]*primary[key][1])
+    if key in annex:#存在主件
+        w_temp.append(w_temp[0]+annex[key][0][0])#2、主件+附件1
+        v_temp.append(v_temp[0]+annex[key][0][0]*annex[key][0][1])
+        if len(annex[key])>1:#存在两主件
+            w_temp.append(w_temp[0]+annex[key][1][0])#3、主件+附件2
+            v_temp.append(v_temp[0]+annex[key][1][0]*annex[key][1][1])
+            w_temp.append(w_temp[0]+annex[key][0][0]+annex[key][1][0])#3、主件+附件1+附件2
+            v_temp.append(v_temp[0]+annex[key][0][0]*annex[key][0][1]+annex[key][1][0]*annex[key][1][1])
+    w.append(w_temp)
+    v.append(v_temp)
+for i in range(1,m+1):
+    for j in range(10,n+1,10):#物品的价格是10的整数倍
+        max_i = dp[i-1][j]
+        for k in range(len(w[i])):
+            if j-w[i][k]>=0:
+                max_i = max(max_i, dp[i-1][j-w[i][k]]+v[i][k])
+        dp[i][j] = max_i
+print(dp[m][n])
+```
+
+17. 坐标移动
+
+```py
+cmds = input().split(';')
+x, y = 0, 0
+for cmd in cmds:
+    if not 2 <= len(cmd) <= 3:
+        continue
+    dir = cmd[0]
+    move = cmd[1:]
+    if not dir.isalpha() or not move.isdigit():
+        continue
+    move = int(move)
+    if dir == "A":
+        x -= move
+    elif dir == "D":
+        x += move
+    elif dir == "S":
+        y -= move
+    elif dir == "W":
+        y += move
+print(str(x) + ',' + str(y))
+```
+
+18. 识别有效ip地址和子网掩码并统计
+
+```py
+import sys
+
+res = [0,0,0,0,0,0,0]
+
+def puip(ip):
+    if 1 <= ip[0] <= 126:				# A类地址判断条件
+        res[0] += 1
+    elif 128 <= ip[0] <= 191:			# B类地址判断条件
+        res[1] += 1
+    elif 192 <= ip[0] <= 223:			# C类地址判断条件
+        res[2] += 1
+    elif 224 <= ip[0] <= 239:			# D类地址判断条件
+        res[3] += 1
+    elif 240 <= ip[0] <= 255:			# E类地址判断条件
+        res[4] += 1
+    return
+
+def prip(ip):			# 私有IP地址判断条件
+    if (ip[0] == 10) or (ip[0] == 172 and 16 <= ip[1] <= 32) or (ip[0] == 192 and ip[1] == 168):
+        res[6] += 1
+    return
+
+def ym(msk):
+    val = (msk[0] << 24) + (msk[1] << 16) + (msk[2] << 8) + msk[3]	# 获取32位的掩码表示
+    s = bin(val)[2:]												  # 去除“0b”字符，并转换成字符串
+    pos0 = s.find('0')												  # 从左往右找到0第一次出现的位置 
+    pos1 = s.rfind('1')												  # 从右往左找到1第一次出现的位置
+    if pos0 != -1 and pos1 != -1 and pos0 - pos1 == 1:				  # 判断两个位置是否相差1，且是否找不到
+        return True
+    return False
+    
+
+def judge(line):
+    ip, msk = line.strip().split('~')
+    ips = [int(x) for x in filter(None, ip.split('.'))]				# 获得表示IP的列表，理论上应该包含四个元素
+    msks = [int(x) for x in filter(None, msk.split('.'))]			# 获得表示掩码的列表，理论上应该包含四个元素
+    if ips[0] == 0 or ips[0] == 127:								# 排除非法IP不计数
+        return
+    if len(ips) < 4 or len(msks) < 4:								  # 判断错误掩码或错误IP
+        res[5] += 1
+        return
+    if ym(msks) == True:											# 通过掩码判断的可以进行IP判断
+        puip(ips)
+        prip(ips)
+    else:
+        res[5] += 1
+    return
+
+for line in sys.stdin:
+    judge(line)
+# judge("192.168.0.2~255.255.255.0")
+
+res = [str(x) for x in res]
+print(" ".join(res))
+```
+
+19. 简单错误记录
+
+```py
+ls = []   # 储存键
+dic = {}  # 储存键-值对
+while True:
+    try:
+        msg = input().split()    
+        msg[0] = msg[0].split('\\')[-1]        # 路径\分割，只取最后一个
+        msg = ' '.join([msg[0][-16:], msg[1]]) # 取后16位及行号（str[-16],num）-> (str[-16] num)  此时属性为字符串
+        if msg not in dic.keys():              # 将msg记为字典的key值并判断是否存在
+            ls.append(msg)                     # 不存在就将其计入列表ls
+            dic[msg] = 1                       	  # 将msg为key的value记录为1
+        else:
+            dic[msg] += 1                         # 存在msg就在字典中对应值增加计数
+    except:
+        break
+for item in ls[-8:]:                           # 正序遍历后八个存储的键
+    print(item, dic[item])                     # 打印键-值对
+```
+
+20. 密码验证合格程序
+
+```py
+def check(s):
+        if len(s) <= 8:
+            return 0
+
+        upper_has = 0
+        lower_has = 0
+        num_has = 0
+        other_has = 0
+        dup_req = False
+
+        for ch in s:
+            if ord('a') <= ord(ch) <= ord('z'):
+                upper_has = 1
+            elif ord('A') <= ord(ch) <= ord('Z'):
+                lower_has = 1
+            elif ord('0') <= ord(ch) <= ord('9'):
+                num_has = 1
+            else:
+                other_has = 1
+        
+        if upper_has + lower_has + num_has + other_has < 3:
+            return 0
+        
+        dc = {}
+        for i in range(len(s) - 2):
+            if s[i:i + 3] in dc:
+                return 0
+            else:
+                dc[s[i:i + 3]] = 1
+        
+        return 1
+
+while True:
+    try:
+        s = input()
+        if check(s):
+            print("OK")
+        else:
+            print("NG")
+
+    except:
+        break
 ```
 
 21. 简单密码
@@ -304,6 +552,123 @@ while True:
         break
 ```
 
+26. 字符串排序
+
+```py
+while True:
+    try:
+        s = input()
+        a = ''
+        for i in s:
+            if i.isalpha():
+                a += i
+        b = sorted(a, key = str.upper) # 字符由A到Z排序，且同字符输入先后排序
+        idx = 0
+        res = ''
+        for i in range(len(s)):
+            if s[i].isalpha():
+                res += b[idx]
+                idx += 1
+            else:
+                res += s[i]
+        print(res)
+
+    except:
+        break
+```
+
+27. 查找兄弟单词
+
+```py
+while True:
+    try:
+        msg = input().split()
+        size = msg[0]
+        pos = int(msg[-1])
+        strs = msg[1:-2]
+        std = msg[-2]
+        count = 0
+        valid_msg = []
+
+        for word in strs:
+            if word == std:
+                continue
+            elif sorted(word) == sorted(std):
+                count += 1
+                valid_msg.append(word)
+        print(count)
+        valid_msg.sort()
+        print(valid_msg[pos - 1])
+    except:
+        break
+```
+
+
+29. 字符串加解密
+
+```py
+while True:
+    try:
+        a = input()
+        a = list(a) #需要加密的字符串
+        b = input()
+        b = list(b) #需要解密的字符串
+        for i in range(len(a)):#加密过程
+            if(a[i].isupper()): #如果字符是大写字母
+                if(a[i] == 'Z'): #首先如果是Z的话变为a，若z的ascll+1的值是‘{’
+                    a[i] = 'a'
+                else:
+                    a[i] = a[i].lower() #先变为小写
+                    c = ord(a[i]) + 1 #ascll码+1
+                    a[i] = chr(c) #转为字符
+            elif(a[i].islower()): #小写同理
+                if(a[i] == 'z'):
+                    a[i] = 'A'
+                else:
+                    a[i] = a[i].upper()
+                    c = ord(a[i]) + 1
+                    a[i] = chr(c)
+            elif(a[i].isdigit()): #若是数字则+1，9需要单独处理
+                if(a[i] == '9'):
+                    a[i] = '0'
+                else:
+                    a[i] = int(a[i]) + 1
+                    a[i] = str(a[i])
+            else: #若是其他字符则保持不变
+                a[i] = a[i]
+                
+                
+        for i in range(len(b)): #解密过程
+            if(b[i].isupper()): #若为大写则先变为小写，再ascll减一，A要单独处理
+                if(b[i] == 'A'):
+                    b[i] = 'z'
+                else:
+                    b[i] = b[i].lower()
+                    c = ord(b[i]) - 1
+                    b[i] = chr(c)
+            elif(b[i].islower()): #若是小写要先变为大写，再ascll减一，a要单独处理
+                if(b[i] == 'a'):
+                    b[i] = 'Z'
+                else: 
+                    b[i] = b[i].upper()
+                    c = ord(b[i]) - 1
+                    b[i] = chr(c)
+            elif(b[i].isdigit()):#若是数字需要减一，0要单独处理
+                if(b[i] == '0'):
+                    b[i] = '9'
+                else:
+                    b[i] = int(b[i]) - 1
+                    b[i] = str(b[i])
+            else:
+                b[i] = b[i]
+        print(''.join(a)) #按要求输出
+        print(''.join(b))
+    except:
+        break             
+```
+
+
+
 31. 单次倒排
 
 ```py
@@ -387,6 +752,23 @@ def count(month):
 
 month = int(input())
 print(count(month))
+```
+
+38. 小球经历的路程
+
+```py
+while True:
+    try:
+        H = int(input())
+        S = 0 - H
+        for i in range(5):
+            S += H * 2 # 以落地为准，每次都走了2个H的距离（除了一开始）
+            H /= 2
+        print(float(S))
+        print(float(H))
+
+    except:
+        break
 ```
 
 40. 统计字符
@@ -505,6 +887,28 @@ while True:
 ```
 正经面试还是要用栈
 
+
+55. 挑7
+
+```py
+def count_seven(n):
+    count = 0
+    for i in range(7, n + 1):
+        if i % 7 == 0:
+            count += 1
+        elif '7' in str(i):
+            count += 1
+    return count
+
+while True:
+    try:
+        n = int(input())
+        print(count_seven(n))
+
+    except:
+        break
+```
+
 56. 完全数计算
 
 simulate
@@ -521,6 +925,39 @@ for i in range(1, n):
         count += 1
 
 print(count)
+
+```
+
+
+57. 高精度整数加法
+
+```py
+def add_string(s1, s2):
+
+        res = []
+        i = 0
+        carry = 0
+        val = 0
+        while i < max(len(s1), len(s2)):
+            a = 0 if i >= len(s1) else s1[i]
+            b = 0 if i >= len(s2) else s2[i]
+            val = (carry + a + b) % 10
+            carry = (carry + a + b) // 10
+            res.append(val)
+            i += 1
+        if carry:
+            res.append(carry)
+        return "".join(str(x) for x in res[::-1])
+
+
+while True:
+    try:
+        s1 = list(map(int, input()))[::-1]
+        s2 = list(map(int, input()))[::-1]
+        print(add_string(s1, s2))
+
+    except:
+        break
 ```
 
 58. 输出最小k个数
@@ -881,6 +1318,68 @@ while True:
         break
 ```
 
+95. 人民币转换
+
+```py
+def fun(n, s =''):
+    if n < 20:  # 由于10应写作“拾”，所以第一前1-19进行查字典处理
+        s += dic[n]
+    elif n < 100 :  # 大于20小于100的数
+        if n % 10 >= 1:  # 非整十
+            s += fun(n//10) + '拾' + fun(n % 10)
+        else:  # 整十
+            s += fun(n//10) + '拾'
+    elif n < 1000: # 大于100小于1000的数
+        if n % 100 >= 10:  # 十位不为0
+            s += fun(n//100) + '佰' + fun(n % 100)
+        elif n % 100 > 0:  # 个位不为零
+            s += fun(n//100) + '佰零' + fun(n % 100)
+        else:  # 个位为零
+            s += fun(n//100) + '佰'
+    elif n < 10000:  # 大于1000小于10000的数
+        if n % 1000 >= 100:  # 百位不为零
+            s += fun(n//1000) + '仟' + fun(n % 1000)
+        elif n % 1000 > 0:  # 个位不为0
+            s += fun(n//1000) + '仟零' + fun(n % 1000)
+        else:  # 个位为0
+            s += fun(n//1000) + '仟'
+    elif n < 100000000:  # 大于10000小于100000000的数
+        if n % 10000 >= 1000:  # 千位不为0时
+            s += fun(n//10000) + '万' + fun(n % 10000)
+        elif n % 10000 > 0:  # 个位不为0
+            s += fun(n//10000) + '万零' + fun(n % 10000)
+        else:  # 个位为0
+            s += fun(n//10000) + '万'
+    else:  # 大于100000000的数
+        if n % 100000000 >= 10000000:  # 千万位不为0
+            s += fun(n//10000) + '亿' + fun(n % 100000000)
+        elif n % 100000000 > 0:  # 个位不为0
+            s += fun(n//100000000) + '亿零' + fun(n % 100000000)
+        else:  # 个位为0
+            s += fun(n//100000000) + '亿'
+    return s
+
+while True:
+    try:
+        dic = {1:'壹', 2:'贰', 3:'叁', 4:'肆', 5:'伍', 6:'陆', 7:'柒', 8:'捌', 9:'玖', 10:'拾', 11:'拾壹', 12:'拾贰', 13:'拾叁', 14:'拾肆', 15:'拾伍', 16:'拾陆', 17:'拾柒', 18:'拾捌', 19:'拾玖'}
+        n, f = map(int,input().split('.'))
+        if n > 0:
+            s = '人民币' + fun(n) + '元'
+        else:
+            s = '人民币'
+        if f == 0:
+            s += '整'
+        elif f < 10:
+            s += dic[f] + '分'
+        elif f % 10 == 0:
+            s += dic[f//10] + '角'
+        else:
+            s += dic[f//10] + '角' + dic[f % 10] + '分'
+        print(s)
+    except:
+        break
+```
+
 96. 表示数字
 
 ```py
@@ -991,6 +1490,29 @@ while True:
         break
 ```
 
+103. Redraiment的走法
+
+就是求最长上升子序列
+```py
+"""
+dp[i]: 重点为i时，最大走法
+"""
+while True:
+    try:
+        n = int(input())
+        s = [int(x) for x in input().split()]
+        dp = [1] * n
+
+        for i in range(n):
+            for j in range(i):
+                if s[i] > s[j]:
+                    dp[i] = max(dp[i], dp[j] + 1)
+        
+        print(max(dp))
+    except:
+        break
+```
+
 105. 记负均正
 
 ```py
@@ -1021,6 +1543,41 @@ while True:
 msg = input()
 msg = msg[::-1]
 print(msg)
+```
+
+107. 求解立方根
+
+```py
+def find_cube(n):
+    sign = 1
+    if n < 0:
+        n = -n
+        sign = -1
+    
+    if n > 1: # 二分查找要注意起点终点的大小
+        l = 0
+        r = n
+    else:
+        l = n
+        r = 1
+    mid = (l + r) / 2
+    while abs(mid ** 3 - n) >= 0.0001:
+              
+        if mid ** 3 > n:
+            r = mid
+        else:
+            l = mid
+        mid = (l + r) / 2
+    res = sign * mid
+    return(res)
+
+while True:
+    try:
+        n = float(input().strip())
+        res = find_cube(n)
+        print(format(res, '.1f'))
+    except:
+        break
 ```
 
 108. 最小公倍数
