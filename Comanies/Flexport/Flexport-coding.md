@@ -404,3 +404,15 @@ playerCard:{"Red":2}
 
 
 reverse linklist
+
+# 自己
+1. 计算shipment价格
+
+根据货物的指标和单价，计算总价
+
+2. calendar
+
+OOD多次插入事件
+
+第一问：查重 LC252
+第二问：合并重 LC57

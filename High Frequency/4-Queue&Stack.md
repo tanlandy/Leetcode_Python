@@ -768,28 +768,7 @@ class Solution:
 
 ```
 
-[739. Daily Temperatures](https://leetcode.com/problems/daily-temperatures/)
 
-```python
-class Solution:
-    def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
-        """
-        单调递减栈（非增）monotonic decreasing stack；如果下一个数更大，就一直弹栈，直到找到能把这个数放进去；弹栈的时候就可以idx的差值就是被删除栈的output；如果下一个数更大，就压栈
-
-        时间：O(N)
-        空间：O(N)
-        """
-        res = [0] * len(temperatures)
-        stack = [] # pair:[temp, index]
-
-        for idx, t in enumerate(temperatures):
-            while stack and t > stack[-1][0]:
-                stackTemp, stackIdx = stack.pop()
-                res[stackIdx] = (idx - stackIdx)
-            stack.append([t, idx])
-        
-        return res    
-```
 
 [853. Car Fleet](https://leetcode.com/problems/car-fleet/)
 
@@ -886,4 +865,28 @@ class Solution:
                 res += r - l
         
         return res
+```
+
+[739. Daily Temperatures](https://leetcode.com/problems/daily-temperatures/)
+
+```python
+class Solution:
+    def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
+        """
+        单调递减栈（非增）monotonic decreasing stack；如果下一个数更大，就一直弹栈，直到找到能把这个数放进去；弹栈的时候就可以idx的差值就是被删除栈的output；如果下一个数更大，就压栈
+
+        时间：O(N)
+        空间：O(N)
+        """
+        res = [0] * len(temperatures)
+        stack = [] # [(temp, idx)]
+
+        for idx, t in enumerate(temperatures):
+            while stack and t > stack[-1][0]:
+                temp, i = stack.pop()
+                res[i] = idx - i
+            
+            stack.append((t, idx))
+        
+        return res    
 ```
