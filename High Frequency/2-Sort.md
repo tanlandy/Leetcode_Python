@@ -74,12 +74,14 @@ def bubbleSort(nums):
 时间：O(NlogN)
 空间：O(N)
 
+[912. Sort an Array](https://leetcode.com/problems/sort-an-array/)
+
 ```py
 def mergesort(seq):
     """归并排序"""
     if len(seq) <= 1:
         return seq
-    mid = len(seq) / 2  # 将列表分成更小的两个列表
+    mid = len(seq) // 2  # 将列表分成更小的两个列表
     # 分别对左右两个列表进行处理，分别返回两个排序好的列表
     left = mergesort(seq[:mid])
     right = mergesort(seq[mid:])
