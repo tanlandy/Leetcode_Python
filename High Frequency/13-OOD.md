@@ -125,6 +125,39 @@ class FileSystem:
 # param_2 = obj.get(path)
 ```
 
+
+[348. Design Tic-Tac-Toe](https://leetcode.com/problems/design-tic-tac-toe/description/)
+
+```py
+class TicTacToe:
+    def __init__(self, n: int):
+        self.n = n
+        self.hori = [0] * n
+        self.ver = [0] * n
+        self.diag1 = 0
+        self.diag2 = 0
+
+    def move(self, row: int, col: int, player: int) -> int:
+        n = self.n
+        move = 1
+        if player == 2:
+            move = -1
+        
+        self.hori[col] += move
+        self.ver[row] += move
+        
+        if col == row:
+            self.diag1 += move
+        if row + col == (n-1): # for points in the same diag, they have the same (r + c)
+            self.diag2 += move
+
+        if abs(self.hori[col]) == n or abs(self.ver[row]) == n or abs(self.diag1) == n or abs(self.diag2) == n:
+            return player
+        
+        return 0
+```
+
+
 ## Iterator
 
 [284. Peeking Iterator](https://leetcode.com/problems/peeking-iterator/)

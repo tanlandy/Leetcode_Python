@@ -469,8 +469,8 @@ class Solution:
     def letterCombinations(self, digits: str) -> List[str]:
         if not digits:
             return []
-        res = []
-        digit_to_char = { 
+
+        d_ch = {
             "2": "abc",
             "3": "def",
             "4": "ghi",
@@ -479,23 +479,21 @@ class Solution:
             "7": "qprs",
             "8": "tuv",
             "9": "wxyz" 
-        } 
-
-        one_res = []
-        def backtrack(i): # tell what idx we are at
+        }
+        
+        res = []
+        def backtrack(one_res, idx):
             if len(one_res) == len(digits):
                 res.append("".join(one_res))
                 return
             
-            for c in digit_to_char[digits[i]]:
-                one_res.append(c)
-                backtrack(i + 1)
+            for ch in d_ch[digits[idx]]:
+                one_res.append(ch)
+                backtrack(one_res, idx + 1)
                 one_res.pop()
-
         
-        backtrack(0)
+        backtrack([], 0)
         return res
-
 ```
 
 
@@ -611,6 +609,24 @@ class Solution:
                 continue
             if 0 <= int(s[start:i+1]) <= 255:
                 self.backtrack(s, current + [s[start:i+1]], i + 1)
+```
+
+```py
+class Solution:
+    def restoreIpAddresses(self, s: str) -> List[str]:
+        res = []
+        self.backtrack(res, "", 0, s)
+        return res
+    
+    def backtrack(self, res, path, idx, s): # s每次都往后截取
+        if idx > 4:
+            return 
+        if idx == 4 and not s: # 4位数同时s走完了
+            res.append(path[:-1])
+        
+        for i in range(1, len(s) + 1):
+            if s[:i] == "0" or (s[0] != "0" and 0 < int(s[:i]) <= 255):
+                self.backtrack(res, path + s[:i] + ".", idx + 1, s[i:])
 ```
 
 # DFS + Memorization
