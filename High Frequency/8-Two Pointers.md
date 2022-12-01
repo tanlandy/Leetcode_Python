@@ -712,6 +712,31 @@ class Solution:
         return res
 ```
 
+[1052. Grumpy Bookstore Owner](https://leetcode.com/problems/grumpy-bookstore-owner/description/)
+
+```py
+class Solution:
+    def maxSatisfied(self, customers: List[int], grumpy: List[int], minutes: int) -> int:
+        """
+        找到minutes范围内最大的和
+        """
+        satis, unsatis, trik_satis = 0, 0, 0
+
+        for end, customer in enumerate(customers):
+            if grumpy[end] == 0:
+                satis += customer
+            else:
+                unsatis += customer # 相当于用掉了一个minute
+            
+            if end >= minutes and grumpy[end - minutes] == 1: # 用完了minute
+                unsatis -= customers[end - minutes]
+
+            trik_satis = max(trik_satis, unsatis)
+        
+        return satis + trik_satis
+```
+
+
 # Others
 [31. Next Permutation](https://leetcode.com/problems/next-permutation/)
 
