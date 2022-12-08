@@ -1365,6 +1365,28 @@ class Solution:
 ```
 
 
+
+[872. Leaf-Similar Trees](https://leetcode.com/problems/leaf-similar-trees/description/)
+
+```py
+class Solution:
+    def leafSimilar(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> bool:
+        def find_leaf(node, nodes):
+            if not node:
+                return
+            if not node.left and not node.right:
+                nodes.append(node.val)
+            find_leaf(node.left, nodes)
+            find_leaf(node.right, nodes)
+        
+        leaf1 = []
+        leaf2 = []
+        find_leaf(root1, leaf1)
+        find_leaf(root2, leaf2)
+
+        return leaf1 == leaf2
+```
+
 ### Path系列
 
 [257. Binary Tree Paths](https://leetcode.com/problems/binary-tree-paths/)
@@ -1923,6 +1945,31 @@ class Solution:
                 r -= 1
         
         return False
+```
+
+[938. Range Sum of BST](https://leetcode.com/problems/range-sum-of-bst/description/)
+
+```py
+class Solution:
+    def rangeSumBST(self, root: Optional[TreeNode], low: int, high: int) -> int:
+        if not root:
+            return 0
+        res = 0
+
+        def inorder(node):
+            nonlocal res
+            if not node:
+                return 0
+
+            if low <= node.val <= high: # 在范围以内，所以直接加
+                res += node.val
+            if low < node.val: # 在范围内，但是太大了，所以往左边走 
+                inorder(node.left)
+            if node.val < high: # 太小了，往右边走
+                inorder(node.right)
+        inorder(root)
+
+        return res
 ```
 
 [285. Inorder Successor in BST](https://leetcode.com/problems/inorder-successor-in-bst/)
