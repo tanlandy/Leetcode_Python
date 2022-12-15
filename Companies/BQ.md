@@ -3,7 +3,7 @@
 https://docs.google.com/document/u/0/d/112HBiMNvu6TYbDUOfVRe_MS4A-fKaWYrpMlmnsiMNiA/mobilebasic 
 
 
-
+https://www.1point3acres.com/bbs/thread-483735-1-1.html 
 
 ## 推荐问题
 1. what is your daily work flow?
@@ -57,3 +57,40 @@ reviewing the organization’s website. This is the bare minimum for interviews;
 "Tell me about your journey into tech. How did you get interested in coding, and why was web development (or replace with other job-specific skills) a good fit for you? How is that applicable to our role or company goals?"
 
 
+# Why Company
+
+准备方式：
+1. To C公司：作为消费者
+2. To B公司：从公司产品切入，阐述产品是什么，能对社会产生什么影响，然后过渡到你对产品背后tech的兴趣，激起热情，希望能贡献自己的力量帮助公司解决一些具体的挑战并扩大影响力，从而实现自己的职业目标
+
+模板：
+喜欢产品 -> 研究背后的tech -> 发现经历和技术上的重合 -> 激发兴趣 -> 了解公司面临的挑战 -> 希望去解决并创造更大的价值 -> 实现自身职业成长
+
+Flexport:
+供应链管理，尤其是货代，能明显提升客户在供应链、金融、销售方面的效率。我自己之前实习也涉及到过区块链技术在供应链金融的应用。而且也深知物流运输对于当代的重要性，希望能解决问题并且在这个领域创造更大的价值。
+
+# Customer Obsession
+
+准备方式：社招为主
+
+# Are Right, A Lot
+
+在信息不够又必须做决定的情况下，你是如何做出正确的决定的？面临时间压力如何做出相对明知的决定？
+
+准备方式：
+回想必须做决定但没足够信息的情况。如何确定哪些信息是做决定必须的和不必须的，如何收集那些必要的信息？
+
+例题一：tell me about a time when you made a bad decision and the learning from the experience
+
+
+例题二：tell me about a time when you disagreed with a colleague or boss. What is the process you used to work it out?
+
+模板：
+背景situation -> conflict来源和自己的做法 -> 说明做法之后的结果 -> 如果自己是对的就说对方对自己的评价以及impact，如果错了就重点说为什么错了 -> Learning 以及以后如何避免这种错误
+
+Flexport
+小组作业和自己的大作业： 有冲突，最后还是优先完成小组作业，自己的大作业就和助教沟通用了缓冲期完成，最后结果老师也是很满意，学到的是要预留更多的时间，定期开组会进行目标的确定追踪和调整
+
+
+Couldn't finish tasks before deadline
+老板因为种种原因把deadline提前了，
