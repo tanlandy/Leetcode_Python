@@ -84,6 +84,36 @@ XOR: `a ^ 0 = a, a ^ a = 0`
 
 # 例题
 
+[1318. Minimum Flips to Make a OR b Equal to c](https://leetcode.com/problems/minimum-flips-to-make-a-or-b-equal-to-c/description/)
+```py
+class Solution:
+    def minFlips(self, a: int, b: int, c: int) -> int:
+        """
+        对于每一个bit来说：
+        如果c & 1 == 1:
+            a, b在该位置至少有一个是1
+        如果c & 1 == 0:
+            a, b在该位置都必须为0
+            此时flip += a & 1 += b & 1
+        时间：O(n)
+        空间：O(1)
+        """
+        res = 0
+        while a or b or c:
+            if c & 1:
+                if (a & 1) or (b & 1):
+                    res += 0
+                else:
+                    res += 1
+            else:
+                res += (a & 1) + (b & 1)
+            a >>= 1  # 往右移
+            b >>= 1
+            c >>= 1
+        return res
+```
+
+
 [504. Base 7](https://leetcode.com/problems/base-7/description/)
 
 ```py
