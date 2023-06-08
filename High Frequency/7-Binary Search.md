@@ -70,6 +70,53 @@ print(A)
 # 例题
 
 ## 显式二分法
+说明了是有序数组/序列，那么大概率是可以使用二分法的
+[1351. Count Negative Numbers in a Sorted Matrix](https://leetcode.com/problems/count-negative-numbers-in-a-sorted-matrix/description/)
+
+```py
+class Solution:
+    def countNegatives(self, grid: List[List[int]]) -> int:
+        """
+        找最左侧边界
+        时间：O(MlogN)
+        空间：O(1)
+        """
+        neg_count = 0
+        for row in range(len(grid)):
+            l, r = 0, len(grid[0]) - 1
+            while l <= r:  # 右边都满足，找最左侧边界，第一个小于0的数
+                pivot = (l + r) // 2
+                if grid[row][pivot] < 0:
+                    r = pivot - 1
+                else:
+                    l = pivot + 1
+            neg_count += (len(grid[0]) - l)
+    
+        return neg_count
+```
+
+
+这道题除了明显可以用二分查找以外，还有时间复杂度更低的方法
+```py
+class Solution:
+    def countNegatives(self, grid: List[List[int]]) -> int:
+        """
+        从右上往左下
+        时间：O(M+N)
+        空间：O(1)
+        """
+        neg_count = 0
+        pivot = len(grid[0]) - 1  # 第一行最右边
+        for row in range(len(grid)):
+            while pivot >= 0 and grid[row][pivot] < 0:  # 一旦调用了grid[pivot]，那么就要想到越界的情况
+                pivot -= 1
+            neg_count += (len(grid[0]) - pivot - 1)  # 对于是否+-1的情况，举一个例子试试看就知道了
+        return neg_count     
+```
+
+
+
+
 
 ## 隐式二分法
 Find the Closest Number
