@@ -115,7 +115,27 @@ class Solution:
 ```
 
 
+[744. Find Smallest Letter Greater Than Target](https://leetcode.com/problems/find-smallest-letter-greater-than-target/description/)
 
+```py
+class Solution:
+    def nextGreatestLetter(self, letters: List[str], target: str) -> str:
+        """
+        有序：二分查找
+        右边都满足：选定模版
+        时间：O(logN), N = len(letters)
+        空间：O(1)
+        """
+        l, r = 0, len(letters) - 1
+        while l <= r:
+            mid = (l + r) // 2
+            if ord(letters[mid]) - ord(target) > 0:
+                r = mid - 1
+            else:
+                l = mid + 1
+        
+        return letters[l] if l < len(letters) else letters[0]
+```
 
 
 ## 隐式二分法
