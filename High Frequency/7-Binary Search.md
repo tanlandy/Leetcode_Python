@@ -16,7 +16,7 @@ def find_target(nums, target):
     return -1
 ```
 
-## 找最左侧边界
+## 右侧都满足，找其中最左边满足的
 ```py
 def find_leftmost(nums, target):
     l, r = 0, len(nums) - 1
@@ -34,7 +34,8 @@ def find_leftmost(nums, target):
     return l
 ```
 
-## 找最右侧边界
+## 左侧都满足，找其中最右边满足的
+### 模板
 ```py
 def find_leftmost(nums, target):
     l, r = 0, len(nums) - 1
@@ -51,6 +52,9 @@ def find_leftmost(nums, target):
         return -1
     return r
 ```
+### 例题
+id 1351
+id 744
 
 ## Bisect
 ```py
