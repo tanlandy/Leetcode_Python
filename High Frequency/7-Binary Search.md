@@ -141,6 +141,67 @@ class Solution:
         return letters[l] if l < len(letters) else letters[0]
 ```
 
+[1150. Check If a Number Is Majority Element in a Sorted Array](https://leetcode.com/problems/check-if-a-number-is-majority-element-in-a-sorted-array/description/)
+
+```py
+class Solution:
+    def isMajorityElement(self, nums: List[int], target: int) -> bool:
+        """
+        有序数组：二分查找
+        根据题意：找最左边界和最右边界
+        时间：O(logN), N = len(nums)
+        空间：O(1)
+        """
+        l, r = 0, len(nums) - 1
+        while l <= r:  # 先找右边都满足时候的最左边界
+            mid = (l + r) // 2
+            if nums[mid] == target:
+                r = mid - 1
+            elif nums[mid] < target:
+                l = mid + 1
+            else:
+                r = mid - 1
+        left = l
+        l, r = 0, len(nums) - 1
+        while l <= r:  # 再找最右边界
+            mid = (l + r) // 2
+            if nums[mid] == target:
+                l = mid + 1
+            elif nums[mid] < target:
+                l = mid + 1
+            else:
+                r = mid - 1
+        
+        count = r - left + 1
+        return count > len(nums) / 2
+```
+
+```py
+class Solution:
+    def isMajorityElement(self, nums: List[int], target: int) -> bool:
+        """
+        有序数组：二分查找
+        根据题意：找最左边界，然后加一半，看一半之后的那个位置是不是target
+        时间：O(logN), N = len(nums)
+        空间：O(1)
+        """
+        l, r = 0, len(nums) - 1
+        while l <= r:  # 找右边都满足时候的最左边界
+            mid = (l + r) // 2
+            if nums[mid] == target:
+                r = mid - 1
+            elif nums[mid] < target:
+                l = mid + 1
+            else:
+                r = mid - 1
+
+        end = l + len(nums) // 2
+        return end < len(nums) and nums[end] == target  # 越界的情况
+```
+
+
+
+
 
 ## 隐式二分法
 Find the Closest Number
