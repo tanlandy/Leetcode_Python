@@ -1557,6 +1557,28 @@ def getTotalX(a, b):
     return res
 ```
 
+[228. Summary Ranges](https://leetcode.com/problems/summary-ranges/)
+
+```py
+class Solution:
+    def summaryRanges(self, nums: List[int]) -> List[str]:
+        """
+        固定左边，往右边走即可
+        """
+        res = []
+        idx = 0
+        while idx < len(nums):
+            start = nums[idx]  # 固定左边
+            while idx + 1 < len(nums) and nums[idx] + 1 == nums[idx + 1]:
+                idx += 1
+            if start != nums[idx]:
+                res.append(str(start) + '->' + str(nums[idx]))
+            else:
+                res.append(str(nums[idx]))
+            idx += 1
+
+        return res
+```
 
 ## two sum类型
 
