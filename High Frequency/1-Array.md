@@ -1599,6 +1599,28 @@ class Solution:
             seen[n] = idx
 ```
 
+[1679. Max Number of K-Sum Pairs](https://leetcode.com/problems/max-number-of-k-sum-pairs/description/?envType=study-plan-v2&envId=leetcode-75)
+
+```py
+class Solution:
+    def maxOperations(self, nums: List[int], k: int) -> int:
+        """
+        对数字进行计数，然后看自己和补数是否在字典中，如果在的话就各自-=1
+        """
+        freq = Counter(nums)
+        count = 0
+        for i in range(len(nums)):
+            remain = k - nums[i]
+            if freq[nums[i]] > 0 and freq[remain] > 0:
+                if nums[i] == remain and freq[nums[i]] < 2:
+                    continue
+                freq[nums[i]] -= 1
+                freq[remain] -= 1
+                count += 1
+        return count
+```
+
+
 [167. Two Sum II - Input Array Is Sorted](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/)
 
 ```py
