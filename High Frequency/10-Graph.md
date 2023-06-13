@@ -291,6 +291,37 @@ class Solution:
 
 ## 例题
 
+[2352. Equal Row and Column Pairs](https://leetcode.com/problems/equal-row-and-column-pairs/description/)
+
+```py
+class Solution:
+    def equalPairs(self, grid: List[List[int]]) -> int:
+        """
+        重点是如何转置二维数组
+
+        时间：O(MN)
+        空间：O(MN)
+        """
+        row_freq = collections.defaultdict(int)
+        col_freq = collections.defaultdict(int)
+        for row in grid:
+            row_freq[tuple(row)] += 1
+
+        # col_grid = [[row[col] for row in grid] for col in range(len(grid[0]))]
+        for c in range(len(grid[0])):
+            col = [grid[i][c] for i in range(len(grid))]
+            col_freq[tuple(col)] += 1
+        
+
+
+        count = 0
+        for item in row_freq:
+            if item in col_freq:
+                count += row_freq[item] * col_freq[item]
+        
+        return count
+```
+
 
 [36. Valid Sudoku](https://leetcode.com/problems/valid-sudoku/)
 
