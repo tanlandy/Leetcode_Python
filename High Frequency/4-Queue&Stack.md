@@ -339,11 +339,9 @@ class MinStack:
     def getMin(self) -> int:
         return self.min_stack[-1]
 ```
-
+另一种方式，min_stack只放最小值，删除时候如果相等才删min_stack
 ```py
-    """
-    另一种方式，min_stack只放最小值，删除时候如果相等才删min_stack
-    """
+class MinStack:
     def __init__(self):
         self.stack = []
         self.min_stack = []

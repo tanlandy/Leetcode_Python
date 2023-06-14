@@ -41,7 +41,6 @@ class Solution:
 
 ```py
 class Codec:
-class Codec:
     def encode(self, strs: List[str]) -> str:
         """Encodes a list of strings to a single string.
         """
