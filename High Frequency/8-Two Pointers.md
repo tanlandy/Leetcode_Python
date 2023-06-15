@@ -161,34 +161,22 @@ class Solution:
 ```py
 class Solution:
     def threeSumClosest(self, nums: List[int], target: int) -> int:
-        """
-        记录目标值的差, 每次用twoSC来找最接近的值
-        
-        时间：O(N^2)
-        空间：O(logN)
-        """
-        nums.sort()
-        diff = float("inf")
-        for i in range(len(nums) - 2):
-            one_diff = self.twoSC(nums, i + 1, target - nums[i])
-            if abs(diff) > abs(one_diff):
-                diff = one_diff
-            
+        diff = float('inf')
+        nums.sort()  # 总是要排序之后才能用双指针
+        for i in range(len(nums)):
+            l, r = i + 1, len(nums) - 1  # 不用再往前看了，只需要往后看，因为前面看过了
+            while l < r:
+                total = nums[i] + nums[l] + nums[r]
+                if abs(target - total) < abs(diff):
+                    diff = target - total
+                if total < target:
+                    l += 1
+                else:
+                    r -= 1
+                if diff == 0:
+                    break
         return target - diff
-    
-    def twoSC(self, nums, i, target):
-        l, r = i, len(nums) - 1
-        one_diff = float("inf")
-        while l < r:
-            cur_sum = nums[l] + nums[r]
-            if abs(one_diff) > abs(target - cur_sum):
-                one_diff = target - cur_sum
-            if cur_sum < target:
-                l += 1
-            else:
-                r -= 1
-        
-        return one_diff
+                
 ```
 
 [18. 4Sum](https://leetcode.com/problems/4sum/)
