@@ -1,4 +1,3 @@
-a = [0, 1, 2, 3]
-print("a[-1] is", a[-1])
-for a[-1] in a:
-    print(a[-1])
+m =6
+res = [i+1 for i in range(m)]
+print(res)
