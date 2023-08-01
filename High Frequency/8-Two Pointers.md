@@ -1,5 +1,7 @@
 # 背向双指针
+
 [409. Longest Palindrome](https://leetcode.com/problems/longest-palindrome/)
+
 ```py
 class Solution:
     def longestPalindrome(self, s: str) -> int:
@@ -20,6 +22,7 @@ class Solution:
 ```
 
 [125. Valid Palindrome](https://leetcode.com/problems/valid-palindrome/)
+
 ```python
 def isPalindrome(s: str) -> bool:
     """
@@ -76,6 +79,7 @@ class Solution:
 ```
 
 [647. Palindromic Substrings](https://leetcode.com/problems/palindromic-substrings/)
+
 ```py
 class Solution:
     def countSubstrings(self, s: str) -> int:
@@ -106,6 +110,7 @@ class Solution:
 # 相向双指针
 
 [167. Two Sum II - Input Array Is Sorted](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/)
+
 ```py
 class Solution:
     def twoSum(self, numbers: List[int], target: int) -> List[int]:
@@ -124,6 +129,7 @@ class Solution:
 ```
 
 [15. 3Sum](https://leetcode.com/problems/3sum/)
+
 ```py
 class Solution:
     def threeSum(self, nums: List[int]) -> List[List[int]]:
@@ -237,6 +243,7 @@ class Solution:
 ```
 
 [11. Container With Most Water](https://leetcode.com/problems/container-with-most-water/)
+
 ```py
 class Solution:
     def maxArea(self, height: List[int]) -> int:
@@ -285,7 +292,6 @@ class Solution:
         return may_cele
 ```
 
-
 # 同向双指针
 
 -> 扩大的条件和结果；缩小的条件和结果；更新res的条件和结果
@@ -318,12 +324,9 @@ def birthday(s, d, m):
     return res
 ```
 
-
 [643. Maximum Average Subarray I](https://leetcode.com/problems/maximum-average-subarray-i/)
 
 [159. Longest Substring with At Most Two Distinct Characters](https://leetcode.com/problems/longest-substring-with-at-most-two-distinct-characters/)
-
-
 
 [283. Move Zeroes](https://leetcode.com/problems/move-zeroes/)
 
@@ -351,6 +354,7 @@ class Solution:
 ```
 
 [26. Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/)
+
 ```py
 class Solution:
     def removeDuplicates(self, nums: List[int]) -> int:
@@ -680,6 +684,7 @@ class Solution:
 ```
 
 [487. Max Consecutive Ones II](https://leetcode.com/problems/max-consecutive-ones-ii/)
+
 ```py
 class Solution:
     def findMaxConsecutiveOnes(self, nums: List[int]) -> int:
@@ -724,8 +729,8 @@ class Solution:
         return satis + trik_satis
 ```
 
-
 # Others
+
 [31. Next Permutation](https://leetcode.com/problems/next-permutation/)
 
 ```python
@@ -784,6 +789,7 @@ class Solution:
 ```
 
 [1099. Two Sum Less Than K](https://leetcode.com/problems/two-sum-less-than-k/)
+
 ```py
 class Solution:
     def twoSumLessThanK(self, nums: List[int], k: int) -> int:
@@ -845,7 +851,6 @@ class Solution:
         return count
                 
 ```
-
 
 [905. Sort Array By Parity](https://leetcode.com/problems/sort-array-by-parity/)
 
@@ -914,6 +919,7 @@ class Solution:
 ```
 
 ## Other
+
 [161. One Edit Distance](https://leetcode.com/problems/one-edit-distance/)
 
 ```py

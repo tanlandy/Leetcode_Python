@@ -1,11 +1,13 @@
 # 基础知识
+
 ## Terminology
+
 1. Depth of Node: depth of root node is 0
-2. Height of Node: 
+2. Height of Node:
    - height of leaf node is 0
    - height of a tree = height of the root node
 3. Complete Binary Tree
-   - every level except possibly the last, is completed filled. 
+   - every level except possibly the last, is completed filled.
    - all nodes in the last level are as far left as possible
 4. Full Binary Tree: every node has either 0 or 2 children
 5. Binary Search Trees
@@ -13,12 +15,13 @@
    - AVL tree: a kind of BST, that rebalances the nodes so that we won't get a linear BST
 
 | BST | Average | Worst |
-| --- | --- | --- | 
+| --- | --- | --- |
 | Search | O(logN) | O(N) |
 | Insert | O(logN) | O(N) |
 | Delete | O(logN) | O(N) |
 
 ## Implementation
+
 ```py
 class Node(object):
   def __init__(self, value):
@@ -40,21 +43,24 @@ tree.root.right.left = Node(6)
 tree.root.right.right = Node(7)
 ```
 
-
 # Binary Tree
 
 ## Think like a node
+
 when you are a node, only things you know are:
+
 1. your value
 2. how to get to your children
 
 two things needed to think of when writing dfs()
+
 1. Return value (Passing value up from child to parent)
-   - Ask what information we need at the current node to make a decision 
+   - Ask what information we need at the current node to make a decision
 2. Identify states (Passing value down from parent to child)
    - what states do we need to maintain to compute the return value for the current node
 
 ## 模板
+
 queue放元素：queue = deque([root])
 
 ```python
@@ -85,12 +91,14 @@ def level_order_traversal(root: Node) -> List[List[int]]:
                       
     return res
 ```
+
 ### Pre-order, In-order, and Post-order
+
 1. Pre-order: make the decision before looking at your children
 2. Post-order: make the dicision after collecting information on children
 
-
 遍历
+
 ```py
 
 
@@ -98,6 +106,7 @@ def level_order_traversal(root: Node) -> List[List[int]]:
 ```
 
 ## 解题过程
+
 首先思考二叉树的每一个节点需要做什么，需要在什么时候（前中后序）做。
 接下来二选一：
 1、是否可以通过遍历一遍二叉树得到答案？如果可以，用一个 traverse 函数配合外部变量来实现。
@@ -107,9 +116,8 @@ def level_order_traversal(root: Node) -> List[List[int]]:
 
 ## 题目
 
-
-
 [226. Invert Binary Tree](https://leetcode.com/problems/invert-binary-tree/)
+
 ```py
 class Solution:
     def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
@@ -183,6 +191,7 @@ def zig_zag_traversal(root: Node) -> List[List[int]]:
 ```
 
 [543. Diameter of Binary Tree](https://leetcode.com/problems/diameter-of-binary-tree/)
+
 ```py
 class Solution:
     def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
@@ -244,6 +253,7 @@ class Solution:
 ```
 
 [199. Binary Tree Right Side View](https://leetcode.com/problems/binary-tree-right-side-view/)
+
 ```py
 class Solution:
     def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
@@ -268,6 +278,7 @@ class Solution:
         dfs(root, 0)
         return res
 ```
+
 ```py
 class Solution:
     def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
@@ -294,6 +305,7 @@ class Solution:
 [652. Find Duplicate Subtrees](https://leetcode.com/problems/find-duplicate-subtrees/)
 
 每个节点要做什么：
+
 1. 我为根的子树什么样子 -> 后序遍历，返回一个序列化字符串
 2. 其他节点为根的子树什么样子 -> 用HashMap，存子树及其数量
 
@@ -378,6 +390,7 @@ class Solution:
 ```
 
 [116. Populating Next Right Pointers in Each Node](https://leetcode.com/problems/populating-next-right-pointers-in-each-node/)
+
 ```py
 class Solution:
     def connect(self, root: 'Optional[Node]') -> 'Optional[Node]':
@@ -398,7 +411,7 @@ class Solution:
         
         traverse(root.left, root.right)
         return root
-```            
+```
 
 ```py
 class Solution:
@@ -561,7 +574,6 @@ class Solution:
         """
 ```
 
-
 [987. Vertical Order Traversal of a Binary Tree](https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/)
 
 ```python
@@ -597,14 +609,11 @@ class Solution(object):
 
 [310. Minimum Height Trees](https://leetcode.com/problems/minimum-height-trees/)
 
-
-
 [105. Construct Binary Tree from Preorder and Inorder Traversal](https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
 
 先找到根节点位置，然后分治左右
 
 ![前序中序遍历效果图](https://labuladong.github.io/algo/images/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%B3%BB%E5%88%972/1.jpeg)
-
 
 ```py
 class Solution:
@@ -804,9 +813,7 @@ class Solution:
         return res[0]
 ```
 
-
 [1130. Minimum Cost Tree From Leaf Values](https://leetcode.com/problems/minimum-cost-tree-from-leaf-values/)
-
 
 [1485. Clone Binary Tree With Random Pointer](https://leetcode.com/problems/clone-binary-tree-with-random-pointer/)
 
@@ -945,6 +952,7 @@ if __name__ == '__main__':
 ```
 
 Iterative Solution:
+
 ```py
 class Solution:
     def maxDepth(self, root: Optional[TreeNode]) -> int:
@@ -965,6 +973,7 @@ class Solution:
 ```
 
 [1448. Count Good Nodes in Binary Tree](https://leetcode.com/problems/count-good-nodes-in-binary-tree/)
+
 ```py
 class Solution:
     def goodNodes(self, root: TreeNode) -> int:
@@ -1089,7 +1098,6 @@ class Solution:
         return dfs(root1, root2)
 ```
 
-
 [572. Subtree of Another Tree](https://leetcode.com/problems/subtree-of-another-tree/)
 
 ```py
@@ -1129,7 +1137,6 @@ class Solution:
 ```
 
 [863. All Nodes Distance K in Binary Tree](https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/)
-
 
 [1110. Delete Nodes And Return Forest](https://leetcode.com/problems/delete-nodes-and-return-forest/)
 
@@ -1249,6 +1256,7 @@ class Solution:
 
 时间：O(N)
 空间：O(H)
+
 ```py
 class Solution:
     def goodNodes(self, root: TreeNode) -> int:
@@ -1363,8 +1371,6 @@ class Solution:
         dfs(root, 0)
         return res[0]
 ```
-
-
 
 [872. Leaf-Similar Trees](https://leetcode.com/problems/leaf-similar-trees/description/)
 
@@ -1489,6 +1495,7 @@ class Solution:
 ```
 
 [113. Path Sum II](https://leetcode.com/problems/path-sum-ii/)
+
 ```py
 class Solution:
     def pathSum(self, root: Optional[TreeNode], targetSum: int) -> List[List[int]]:
@@ -1729,7 +1736,6 @@ class Solution:
         return dfs(root)
 ```
 
-
 [1644. Lowest Common Ancestor of a Binary Tree II](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-ii/)
 
 ```py
@@ -1765,7 +1771,6 @@ class Solution:
             return None
         return lca
 ```
-
 
 [235. Lowest Common Ancestor of a Binary Search Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)
 
@@ -1831,6 +1836,7 @@ class Solution:
 ```
 
 [1367. Linked List in Binary Tree](https://leetcode.com/problems/linked-list-in-binary-tree/)
+
 ```py
 class Solution:
     def isSubPath(self, head: Optional[ListNode], root: Optional[TreeNode]) -> bool:
@@ -1897,12 +1903,8 @@ class Solution:
         return root
 ```
 
-
-
-
-
-
 # BST
+
 BST is often used to look up the existence of certain objects. Compared to sorted arrays, the insertion has way lower time complexity, so it's good for dynamic insertion of items. If you don't need to dynamically insert new items, then you can simply sort the collection first and use binary search to look up.
 
 However, most modern languages offers hash tables, which is another way of looking up the existence of an object in a collection. Most implementations are dynamically sized, which can cause the lookup and insertion of items to approach O(1), so usually hash tables are preferred over BST. Nevertheless, there are some advantages to using a BST over a hash table.
@@ -1994,6 +1996,7 @@ class Solution:
 ```
 
 [510. Inorder Successor in BST II](https://leetcode.com/problems/inorder-successor-in-bst-ii/)
+
 ```py
 
 class Solution:
@@ -2085,7 +2088,6 @@ class Solution:
         return False
 ```
 
-
 [230. Kth Smallest Element in a BST](https://leetcode.com/problems/kth-smallest-element-in-a-bst/)
 
 ```py
@@ -2114,6 +2116,7 @@ class Solution:
 ```
 
 [538. Convert BST to Greater Tree](https://leetcode.com/problems/convert-bst-to-greater-tree/)
+
 ```py
 class Solution:
     def convertBST(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
@@ -2166,6 +2169,7 @@ class Solution:
 ```
 
 [700. Search in a Binary Search Tree](https://leetcode.com/problems/search-in-a-binary-search-tree/)
+
 ```py
     def searchBST(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
         
@@ -2179,6 +2183,7 @@ class Solution:
 ```
 
 [701. Insert into a Binary Search Tree](https://leetcode.com/problems/insert-into-a-binary-search-tree/)
+
 ```py
 class Solution:
     def insertIntoBST(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
@@ -2204,6 +2209,7 @@ class Solution:
 ```
 
 [450. Delete Node in a BST](https://leetcode.com/problems/delete-node-in-a-bst/)
+
 ```py
 class Solution:
     def deleteNode(self, root: Optional[TreeNode], key: int) -> Optional[TreeNode]:
@@ -2240,6 +2246,7 @@ class Solution:
 ```
 
 [222. Count Complete Tree Nodes](https://leetcode.com/problems/count-complete-tree-nodes/)
+
 ```py
 class Solution:
     def countNodes(self, root: Optional[TreeNode]) -> int:
@@ -2317,10 +2324,12 @@ class Solution(object):
         return SubTree(largest, n, min(left.min, root.val), max(right.max, root.val))
 ```
 
-
 # 多叉树
+
 ## 模板
+
 多叉树遍历模板
+
 ```py
 class Node:
     def __init__(self, val, children=None):
@@ -2352,8 +2361,8 @@ def ternary_tree_paths(root: Node) -> List[str]:
     return res
 ```
 
-
 ## 题目
+
 [1490. Clone N-ary Tree](https://leetcode.com/problems/clone-n-ary-tree/)
 
 ```py
@@ -2373,9 +2382,8 @@ class Solution:
         return new
 ```
 
-
-
 [559. Maximum Depth of N-ary Tree](https://leetcode.com/problems/maximum-depth-of-n-ary-tree/)
+
 ```py
 """
 # Definition for a Node.
@@ -2402,12 +2410,14 @@ class Solution:
 ```
 
 # Trie Tree
+
 [208. Implement Trie (Prefix Tree)](https://leetcode.com/problems/implement-trie-prefix-tree/)
 
 从root开始构建trie tree：每个letter是一个node，叶子节点要另外注明是一个单词的结束。
 
 时间：O(N), N is len(word)
 空间：O(N)
+
 ```python
 class TrieNode:
     def __init__(self): # constructor
@@ -2452,13 +2462,13 @@ class Trie:
         
 ```
 
-
 [211. Design Add and Search Words Data Structure](https://leetcode.com/problems/design-add-and-search-words-data-structure/)
 
 回溯的方式解决.的情况
 
 时间：O(M) M is len(key)
 空间：O(M) to keep the recursion stack
+
 ```python
 class TrieNode:
     def __init__(self):
@@ -2566,6 +2576,7 @@ class Solution:
 以上是必须掌握题
 
 [820. Short Encoding of Words](https://leetcode.com/problems/short-encoding-of-words/)
+
 ```py
 class Solution:
     def minimumLengthEncoding(self, words: List[str]) -> int:
@@ -2675,13 +2686,12 @@ class Solution(object):
         return trie.bfs()
 ```
 
-
-
 [745. Prefix and Suffix Search](https://leetcode.com/problems/design-add-and-search-words-data-structure/)
 
-
 # Segment Tree
+
 ## what is
+
 Segment Trees allow us to quickly perform range queries as well as range updates。
 
 update: O(logN)
@@ -2690,9 +2700,9 @@ query: O(logN) <-> Comparing with a basic array, this can be O(N)
 ## how to use
 
 [2, 4, 5, 7]
-segment tree: 
+segment tree:
             18
-           /    \ 
+           /    \
         6          12
       /  \        /   \
     2       4   5       7
@@ -2700,16 +2710,16 @@ leaves are numbers: nums[0] to nums[-1]
 
 each node contains: left, sum, right
 
-
 ## when to use
+
 range query problems like finding minimum, maximum, sum, greatest common divisor, least common denominator in array in logarithmic time.
 
-https://leetcode.com/articles/a-recursive-approach-to-segment-trees-range-sum-queries-lazy-propagation/ 
+<https://leetcode.com/articles/a-recursive-approach-to-segment-trees-range-sum-queries-lazy-propagation/>
 
 ## 例题
 
-
 [307. Range Sum Query - Mutable](https://leetcode.com/problems/range-sum-query-mutable/)
+
 ```py
 class Node(object):
     def __init__(self, start, end):
@@ -2821,12 +2831,14 @@ class NumArray(object):
         return rangeSum(self.root, i, j)
 ```
 
-
-
 # MST
+
 It is a graph that connects all the vertices together, withoug cycles and with the minimum total edge weight
+
 ## Kruskal's Algo
+
 Kruskal's algorithm generates the Minimum Spanning Tree by always choosing the smallest weigthed edge in the graph and consistently growing the tree by one edge.
+
 1. Sort the edge besed on weights
 2. Try every edge, add the edge to res as long as they are not connected -> Disjoint Sets
 3. Repeat until have connected n-1 edges
@@ -2871,6 +2883,7 @@ def minimum_spanning_tree(n : int, edges : List[edge]) -> int:
           break
     return ret
 ```
+
 ## 例题
 
 [1584. Min Cost to Connect All Points](https://leetcode.com/problems/min-cost-to-connect-all-points/)

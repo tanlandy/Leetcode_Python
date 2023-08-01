@@ -1,4 +1,5 @@
 # Template
+
 ```shell
 function dfs(node, state):
     if state is a solution:
@@ -12,9 +13,8 @@ function dfs(node, state):
             state.remove(child) # backtrack
 ```
 
-
-
 ## 回溯整理总结
+
 ### 形式一、元素无重不可复选，即nums中的元素都是唯一的，每个元素最多只能被使用一次
 
 ```py
@@ -37,6 +37,7 @@ for i in range(len(nums)):
 ```
 
 ### 形式二、元素可重不可复选，即nums中的元素可以存在重复，每个元素最多只能被使用一次，其关键在于排序和剪枝
+
 ```py
 """子集问题 LC40"""
 nums.sort()
@@ -65,6 +66,7 @@ for i in range(len(nums)):
 ```
 
 ### 形式三、元素无重可复选，即nums中的元素都是唯一的，每个元素可以被使用若干次，只要删掉去重逻辑即可
+
 ```py
 """子集问题 LC39"""
 for i in range(start, len(nums)):
@@ -119,8 +121,7 @@ class Solution:
 [78. Subsets](https://leetcode.com/problems/subsets/)（子集 元素无重不可复选）
 Given an integer array nums of unique elements, return all possible subsets (the power set).
 Input: nums = [1,2,3]
-Output: [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]   
-
+Output: [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
 
 ```py
 class Solution:
@@ -229,7 +230,6 @@ class Solution:
         return res
 ```
 
-
 [90. Subsets II](https://leetcode.com/problems/subsets-ii/)
 Given an integer array nums that may contain duplicates, return all possible subsets (the power set).
 
@@ -271,7 +271,7 @@ Each number in candidates may only be used once in the combination.
 Note: The solution set must not contain duplicate combinations.
 
 Input: candidates = [10,1,2,7,6,1,5], target = 8
-Output: 
+Output:
 [
 [1,1,6],
 [1,2,5],
@@ -340,8 +340,7 @@ class Solution:
         
         backtrack(0, target)
         return res
-```            
-            
+```
 
 [47. Permutations II](https://leetcode.com/problems/permutations-ii/)
 
@@ -391,6 +390,7 @@ dfs(r, c, i)同时传入一个idx
 
 时间：O(M*N*4 ^ N)
 空间：O(L) L is len(words)
+
 ```py
 class Solution:
     def exist(self, board: List[List[str]], word: str) -> bool:
@@ -496,9 +496,7 @@ class Solution:
         return res
 ```
 
-
 [51. N-Queens](https://leetcode.com/problems/n-queens/)
-
 
 ```py
 class Solution:
@@ -588,7 +586,6 @@ class Solution:
         
         return backtrack(0, k, 0)
 ```
-
 
 [93. Restore IP Addresses](https://leetcode.com/problems/restore-ip-addresses/)
 
@@ -705,6 +702,7 @@ class Solution:
 ```
 
 [97. Interleaving String](https://leetcode.com/problems/interleaving-string/)
+
 ```py
 class Solution:
     def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
@@ -745,7 +743,6 @@ class Solution:
         return dfs(0, 0, 0)
 ```
 
-
 [526. Beautiful Arrangement](https://leetcode.com/problems/beautiful-arrangement/)
 
 ```py
@@ -776,6 +773,7 @@ class Solution:
 
 [[698. Partition to K Equal Sum Subsets](https://leetcode.com/problems/partition-to-k-equal-sum-subsets/) 好题
 ]
+
 ```py
 class Solution:
     def canPartitionKSubsets(self, arr: List[int], k: int) -> bool:
@@ -838,11 +836,8 @@ class Solution:
         return backtrack(0, 0, 0)
 ```
 
+<https://leetcode.com/problems/longest-increasing-path-in-a-matrix/discuss/2052360/Python%3A-Beginner-Friendly-%22Recursion-to-DP%22-Intuition-Explained>
 
-https://leetcode.com/problems/longest-increasing-path-in-a-matrix/discuss/2052360/Python%3A-Beginner-Friendly-%22Recursion-to-DP%22-Intuition-Explained 
+<https://leetcode.com/problems/out-of-boundary-paths/discuss/1293697/python-easy-to-understand-explanation-recursion-and-memoization-with-time-and-space-complexity>
 
-https://leetcode.com/problems/out-of-boundary-paths/discuss/1293697/python-easy-to-understand-explanation-recursion-and-memoization-with-time-and-space-complexity 
-
-https://leetcode.com/problems/number-of-matching-subsequences/discuss/1289549/python-explained-all-possible-solutions-with-time-and-space-complexity 
-
-
+<https://leetcode.com/problems/number-of-matching-subsequences/discuss/1289549/python-explained-all-possible-solutions-with-time-and-space-complexity>

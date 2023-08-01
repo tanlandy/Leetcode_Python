@@ -17,7 +17,7 @@ important to think about the type of graph
 
 1. undirected: (u, v) = (v, u) -> facebook -> V = {1,2,3}, E = {(1,2)(2,1)(1,3)(3,1)(2,3)(3,2)}
 2. directed: (u, v) from u to v -> instagram
-3. weighted: 
+3. weighted:
 
 def of adjacency: given vertex u, and vertex v, vertex u is adjacent to v iff (u, v) in E
 
@@ -28,7 +28,7 @@ store graph: depends on the basic desired operations on the graph: search, edit,
 | adjacency list   | V + E         | V + $V^2$      | V + V ✅     | O(V): Read entire adj[i]  |
 | adjacency matrix | $V^2$         | $V^2$ ✅        | $V^2$       | O(1)                      |
 
-Adjacency list: 
+Adjacency list:
 build: for every vertex v, adj[v] = {vertecies adj to v}; space: V+E for both undirected and directed graph. but could be written as 2E for undirected graph when consider graph to be unique
 
 Adjacency matrix:
@@ -95,7 +95,6 @@ dfsVisit(v):
             dfsVisit(u)
     u is now visited
 
-
 Time: O(V+E): only visit vertex and edges once
 
 ## Single source shortest path(SSSP)
@@ -131,8 +130,8 @@ DFS:
 
 ### BFS
 
-In an adjacency list representation, this would be returning the list of neighbors for the node. 
-If the problem is about a matrix, this would be the surrounding valid cells as we will see in number of islands and knight shortest path. 
+In an adjacency list representation, this would be returning the list of neighbors for the node.
+If the problem is about a matrix, this would be the surrounding valid cells as we will see in number of islands and knight shortest path.
 If the graph is implicit, we have to generate the neighbors as we traverse. We will see this in word ladder.
 
 ```python
@@ -170,7 +169,9 @@ def dfs(root, visited):
 ## 模版
 
 ### BFS
+
 BFS层序遍历
+
 ```py
 def BFS(root):
     if not root:
@@ -321,7 +322,6 @@ class Solution:
         
         return count
 ```
-
 
 [36. Valid Sudoku](https://leetcode.com/problems/valid-sudoku/)
 
@@ -1019,8 +1019,7 @@ class Solution:
         return -1
 ```
 
-
-Given a square grid of characters in the range ascii[a-z], rearrange elements of each row alphabetically, ascending. Determine if the columns are also in ascending alphabetical order, top to bottom. 
+Given a square grid of characters in the range ascii[a-z], rearrange elements of each row alphabetically, ascending. Determine if the columns are also in ascending alphabetical order, top to bottom.
 
 ```py
 def gridChallenge(grid):
@@ -1093,9 +1092,9 @@ class Solution:
         
         return True
 ```
+
 Follow-up:
 当流数据每次只能来一行的时候，用一个deque存expected values，每次把最右边的删掉，然后把下一行第一个放到最左边
-
 
 [1706. Where Will the Ball Fall](https://leetcode.com/problems/where-will-the-ball-fall/)
 
@@ -1354,6 +1353,7 @@ class Solution:
 ```
 
 [531. Lonely Pixel I](https://leetcode.com/problems/lonely-pixel-i/)
+
 ```py
 class Solution:
     def findLonelyPixel(self, picture: List[List[str]]) -> int:
@@ -1380,9 +1380,7 @@ class Solution:
 
 ```
 
-
 ### Matrix
-
 
 [59. Spiral Matrix II](https://leetcode.com/problems/spiral-matrix-ii/)
 
@@ -1414,7 +1412,6 @@ class Solution:
         
         return res
 ```
-
 
 [542. 01 Matrix](https://leetcode.com/problems/01-matrix/)
 
@@ -1805,8 +1802,8 @@ class Solution:
         return -1
 ```
 
-
 [841. Keys and Rooms](https://leetcode.com/problems/keys-and-rooms/)
+
 ```py
 class Solution:
     def canVisitAllRooms(self, rooms: List[List[int]]) -> bool:
@@ -1825,7 +1822,6 @@ class Solution:
         dfs(0)
         return len(visited) == len(rooms)
 ```
-
 
 [1376. Time Needed to Inform All Employees](https://leetcode.com/problems/time-needed-to-inform-all-employees/)
 
@@ -2057,7 +2053,6 @@ class Solution:
         return dfs(source)
 ```
 
-
 # Dijkstra
 
 ## 基础知识
@@ -2186,6 +2181,7 @@ class Solution:
 
 [1135. Connecting Cities With Minimum Cost](https://leetcode.com/problems/connecting-cities-with-minimum-cost/)
 也可以用MST来做
+
 ```py
 class Solution:
     def minimumCost(self, n: int, connections: List[List[int]]) -> int:
@@ -2549,7 +2545,6 @@ class Solution:
 
 [269. Alien Dictionary](https://leetcode.com/problems/alien-dictionary/) 先做LC953
 
-
 ```py
 class Solution:
     def alienOrder(self, words: List[str]) -> str:
@@ -2604,7 +2599,6 @@ class Solution:
         
         return "".join(res)
 ```
-
 
 ```python
 class Solution:
@@ -2854,7 +2848,6 @@ class Solution:
         return -1
 ```
 
-
 [290. Word Pattern](https://leetcode.com/problems/word-pattern/)
 
 ```py
@@ -2881,10 +2874,6 @@ class Solution:
 ```
 
 [291. Word Pattern II](https://leetcode.com/problems/word-pattern-ii/)
-
-
-
-
 
 [139. Word Break](https://leetcode.com/problems/word-break/)
 
@@ -2945,8 +2934,7 @@ class Solution:
         return dfs(s)
 ```
 
-[140. Word Break II](https://leetcode.com/problems/word-break-ii/) 
-
+[140. Word Break II](https://leetcode.com/problems/word-break-ii/)
 
 ```python
 class Solution(object):
