@@ -1,5 +1,7 @@
 # Educative
+
 ## Linked List
+
 ```py
 class Node:
   def __init__(self, data):
@@ -59,7 +61,6 @@ llist.print_list()
 3. Merge Two Sorted Linked Lists
 4. Remove duplicates
 
-
 [237. Delete Node in a Linked List](https://leetcode.com/problems/delete-node-in-a-linked-list/)
 
 ```py
@@ -80,7 +81,9 @@ class Solution:
 ```
 
 ## Doubly Linked List
+
 Implementation
+
 ```py
 class Node:
     def __init__(self, data):
@@ -124,8 +127,6 @@ class DoublyLinkedList:
 
 
 ```
-
-
 
 # 基础题目
 
@@ -205,7 +206,6 @@ class Solution:
         
         return slow
 ```
-
 
 [86. Partition List](https://leetcode.com/problems/partition-list/)
 
@@ -301,8 +301,6 @@ class Solution:
         return pA
 ```
 
-
-
 ## 成环问题Floyd's
 
 [141. Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/)
@@ -323,7 +321,6 @@ class Solution:
 ```
 
 [142. Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/)
-
 
 ```py
 class Solution:
@@ -643,7 +640,6 @@ class Solution:
 
 ```
 
-
 ```py
 class Solution:
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
@@ -702,6 +698,7 @@ Output: [1,5,2,4,3]
 
 时间：O(N)
 空间：O(1)
+
 ```py
 class Solution:
     def reorderList(self, head: Optional[ListNode]) -> None:
@@ -798,7 +795,6 @@ class Solution:
 
 ```
 
-
 [138. Copy List with Random Pointer](https://leetcode.com/problems/copy-list-with-random-pointer/)
 
 ```python
@@ -853,6 +849,7 @@ class Solution:
 ```
 
 [203. Remove Linked List Elements](https://leetcode.com/problems/remove-linked-list-elements/)
+
 ```py
 # Definition for singly-linked list.
 # class ListNode:
