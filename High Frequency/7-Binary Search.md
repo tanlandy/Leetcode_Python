@@ -1,6 +1,7 @@
 # 基础知识
 
 ## 找一个数
+
 ```py
 def find_target(nums, target):
     l, r = 0, len(nums) - 1
@@ -17,6 +18,7 @@ def find_target(nums, target):
 ```
 
 ## 右侧都满足，找其中最左边满足的
+
 ```py
 def find_leftmost(nums, target):
     l, r = 0, len(nums) - 1
@@ -35,7 +37,9 @@ def find_leftmost(nums, target):
 ```
 
 ## 左侧都满足，找其中最右边满足的
+
 ### 模板
+
 ```py
 def find_leftmost(nums, target):
     l, r = 0, len(nums) - 1
@@ -52,11 +56,14 @@ def find_leftmost(nums, target):
         return -1
     return r
 ```
+
 ### 例题
+
 id 1351
 id 744
 
 ## Bisect
+
 ```py
 import bisect
 
@@ -74,6 +81,7 @@ print(A)
 # 例题
 
 ## 显式二分法
+
 说明了是有序数组/序列，那么大概率是可以使用二分法的
 [1351. Count Negative Numbers in a Sorted Matrix](https://leetcode.com/problems/count-negative-numbers-in-a-sorted-matrix/description/)
 
@@ -99,8 +107,8 @@ class Solution:
         return neg_count
 ```
 
-
 这道题除了明显可以用二分查找以外，还有时间复杂度更低的方法
+
 ```py
 class Solution:
     def countNegatives(self, grid: List[List[int]]) -> int:
@@ -117,7 +125,6 @@ class Solution:
             neg_count += (len(grid[0]) - pivot - 1)  # 对于是否+-1的情况，举一个例子试试看就知道了
         return neg_count     
 ```
-
 
 [744. Find Smallest Letter Greater Than Target](https://leetcode.com/problems/find-smallest-letter-greater-than-target/description/)
 
@@ -199,15 +206,13 @@ class Solution:
         return end < len(nums) and nums[end] == target  # 越界的情况
 ```
 
-
-
-
-
 ## 隐式二分法
+
 Find the Closest Number
 Input :arr[] = {2, 5, 6, 7, 8, 8, 9};
 Target number = 4
 Output : 5
+
 ```py
 A1 = [1, 2, 4, 5, 6, 6, 8, 9]
 A2 = [2, 5, 6, 7, 8, 8, 9]
@@ -258,8 +263,6 @@ def find_closest_num(A, target):
 print(find_closest_num(A1, 11))
 print(find_closest_num(A2, 8))
 ```
-
-
 
 Find Bitonic Peak
 input: [1, 2, 3, 4, 5, 4, 3, 2, 1]
@@ -320,6 +323,7 @@ class Solution:
 ```
 
 [1182. Shortest Distance to Target Color](https://leetcode.com/problems/shortest-distance-to-target-color/)
+
 ```py
 class Solution:
     def shortestDistanceColor(self, colors: List[int], queries: List[List[int]]) -> List[int]:
@@ -377,6 +381,7 @@ class Solution:
 ```
 
 pre-compute方法
+
 ```py
 class Solution:
     def shortestDistanceColor(self, colors: List[int], queries: List[List[int]]) -> List[int]:
@@ -656,6 +661,7 @@ class Solution:
 ```
 
 [240. Search a 2D Matrix II](https://leetcode.com/problems/search-a-2d-matrix-ii/)
+
 ```py
 class Solution:
     def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
@@ -681,6 +687,7 @@ class Solution:
 ```
 
 [69. Sqrt(x)](https://leetcode.com/problems/sqrtx/)
+
 ```py
 class Solution:
     def mySqrt(self, x: int) -> int:
@@ -732,7 +739,6 @@ class Solution:
         
         return nums[l]
 ```
-
 
 [875. Koko Eating Bananas](https://leetcode.com/problems/koko-eating-bananas/)
 向上取整: ceil(a/b)
@@ -815,7 +821,6 @@ class Solution():
         return nums[l]
 ```
 
-
 [4. Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/)
 
 时间：O(log(min(m, n)))看到log就要想到binary search
@@ -852,7 +857,6 @@ class Solution:
             else:
                 l = i + 1
 ```
-
 
 [852. Peak Index in a Mountain Array](https://leetcode.com/problems/peak-index-in-a-mountain-array/)
 
@@ -964,7 +968,6 @@ class Solution:
 
 ```
 
-
 [1011. Capacity To Ship Packages Within D Days](https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/)
 
 ```python
@@ -1050,6 +1053,7 @@ class Solution:
 [410. Split Array Largest Sum](https://leetcode.com/problems/split-array-largest-sum/)
 
 [981. Time Based Key-Value Store](https://leetcode.com/problems/time-based-key-value-store/)
+
 ```py
 class TimeMap:
 
@@ -1075,13 +1079,12 @@ class TimeMap:
         return "" if r == -1 else arr[r][1]
 ```
 
-
-
 [1891. Cutting Ribbons](https://leetcode.com/problems/cutting-ribbons/)
 
 转化思路，题目要求最多切成n次，那n=1到max(ribbon)，这样满足条件的是n最大的那个时候，相当于每次都看是否满足条件，直到找到最后满足条件的值。可以用二分查找找最右侧边界；count >= k是满足的条件，count表示可以提供的数量；最后return right，因为跳出的时候left = right + 1了
-时间：O(Nlog(max(Length))) 
+时间：O(Nlog(max(Length)))
 空间：O(1)
+
 ```python
 class Solution:
     def maxLength(self, ribbons: List[int], k: int) -> int:
@@ -1104,13 +1107,12 @@ class Solution:
         return count >= k  # 满足的情况，count表示可以提供的数量
 ```
 
-
 [528. Random Pick with Weight](https://leetcode.com/problems/random-pick-with-weight/) (前缀和，可以先做一下LC53、523)
-
 
 用list存所有的前缀和。概率是w[i]/total_sum，可以用找到第一个preSum来代替；用random.random()来获得[0,1);w:[1,3]-> pre_sums:[1, 4] -> target in randomly in [0, 4); find the first index in pre_sums s.t. target < pre_sums[idx]
 时间：构造O(N)，找数O(N)
 空间：构造O(N)，找数O(1)
+
 ```python
 class Solution:
 
@@ -1136,7 +1138,8 @@ class Solution:
 用list存所有的前缀和。概率是w[i]/total_sum，可以用二分查找找到第一个preSum来代替；用random.random()来获得[0,1); 当右边左右的数都满足的时候，找最左满足的数，最后返回的是l
 时间：构造O(N)，找数O(logN)
 空间：构造O(N)，找数O(1)
-```python 
+
+```python
 class Solution:
     def __init__(self, w: List[int]):
         self.prefix_sums = []
