@@ -305,6 +305,8 @@ class Solution:
 
 ## Sliding Window
 
+### 教学题
+
 s = [2,2,1,3,2], d = 4, m = 2
 find how many ways to make it to d with a size of m
 
@@ -323,6 +325,58 @@ def birthday(s, d, m):
         r += 1
     return res
 ```
+
+Given an array (list) nums consisted of only non-negative integers, find the largest sum among all subarrays of length k in nums.
+nums = [1, 2, 3, 7, 4, 1], k = 3
+output would be 14 as the largest length 3 subarray sum is given by [3, 7, 4]
+
+```py
+def subarray_sum_fixed(nums: List[int], k: int) -> int:
+    """最标准的sliding window，注意移动r, l的时机"""
+    l = r = 0
+    res = 0
+    cur_sum = 0
+    while r < len(nums):
+        cur_sum += nums[r]        
+        if r - l + 1 == k:
+            res = max(cur_sum, res)
+            cur_sum -= nums[l]
+            l += 1
+        r += 1
+        
+    return res
+```
+
+Given a string original and a string check, find the starting index of all substrings of original that is an anagram of check. 
+Input: original = "cbaebabacd", check = "abc"
+Output: [0, 6]
+
+```py
+def find_all_anagrams(original: str, check: str) -> List[int]:
+    """标准的sliding window需要记录个数的情况，可以用list来微微简化代码，但是用dict更加直观"""
+    res = []
+    counter = collections.defaultdict(int)
+    l = r = 0
+    for ch in check:
+        counter[ch] += 1
+    seen = collections.defaultdict(int)
+    while r < len(original):
+        seen[original[r]] += 1
+        if r - l + 1 == len(check):  # 每次在大小满足之后进行处理                       
+            if seen == counter:
+                res.append(l)                
+            seen[original[l]] -= 1
+            if seen[original[l]] == 0:  # 会多余一个e:0的情况，需要将其删掉
+                del seen[original[l]]            
+            l += 1
+        r += 1            
+    
+    return res
+```
+
+### 冲刺必做题
+
+### 附加题
 
 [643. Maximum Average Subarray I](https://leetcode.com/problems/maximum-average-subarray-i/)
 
