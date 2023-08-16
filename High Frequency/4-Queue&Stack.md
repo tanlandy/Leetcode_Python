@@ -152,6 +152,35 @@ class FirstUnique:
 # obj.add(value)
 ```
 
+## Monotonic Deque
+
+[239. Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/)
+
+```py
+class Solution:
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        queue = collections.deque()  # 单调队列，存储最大值对应的index
+        l = r = 0
+        res = []
+
+        while r < len(nums):
+            while queue and nums[queue[-1]] < nums[r]:  # queue只会存储比nums[r]大的值
+                queue.pop()
+
+            queue.append(r)  # 把当前windows最大的值nums[r]对应的index存到queue中
+            
+            if l > queue[0]:  # queue存index的原因：便于比较当前是否范围大于了sliding window
+                queue.popleft()
+            
+            if r - l + 1 == k:  # 更新res的时机，此时sliding window的范围==k
+                res.append(nums[queue[0]])  # 最大值总是queue[0]
+                l += 1
+            
+            r += 1
+        
+        return res
+
+```
 
 
 ## Spiral Matrix 
