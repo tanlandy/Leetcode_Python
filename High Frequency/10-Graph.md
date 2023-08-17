@@ -408,73 +408,6 @@ class Solution(object):
         return image
 ```
 
-[200. Number of Islands](https://leetcode.com/problems/number-of-islands/)
-BFS
-
-```py
-class Solution:
-    def numIslands(self, grid: List[List[str]]) -> int:
-        """
-        Time：O(M*N)
-        Space：O(min(M,N))
-        """
-        rows, cols = len(grid), len(grid[0])
-        visited = set()
-        dirs = [(0, 1), (0, -1), (1, 0), (-1, 0)]
-
-        def bfs(r, c):
-            queue = collections.deque([(r, c)])
-            visited.add((r, c))
-
-            while queue:
-                r, c = queue.popleft()
-
-                for dx, dy in dirs:
-                    nei_r, nei_c = r + dx, c + dy
-                    if 0 <= nei_r < rows and 0 <= nei_c < cols and (nei_r, nei_c) not in visited and grid[nei_r][nei_c] == "1":
-                        queue.append((nei_r, nei_c))
-                        visited.add((nei_r, nei_c))
-
-        count = 0
-        for r in range(rows):
-            for c in range(cols):
-                if grid[r][c] == "1" and (r, c) not in visited:
-                    count += 1
-                    bfs(r, c)
-
-        return count
-```
-
-DFS
-
-```py
-class Solution:
-    def numIslands(self, grid: List[List[str]]) -> int:
-        """
-        Time：O(M*N)
-        Space：O(M*N)
-        """
-        rows, cols = len(grid), len(grid[0])
-        visit = set()
-
-        def dfs(r, c):
-            if (r < 0 or r == rows or c < 0 or c == cols or (r, c) in visit or grid[r][c] != "1"): # grid[r][c] != "1"要放在最后，避免提前因为out of index而报错
-                return
-
-            visit.add((r, c)) # can also flood fill to "0"
-            dfs(r + 1, c)
-            dfs(r - 1, c)
-            dfs(r, c + 1)
-            dfs(r, c - 1)
-
-        count = 0
-        for r in range(rows):
-            for c in range(cols):
-                if grid[r][c] == "1" and (r, c) not in visit:
-                    count += 1
-                    dfs(r, c)      
-        return count
-```
 
 [1197. Minimum Knight Moves](https://leetcode.com/problems/minimum-knight-moves/)
 
@@ -620,134 +553,8 @@ class Solution:
         return -1
 ```
 
-[1254. Number of Closed Islands](https://leetcode.com/problems/number-of-closed-islands/)
 
-```py
-class Solution:
-    def closedIsland(self, grid: List[List[int]]) -> int:
-        """
-        step1: flood or visit all the islands that in the boarder
-        step2: count the num of islands
 
-        Time: O(M*N)
-        Space: O(M*N)
-        """
-
-        rows, cols = len(grid), len(grid[0])
-
-        visit = set()
-
-        def dfs(r, c):
-            if r < 0 or r == rows or c < 0 or c == cols or grid[r][c] != 0 or (r, c) in visit:
-                return
-
-            visit.add((r, c))
-            dfs(r + 1, c)
-            dfs(r - 1, c)            
-            dfs(r, c + 1)            
-            dfs(r, c - 1)
-
-        # step1
-        for r in range(rows):
-            dfs(r, 0)
-            dfs(r, cols - 1)
-
-        for c in range(cols):
-            dfs(0, c)
-            dfs(rows - 1, c)
-
-        # step2
-        count = 0
-        for r in range(rows):
-            for c in range(cols):
-                if grid[r][c] == 0 and (r, c) not in visit:
-                    dfs(r, c)
-                    count += 1
-
-        return count
-```
-
-[1020. Number of Enclaves](https://leetcode.com/problems/number-of-enclaves/)
-
-```py
-class Solution:
-    def numEnclaves(self, grid: List[List[int]]) -> int:
-        """
-        The same as LC1254
-
-        Step1: visit all the cells that can walk off the boundary
-        Step2: count the remaining cells
-
-        Time: O(M*N)
-        Space: O(M*N)
-        """
-
-        rows, cols = len(grid), len(grid[0])
-
-        visit = set()
-
-        def dfs(r, c):
-            if r < 0 or r == rows or c < 0 or c == cols or (r, c) in visit or grid[r][c] != 1:
-                return
-
-            visit.add((r, c))
-            dfs(r + 1, c)
-            dfs(r - 1, c)            
-            dfs(r, c + 1)            
-            dfs(r, c - 1)
-
-        # step1
-        for r in range(rows):
-            dfs(r, 0)
-            dfs(r, cols - 1)
-
-        for c in range(cols):
-            dfs(0, c)
-            dfs(rows - 1, c)
-
-        # step2
-        count = 0
-        for r in range(rows):
-            for c in range(cols):
-                if grid[r][c] == 1 and (r, c) not in visit:
-                    count += 1
-
-        return count
-```
-
-[695. Max Area of Island](https://leetcode.com/problems/max-area-of-island/)
-
-```py
-class Solution:
-    def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
-        """
-        find the area of each island, then return the maximum one
-        the dfs() returns the current area while traversing the island
-        Time: O(M*N)
-        Space: O(M*N)
-        """
-        rows, cols = len(grid), len(grid[0])
-        visit = set()
-
-        def dfs(r, c): # return the current area while traversing the island
-            if (r < 0 or r == rows or c < 0 or c == cols or grid[r][c] != 1 or (r, c) in visit):
-                return 0 # reach the end, the current area is 0
-
-            visit.add((r, c))
-            return (1 +  # 1 is the current area
-                   dfs(r+1, c) + # add the possible adjcent area
-                   dfs(r-1, c) +
-                   dfs(r, c+1) +
-                   dfs(r, c-1) 
-                   )
-
-        area = 0
-        for r in range(rows):
-            for c in range(cols):
-                if grid[r][c] == 1 and (r, c) not in visit:
-                    area = max(area, dfs(r, c)) # compare the area of different islands
-        return area                 
-```
 
 [1905. Count Sub Islands](https://leetcode.com/problems/count-sub-islands/)
 
@@ -911,47 +718,6 @@ class Solution:
         return -1
 ```
 
-[417. Pacific Atlantic Water Flow](https://leetcode.com/problems/pacific-atlantic-water-flow/)
-
-```py
-class Solution:
-    def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
-        """
-        分别从Pac和Atl来看哪些点满足，最后都满足的点就是最终结果
-        从Pac来看哪些点满足：
-        1，从第一行和第一列，分别作dfs
-        2，dfs的时候：提前返回的条件只多一个cur_height < pre_height
-        """
-        pac, atl = set(), set()
-        rows, cols = len(heights), len(heights[0])
-
-        def dfs(r, c, visit, pre_height):
-            if (r < 0 or r == rows or c < 0 or c == cols or (r, c) in visit or heights[r][c] < pre_height):
-                return
-            visit.add((r, c))
-
-            dfs(r + 1, c, visit, heights[r][c])
-            dfs(r - 1, c, visit, heights[r][c])
-            dfs(r, c + 1, visit, heights[r][c])
-            dfs(r, c - 1, visit, heights[r][c])
-
-        # 第一行最后一行，第一列最后一列分别找满足的点
-        for c in range(cols):
-            dfs(0, c, pac, heights[0][c]) # 第一行Pac
-            dfs(rows - 1, c, atl, heights[rows - 1][c]) # 最后一行Atl
-
-        for r in range(rows):
-            dfs(r, 0, pac, heights[r][0]) # 第一列Pac
-            dfs(r, cols - 1, atl, heights[r][cols - 1]) # 最后一列Atl
-
-        # 都满足的点就是最终的点
-        res = []
-        for r in range(rows):
-            for c in range(cols):
-                if (r, c) in pac and (r, c) in atl:
-                    res.append([r, c])
-        return res
-```
 
 [323. Number of Connected Components in an Undirected Graph](https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/)
 
@@ -1520,6 +1286,250 @@ def maxSum(mat):
                        max(mat[r2][c1], mat[r2][c2]))
          
     return Sum
+```
+
+
+[200. Number of Islands](https://leetcode.com/problems/number-of-islands/)
+BFS
+
+```py
+class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        """
+        Time：O(M*N)
+        Space：O(min(M,N))
+        """
+        rows, cols = len(grid), len(grid[0])
+        visited = set()
+        dirs = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+
+        def bfs(r, c):
+            queue = collections.deque([(r, c)])
+            visited.add((r, c))
+
+            while queue:
+                r, c = queue.popleft()
+
+                for dx, dy in dirs:
+                    nei_r, nei_c = r + dx, c + dy
+                    if 0 <= nei_r < rows and 0 <= nei_c < cols and (nei_r, nei_c) not in visited and grid[nei_r][nei_c] == "1":
+                        queue.append((nei_r, nei_c))
+                        visited.add((nei_r, nei_c))
+
+        count = 0
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == "1" and (r, c) not in visited:
+                    count += 1
+                    bfs(r, c)
+
+        return count
+```
+
+DFS
+
+```py
+class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        """
+        Time：O(M*N)
+        Space：O(M*N)
+        """
+        rows, cols = len(grid), len(grid[0])
+        visit = set()
+
+        def dfs(r, c):
+            if (r < 0 or r == rows or c < 0 or c == cols or (r, c) in visit or grid[r][c] != "1"): # grid[r][c] != "1"要放在最后，避免提前因为out of index而报错
+                return
+
+            visit.add((r, c)) # can also flood fill to "0"
+            dfs(r + 1, c)
+            dfs(r - 1, c)
+            dfs(r, c + 1)
+            dfs(r, c - 1)
+
+        count = 0
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == "1" and (r, c) not in visit:
+                    count += 1
+                    dfs(r, c)      
+        return count
+```
+
+
+[417. Pacific Atlantic Water Flow](https://leetcode.com/problems/pacific-atlantic-water-flow/)
+
+```py
+class Solution:
+    def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
+        """
+        分别从Pac和Atl来看哪些点满足，最后都满足的点就是最终结果
+        从Pac来看哪些点满足：
+        1，从第一行和第一列，分别作dfs
+        2，dfs的时候：提前返回的条件只多一个cur_height < pre_height
+        """
+        pac, atl = set(), set()
+        rows, cols = len(heights), len(heights[0])
+
+        def dfs(r, c, visit, pre_height):
+            if (r < 0 or r == rows or c < 0 or c == cols or (r, c) in visit or heights[r][c] < pre_height):
+                return
+            visit.add((r, c))
+
+            dfs(r + 1, c, visit, heights[r][c])
+            dfs(r - 1, c, visit, heights[r][c])
+            dfs(r, c + 1, visit, heights[r][c])
+            dfs(r, c - 1, visit, heights[r][c])
+
+        # 第一行最后一行，第一列最后一列分别找满足的点
+        for c in range(cols):
+            dfs(0, c, pac, heights[0][c]) # 第一行Pac
+            dfs(rows - 1, c, atl, heights[rows - 1][c]) # 最后一行Atl
+
+        for r in range(rows):
+            dfs(r, 0, pac, heights[r][0]) # 第一列Pac
+            dfs(r, cols - 1, atl, heights[r][cols - 1]) # 最后一列Atl
+
+        # 都满足的点就是最终的点
+        res = []
+        for r in range(rows):
+            for c in range(cols):
+                if (r, c) in pac and (r, c) in atl:
+                    res.append([r, c])
+        return res
+```
+
+
+[695. Max Area of Island](https://leetcode.com/problems/max-area-of-island/)
+
+```py
+class Solution:
+    def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+        """
+        find the area of each island, then return the maximum one
+        the dfs() returns the current area while traversing the island
+        Time: O(M*N)
+        Space: O(M*N)
+        """
+        rows, cols = len(grid), len(grid[0])
+        visit = set()
+
+        def dfs(r, c): # return the current area while traversing the island
+            if (r < 0 or r == rows or c < 0 or c == cols or grid[r][c] != 1 or (r, c) in visit):
+                return 0 # reach the end, the current area is 0
+
+            visit.add((r, c))
+            return (1 +  # 1 is the current area
+                   dfs(r+1, c) + # add the possible adjcent area
+                   dfs(r-1, c) +
+                   dfs(r, c+1) +
+                   dfs(r, c-1) 
+                   )
+
+        area = 0
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == 1 and (r, c) not in visit:
+                    area = max(area, dfs(r, c)) # compare the area of different islands
+        return area                 
+```
+
+
+[1020. Number of Enclaves](https://leetcode.com/problems/number-of-enclaves/)
+
+```py
+class Solution:
+    def numEnclaves(self, grid: List[List[int]]) -> int:
+        """
+        The same as LC1254
+
+        Step1: visit all the cells that can walk off the boundary
+        Step2: count the remaining cells
+
+        Time: O(M*N)
+        Space: O(M*N)
+        """
+
+        rows, cols = len(grid), len(grid[0])
+
+        visit = set()
+
+        def dfs(r, c):
+            if r < 0 or r == rows or c < 0 or c == cols or (r, c) in visit or grid[r][c] != 1:
+                return
+
+            visit.add((r, c))
+            dfs(r + 1, c)
+            dfs(r - 1, c)            
+            dfs(r, c + 1)            
+            dfs(r, c - 1)
+
+        # step1
+        for r in range(rows):
+            dfs(r, 0)
+            dfs(r, cols - 1)
+
+        for c in range(cols):
+            dfs(0, c)
+            dfs(rows - 1, c)
+
+        # step2
+        count = 0
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == 1 and (r, c) not in visit:
+                    count += 1
+
+        return count
+```
+
+
+[1254. Number of Closed Islands](https://leetcode.com/problems/number-of-closed-islands/)
+
+```py
+class Solution:
+    def closedIsland(self, grid: List[List[int]]) -> int:
+        """
+        step1: flood or visit all the islands that in the boarder
+        step2: count the num of islands
+
+        Time: O(M*N)
+        Space: O(M*N)
+        """
+
+        rows, cols = len(grid), len(grid[0])
+
+        visit = set()
+
+        def dfs(r, c):
+            if r < 0 or r == rows or c < 0 or c == cols or grid[r][c] != 0 or (r, c) in visit:
+                return
+
+            visit.add((r, c))
+            dfs(r + 1, c)
+            dfs(r - 1, c)            
+            dfs(r, c + 1)            
+            dfs(r, c - 1)
+
+        # step1
+        for r in range(rows):
+            dfs(r, 0)
+            dfs(r, cols - 1)
+
+        for c in range(cols):
+            dfs(0, c)
+            dfs(rows - 1, c)
+
+        # step2
+        count = 0
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == 0 and (r, c) not in visit:
+                    dfs(r, c)
+                    count += 1
+
+        return count
 ```
 
 # Implicit Graph
