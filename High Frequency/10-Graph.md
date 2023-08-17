@@ -1192,12 +1192,46 @@ class Solution:
         """
         rows, cols = len(mat), len(mat[0])
         queue = collections.deque([])
+        seen = set()  # 最经典解法，使用seen来记录更新过的值
 
         for r in range(rows):
             for c in range(cols):
                 if mat[r][c] == 0:
                     queue.append((r, c))
-                else: # 不为0的，标记为-1
+                    seen.add((r, c))
+        dirs = [(0, 1), (0, -1), (-1, 0), (1, 0)]
+
+        while queue:
+            r, c = queue.popleft()
+
+            for dx, dy in dirs:
+                nei_r, nei_c = r + dx, c + dy
+                if 0 <= nei_r < rows and 0 <= nei_c < cols and (nei_r, nei_c) not in seen:  # 如果没有更新过
+                    queue.append((nei_r, nei_c))
+                    seen.add((nei_r, nei_c))  # 更新了
+                    mat[nei_r][nei_c] = mat[r][c] + 1  # 更新掉
+        
+        return mat
+            
+```
+
+```py
+class Solution:
+    def updateMatrix(self, mat: List[List[int]]) -> List[List[int]]:
+        """
+        把所有为0的点放进queue，然后开始BFS
+
+        Time: O(M*N)
+        Space: O(M*N)
+        """
+        rows, cols = len(mat), len(mat[0])
+        queue = collections.deque([])
+
+        for r in range(rows):
+            for c in range(cols):
+                if mat[r][c] == 0:
+                    queue.append((r, c))
+                else: # 不为0的，标记为-1，替代seen作为是否更新过的标准
                     mat[r][c] = -1
 
         dirs = [(0, 1), (0, -1), (1, 0), (-1, 0)]
