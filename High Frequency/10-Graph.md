@@ -1887,6 +1887,31 @@ class Solution:
 
 # Un-weighted Graph
 
+[1615. Maximal Network Rank](https://leetcode.com/problems/maximal-network-rank/description/)
+
+```py
+class Solution:
+    def maximalNetworkRank(self, n: int, roads: List[List[int]]) -> int:
+        res = 0
+        adj = defaultdict(set)
+
+        # adjacent list
+        for road in roads:  
+            adj[road[0]].add(road[1])
+            adj[road[1]].add(road[0])
+        
+        # for each pair, calculate the rank
+        for node1 in range(n):
+            for node2 in range(node1+1, n):
+                cur_rank = len(adj[node1]) + len(adj[node2])
+                if node2 in adj[node1]:
+                    cur_rank -= 1
+                res = max(res, cur_rank)
+        
+        return res
+```
+
+
 [261. Graph Valid Tree](https://leetcode.com/problems/graph-valid-tree/)
 
 ```py
