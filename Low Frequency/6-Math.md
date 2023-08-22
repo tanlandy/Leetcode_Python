@@ -224,6 +224,24 @@ class Solution:
         return res
 ```
 
+## Modular
+
+[168. Excel Sheet Column Title](https://leetcode.com/problems/excel-sheet-column-title/description/)
+
+```py
+class Solution:
+    def convertToTitle(self, columnNumber: int) -> str:
+        """
+        改成26进制，由于不是index0开始，所以-1使其从1开始
+        chr(ord('A') + (columnNumber - 1) % 26) 找到对应的字母
+        """
+        res = ''
+        while columnNumber > 0:
+            res = chr(ord('A') + (columnNumber - 1) % 26) + res
+            columnNumber = (columnNumber - 1) // 26
+        return res
+```
+
 ## Geometry
 
 [939. Minimum Area Rectangle](https://leetcode.com/problems/minimum-area-rectangle/)
