@@ -515,32 +515,31 @@ in order to find the median, each time, push the largest in max_heap back to min
 class Solution:
     def reorganizeString(self, s: str) -> str:
         """
-        use maxHeap to always get the largest counted chars
-        build the oven idx first, and then odd idx
+        repeatedly select the most frequent character that isn't the one previously placed -> max_heap based on the count
 
-        Time: O(NlogN)
-        Space: O(N)
+        Time: O(Nlogk), N is characters in the string, k is the total [unique] characters in the string
+        Space: O(k)
         """
-        n = len(s)
-        str_count = collections.Counter(s)
-        maxHeap = [(-count, char) for char, count in str_count.items()]
-        heapq.heapify(maxHeap)
+        res = []
+        heap = [(-count, ch) for ch, count in Counter(s).items()]
+        heapify(heap)
 
-        if -maxHeap[0][0] > (n + 1) // 2:
-            return ""
+        while heap:
+            count_first, ch_first = heappop(heap)
+            if not res or ch_first != res[-1]:  # add ch_first to the result
+                res.append(ch_first)
+                if count_first + 1 != 0:  # as used, push back if it's not 0
+                    heappush(heap, (count_first + 1, ch_first))
+            else:  # add ch_second to the result
+                if not heap:  # there's no second can be used
+                    return ''
+                count_second, ch_second = heappop(heap)
+                res.append(ch_second)
+                if count_second + 1 != 0:  # as used, push back if it's not 0
+                    heappush(heap, (count_second + 1, ch_second))
+                heappush(heap, (count_first, ch_first))  # push back ch_first always
 
-        res = [None] * n
-        ptr = 0
-        while maxHeap:
-            count, char = heapq.heappop(maxHeap)
-            count = -count
-            for i in range(count): # build the res, each time forward 2
-                res[ptr] = char
-                ptr += 2
-                if ptr >= n: # when reach to the end, start from 1
-                    ptr = 1
-
-        return "".join(res)
+        return ''.join(res)
 ```
 
 [1438. Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit]([Loading...](https://leetcode.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/))
@@ -935,3 +934,7 @@ class Solution:
                 return [start2, start2 + duration]
         return []
 ```
+
+# 总结
+
+经典pq题目：767
