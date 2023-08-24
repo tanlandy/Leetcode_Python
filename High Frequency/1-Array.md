@@ -1143,62 +1143,6 @@ class Solution:
         return True
 ```
 
-[68. Text Justification](https://leetcode.com/problems/text-justification/)
-
-```py
-class Solution:
-    def fullJustify(self, words: List[str], maxWidth: int) -> List[str]:
-        """
-        1, how many words in each line
-        2, how many space btw each word
-        """
-        
-        n = len(words)
-        L = maxWidth
-
-        i = 0 # index of current word
-        
-        # return # of words in a line
-        def getWords(i):
-            k = 0
-            l = " ".join(words[i:i+k])
-            while len(l) <= L and i + k <= n:
-                k += 1
-                l = " ".join(words[i:i+k])
-            k -= 1 # 最后总是多走了一步
-            return k # k words in a line
-        
-        # insert space btw words in a line
-        def insertSpace(i, k):
-            """
-            reconstruct k words in a line
-            """
-            l = " ".join(words[i:i+k])
-            
-            if k == 1 or i + k == n: # if only one word, or is the last line
-                spaces = L - len(l)
-                line = l + " " * spaces
-            else:
-                spaces = L - len(l) + (k - 1) # total number of spaces we have in a line: total_length - words_length + (k-1) spaces btw k words
-                space = spaces // (k - 1) # # of space btw words in this line
-                left = spaces % (k - 1) # if odd, # of left words
-                
-                if left > 0:
-                    line = (" " * (space + 1)).join(words[i:i + left]) # left words
-                    line += " " * (space + 1)
-                    line += (" " * space).join(words[i+left: i+k]) # right words
-                else:
-                    line = (" " * space).join(words[i: i+k])
-            return line
-        
-        res = []
-        while i < n:
-            k = getWords(i)
-            res.append(insertSpace(i, k))
-            i += k
-        
-        return res
-```
 
 [394. Decode String](https://leetcode.com/problems/decode-string/)
 
@@ -1494,6 +1438,102 @@ def timeConversion(s):
         else:
             return str(int(s[:2]) + 12) + s[2:-2]
 ```
+
+## Without data structure and algorithm
+
+
+[68. Text Justification](https://leetcode.com/problems/text-justification/)
+
+```py
+class Solution:
+    def fullJustify(self, words: List[str], maxWidth: int) -> List[str]:
+        """
+        1, how many words in each line
+        2, how many space btw each word
+        """
+        
+        n = len(words)
+        L = maxWidth
+
+        i = 0 # index of current word
+        
+        # return # of words in a line
+        def getWords(i):
+            k = 0
+            l = " ".join(words[i:i+k])
+            while len(l) <= L and i + k <= n:
+                k += 1
+                l = " ".join(words[i:i+k])
+            k -= 1 # 最后总是多走了一步
+            return k # k words in a line
+        
+        # insert space btw words in a line
+        def insertSpace(i, k):
+            """
+            reconstruct k words in a line
+            """
+            l = " ".join(words[i:i+k])
+            
+            if k == 1 or i + k == n: # if only one word, or is the last line
+                spaces = L - len(l)
+                line = l + " " * spaces
+            else:
+                spaces = L - len(l) + (k - 1) # total number of spaces we have in a line: total_length - words_length + (k-1) spaces btw k words
+                space = spaces // (k - 1) # # of space btw words in this line
+                left = spaces % (k - 1) # if odd, # of left words
+                
+                if left > 0:
+                    line = (" " * (space + 1)).join(words[i:i + left]) # left words
+                    line += " " * (space + 1)
+                    line += (" " * space).join(words[i+left: i+k]) # right words
+                else:
+                    line = (" " * space).join(words[i: i+k])
+            return line
+        
+        res = []
+        while i < n:
+            k = getWords(i)
+            res.append(insertSpace(i, k))
+            i += k
+        
+        return res
+```
+
+
+[65. Valid Number](https://leetcode.com/problems/valid-number/description/)
+
+```python
+class Solution:
+    def isNumber(self, s: str) -> bool:
+        """
+        1. sign: only first, or right after "eE"
+        2. expo: before and after seenDigit, only appear once
+        3. dot: no expo before, only appear once
+        """
+        
+        seen_digit = seen_expo = seen_dot = False
+        
+        for i, ch in enumerate(s):
+            if ch.isdigit():
+                seen_digit = True
+            elif ch in "+-":
+                if i > 0 and s[i - 1] != "e" and s[i - 1] != "E":
+                    return False
+            elif ch in "eE":
+                if seen_expo or not seen_digit:
+                    return False
+                seen_expo = True
+                seen_digit = False
+            elif ch == ".":
+                if seen_dot or seen_expo:
+                    return False
+                seen_dot = True
+            else:
+                return False
+        
+        return seen_digit
+```
+
 
 # Nums
 
