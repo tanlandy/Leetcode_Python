@@ -1366,6 +1366,34 @@ class Solution:
         return shortest
 ```
 
+[2483. Minimum Penalty for a Shop](https://leetcode.com/problems/minimum-penalty-for-a-shop/description/)
+
+```python
+class Solution:
+    def bestClosingTime(self, customers: str) -> int:
+        """
+        假设从idx=0开始闭店，一个一个往右，如果当前ch=='Y'，那么相对的penalty应该减少1。、
+        如果需要真实penalty，需要首先计算idx=0闭店的初始penalty值
+
+        时间：O(n)
+        空间：O(1)
+        """
+        cur_p = min_p = 0
+        earliest_hour = 0
+
+        for i, ch in enumerate(customers):
+            if ch == 'Y':
+                cur_p -= 1
+            else:
+                cur_p += 1
+            
+            if cur_p < min_p:
+                earliest_hour = i + 1
+                min_p = cur_p
+        
+        return earliest_hour
+```
+
 ## Palindrome类型
 
 [125. Valid Palindrome](https://leetcode.com/problems/valid-palindrome/)
