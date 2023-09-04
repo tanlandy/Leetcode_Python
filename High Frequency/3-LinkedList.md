@@ -76,8 +76,8 @@ class Solution:
         实际上是删掉了node.next这个node
         """
         
-        node.val = node.next.val # 把node的值变成node.next
-        node.next = node.next.next # 把node.next删掉
+        node.val = node.next.val  # 把node的值变成node.next
+        node.next = node.next.next  # 把node.next删掉
 ```
 
 ## Doubly Linked List
@@ -180,7 +180,7 @@ class Solution:
         prev, cur = None, head
 
         while cur:
-            nxt = cur.next
+            nxt = cur.next  # 先把后面的存下来，因为改变.next之后就找不到了
             cur.next = prev
             prev = cur
             cur = nxt
@@ -228,7 +228,7 @@ class Solution:
                 after = after.next
             head = head.next
         
-        after.next = None
+        after.next = None  # 这一步很重要，不然会有环
         before.next = after_head.next
         
         return before_head.next
@@ -586,6 +586,7 @@ class Solution:
 ```Python
 class Solution:
     def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+        """用一个节点，不停往后接上list1和list2的节点，最后返回头节点即可"""
         dummy = ListNode(-1)
         pre = dummy
         
@@ -809,22 +810,22 @@ class Solution:
         时间：O(N)
         空间：O(N)
         """
-        oldToCopy = {None : None} # 为了在复制的时候，如果cur.next是None， copy.next也可以是None
+        old_new = {None: None}  # 为了在复制的时候，如果cur.next是None， copy.next也可以是None
 
         cur = head
         while cur:
-            copy = Node(cur.val)
-            oldToCopy[cur] = copy
+            new = Node(cur.val)
+            old_new[cur] = new
             cur = cur.next
         
         cur = head
         while cur:
-            copy = oldToCopy[cur]
-            copy.next = oldToCopy[cur.next]
-            copy.random = oldToCopy[cur.random]
+            new = old_new[cur]
+            new.next = old_new[cur.next]
+            new.random = old_new[cur.random]
             cur = cur.next
 
-        return oldToCopy[head]
+        return old_new[head]   
 ```
 
 [83. Remove Duplicates from Sorted List](https://leetcode.com/problems/remove-duplicates-from-sorted-list/)
