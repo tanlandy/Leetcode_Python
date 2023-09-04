@@ -2,7 +2,7 @@
 
 ## Linked List
 
-```py
+```Python
 class Node:
   def __init__(self, data):
     self.data = data
@@ -63,7 +63,7 @@ llist.print_list()
 
 [237. Delete Node in a Linked List](https://leetcode.com/problems/delete-node-in-a-linked-list/)
 
-```py
+```Python
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, x):
@@ -84,7 +84,7 @@ class Solution:
 
 Implementation
 
-```py
+```Python
 class Node:
     def __init__(self, data):
         self.data = data
@@ -132,7 +132,7 @@ class DoublyLinkedList:
 
 [203. Remove Linked List Elements](https://leetcode.com/problems/remove-linked-list-elements/)
 
-```py
+```Python
 class Solution:
     def removeElements(self, head: Optional[ListNode], val: int) -> Optional[ListNode]:
         dummy = ListNode(-1)
@@ -153,7 +153,7 @@ class Solution:
 
 [237. Delete Node in a Linked List](https://leetcode.com/problems/delete-node-in-a-linked-list/)
 
-```py
+```Python
 class Solution:
     def deleteNode(self, node):
         # copy the next node to this one
@@ -167,7 +167,7 @@ class Solution:
 
 [206. Reverse Linked List](https://leetcode.com/problems/reverse-linked-list/)
 
-```py
+```Python
 class Solution:
     def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
         """
@@ -190,7 +190,7 @@ class Solution:
 
 [876. Middle of the Linked List](https://leetcode.com/problems/middle-of-the-linked-list/)
 
-```py
+```Python
 class Solution:
     def middleNode(self, head: Optional[ListNode]) -> Optional[ListNode]:
         """
@@ -209,7 +209,7 @@ class Solution:
 
 [86. Partition List](https://leetcode.com/problems/partition-list/)
 
-```py
+```Python
 class Solution:
     def partition(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
         """
@@ -236,7 +236,7 @@ class Solution:
 
 [148. Sort List](https://leetcode.com/problems/sort-list/)
 
-```py
+```Python
 class Solution:
     def sortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
         """
@@ -283,7 +283,7 @@ class Solution:
 
 [160. Intersection of Two Linked Lists](https://leetcode.com/problems/intersection-of-two-linked-lists/)
 
-```py
+```Python
 class Solution:
     def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> Optional[ListNode]:
         """
@@ -305,7 +305,7 @@ class Solution:
 
 [141. Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/)
 
-```py
+```Python
 class Solution:
     def hasCycle(self, head: Optional[ListNode]) -> bool:
         """用快慢指针找到相遇的点，相遇了就说明有环"""
@@ -313,7 +313,7 @@ class Solution:
         
         while fast and fast.next:
             slow = slow.next
-            fast = fast.next.next
+            fast = fast.next.next  # 这里用到了fast.next.next，所以要检查fast.next是否为空
             if slow == fast:
                 return True
         
@@ -322,7 +322,7 @@ class Solution:
 
 [142. Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/)
 
-```py
+```Python
 class Solution:
     def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
         """
@@ -355,7 +355,7 @@ class Solution:
 
 [287. Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/)
 
-```py
+```Python
 class Solution:
     def findDuplicate(self, nums: List[int]) -> int:
         slow, fast = 0, 0
@@ -377,7 +377,7 @@ class Solution:
 
 [2. Add Two Numbers](https://leetcode.com/problems/add-two-numbers/)
 
-```py
+```Python
 class Solution:
     def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
         """
@@ -409,7 +409,7 @@ class Solution:
 
 [92. Reverse Linked List II](https://leetcode.com/problems/reverse-linked-list-ii/)
 
-```py
+```Python
 
 class Solution:
     def reverseBetween(self, head: Optional[ListNode], left: int, right: int) -> Optional[ListNode]:
@@ -448,7 +448,7 @@ class Solution:
 
 [328. Odd Even Linked List](https://leetcode.com/problems/odd-even-linked-list/)
 
-```py
+```Python
 class Solution:
     def oddEvenList(self, head: Optional[ListNode]) -> Optional[ListNode]:
         """
@@ -478,7 +478,7 @@ class Solution:
 
 [25. Reverse Nodes in k-Group](https://leetcode.com/problems/reverse-nodes-in-k-group/)
 
-```py
+```Python
 class Solution:
     def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
         dummy = ListNode(-1)
@@ -517,7 +517,7 @@ class Solution:
 
 [24. Swap Nodes in Pairs](https://leetcode.com/problems/swap-nodes-in-pairs/)
 
-```py
+```Python
 class Solution:
     def swapPairs(self, head: Optional[ListNode]) -> Optional[ListNode]:
         """
@@ -542,7 +542,7 @@ class Solution:
 
 [234. Palindrome Linked List](https://leetcode.com/problems/palindrome-linked-list/)
 
-```py
+```Python
 class Solution:
     def isPalindrome(self, head: Optional[ListNode]) -> bool:
         """
@@ -583,7 +583,7 @@ class Solution:
 
 [21. Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/)
 
-```py
+```Python
 class Solution:
     def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
         dummy = ListNode(-1)
@@ -608,7 +608,7 @@ class Solution:
 
 [23. Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/)
 
-```py
+```Python
 class Solution:
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
         """
@@ -640,7 +640,7 @@ class Solution:
 
 ```
 
-```py
+```Python
 class Solution:
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
         """
@@ -699,7 +699,7 @@ Output: [1,5,2,4,3]
 时间：O(N)
 空间：O(1)
 
-```py
+```Python
 class Solution:
     def reorderList(self, head: Optional[ListNode]) -> None:
         # find middle
@@ -734,7 +734,7 @@ class Solution:
 
 [19. Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)
 
-```py
+```Python
 class Solution:
     def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
         """
@@ -763,7 +763,7 @@ class Solution:
         return dummy.next
 ```
 
-```py
+```Python
 class Solution:
     def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
         """
@@ -797,7 +797,7 @@ class Solution:
 
 [138. Copy List with Random Pointer](https://leetcode.com/problems/copy-list-with-random-pointer/)
 
-```python
+```Pythonthon
 class Solution:
     def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
         """
@@ -829,7 +829,7 @@ class Solution:
 
 [83. Remove Duplicates from Sorted List](https://leetcode.com/problems/remove-duplicates-from-sorted-list/)
 
-```py
+```Python
 class Solution:
     def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
         """
@@ -850,7 +850,7 @@ class Solution:
 
 [203. Remove Linked List Elements](https://leetcode.com/problems/remove-linked-list-elements/)
 
-```py
+```Python
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, val=0, next=None):

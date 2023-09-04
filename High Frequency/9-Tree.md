@@ -617,7 +617,7 @@ class Solution(object):
 
 ```py
 class Solution:
-    def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
         """
         Preorder的第一个是root，第二个数是左子树的root
         Inorder的root左边的值都在左子树，root右边的都是右子树
@@ -629,14 +629,15 @@ class Solution:
             return None
         
         root = TreeNode(preorder[0])
-        mid = inorder.index(preorder[0]) #找到root在inorder的index
+        mid = inorder.index(root.val) #找到root在inorder的index
 
         # inorder的root左边都是左子树，右边都是右子树
         # preorder：根据左子树的数量，root之后[1:mid+1]左闭右开都是左子树，[mid+1:]都是右子树
         root.left = self.buildTree(preorder[1:mid + 1], inorder[:mid]) # 右开
-        root.right = self.buildTree(preorder[mid+1:], inorder[mid:])
+        root.right = self.buildTree(preorder[mid + 1:], inorder[mid + 1:])
 
         return root
+
 ```
 
 [106. Construct Binary Tree from Inorder and Postorder Traversal](https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)
