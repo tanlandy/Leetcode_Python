@@ -1155,27 +1155,26 @@ class Solution:
         the enclosed string k times.
         """
         stack = []
-        current_string = ""
+        res = ""
         k = 0
 
         for char in s:
             if char == "[":
                 # Just finished parsing this k, save current string and k for when we pop
-                stack.append((current_string, k))
+                stack.append((res, k))
                 # Reset current_string and k for this new frame
-                current_string = ""
+                res = ""  # res一旦遇到[就全新开始
                 k = 0
             elif char == "]":
                 # We have completed this frame, get the last current_string and k from when the frame 
-                # opened, which is the k we need to duplicate the current current_string by
                 last_string, last_k = stack.pop(-1)
-                current_string = last_string + last_k * current_string
+                res = last_string + last_k * res
             elif char.isdigit():
                 k = k * 10 + int(char)
             else:
-                current_string += char
+                res += char
 
-        return current_string
+        return res
 ```
 
 [541. Reverse String II](https://leetcode.com/problems/reverse-string-ii/)

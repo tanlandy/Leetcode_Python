@@ -354,8 +354,8 @@ class MinStack:
 
     def push(self, val: int) -> None:
         self.stack.append(val)
-        val = min(val, self.min_stack[-1] if self.min_stack else val) # check if min_stack is empty
-        self.min_stack.append(val) # each time add the minimum value into min_stack
+        min_val = min(val, self.min_stack[-1] if self.min_stack else val) # check if min_stack is empty
+        self.min_stack.append(min_val) # each time add the minimum value into min_stack
 
     def pop(self) -> None:
         self.stack.pop()
@@ -456,18 +456,22 @@ class MyQueue:
         self.stack2 = []
 
     def push(self, x: int) -> None:
-        """when push, only push into stack1"""
+        """to push, only push into stack1"""
         self.stack1.append(x)
 
     def pop(self) -> int:
-        """when pop, get from stack2; if empty, push stack1 into stack2"""
-        if not self.stack2:
-            while self.stack1:
-                self.stack2.append(self.stack1.pop())
+        # """to pop, get from stack2; if empty, push the entire stack1 into stack2"""
+        # if not self.stack2:
+        #     while self.stack1:
+        #         self.stack2.append(self.stack1.pop())
+        # return self.stack2.pop()
+        """直接peek一下把stack1压栈到stack2，然后返回最上面的那个值"""
+        self.peek()  
         return self.stack2.pop()
 
     def peek(self) -> int:
-        """when pop, get from stack2; if empty, push stack1 into stack2"""
+        """to peek, get from stack2; if empty, push the entire stack1 into stack2"""
+        # 当且只有stack2为空的时候，才把stack1全部压栈到stack2，从而保证顺序的一致
         if not self.stack2:
             while self.stack1:
                 self.stack2.append(self.stack1.pop())
@@ -614,17 +618,17 @@ class Solution:
         when close: use a dictionary to map close to open, and check if new one matches the top, if so pop the old
         """
         stack = []
-        closeToOpen = { ")":"(", "]":"[", "}":"{" } # 非常好的解决比对好几次的情况
+        close_open = { ")":"(", "]":"[", "}":"{" } # 非常好的解决比对好几次的情况
 
         for c in s:
             if c in "({[":
                 stack.append(c)
-            elif stack and stack[-1] == closeToOpen[c]: # 比较栈顶，总是要看看stack是否为空
+            elif stack and stack[-1] == close_open[c]: # 比较栈顶，总是要看看stack是否为空
                 stack.pop()
             else:
                 return False
         
-        return stack == []
+        return stack == []  # 最后要检查stack是否为空
 ```
 
 [1472. Design Browser History](https://leetcode.com/problems/design-browser-history/)

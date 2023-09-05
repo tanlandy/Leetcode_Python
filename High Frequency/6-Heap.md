@@ -468,7 +468,7 @@ class Solution:  # 204 ms, faster than 54.32%
 [295. Find Median from Data Stream](https://leetcode.com/problems/find-median-from-data-stream/) 
 
 ```py
-class MedianFinder:
+class MedianFinder: 
 """
 用两个size最多差1的Heap，每次新数字先加到minHeap，然后pop minHeap到maxHeap，最后永远保证minHeap的大小比maxHeap大于等于1；找数的时候，要么直接看minHeap，要么就是看二者的平均数
 
