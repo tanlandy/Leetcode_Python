@@ -374,3 +374,228 @@ class Solution:
         return res + odd
 
 ```
+
+# 双指针
+
+
+[392. 判断子序列](https://leetcode.cn/problems/is-subsequence/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+class Solution:
+    def isSubsequence(self, s: str, t: str) -> bool:
+        p1 = p2 = 0
+        while p1 < len(s) and p2 < len(t):
+            if s[p1] == t[p2]:
+                p1 += 1
+                p2 += 1
+            else:
+                p2 += 1
+        
+        return p1 == len(s)
+```
+
+[876. 链表的中间结点](https://leetcode.cn/problems/middle-of-the-linked-list/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def middleNode(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        fast = slow = head
+
+        while fast and fast.next:
+            fast = fast.next.next
+            slow = slow.next
+
+        return slow
+
+```
+
+[160. 相交链表](https://leetcode.cn/problems/intersection-of-two-linked-lists/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> Optional[ListNode]:
+        pA, pB = headA, headB
+        
+        while pA != pB:
+            pA = pA.next if pA else headB
+            pB = pB.next if pB else headA
+        
+        return pA
+
+```
+
+[167. 两数之和 II - 输入有序数组](https://leetcode.cn/problems/two-sum-ii-input-array-is-sorted/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        l, r = 0, len(numbers) - 1
+
+        while l < r:
+            cur_sum = numbers[l] + numbers[r]
+            if cur_sum < target:
+                l += 1
+            elif cur_sum > target:
+                r -= 1
+            else:
+                return [l + 1, r + 1]
+
+```
+
+[142. 环形链表 II](https://leetcode.cn/problems/linked-list-cycle-ii/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        """
+        先用快慢指针找到相遇的点。
+        然后利用Floyd's算法找到成环的点；Floyd's算法是head和快慢指针相遇点往后走，彼此相遇的点就是成环的点
+        相同时间走的距离：slow: a + b  fast: a + k * circle + b
+        走的距离有倍数关系：2 * (a + b) = a + k * circle + b
+        want a
+        等式化简得到 a = k * circle - b
+        此时cur=head和slow继续走，相遇时，cur走过的距离就是等式左边a，slow走过的距离就是等式右边k * circle - b
+        
+        时间：O(N)
+        空间：O(1)
+        """
+        slow = fast = head
+        
+        # 快慢指针找相遇点，如果fast.next为空，就说明没有环
+        while slow and fast:
+            if not fast.next:
+                return None
+            slow = slow.next
+            fast = fast.next.next  # 这里用到了fast.next.next，所以条件要有not fast.next
+            if slow == fast:
+                break
+                
+        cur = head
+        while cur != slow:
+            if not slow:
+                return None
+            cur = cur.next
+            slow = slow.next  # 这里用到了slow.next，所以条件要有not slow
+        
+        return cur
+
+```
+
+[151. 反转字符串中的单词](https://leetcode.cn/problems/reverse-words-in-a-string/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def reverseWords(self, s: str) -> str:
+        s = s.strip()
+
+        i = j = len(s) - 1  # 从右往左的同向双指针
+        res = []
+        while i >= 0:
+            while i >= 0 and s[i] != ' ':  # 从右往左找空格
+                i -= 1
+            res.append(s[i + 1: j + 1])  # 左闭右开区间
+            while i >= 0 and s[i] == ' ':
+                i -= 1
+            j = i
+        return ' '.join(res)
+
+```
+
+[3. 无重复字符的最长子串](https://leetcode.cn/problems/longest-substring-without-repeating-characters/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        """
+        用set记录当前sliding window的数据；如果s[r]在set里，移动窗口直到不在并且在set中删去
+
+        时间：O(N)
+        空间：O(N)
+        """
+        chars = set()
+        l = r = 0
+        res = 0
+
+        while r < len(s):
+            while s[r] in chars:
+                chars.remove(s[l])
+                l += 1
+            chars.add(s[r])
+            res = max(res, r - l + 1)
+            r += 1
+
+        return res
+```
+
+[15. 三数之和](https://leetcode.cn/problems/3sum/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```py
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        """
+        排序之后固定一个指针，用双指针
+        Time: O(N^2)
+        Space: O(logN), depending on how to sort
+        """
+        nums.sort()
+        res = []
+
+        for i, n in enumerate(nums):
+            if i > 0 and nums[i - 1] == nums[i]:  # avoid duplicate
+                continue
+
+            if nums[i] > 0:  # 如果最小的数都>0，那肯定没有能够满足的结果
+                break
+            
+            l, r = i + 1, len(nums) - 1
+            while l < r:
+                cur_sum = nums[i] + nums[l] + nums[r]
+                if cur_sum < 0:
+                    l += 1
+                elif cur_sum > 0:
+                    r -= 1
+                else:
+                    res.append([nums[i], nums[l], nums[r]])
+                    # keep moving to find other possibilities
+                    l += 1
+                    r -= 1
+                    while l < r and nums[l - 1] == nums[l]:  # avoid duplicate
+                        l += 1
+            
+        return res
+```
+
+[239. 滑动窗口最大值](https://leetcode.cn/problems/sliding-window-maximum/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```py
+class Solution:
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        """
+        单调递减栈
+        时间：O(N)
+        空间：O(N)
+        """
+        res = []
+        queue = deque()  # queue存index, nums[queue[0]]总是窗口的最大值
+        l = r = 0
+
+        while r < len(nums):
+            while queue and nums[r] > nums[queue[-1]]:  # 比较次大值，保证是单调递减栈
+                queue.pop()
+            queue.append(r)
+        
+            if l > queue[0]:  # 便于比较queue[0]对应的数是否还在窗口里面
+                queue.popleft()  # 如果不在，那就把queue[0]删除掉，此时次大值queue[1]变成最大值
+            
+            if r - l + 1 == k:
+                res.append(nums[queue[0]])
+                l += 1
+            r += 1
+        
+        return res
+```

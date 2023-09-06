@@ -295,8 +295,8 @@ class Solution:
         pA, pB = headA, headB
         
         while pA != pB:
-            pA = headB if pA is None else pA.next
-            pB = headA if pB is None else pB.next
+            pA = pA.next if pA else headB
+            pB = pB.next if pB else headA
         
         return pA
 ```
@@ -328,7 +328,12 @@ class Solution:
         """
         先用快慢指针找到相遇的点。
         然后利用Floyd's算法找到成环的点；Floyd's算法是head和快慢指针相遇点往后走，彼此相遇的点就是成环的点
-
+        相同时间走的距离：slow: a + b  fast: a + k * circle + b
+        走的距离有倍数关系：2 * (a + b) = a + k * circle + b
+        want a
+        等式化简得到 a = k * circle - b
+        此时cur=head和slow继续走，相遇时，cur走过的距离就是等式左边a，slow走过的距离就是等式右边k * circle - b
+        
         时间：O(N)
         空间：O(1)
         """
@@ -336,21 +341,21 @@ class Solution:
         
         # 快慢指针找相遇点，如果fast.next为空，就说明没有环
         while slow and fast:
-            if not fast.next or not fast.next.next: # 最下面用到了slow.next相当于是fast.next.next.next，所以要not fast.next.next
+            if not fast.next:
                 return None
-            
             slow = slow.next
-            fast = fast.next.next # 这里用到了fast.next.next，所以条件要有not fast.next
+            fast = fast.next.next  # 这里用到了fast.next.next，所以条件要有not fast.next
             if slow == fast:
                 break
-
-        cur = head        
-        while cur:
-            if cur == slow:
-                return cur
-            
+                
+        cur = head
+        while cur != slow:
+            if not slow:
+                return None
             cur = cur.next
-            slow = slow.next
+            slow = slow.next  # 这里用到了slow.next，所以条件要有not slow
+        
+        return cur
 ```
 
 [287. Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/)

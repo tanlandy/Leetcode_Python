@@ -128,37 +128,47 @@ class Solution:
                 r -= 1
 ```
 
+缩减空间思想的题目：
+167. Two Sum II - Input Array Is Sorted
+240. 搜索二维矩阵 II
+11. 盛最多水的容器
+
+
 [15. 3Sum](https://leetcode.com/problems/3sum/)
 
 ```py
 class Solution:
     def threeSum(self, nums: List[int]) -> List[List[int]]:
         """
+        排序之后固定一个指针，用双指针
         Time: O(N^2)
         Space: O(logN), depending on how to sort
         """
-        res = []
         nums.sort()
-        
+        res = []
+
         for i, n in enumerate(nums):
-            if i > 0 and nums[i-1] == nums[i]: # avoid duplicate
+            if i > 0 and nums[i - 1] == nums[i]:  # avoid duplicate
                 continue
+
+            if nums[i] > 0:  # 如果最小的数都>0，那肯定没有能够满足的结果
+                break
             
             l, r = i + 1, len(nums) - 1
             while l < r:
-                cur_sum = n + nums[l] + nums[r]
+                cur_sum = nums[i] + nums[l] + nums[r]
                 if cur_sum < 0:
                     l += 1
                 elif cur_sum > 0:
                     r -= 1
                 else:
-                    res.append([n, nums[l], nums[r]])
+                    res.append([nums[i], nums[l], nums[r]])
                     # keep moving to find other possibilities
                     l += 1
                     r -= 1
-                    while l < r and nums[l] == nums[l - 1]: # avoid duplicate triplets
+                    while l < r and nums[l - 1] == nums[l]:  # avoid duplicate
                         l += 1
-        
+            
         return res
 ```
 
@@ -511,15 +521,15 @@ class Solution:
         时间：O(N)
         空间：O(N)
         """
-        char_set = set()
+        chars = set()
         l = r = 0
         res = 0
 
         while r < len(s):
-            while s[r] in char_set:
-                char_set.remove(s[l])
+            while s[r] in chars:
+                chars.remove(s[l])
                 l += 1
-            char_set.add(s[r])
+            chars.add(s[r])
             res = max(res, r - l + 1)
             r += 1
 
