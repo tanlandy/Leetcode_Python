@@ -278,3 +278,99 @@ class MedianFinder:
     def findMedian(self) -> float:
         return self.A[0] if len(self.A) != len(self.B) else (self.A[0] - self.B[0]) / 2.0
 ```
+
+
+# 哈希表
+
+[242. 有效的字母异位词](https://leetcode.cn/problems/valid-anagram/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+        return Counter(s) == Counter(t)
+
+```
+
+[387. 字符串中的第一个唯一字符](https://leetcode.cn/problems/first-unique-character-in-a-string/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def firstUniqChar(self, s: str) -> int:
+        """遍历两遍。第一遍构建频数，第二遍找第一个是1的索引"""
+        ch_num = collections.defaultdict(int)
+        for ch in s:
+            ch_num[ch] += 1
+        for idx, ch in enumerate(s):
+            if ch_num[ch] == 1:
+                return idx
+        return -1
+
+```
+
+[205. 同构字符串](https://leetcode.cn/problems/isomorphic-strings/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def isIsomorphic(self, s: str, t: str) -> bool:
+        s_t = dict()
+        used = set()  # 用used保证ch_t是唯一的
+
+        for i in range(len(s)):
+            ch_s = s[i]
+            ch_t = t[i]
+            if ch_s not in s_t:
+                if ch_t in used:
+                    return False
+                s_t[ch_s] = ch_t
+                used.add(ch_t)
+            else:
+                if s_t[ch_s] != ch_t:
+                    return False
+        
+        return True
+
+```
+
+[266. Palindrome Permutation](https://leetcode.com/problems/palindrome-permutation/editorial/)
+
+```python
+
+class Solution:
+    def canPermutePalindrome(self, s: str) -> bool:
+        freqs = Counter(s)
+        seen_odd = False
+
+        for count in freqs.values():
+            if count % 2 == 1:
+                if seen_odd:
+                    return False
+                else:
+                    seen_odd = True
+
+        return True
+
+```
+
+
+[409. 最长回文串](https://leetcode.cn/problems/longest-palindrome/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def longestPalindrome(self, s: str) -> int:
+        freqs = Counter(s)
+        res = 0
+        odd = 0
+
+        for count in freqs.values():
+            remainder = count % 2
+            res += count - remainder  # 偶数直接加，奇数则-1再加
+            if remainder == 1:
+                odd = 1  # 奇数多出来的可以放在正中间
+
+        return res + odd
+
+```
