@@ -660,4 +660,87 @@ class Solution:
 
 ```
 
+[287. 寻找重复数](https://leetcode.cn/problems/find-the-duplicate-number/description/?envType=study-plan-v2&envId=selected-coding-interview)
 
+```python
+
+class Solution:
+    def findDuplicate(self, nums: List[int]) -> int:
+        # 建立一个 idx -> nums[idx] -> nums[nums[idx]] 的映射，因为存在重复的数，所以会有两个数都跳转到同一个idx下，从而在第二次跳转到哪个idx时出现循环
+        # 如果数组中有重复的数，以数组 [1,3,4,2,2] 为例,我们将数组下标 n 和数 nums[n] 建立一个映射关系 f(n)f(n)f(n)， 其映射关系 n->f(n) 为： 0->1 1->3 2->4 3->2 4->2 同样的，我们从下标为 0 出发，根据 f(n)f(n)f(n) 计算出一个值，以这个值为新的下标，再用这个函数计算，以此类推产生一个类似链表一样的序列。 0->1->3->2->4->2->4->2->
+
+        slow, fast = 0, 0
+        slow = nums[slow]
+        fast = nums[nums[fast]]
+
+        while slow != fast:
+            slow = nums[slow]
+            fast = nums[nums[fast]]
+
+        pre = 0
+        while pre != slow:
+            pre = nums[pre]
+            slow = nums[slow]
+
+        return pre 
+
+```
+
+[153. 寻找旋转排序数组中的最小值](https://leetcode.cn/problems/find-minimum-in-rotated-sorted-array/description/)
+
+```py
+class Solution:
+    def findMin(self, nums: List[int]) -> int:
+        """
+        最小值一直往右都小于等于nums[-1]，相当于找最左满足的数
+
+        时间：O(logN)
+        空间：O(1)
+        """
+        l, r = 0, len(nums) - 1
+
+        while l <= r:
+            mid = (l + r) // 2
+            if nums[mid] <= nums[-1]:
+                r = mid - 1
+            else:
+                l = mid + 1
+        
+        return nums[l]
+```
+
+```python
+
+class Solution:
+    def findMin(self, nums: List[int]) -> int:
+        l, r = 0, len(nums) - 1
+
+        while l <= r:
+            mid = (l + r) // 2
+            if nums[mid] < nums[r]:  # m右侧有序
+                r = mid
+            else:  # m左侧有序
+                l = mid + 1
+        
+        return nums[l-1]  # 因为l=r+1，所以l-1是最小值
+
+```
+
+[154. 寻找旋转排序数组中的最小值 II](https://leetcode.cn/problems/find-minimum-in-rotated-sorted-array-ii/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def findMin(self, nums: List[int]) -> int:
+        l, r = 0, len(nums) - 1
+        while l <= r:
+            mid = (l + r) // 2
+            if nums[mid] < nums[r]:  # m右侧有序
+                r = mid
+            elif nums[mid] == nums[r]:  # 不知道哪边有序
+                r -= 1
+            else:  # m左侧有序
+                l = mid + 1
+        return nums[l]
+
+```

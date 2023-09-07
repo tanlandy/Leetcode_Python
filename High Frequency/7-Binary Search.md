@@ -418,7 +418,7 @@ class Solution:
 class Solution:
     def search(self, nums: List[int], target: int) -> int:
         """
-        先判断是否找到，找不到的话，比较nums[l]和nums[mid]，从而找到接下来的二分查找区间：内部嵌套2个binary search
+        先判断是否找到，找不到的话，根据nums[mid]和nums[r]找到mid相对有序的一边，接下来的二分查找：内部嵌套2个binary search
 
         时间：O(logN)
         空间：O(1)
@@ -427,21 +427,19 @@ class Solution:
 
         while l <= r:
             mid = (l + r) // 2
-
             if nums[mid] == target:
                 return mid
-
-            if nums[l] <= nums[mid]: # 说明mid左边是sorted
-                if nums[l] <= target and target < nums[mid]: # target is in left part's left
+            elif nums[mid] > nums[r]:  # 说明mid左侧有序
+                if nums[l] <= target < nums[mid]:  # 利用左侧有序
                     r = mid - 1
                 else:
-                    l = mid + 1            
-            else: # 说明mid右边是Sorted
-                if nums[mid] < target and target <= nums[r]: # target is in right part's right
+                    l = mid + 1
+            else:  # nums[mid] < nums[r]，说明mid右侧有序
+                if nums[mid] < target <= nums[r]:  # 利用右侧有序
                     l = mid + 1
                 else:
                     r = mid - 1
-
+        
         return -1
 ```
 
@@ -451,31 +449,29 @@ class Solution:
 class Solution:
     def search(self, nums: List[int], target: int) -> bool:
         """
-        因为会有重复，所以在nums[mid] == nums[r]的时候就不能判断target在哪边，所以这时候直接r-=1。然后通过nums[mid]和nums[r]的大小比较，来确认哪边是sorted
+        通过nums[mid]和nums[r]的大小比较，来确认哪边是sorted，因为因为会有重复，所以在nums[mid] == nums[r]的时候就不能判断target在哪边，所以这时候直接r-=1
 
         时间：O(N)
         空间：O(1)
         """
         l, r = 0, len(nums) - 1
-
         while l <= r:
             mid = (l + r) // 2
-
             if nums[mid] == target:
                 return True
-            elif nums[mid] == nums[r]: # failed to determine which side is sorted, as well as which side the target is located
-                r -= 1
-            elif nums[mid] > nums[r]: # 说明mid左边是sorted
-                if nums[l] <= target and target < nums[mid]: # target is in left part's left
+            elif nums[mid] > nums[r]:  # 说明mid左侧有序
+                if nums[l] <= target < nums[mid]:
                     r = mid - 1
                 else:
-                    l = mid + 1            
-            else: # 说明mid右边是Sorted
-                if nums[mid] < target and target <= nums[r]: # target is in right part's right
+                    l = mid + 1
+            elif nums[mid] < nums[r]:  # 说明mid右侧有序
+                if nums[mid] < target <= nums[r]:
                     l = mid + 1
                 else:
                     r = mid - 1
-
+            else:  # nums[mid] == nums[r]，此时无法判定哪边有序
+                r -= 1
+        
         return False
 ```
 
@@ -774,28 +770,25 @@ class Solution:
 ```
 
 [153. Find Minimum in Rotated Sorted Array](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/)
-也是找最左满足的数
-
-时间：O(logN)
-空间：O(1)
 
 ```py
 class Solution:
     def findMin(self, nums: List[int]) -> int:
         """
-        find the left most valid num
-        """
+        最小值一直往右都小于等于nums[-1]，相当于找最左满足的数
 
+        时间：O(logN)
+        空间：O(1)
+        """
         l, r = 0, len(nums) - 1
 
         while l <= r:
             mid = (l + r) // 2
-
             if nums[mid] <= nums[-1]:
                 r = mid - 1
             else:
                 l = mid + 1
-
+        
         return nums[l]
 ```
 
