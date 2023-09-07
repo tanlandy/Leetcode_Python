@@ -298,13 +298,12 @@ class Solution:
 
 class Solution:
     def firstUniqChar(self, s: str) -> int:
-        """遍历两遍。第一遍构建频数，第二遍找第一个是1的索引"""
-        ch_num = collections.defaultdict(int)
-        for ch in s:
-            ch_num[ch] += 1
+        freqs = Counter(s)
+
         for idx, ch in enumerate(s):
-            if ch_num[ch] == 1:
+            if freqs[ch] == 1:
                 return idx
+        
         return -1
 
 ```
@@ -465,21 +464,19 @@ class Solution:
         """
         slow = fast = head
         
-        # 快慢指针找相遇点，如果fast.next为空，就说明没有环
-        while slow and fast:
-            if not fast.next:
-                return None
+        # 快慢指针找相遇点，如果fast或fast.next为空，就说明没有环
+        while 1:
+            if not fast or not fast.next:
+                return
             slow = slow.next
-            fast = fast.next.next  # 这里用到了fast.next.next，所以条件要有not fast.next
+            fast = fast.next.next 
             if slow == fast:
                 break
                 
         cur = head
         while cur != slow:
-            if not slow:
-                return None
             cur = cur.next
-            slow = slow.next  # 这里用到了slow.next，所以条件要有not slow
+            slow = slow.next  
         
         return cur
 
@@ -599,3 +596,68 @@ class Solution:
         
         return res
 ```
+
+# 查找
+
+[704. 二分查找](https://leetcode.cn/problems/binary-search/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        l, r = 0, len(nums) - 1
+
+        while l <= r:
+            mid = (l + r) // 2
+            if nums[mid] == target:
+                return mid
+            elif nums[mid] < target:
+                l = mid + 1
+            else:
+                r = mid - 1
+        
+        return -1
+
+```
+
+[278. 第一个错误的版本](https://leetcode.cn/problems/first-bad-version/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def firstBadVersion(self, n: int) -> int:
+        # [True, True, True, False, False, False, False]
+        # Find the first False version, which is the most left valid one
+        l, r = 1, n
+
+        while l <= r:
+            mid = (l + r) // 2
+            if isBadVersion(mid):
+                r = mid - 1
+            else:
+                l = mid + 1
+        
+        return l
+
+```
+
+[724. 寻找数组的中心下标](https://leetcode.cn/problems/find-pivot-index/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def pivotIndex(self, nums: List[int]) -> int:
+        r_sum = sum(nums)
+        l_sum = 0
+
+        for i in range(len(nums)):
+            r_sum -= nums[i]
+            if l_sum == r_sum:
+                return i
+            l_sum += nums[i]  # 因为比较时候不包括nums[i]，所以先比较，再加到l_sum
+        
+        return -1
+
+```
+
+

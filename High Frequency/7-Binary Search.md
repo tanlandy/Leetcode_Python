@@ -83,6 +83,7 @@ print(A)
 ## 显式二分法
 
 说明了是有序数组/序列，那么大概率是可以使用二分法的
+
 [1351. Count Negative Numbers in a Sorted Matrix](https://leetcode.com/problems/count-negative-numbers-in-a-sorted-matrix/description/)
 
 ```py
