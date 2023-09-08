@@ -1,5 +1,5 @@
 # Krahets精选题
-
+Pomotroid
 [Krahets精选88题](https://leetcode.cn/studyplan/selected-coding-interview/)
 
 # 链表
@@ -742,5 +742,34 @@ class Solution:
             else:  # m左侧有序
                 l = mid + 1
         return nums[l]
+
+```
+
+# 搜索
+
+[102. 二叉树的层序遍历](https://leetcode.cn/problems/binary-tree-level-order-traversal/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        if not root:
+            return []
+        queue = collections.deque([root])
+        res = []
+
+        while queue:
+            size = len(queue)
+            level_res = []
+            for _ in range(size):
+                node = queue.popleft()
+                level_res.append(node.val)
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+            res.append(level_res)
+        
+        return res
 
 ```

@@ -47,10 +47,6 @@ tree.root.right.right = Node(7)
 
 ## Think like a node
 
-when you are a node, only things you know are:
-
-1. your value
-2. how to get to your children
 
 two things needed to think of when writing dfs()
 
@@ -58,6 +54,20 @@ two things needed to think of when writing dfs()
    - Ask what information we need at the current node to make a decision
 2. Identify states (Passing value down from parent to child)
    - what states do we need to maintain to compute the return value for the current node
+
+## 解题过程
+
+首先思考二叉树的每一个节点需要做什么，需要在什么时候（前中后序）做。
+作为一个node，只知道两件事：
+1. 自己的值
+2. 到自己子节点的方式
+
+接下来二选一：
+1. 是否可以通过遍历一遍二叉树得到答案？如果可以，用一个 traverse 函数配合外部变量来实现。 
+2. 是否可以定义一个递归函数，通过子问题（子树）的答案推导出原问题的答案？如果可以，写出这个递归函数的定，思考
+   - return value: 站在这个节点，需要返回给父节点什么信息
+   - states: 站在这个节点，需要父节点提供什么信息来做决策计算
+   - （如果发现题目和子树有关，那大概率要给函数设置合理的定义和返回值，在后序位置写代码了 -> 后序位置才能收到子树的信息）
 
 ## 模板
 
@@ -105,14 +115,7 @@ def level_order_traversal(root: Node) -> List[List[int]]:
 
 ```
 
-## 解题过程
 
-首先思考二叉树的每一个节点需要做什么，需要在什么时候（前中后序）做。
-接下来二选一：
-1、是否可以通过遍历一遍二叉树得到答案？如果可以，用一个 traverse 函数配合外部变量来实现。
-
-2、是否可以定义一个递归函数，通过子问题（子树）的答案推导出原问题的答案？如果可以，写出这个递归函数的定义，并充分利用这个函数的返回值。
-    - 一旦你发现题目和子树有关，那大概率要给函数设置合理的定义和返回值，在后序位置写代码了 -> 后序位置才能收到子树的信息
 
 ## 题目
 
@@ -159,7 +162,7 @@ class Solution:
 ```python
 def zig_zag_traversal(root: Node) -> List[List[int]]:
     """
-    反转list: oneRes.reverse()；翻转isOdd: isOdd = not isOdd 
+    反转list: oneRes.reverse()；翻转isOdd: isOdd = not isOdd
     """
     res = []
     isOdd = True
