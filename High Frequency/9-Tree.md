@@ -160,37 +160,35 @@ class Solution:
 [103. Binary Tree Zigzag Level Order Traversal](https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/)
 
 ```python
-def zig_zag_traversal(root: Node) -> List[List[int]]:
-    """
-    反转list: oneRes.reverse()；翻转isOdd: isOdd = not isOdd
-    """
-    res = []
-    isOdd = True
-    
-    if root is None:
+class Solution:
+    def zigzagLevelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        """
+        反转list: oneRes.reverse()；翻转isOdd: isOdd = not isOdd
+        """
+        if not root:
+            return []
+        odd = True
+        res = []
+        queue = collections.deque([root])
+
+        while queue:
+            one_res = []
+            size = len(queue)
+
+            for _ in range(size):
+                node = queue.popleft()
+                one_res.append(node.val)
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+            
+            if not odd:
+                one_res.reverse()
+            odd = not odd
+            res.append(one_res)
+
         return res
-    
-    queue = deque([root])
-    
-    while queue:
-        oneRes = []
-        size = len(queue)
-        
-        for _ in range(size):
-            node = queue.popleft()
-            if node.left:
-                queue.append(node.left)
-            if node.right:
-                queue.append(node.right)
-            oneRes.append(node.val)
-       
-        if not isOdd:
-            oneRes.reverse()
-        
-        isOdd = not isOdd
-        res.append(oneRes)
-     
-    return res
 ```
 
 [543. Diameter of Binary Tree](https://leetcode.com/problems/diameter-of-binary-tree/)
@@ -1694,7 +1692,7 @@ class Solution:
         时间：O(N)
         空间：O(N)
         """
-        if root is None: # base case
+        if root is None: # base case 走到了根节点
             return root
 
         left = self.lowestCommonAncestor(root.left, p, q)
@@ -1707,7 +1705,7 @@ class Solution:
         if left and right: # Case 2：自己子树包含这两个数
             return root
         else:
-            return left or right # Case 3：
+            return left or right # Case 3：其中一个子树包含节点 
 ```
 
 [1676. Lowest Common Ancestor of a Binary Tree IV](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iv/)

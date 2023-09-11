@@ -773,3 +773,98 @@ class Solution:
         return res
 
 ```
+
+[103. 二叉树的锯齿形层序遍历](https://leetcode.cn/problems/binary-tree-zigzag-level-order-traversal/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def zigzagLevelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        """
+        反转list: oneRes.reverse()；翻转isOdd: isOdd = not isOdd
+        """
+        if not root:
+            return []
+        odd = True
+        res = []
+        queue = collections.deque([root])
+
+        while queue:
+            one_res = []
+            size = len(queue)
+
+            for _ in range(size):
+                node = queue.popleft()
+                one_res.append(node.val)
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+            
+            if not odd:
+                one_res.reverse()
+            odd = not odd
+            res.append(one_res)
+
+        return res
+
+```
+
+[236. 二叉树的最近公共祖先](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        """
+        解题思路：每个节点要知道什么、做什么：什么时候做
+        遍历or递归
+        要知道自己的子树里是否有这两个数字->递归
+        要做什么：返回自己子树是否有这两个数字->递归
+        什么时候做：后序遍历，传递子树信息
+
+        自下而上，这个函数就返回自己左右子树满足条件的node：返回自己或者不为None的一边。base case就是找到了
+        如果一个节点能够在它的左右子树中分别找到 p 和 q，则该节点为 LCA 节点。
+
+        时间：O(N)
+        空间：O(N)
+        """
+        if root is None: # base case 走到了根节点
+            return root
+
+        left = self.lowestCommonAncestor(root.left, p, q)
+        right = self.lowestCommonAncestor(root.right, p, q)
+        
+        # 后序遍历
+        if root == p or root == q: # Case 1：公共祖先就是我自己，也可以放在前序位置（要确保p,q在树中）
+            return root
+        
+        if left and right: # Case 2：自己子树包含这两个数
+            return root
+        else:
+            return left or right # Case 3：其中一个子树包含节点 
+```
+
+[235. 二叉搜索树的最近公共祖先](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-search-tree/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```py
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        """
+        不需要去遍历子树，由于 BST 左小右大的性质，将当前节点的值与 val1 和 val2 作对比即可判断当前节点是不是 LCA
+
+        Time: O(H)
+        Space: O(1)
+        """
+        cur = root
+        
+        while cur:
+            # cur太小就往右
+            if p.val > cur.val and q.val > cur.val:
+                cur = cur.right
+            # cur太大就往左
+            elif p.val < cur.val and q.val < cur.val:
+                cur = cur.left
+            else: # p.val <= cur.val <= q.val
+                return cur
+```
