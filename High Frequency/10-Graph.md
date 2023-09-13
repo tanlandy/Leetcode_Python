@@ -2483,7 +2483,7 @@ class Solution:
                 return False
 
             visit.add(course)
-            for pre in graph[course]: # 对于每个点，走到底
+            for pre in graph[course]:  # 对于每个点，走到底
                 if hasCycle(pre): # 发现一个是False，就返回False
                     return True
 
@@ -2521,7 +2521,7 @@ class Solution:
                 queue.append(v)
 
         # step3: 进行拓扑排序
-        count = 0 # 记录走过的数量
+        count = 0  # 记录走过的数量
         order = [] # 可以用来记录topo_order
         while queue:
             v = queue.popleft()

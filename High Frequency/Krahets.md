@@ -868,3 +868,253 @@ class Solution:
             else: # p.val <= cur.val <= q.val
                 return cur
 ```
+
+[230. 二叉搜索树中第K小的元素](https://leetcode.cn/problems/kth-smallest-element-in-a-bst/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
+        res = []
+
+        def dfs(root):
+            if not root:
+                return
+            dfs(root.left)
+            res.append(root.val)
+            if len(res) == k:
+                return 
+            dfs(root.right)
+        
+        dfs(root)
+        return res[-1]
+
+```
+
+
+[426. Convert Binary Search Tree to Sorted Doubly Linked List](https://leetcode.com/problems/convert-binary-search-tree-to-sorted-doubly-linked-list/)
+
+```python
+
+class Solution:
+    def treeToDoublyList(self, root: 'Optional[Node]') -> 'Optional[Node]':
+        """
+        中序遍历
+        因为建立了新链表，所以使用dummy避免边界问题
+        """
+        if not root:
+            return root
+
+        dummy = Node(-1)
+        pre = dummy
+
+        def inorder(node):
+            nonlocal pre
+
+            if not node:
+                return
+
+            inorder(node.left)
+            
+            node.left = pre  # 把两个节点连接起来
+            pre.right = node
+            pre = node  # 站到自己这个节点，即中序遍历的上一个节点
+            
+            inorder(node.right)
+        
+        inorder(root)
+        dummy.right.left = pre  # dummy.right是个node，就是有着最小值的node
+        pre.right = dummy.right
+
+        return dummy.right
+```
+
+[104. 二叉树的最大深度](https://leetcode.cn/problems/maximum-depth-of-binary-tree/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```py
+class Solution:
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+        """
+        分治：从下到上返回当前节点的最大深度
+        """
+        if not root:
+            return 0
+        left_max = self.maxDepth(root.left)
+        right_max = self.maxDepth(root.right)
+        
+        return 1 + max(left_max, right_max)
+```
+
+[226. 翻转二叉树](https://leetcode.cn/problems/invert-binary-tree/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        if not root:
+            return
+
+        node = root.left
+        root.left = self.invertTree(root.right)
+        root.right = self.invertTree(node)
+
+        return root
+
+```
+
+[101. 对称二叉树](https://leetcode.cn/problems/symmetric-tree/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```py
+class Solution:
+    def isSymmetric(self, root: Optional[TreeNode]) -> bool:
+        """
+        对于每个节点来说：看自己的左右节点是否对称，看自己的子树是否对称->返回自己是否满足对称
+        遍历一遍不可以，需要知道自己的子节点是否对称这一信息
+        -> 递归，同时看两个节点，然后左左右右，左右右左看对称
+        """
+        if not root:
+            return True
+
+        def dfs(left, right):
+            if not left and not right:
+                return True
+            
+            if not left or not right or left.val != right.val:
+                return False
+            
+            return dfs(left.right, right.left) and dfs(left.left, right.right)
+        
+        return dfs(root, root)
+```
+
+[110. 平衡二叉树](https://leetcode.cn/problems/balanced-binary-tree/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```py
+class Solution:
+    def isBalanced(self, root: Optional[TreeNode]) -> bool:
+        """
+        站在每个节点：知道两边子树的高度差，并比较；
+        返回什么：要返回当前节点的高度
+        -> 后序遍历，返回当前高度
+
+        时间：O(N)
+        空间：O(N)
+        """
+        def node_height(node):
+            if not node:
+                return 0
+            left_h = node_height(node.left)
+            right_h = node.height(node.right)
+
+            if left_h == -1 or right_h == -1:
+                return -1
+
+            if abs(left_h - right_h) > 1:
+                return -1
+            
+            return 1 + max(left_h, right_h)
+        
+        return node_height(root) != -1
+```
+
+[113. 路径总和 II](https://leetcode.cn/problems/path-sum-ii/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```py
+class Solution:
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> List[List[int]]:
+        """
+        execute the dfs and maintain the running sum of node traversed and the list of those nodes
+        
+        Time: O(N^2)
+        Space: O(N)
+        需要注意，如果是问root to node的话，就不需要满足位置关系。
+        如果不全是positive value的话，不能提前break，一定要找到底
+        """
+        res = []
+        def dfs(node, cur_sum, cur_path):
+            if not node:
+                return
+            cur_sum += node.val
+            cur_path.append(node.val)
+            
+            if cur_sum == targetSum and not node.left and not node.right: # 同时满足大小和位置关系
+                res.append(cur_path.copy())
+            else:
+                dfs(node.left, cur_sum, cur_path)
+                dfs(node.right, cur_sum, cur_path)
+            
+            cur_path.pop()
+        
+        dfs(root, 0, [])
+        return res
+```
+
+[105. 从前序与中序遍历序列构造二叉树](https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-inorder-traversal/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```py
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
+        """
+        Preorder的第一个是root，第二个数是左子树的root
+        Inorder的root左边的值都在左子树，root右边的都是右子树
+        时间：O(N)
+        空间：O(N)
+        """
+        # base case
+        if not preorder or not inorder:
+            return None
+        
+        root = TreeNode(preorder[0])
+        mid = inorder.index(root.val) # 找到root在inorder的index
+
+        # preorder：根据左子树的数量，root之后[1:mid+1]左闭右开都是左子树，[mid+1:]都是右子树
+        # inorder的root左边都是左子树，右边都是右子树   
+        root.left = self.buildTree(preorder[1:mid + 1], inorder[:mid]) # 右开
+        root.right = self.buildTree(preorder[mid + 1:], inorder[mid + 1:])
+
+        return root
+
+```
+
+[297. 二叉树的序列化与反序列化](https://leetcode.cn/problems/serialize-and-deserialize-binary-tree/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+class Codec:
+
+    def serialize(self, root):
+        """
+        用一个list记录，最后转为string导出：
+        前序遍历，空节点计作N，然后用","连接
+        """
+        res = []
+        def dfs(node):
+            if not node:
+                res.append("N")
+                return
+            res.append(str(node.val))
+            dfs(node.left)
+            dfs(node.right)
+        
+        dfs(root)
+        return ",".join(res)
+
+    def deserialize(self, data):
+        """
+        先确定根节点 root，然后遵循前序遍历的规则，递归生成左右子树
+        """
+        vals = data.split(",")
+        self.i = 0
+        
+        def dfs():
+            if vals[self.i] == "N":
+                self.i += 1
+                return None
+            node = TreeNode(int(vals[self.i]))
+            self.i += 1
+            node.left = dfs()
+            node.right = dfs()
+            return node
+        
+        return dfs()
+```
+

@@ -630,10 +630,10 @@ class Solution:
             return None
         
         root = TreeNode(preorder[0])
-        mid = inorder.index(root.val) #找到root在inorder的index
+        mid = inorder.index(root.val) # 找到root在inorder的index
 
-        # inorder的root左边都是左子树，右边都是右子树
         # preorder：根据左子树的数量，root之后[1:mid+1]左闭右开都是左子树，[mid+1:]都是右子树
+        # inorder的root左边都是左子树，右边都是右子树   
         root.left = self.buildTree(preorder[1:mid + 1], inorder[:mid]) # 右开
         root.right = self.buildTree(preorder[mid + 1:], inorder[mid + 1:])
 
@@ -716,7 +716,6 @@ class Codec:
 
     def deserialize(self, data):
         """
-        转化为list，然后用i遍历
         先确定根节点 root，然后遵循前序遍历的规则，递归生成左右子树
         """
         vals = data.split(",")
@@ -1037,18 +1036,15 @@ class Solution:
         """
         if not root:
             return True
-        
+
         def dfs(left, right):
             if not left and not right:
                 return True
             
-            if not left or not right:
+            if not left or not right or left.val != right.val:
                 return False
-                
-            if left.val == right.val:
-                return dfs(left.left, right.right) and dfs(left.right , right.left)
-            else:
-                return False
+            
+            return dfs(left.right, right.left) and dfs(left.left, right.right)
         
         return dfs(root, root)
 ```
@@ -2096,6 +2092,7 @@ class Solution:
 class Solution:
     def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
         """
+        二叉搜索树的中序遍历是递增序列
         inorder iterativly遍历，这样一旦达到k就可以return
         当然也可以递归遍历，但就没有那么那么快了
 
