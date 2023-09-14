@@ -287,9 +287,9 @@ class Solution:
     def maxProfit(self, prices: List[int]) -> int:
         """
         今天怎么操作，只取决于昨天的操作
-        i-1 day: 持有第一股 售出第一股 持有第二股 售出第二股（4种结果状态）
-        i   day: 持有第一股 售出第一股 持有第二股 售出第二股（4种结果状态）
-        
+        i-1 day: 持有第一股 不持有第一股 持有第二股 不持有第二股（4种结果状态）
+        i   day: 持有第一股 不持有第一股 持有第二股 不持有第二股（4种结果状态）
+        一共4种状态，状态的更新依赖于当天是否操作
         """
         dp = [[float("-inf")] * 4 for _ in range(len(prices))]
         for i in range(len(prices)):
@@ -323,41 +323,39 @@ class Solution:
 ```py
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
-        """
-        i-1: 刚持有 刚清空 清空2天以上
-        i  : 刚持有 刚清空 清空2天以上
-        """
         if len(prices) == 1:
             return 0
+        n = len(prices)
+        dp = [[0] * 2 for _ in range(n)]
+
+        # 持有，不持有：两种状态
+        dp[0][0] = -prices[0]  # 持有
+        dp[0][1] = 0  # 不持有
+
+        dp[1][0] = max(dp[0][0], dp[0][1] - prices[1])  # 持有
+        dp[1][1] = max(dp[0][1], dp[0][0] + prices[1])  # 不持有
+
+        for i in range(2, n):
+            dp[i][0] = max(dp[i-1][0], dp[i-2][1] - prices[i])  # 持有
+            dp[i][1] = max(dp[i-1][1], dp[i-1][0] + prices[i])  # 不持有
         
-        dp = [[float("-inf"), float("-inf"), 0] for _ in range(len(prices))]
-        
-        for i in range(len(prices)):
-            dp[i][0] = max(dp[i-1][0], dp[i-1][2] - prices[i])
-            dp[i][1] = max(dp[i-1][1], dp[i-1][0] + prices[i])
-            dp[i][2] = max(dp[i-1][2], dp[i-1][1])
-        
-        res = 0
-        for i in range(3):
-            res = max(res, dp[-1][i])
-        
-        return res
-```
+        return max(dp[-1])
+``` 
 
 [122. Best Time to Buy and Sell Stock II](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/)
 ```py
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
         """
-        i-1 th day: 刚买入，刚卖出
-        i th day: 刚买入，刚卖出
+        i-1 th day: [持有，不持有]：两种状态，对应的最大收益
+        i th day: [持有，不持有]：两种状态，对应的最大收益
         
         """
         dp = [[float("-inf"), 0] for _ in range(len(prices))] # 注意刚买入的状态是-inf，这样就可以直接买入第一笔了
         
         for i in range(len(prices)):
-            dp[i][0] = max(dp[i-1][0], dp[i-1][1] - prices[i])
-            dp[i][1] = max(dp[i-1][0] + prices[i], dp[i-1][1])
+            dp[i][0] = max(dp[i-1][0], dp[i-1][1] - prices[i])  # 今天持有的状态：（不操作）昨天持有，（操作）昨天卖出的状态到今天买入
+            dp[i][1] = max(dp[i-1][0] + prices[i], dp[i-1][1])  # 今天不持有的状态：（操作）昨天持有的状态到今天卖出，（不操作）昨天不持有的状态到今天不持有
             print(dp[i])
         
         return max(dp[-1])
@@ -1037,14 +1035,15 @@ class Solution:
     def climbStairs(self, n: int) -> int:
         """
         bottom-up DP，从最后往最前面
+        站在最后一部，思考如何计算，从而找到递推表达式f(n) = f(n - 1) + f(n - 2)
         """
         if n == 1:
             return 1
-        dp = [0] * (n + 1)
-        dp[1] = 1 # base case
-        dp[2] = 2 # base case
+        dp = [0] * (n + 1)  # dp[i] is the number of ways to climb to i
+        dp[1] = 1  # base case
+        dp[2] = 2  # base case
         for i in range(3, n + 1):
-            dp[i] = dp[i-1] + dp[i-2] # recurrence relation          
+            dp[i] = dp[i - 1] + dp[i - 2]  # recurrence relation          
         
         return dp[n]
 ```

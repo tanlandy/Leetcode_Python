@@ -1118,3 +1118,102 @@ class Codec:
         return dfs()
 ```
 
+[509. 斐波那契数](https://leetcode.cn/problems/fibonacci-number/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def fib(self, n: int) -> int:
+        a, b = 0, 1
+        for _ in range(n):
+            a, b = b, a + b
+        return a
+
+```
+
+[70. 爬楼梯](https://leetcode.cn/problems/climbing-stairs/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```py
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        """
+        bottom-up DP，从最后往最前面
+        站在最后一部，思考如何计算，从而找到递推表达式f(n) = f(n - 1) + f(n - 2)
+        """
+        if n == 1:
+            return 1
+        dp = [0] * (n + 1)  # dp[i] is the number of ways to climb to i
+        dp[1] = 1  # base case
+        dp[2] = 2  # base case
+        for i in range(3, n + 1):
+            dp[i] = dp[i - 1] + dp[i - 2]  # recurrence relation          
+        
+        return dp[n]
+```
+
+```py
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        """
+        可以不把所有的中间结果存下来，只用两个变量来记录
+
+        时间：O(N)
+        空间：O(1)
+        """
+        one = two = 1
+        
+        for i in range(n - 1):
+            tmp = one
+            one = one + two
+            two = tmp
+        
+        return one
+```        
+
+[1480. 一维数组的动态和](https://leetcode.cn/problems/running-sum-of-1d-array/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def runningSum(self, nums: List[int]) -> List[int]:
+        dp = [0] * len(nums)
+        dp[0] = nums[0]
+
+        for i in range(1, len(dp)):
+            dp[i] = dp[i - 1] + nums[i]
+        return dp
+
+```
+
+[121. 买卖股票的最佳时机](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        """对于每一个price来说，最大收益是当前price-之前的最小收益"""
+        cost, profit = float('inf'), 0
+
+        for price in prices:
+            cost = min(price, cost)
+            profit = max(profit, price - cost)
+        
+        return profit
+
+```
+
+[122. 买卖股票的最佳时机 II](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-ii/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        """只要今天相对于昨天有收益，昨天就买入"""
+        profit = 0
+        for i in range(1, len(prices)):
+            tmp = prices[i] - prices[i - 1]
+            if tmp > 0:
+                profit += tmp
+        return profit
+
+```
