@@ -281,87 +281,6 @@ class Solution:
         return max(res1, res2)
 ```
 
-[123. Best Time to Buy and Sell Stock III](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/)
-```py
-class Solution:
-    def maxProfit(self, prices: List[int]) -> int:
-        """
-        今天怎么操作，只取决于昨天的操作
-        i-1 day: 持有第一股 不持有第一股 持有第二股 不持有第二股（4种结果状态）
-        i   day: 持有第一股 不持有第一股 持有第二股 不持有第二股（4种结果状态）
-        一共4种状态，状态的更新依赖于当天是否操作
-        """
-        dp = [[float("-inf")] * 4 for _ in range(len(prices))]
-        for i in range(len(prices)):
-            dp[i][0] = max(dp[i-1][0], -prices[i]) # 不操作或者买入第一股
-            dp[i][1] = max(dp[i-1][1], dp[i-1][0] + prices[i]) # 不操作或售出第一股
-            dp[i][2] = max(dp[i-1][2], dp[i-1][1] - prices[i]) # 不操作或买入第二股
-            dp[i][3] = max(dp[i-1][3], dp[i-1][2] + prices[i]) # 不操作或售出第二股
-        res = 0
-        for i in range(4):
-            res = max(res, dp[-1][i])
-        return res
-```
-
-```py
-class Solution:
-    def maxProfit(self, prices: List[int]) -> int:
-        """
-        压缩到O(1)的时间复杂度
-        """
-        t1_cost = t1_profit = t2_cost = t2_profit = float("-inf")
-        for price in prices:
-            t1_cost = max(t1_cost, - price)
-            t1_profit = max(t1_profit, t1_cost + price)
-            t2_cost = max(t2_cost, t1_profit - price)
-            t2_profit = max(t2_profit, t2_cost + price)
-        
-        return max(0, t2_profit)
-```
-
-[309. Best Time to Buy and Sell Stock with Cooldown](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/)
-```py
-class Solution:
-    def maxProfit(self, prices: List[int]) -> int:
-        if len(prices) == 1:
-            return 0
-        n = len(prices)
-        dp = [[0] * 2 for _ in range(n)]
-
-        # 持有，不持有：两种状态
-        dp[0][0] = -prices[0]  # 持有
-        dp[0][1] = 0  # 不持有
-
-        dp[1][0] = max(dp[0][0], dp[0][1] - prices[1])  # 持有
-        dp[1][1] = max(dp[0][1], dp[0][0] + prices[1])  # 不持有
-
-        for i in range(2, n):
-            dp[i][0] = max(dp[i-1][0], dp[i-2][1] - prices[i])  # 持有
-            dp[i][1] = max(dp[i-1][1], dp[i-1][0] + prices[i])  # 不持有
-        
-        return max(dp[-1])
-``` 
-
-[122. Best Time to Buy and Sell Stock II](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/)
-```py
-class Solution:
-    def maxProfit(self, prices: List[int]) -> int:
-        """
-        i-1 th day: [持有，不持有]：两种状态，对应的最大收益
-        i th day: [持有，不持有]：两种状态，对应的最大收益
-        
-        """
-        dp = [[float("-inf"), 0] for _ in range(len(prices))] # 注意刚买入的状态是-inf，这样就可以直接买入第一笔了
-        
-        for i in range(len(prices)):
-            dp[i][0] = max(dp[i-1][0], dp[i-1][1] - prices[i])  # 今天持有的状态：（不操作）昨天持有，（操作）昨天卖出的状态到今天买入
-            dp[i][1] = max(dp[i-1][0] + prices[i], dp[i-1][1])  # 今天不持有的状态：（操作）昨天持有的状态到今天卖出，（不操作）昨天不持有的状态到今天不持有
-            print(dp[i])
-        
-        return max(dp[-1])
-```
-
-
 [376. Wiggle Subsequence](https://leetcode.com/problems/wiggle-subsequence/)
 ```py
 class Solution:
@@ -1386,26 +1305,96 @@ class Solution:
 ```
 
 [121. Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)
+
+```py
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        """[买了一次且不持有，买了一次且持有]两个状态"""
+        dp = [[0, 0] for _ in range(len(prices))]
+
+        dp[0][0] = 0
+        dp[0][1] = -prices[0]
+        for i in range(1, len(prices)):
+            dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i])  # 买了一次，不持有
+            dp[i][1] = max(dp[i-1][1], -prices[i])  # 买了一次，持有
+        
+        return max(0, dp[-1][0])
+```
+
+[122. Best Time to Buy and Sell Stock II](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/)
+```py
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        """ [不持有，持有]两种状态，对应的最大收益"""
+        dp = [[0, 0] for _ in range(len(prices))]
+        dp[0][0] = 0
+        dp[0][1] = -prices[0]
+
+        for i in range(1, len(prices)):
+            dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i])  # 不持有
+            dp[i][1] = max(dp[i-1][1], dp[i-1][0] - prices[i])  # 持有
+
+        return max(0, dp[-1][0])
+```
+
+[123. Best Time to Buy and Sell Stock III](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/)
+```py
+class Solution: 
+    def maxProfit(self, prices: List[int]) -> int:
+        """
+        一共2*2种状态
+        """
+        dp = [[[float("-inf"), float('-inf')] for _ in range(3)] for _ in range(len(prices))]
+
+        for i in range(len(prices)):
+            dp[i][1][0] = max(dp[i-1][1][0], dp[i-1][1][1] + prices[i])  # 完成了1次买，不持有
+            dp[i][1][1] = max(dp[i-1][1][1], -prices[i])  # 完成了1次买，持有
+            dp[i][2][0] = max(dp[i-1][2][0], dp[i-1][2][1] + prices[i])  # 完成了2次买，不持有
+            dp[i][2][1] = max(dp[i-1][2][1], dp[i-1][1][0] - prices[i])  # 完成了2次买，持有
+
+        res = max(0, dp[-1][1][0], dp[-1][2][0])
+        return res
+```
+
 ```py
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
         """
-        two pointers: always try to pick the smallest starting point, while calculating the potentional profit: when find a smaller one, change the pointer l to that one.
+        压缩到O(1)的时间复杂度
         """
-        l, r = 0, 1
-        res = 0
-        cur_profit = 0
+        t1_cost = t1_profit = t2_cost = t2_profit = float("-inf")
+        for price in prices:
+            t1_cost = max(t1_cost, - price)
+            t1_profit = max(t1_profit, t1_cost + price)
+            t2_cost = max(t2_cost, t1_profit - price)
+            t2_profit = max(t2_profit, t2_cost + price)
         
-        while r < len(prices):
-            if prices[l] > prices[r]:
-                l = r
-            else:
-                cur_profit = prices[r] - prices[l]
-                res = max(res, cur_profit)
-            r += 1
-        
-        return res
+        return max(0, t2_profit)
 ```
+
+[309. Best Time to Buy and Sell Stock with Cooldown](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/)
+```py
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        if len(prices) == 1:
+            return 0
+        n = len(prices)
+        dp = [[0, 0] for _ in range(n)]
+
+        # 不持有，持有：两种状态
+        dp[0][0] = 0  # 不持有
+        dp[0][1] = -prices[0]  # 持有
+
+        dp[1][0] = max(dp[0][0], dp[0][1] + prices[1])  # 不持有
+        dp[1][1] = max(dp[0][1], dp[0][0] -prices[1])  # 持有
+
+        for i in range(2, n):
+            dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i])  # 不持有
+            dp[i][1] = max(dp[i-1][1], dp[i-2][0] - prices[i])  # 持有
+        
+        return max(0, dp[-1][0])
+``` 
+
 
 [276. Paint Fence](https://leetcode.com/problems/paint-fence/)
 
