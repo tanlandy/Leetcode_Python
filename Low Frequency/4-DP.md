@@ -1349,10 +1349,10 @@ class Solution:
         dp[0][1] = dp[0][2] = [0, -prices[0]]
 
         for i in range(1, len(prices)):
-            dp[i][1][0] = max(dp[i-1][1][0], dp[i-1][1][1] + prices[i])  # 完成了1次买，不持有
-            dp[i][1][1] = max(dp[i-1][1][1], -prices[i])  # 完成了1次买，持有
-            dp[i][2][0] = max(dp[i-1][2][0], dp[i-1][2][1] + prices[i])  # 完成了2次买，不持有
-            dp[i][2][1] = max(dp[i-1][2][1], dp[i-1][1][0] - prices[i])  # 完成了2次买，持有
+            dp[i][1][0] = max(dp[i-1][1][0], dp[i-1][1][1] + prices[i])  # 最多1次买，不持有
+            dp[i][1][1] = max(dp[i-1][1][1], -prices[i])  # 最多1次买，持有
+            dp[i][2][0] = max(dp[i-1][2][0], dp[i-1][2][1] + prices[i])  # 最多2次买，不持有
+            dp[i][2][1] = max(dp[i-1][2][1], dp[i-1][1][0] - prices[i])  # 最多2次买，持有
 
         return dp[-1][-1][0]
 ```
