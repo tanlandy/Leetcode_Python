@@ -1217,3 +1217,120 @@ class Solution:
         return profit
 
 ```
+
+[64. 最小路径和](https://leetcode.cn/problems/minimum-path-sum/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```py
+class Solution:
+    def minPathSum(self, grid: List[List[int]]) -> int:
+        """
+        dp[r][c] is the minumum path sum to (r, c)
+        dp[r][c] = grid[r][c] + min(dp[r-1][c], dp[r][c-1])
+        
+        Time: O(M*N)
+        Space: O(M*N)
+        """
+        
+        rows, cols = len(grid), len(grid[0])
+        
+        dp = [[0 for _ in range(cols)] for _ in range(rows)]
+        
+        dp[0][0] = grid[0][0]
+        for r in range(1, rows):
+            dp[r][0] = grid[r][0] + dp[r-1][0]
+        for c in range(1, cols):
+            dp[0][c] = grid[0][c] + dp[0][c-1]
+            
+        for r in range(1, rows):
+            for c in range(1, cols):
+                dp[r][c] = grid[r][c] + min(dp[r-1][c], dp[r][c-1])
+        
+        return dp[-1][-1]
+```
+
+[53. 最大子数组和](https://leetcode.cn/problems/maximum-subarray/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        # dp[i]: 以i结尾的最大子数组和
+        # 最终返回值是max(dp)
+
+        dp = [float('-inf') for _ in range(len(nums))]
+
+        dp[0] = nums[0]
+        for i in range(1, len(dp)):
+            dp[i] = max(dp[i - 1] + nums[i], nums[i])  # 根据递推关系，找到dp的定义
+
+        return max(dp)
+
+```
+
+[198. 打家劫舍](https://leetcode.cn/problems/house-robber/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        # dp[i] 表示前i个房间，能偷到的最大金额
+        # 最终结果就是dp[-1]
+        if len(nums) == 1:
+            return nums[0]
+
+        dp = [0 for _ in range(len(nums))]
+        dp[0] = nums[0]
+        dp[1] = max(dp[0], nums[1])
+
+        for i in range(2, len(nums)):
+            dp[i] = max(dp[i - 1], dp[i - 2] + nums[i])
+
+        return dp[-1]
+
+```
+
+[213. 打家劫舍 II]
+
+```python
+
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        """跑两遍"""
+        def rob_single(nums):
+            if len(nums) == 1:
+                return nums[0]
+            dp = [0 for _ in range(len(nums))]
+            dp[0] = nums[0]
+            dp[1] = max(dp[0], nums[1])
+
+            for i in range(2, len(dp)):
+                dp[i] = max(dp[i - 1], dp[i - 2] + nums[i])
+            return dp[-1]
+        
+        if len(nums) == 1:
+            return nums[0]
+
+        return max(rob_single(nums[:-1]), rob_single(nums[1:]))
+
+```
+
+[300. 最长递增子序列](https://leetcode.cn/problems/longest-increasing-subsequence/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```py
+class Solution:
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        """
+        dp[i]: 以s[i]为结尾的，最长子序列的长度
+        res: max(dp)
+        Time: O(N^2)
+        Space: O(N)
+        """
+        dp = [1 for _ in range(len(nums))]
+
+        for i in range(len(nums)):
+            for j in range(i):
+                if nums[j] < nums[i]:  # nums[i]可以接在nums[j]之后
+                    dp[i] = max(dp[i], dp[j] + 1)
+        
+        return max(dp)
+```
