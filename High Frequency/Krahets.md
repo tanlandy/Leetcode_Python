@@ -1334,3 +1334,82 @@ class Solution:
         
         return max(dp)
 ```
+
+
+# 位运算
+
+[191. 位1的个数](https://leetcode.cn/problems/number-of-1-bits/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+`a`           = 1 0 1 0 1 0 0 0
+`a - 1`       = 1 0 1 0 0 1 1 1  # 把a最后一个1变成0，最后一个1的后面的0变成1
+`a & (a - 1)` = 1 0 1 0 0 0 0 0  # 把a最后一个1变成0，其他不变
+
+```python
+
+class Solution:
+    def hammingWeight(self, n: int) -> int:
+        res = 0
+        while n:
+            res += 1
+            n = n & (n - 1)
+        return res
+
+```
+
+[231. 2 的幂](https://leetcode.cn/problems/power-of-two/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def isPowerOfTwo(self, n: int) -> bool:
+        """把最后一个1变成0之后，就是0了"""
+        return n > 0 and n & (n - 1) == 0
+
+```
+
+[371. 两整数之和](https://leetcode.cn/problems/sum-of-two-integers/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def getSum(self, a: int, b: int) -> int:
+        """异或是无进位的加法，结合与运算来进位"""
+        x = 0xffffffff
+        a, b = a & x, b & x  # 舍去a的32位以上的位变为0
+        # 循环，当进位为 0 时跳出
+        while b != 0:
+            # a, b = 非进位和, 进位
+            a, b = (a ^ b), (a & b) << 1 & x
+        return a if a <= 0x7fffffff else ~(a ^ x)  # ~（a ^ x)将32位以上的位取反，1至32位不变
+
+
+```
+
+[136. 只出现一次的数字](https://leetcode.cn/problems/single-number/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        res = 0
+        for n in nums:
+            res ^= n
+        return res
+
+```
+
+[137. 只出现一次的数字 II](https://leetcode.cn/problems/single-number-ii/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        ones, twos = 0, 0
+        for num in nums:
+            ones = ones ^ num & ~twos
+            twos = twos ^ num & ~ones
+        return ones
+
+
+```
+
