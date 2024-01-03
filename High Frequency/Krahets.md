@@ -1413,3 +1413,161 @@ class Solution:
 
 ```
 
+# 数学
+
+[238. 除自身以外数组的乘积](https://leetcode.cn/problems/product-of-array-except-self/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        """计算前缀积，再计算后缀积，最后相乘。
+        
+        时间：O(N)
+        空间：O(N)，可以通过只使用res来存储前后缀积来优化到O(1)
+        """
+        n = len(nums)
+
+        prefix_product_l, prefix_product_r = [1] * n, [1] * n
+
+        for i in range(1, n):
+            prefix_product_l[i] = prefix_product_l[i-1] * nums[i-1]
+        
+        for i in range(n-2, -1, -1):
+            prefix_product_r[i] = prefix_product_r[i+1] * nums[i+1]
+        
+        res = []
+
+        for i in range(n):
+            res.append(prefix_product_l[i] * prefix_product_r[i])
+        
+        return res
+
+```
+
+```python
+
+class Solution:
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        """
+        空间：O(1)
+        """
+        n = len(nums)
+        res = [1] * n
+        tmp = 1
+
+        for i in range(1, n):
+            res[i] = res[i-1] * nums[i-1]
+        
+        for i in range(n - 2, -1, -1):
+            tmp *= nums[i+1]
+            res[i] *= tmp
+        
+        return res
+        
+```
+
+
+[169. 多数元素](https://leetcode.cn/problems/majority-element/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+class Solution:
+    def majorityElement(self, nums: List[int]) -> int:
+        """
+        遍历数组，如果votes==0，假设当前数字是众数
+
+        时间：O(N)
+        空间：O(1)
+        """
+        votes = 0
+        for num in nums:
+            if votes == 0:  # 每当votes==0，假设当前数字是众数，重新来过
+                x = num
+            if num == x:  # 摩尔投票
+                votes += 1
+            else:
+                votes -= 1
+        
+        return x
+
+```
+
+如果不能确保有众数，再遍历一次做判断即可
+
+```python
+class Solution:
+    def majorityElement(self, nums: List[int]) -> int:
+        """
+        遍历数组，如果votes==0，假设当前数字是众数
+
+        时间：O(N)
+        空间：O(1)
+        """
+        votes = 0
+        for num in nums:
+            if votes == 0:  # 每当votes==0，假设当前数字是众数，重新来过
+                x = num
+            if num == x:  # 摩尔投票
+                votes += 1
+            else:
+                votes -= 1
+        
+        count = 0
+        for num in nums:
+            if num == x:
+                count += 1
+        return x if count > len(nums) // 2 else 0
+```
+
+
+[343. 整数拆分](https://leetcode.cn/problems/integer-break/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+class Solution:
+    def integerBreak(self, n: int) -> int:
+        """
+        尽可能拆成3，求导的极大值为e，3是离自然对数e最近的那个数。
+        """
+        if n <= 3:
+            return n - 1
+        
+        a, b = n // 3, n % 3
+        if b == 0:  # 被3整除
+            return 3 ** a
+        if b == 1:  # 余1，将一个1 + 3转化为2 + 2
+            return 3 ** (a - 1) * 2 * 2
+        return 3 ** a * 2
+```
+
+
+[89. 格雷编码](https://leetcode.cn/problems/gray-code/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+
+```python
+class Solution:
+    def grayCode(self, n: int) -> List[int]:
+        """
+        R(n) = G(n)倒序，并给每个元素二进制前面添加1
+        G(n+1) = G(n) 拼接 R(n)
+        """
+        res, head = [0], 1
+        for i in range(n):
+            for j in range(len(res) - 1, -1, -1):
+                res.append(head + res[j])
+            head <<= 1
+        return res
+
+```
+
+
+[1823. 找出游戏的获胜者](https://leetcode.cn/problems/find-the-winner-of-the-circular-game/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+class Solution:
+    def findTheWinner(self, n: int, k: int) -> int:
+        dp = [0] * (n + 1)  # dp[i]是(i, k)的解
+        # base case (1, k)为 dp[1] = 0
+        for i in range(2, n + 1):  # 从2开始，计算dp[i]
+            dp[i] = (dp[i-1] + k) % i  # 状态转移方程
+        return dp[n] + 1 # 最终解为dp[n]，返回下一个数
+```
