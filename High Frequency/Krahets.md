@@ -1571,3 +1571,76 @@ class Solution:
             dp[i] = (dp[i-1] + k) % i  # 状态转移方程
         return dp[n] + 1 # 最终解为dp[n]，返回下一个数
 ```
+
+
+[400. 第 N 位数字](https://leetcode.cn/problems/nth-digit/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+
+```python
+
+class Solution:
+    def findNthDigit(self, n: int) -> int:
+        """
+        时间：O(logN)
+        空间：O(logN)
+        """
+        digit = 1  # 几位数
+        start = 1  # 整十整百开始的那个数字
+        count = 9  # 整十整百从开始到结束的数字个数
+        
+        # 找到目标是在几位数
+        while n > count: 
+            n -= count
+            start *= 10
+            digit += 1
+            count = 9 * start * digit 
+
+        # 找到目标所在的数字
+        num = start + (n - 1) // digit  # 在从start开始的第（n - 1) // digit个数字里
+
+        # 找到目标在该数字里的哪个位置
+        s = str(num)
+        res = int(s[(n - 1) % digit])  # 在num的第(n - 1) % digit个位置
+
+        return res
+
+```
+
+[65. 有效数字](https://leetcode.cn/problems/valid-number/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+class Solution:
+    def isNumber(self, s: str) -> bool:
+        """
+        1. sign: only first, or right after "eE"
+        2. expo: before and after seenDigit, only appear once
+        3. dot: no expo before, only appear once
+        """
+        
+        seen_digit = seen_expo = seen_dot = False
+        
+        for i, ch in enumerate(s):
+            if ch.isdigit():
+                seen_digit = True
+            elif ch in "+-":
+                if i > 0 and s[i - 1] != "e" and s[i - 1] != "E":
+                    return False
+            elif ch in "eE":
+                if seen_expo or not seen_digit:
+                    return False
+                seen_expo = True
+                seen_digit = False
+            elif ch == ".":
+                if seen_dot or seen_expo:
+                    return False
+                seen_dot = True
+            else:
+                return False
+        
+        return seen_digit
+```
+
+
+
+
+
