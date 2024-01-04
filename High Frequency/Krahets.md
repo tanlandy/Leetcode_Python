@@ -1640,7 +1640,32 @@ class Solution:
         return seen_digit
 ```
 
+[233. 数字 1 的个数](https://leetcode.cn/problems/number-of-digit-one/description/?envType=study-plan-v2&envId=selected-coding-interview)
 
+```python
+
+class Solution:
+    def countDigitOne(self, n: int) -> int:
+        digit, res = 1, 0
+        high = n // 10
+        cur = n % 10  # 位数，从后往前
+        low = 0
+        # 给每一个位置放入1，计算其可以形成的次数。累加即可得到总次数
+        while high != 0 or cur != 0:
+            if cur == 0:  # 如果该位是0，那么乘法原理，那么1在这一位出现的次数=前面的数*该位（前）
+                res += high * digit
+            elif cur == 1:  # 如果该位是1，那么1在这一位出现的次数=前面的数*该位（前）+后+1（自己）
+                res += high * digit + low + 1
+            else:  # 所有其他情况，只由高位决定，1在这一位出现的次数=（前面的数（前）+ 1（自己）） * 该位
+                res += (high + 1) * digit
+            low += cur * digit
+            cur = high % 10
+            high //= 10
+            digit *= 10
+        
+        return res
+
+```
 
 
 
