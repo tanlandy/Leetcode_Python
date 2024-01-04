@@ -2499,27 +2499,34 @@ Input: nums = [1,2,3]
 Output: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
 
 
-```python
-class Solution:
+```py
+class Solution: 
     def permute(self, nums: List[int]) -> List[List[int]]:
+        """
+        满树问题，剪枝条件是跳过重复使用的值：可以用used[]来记录使用过的值，也可以每次判断nums[i] in one_res
+        """
         res = []
-        oneRes = []
-        n = len(nums)
-        
-        def backtrack():
-            if len(oneRes) == n:
-                res.append(oneRes.copy())
+        used = [False] * len(nums)
+
+        def backtrack(one_res):
+            # 添加条件： 长度
+            if len(one_res) == len(nums):
+                res.append(one_res.copy())
                 return
             
-            for i in range(0, n):
-                if nums[i] in oneRes: # 如果没有的话，结果有[1,1,1],[1,1,2]...
+            # 满树问题：i从0开始
+            for i in range(len(nums)):
+                # 跳过不合法的选择，否则结果有[1,1,1],[1,1,2]...
+                if used[i]:
                     continue
                 
-                oneRes.append(nums[i])
-                backtrack()
-                oneRes.pop()
-                
-        backtrack()
+                used[i] = True
+                one_res.append(nums[i])
+                backtrack(one_res)
+                one_res.pop()
+                used[i] = False
+        
+        backtrack([])
         return res
 ```
 

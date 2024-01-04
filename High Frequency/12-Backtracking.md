@@ -285,9 +285,8 @@ class Solution:
         """类似LC90，只是base case不同"""
         candidates.sort() # 元素可以重复，所以要排序
         res = []
-        one_res = []
         
-        def backtrack(start, target):
+        def backtrack(one_res, start, target):
             if target < 0:
                 return
             
@@ -300,11 +299,11 @@ class Solution:
                 
                 one_res.append(candidates[i])
                 target -= candidates[i]
-                backtrack(i + 1, target)
+                backtrack(one_res, i + 1, target)  # 从i+1开始，因为每个元素只能用一次
                 one_res.pop()
                 target += candidates[i]
         
-        backtrack(0, target)
+        backtrack([], 0, target)
         return res
 ```
 
@@ -319,10 +318,9 @@ Output: [[2,2,3],[7]]
 class Solution:
     def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
         res = []
-        one_res = []
         candidates.sort() # 元素可重复，所以要排序
         
-        def backtrack(start, target):
+        def backtrack(one_res, start, target):
             if target < 0:
                 return
             
@@ -338,7 +336,7 @@ class Solution:
                 one_res.pop()
                 target += candidates[i]
         
-        backtrack(0, target)
+        backtrack([], 0, target)
         return res
 ```
 
@@ -356,34 +354,33 @@ Output:
 class Solution:
     def permuteUnique(self, nums: List[int]) -> List[List[int]]:
         res = []
-        one_res = []
         nums.sort()
-        visit = [False] * len(nums)
+        used = [False] * len(nums)
         
-        def backtrack():
+        def backtrack(one_res):
             if len(one_res) == len(nums):
                 res.append(one_res.copy())
                 return
         
             for i in range(len(nums)):
-                
-                if visit[i]:
+                if used[i]:
                     continue
                     
                 # 新添加的剪枝逻辑，固定相同的元素在排列中的相对位置
-                # not visited[i - 1]保证相同元素在排列中的相对位置保持不变。
-                if i > 0 and nums[i] == nums[i - 1] and not visit[i - 1]:
+                # not used[i-1]保证相同元素在排列中的相对位置保持不变。
+                if i > 0 and nums[i] == nums[i-1] and not used[i-1]:
                     continue
                     
-                visit[i] = True
+                used[i] = True
                 one_res.append(nums[i])
                 backtrack()
                 one_res.pop()
-                visit[i] = False
+                used[i] = False
         
-        backtrack()
+        backtrack([])
         return res
 ```
+
 
 [79. Word Search](https://leetcode.com/problems/word-search/)
 dfs(r, c, i)同时传入一个idx

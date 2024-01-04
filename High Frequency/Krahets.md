@@ -1335,6 +1335,140 @@ class Solution:
         return max(dp)
 ```
 
+
+# 回溯
+
+[46. 全排列](https://leetcode.cn/problems/permutations/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```py
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        """
+        满树问题，剪枝条件是跳过重复使用的值：可以用used[]来记录使用过的值，也可以每次判断nums[i] in one_res
+        """
+        res = []
+        used = [False] * len(nums)
+
+        def backtrack(one_res):
+            # 添加条件： 长度
+            if len(one_res) == len(nums):
+                res.append(one_res.copy())
+                return
+            
+            # 满树问题：i从0开始
+            for i in range(len(nums)):
+                # 跳过不合法的选择，否则结果有[1,1,1],[1,1,2]...
+                if used[i]:
+                    continue
+                
+                used[i] = True
+                one_res.append(nums[i])
+                backtrack(one_res)
+                one_res.pop()
+                used[i] = False
+        
+        backtrack([])
+        return res
+```
+
+[47. 全排列 II](https://leetcode.cn/problems/permutations-ii/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```py
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        res = []
+        nums.sort()
+        used = [False] * len(nums)
+        
+        def backtrack(one_res):
+            if len(one_res) == len(nums):
+                res.append(one_res.copy())
+                return
+        
+            for i in range(len(nums)):
+                if used[i]:
+                    continue
+                    
+                # 新添加的剪枝逻辑，固定相同的元素在排列中的相对位置
+                # not used[i-1]保证相同元素在排列中的相对位置保持不变。
+                if i > 0 and nums[i] == nums[i-1] and not used[i-1]:
+                    continue
+                    
+                used[i] = True
+                one_res.append(nums[i])
+                backtrack()
+                one_res.pop()
+                used[i] = False
+        
+        backtrack([])
+        return res
+```
+
+
+[39. 组合总和](https://leetcode.cn/problems/combination-sum/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```py
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        res = []
+        candidates.sort() # 元素可重复，所以要排序
+        
+        def backtrack(one_res, start, target):
+            if target < 0:
+                return
+            
+            if target == 0:
+                res.append(one_res.copy())
+                return
+            
+            for i in range(start, len(candidates)):
+                # 与LC40不同点：不怕重复，所以不需要选择条件
+                one_res.append(candidates[i])
+                target -= candidates[i]
+                backtrack(i, target) # 与LC40不同点，可以重复，所以从i再用一次
+                one_res.pop()
+                target += candidates[i]
+        
+        backtrack([], 0, target)
+        return res
+```
+
+[40. 组合总和 II](https://leetcode.cn/problems/combination-sum-ii/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        """类似LC90，只是base case不同"""
+        candidates.sort() # 元素可以重复，所以要排序
+        res = []
+        
+        def backtrack(one_res, start, target):
+            if target < 0:
+                return
+            
+            if target == 0:
+                res.append(one_res.copy())
+            
+            for i in range(start, len(candidates)):
+                if i > start and candidates[i] == candidates[i - 1]:
+                    continue
+                
+                one_res.append(candidates[i])
+                target -= candidates[i]
+                backtrack(one_res, i + 1, target)  # 从i+1开始，因为每个元素只能用一次
+                one_res.pop()
+                target += candidates[i]
+        
+        backtrack([], 0, target)
+        return res
+
+```
+
+
+
+
+
 # 贪心
 
 [240. 搜索二维矩阵 II](https://leetcode.cn/problems/search-a-2d-matrix-ii/description/?envType=study-plan-v2&envId=selected-coding-interview)
