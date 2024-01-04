@@ -1335,6 +1335,151 @@ class Solution:
         return max(dp)
 ```
 
+# 贪心
+
+[240. 搜索二维矩阵 II](https://leetcode.cn/problems/search-a-2d-matrix-ii/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+
+```py
+class Solution:
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        """
+        start from top-right to bottom-left
+        
+        Time: O(M+N)
+        Space: O(1)
+        """
+        rows, cols = len(matrix), len(matrix[0])
+        r, c = 0, cols - 1
+        
+        while r < rows and c >= 0:
+            if matrix[r][c] == target:
+                return True
+            elif matrix[r][c] < target:
+                r += 1
+            else:
+                c -= 1
+        
+        return False
+```
+
+[11. 盛最多水的容器](https://leetcode.cn/problems/container-with-most-water/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```py
+class Solution:
+    def maxArea(self, height: List[int]) -> int:
+        """
+        Time: O(N)
+        Space: O(1)
+        """
+        l, r = 0, len(height) - 1
+        area = 0
+        
+        while l < r:
+            cur_area = (r - l) * min(height[l], height[r])
+            area = max(area, cur_area)
+            
+            # 移动短边，消去的面积组合肯定比当前的小
+            if height[l] < height[r]: # move the smaller edge, to make the area larger
+                l += 1
+            else:
+                r -= 1
+        
+        return area
+```
+
+[179. 最大数](https://leetcode.cn/problems/largest-number/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```py
+class Solution:
+    def largestNumber(self, nums: List[int]) -> str:
+        """
+        use a comparator when sorting the nums
+
+        Time: O(NlogN)
+        Space: O(N)
+        """
+
+        def cmp_func(x, y):
+            """
+            Sorted by value of concatenated string increasingly.
+            For case [3, 30], will return 330 instead of 303
+            """
+            if x + y > y + x:
+                return 1
+            elif x == y:
+                return 0
+            else:
+                return -1
+
+        # Build nums contains all numbers in the String format.
+        nums = [str(num) for num in nums]
+
+        # Sort nums by cmp_func decreasingly.
+        nums.sort(key=cmp_to_key(cmp_func), reverse=True)
+
+        res = "0" if nums[0] == "0" else "".join(nums)
+        return res
+```
+
+[135. 分发糖果](https://leetcode.cn/problems/candy/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def candy(self, ratings: List[int]) -> int:
+        """
+        A在B左边
+        左规则：当Rating_A < Rating_B时，A糖果需要 < B
+        右规则：当Rating_A > Rating_B时，A糖果需要 > B
+        从左右根据左右规则各遍历一次，取各自的最大值
+
+        时间：O(N)
+        空间：O(N)
+        """
+        n = len(ratings)
+        left = [1] * n
+        right = left.copy()
+
+        # 左规则
+        for i in range(1, n):
+            if ratings[i-1] < ratings[i]:
+                left[i] = left[i-1] + 1
+        count = left[-1]  # basecase
+
+        # 右规则
+        for i in range(n-2, -1, -1):
+            if ratings[i] > ratings[i+1]:
+                right[i] = right[i+1] + 1
+            count += max(left[i], right[i])  # 取两者最大值
+        return count
+
+```
+
+[768. 最多能完成排序的块 II](https://leetcode.cn/problems/max-chunks-to-make-sorted-ii/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def maxChunksToSorted(self, arr: List[int]) -> int:
+        """单调栈stack存入每个块的最大值，最终stack的大小则是块的数量
+
+        时间：O(N)
+        空间：O(N)
+        """
+        stack = []
+        for num in arr:
+            if stack and num < stack[-1]:  # 只要当前的数字比栈顶小，不得不进行合并
+                head = stack.pop()
+                while stack and num < stack[-1]:  # 合并块
+                    stack.pop()  
+                stack.append(head)  # 新排序块的最大值还是head
+            else:  # 当前数字比栈顶大或相等，新建排序块
+                stack.append(num)  # 新排序块
+        return len(stack)
+
+```
+
 
 # 位运算
 

@@ -266,8 +266,9 @@ class Solution:
         
         while l < r:
             cur_area = (r - l) * min(height[l], height[r])
-            area = max(res, cur_area)
+            area = max(area, cur_area)
             
+            # 移动短边，消去的面积组合肯定比当前的小
             if height[l] < height[r]: # move the smaller edge, to make the area larger
                 l += 1
             else:

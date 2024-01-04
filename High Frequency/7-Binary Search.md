@@ -669,7 +669,6 @@ class Solution:
         Space: O(1)
         """
         rows, cols = len(matrix), len(matrix[0])
-        
         r, c = 0, cols - 1
         
         while r < rows and c >= 0:

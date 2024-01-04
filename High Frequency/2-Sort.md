@@ -235,7 +235,7 @@ class Solution:
         nums = [str(num) for num in nums]
 
         # Sort nums by cmp_func decreasingly.
-        nums.sort(key = cmp_to_key(cmp_func), reverse = True)
+        nums.sort(key=cmp_to_key(cmp_func), reverse=True)
 
         res = "0" if nums[0] == "0" else "".join(nums)
         return res
