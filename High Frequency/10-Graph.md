@@ -2385,7 +2385,7 @@ Graph with cycles do not havfe topological ordering
 
 ## 模版：Kahn's Algorithm
 
-To obtain a tolopogical order, we can use Kahn's algorithm
+To obtain a topological order, we can use Kahn's algorithm
 
 假设L是存放结果的列表，
 Step1: 找到那些入度为零的节点，把这些节点放到L中。initialize a hashmap of node to parent
@@ -3033,21 +3033,20 @@ class Solution:
         时间：O(M*N*4 ^ N)
         空间：O(L) L is len(words)
         """
-        rows = len(board)
-        cols = len(board[0])
-        visit = set()
-
+        rows, cols = len(board), len(board[0])
+        visited = set()
+        
         def dfs(r, c, i):
             # Base case
             if i == len(word):
                 return True
-
+            
             # 排除的条件
-            if r < 0 or r >= rows or c < 0 or c >= cols or (r, c) in visit or board[r][c] != word[i]:
+            if r < 0 or r >= rows or c < 0 or c >= cols or (r, c) in visited or board[r][c] != word[i]:
                 return False
-
+            
             # 做选择
-            visit.add((r, c))
+            visited.add((r, c))
             # Backtrack
             res =  (dfs(r + 1, c, i + 1) or
                     dfs(r - 1, c, i + 1) or         
@@ -3055,14 +3054,14 @@ class Solution:
                     dfs(r, c - 1, i + 1)
                   )
             # 回溯
-            visit.remove((r, c))            
+            visited.remove((r, c))            
             return res
-
+        
         for r in range(rows):
             for c in range(cols):
                 if dfs(r, c, 0):
                     return True
-
+        
         return False
 ```
 

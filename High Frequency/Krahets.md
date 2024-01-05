@@ -1335,6 +1335,47 @@ class Solution:
         return max(dp)
 ```
 
+[207. 课程表](https://leetcode.cn/problems/course-schedule/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```py
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        """
+        Algorithm: BFS Topological Sorting
+
+        Time: O(E + V) This is because we have to go through every connection and node once when we sort the graph.
+        Space: O(E + V)
+        """
+        # step1: build graph and 入边的数量
+        graph = {x: [] for x in range(numCourses)}
+        indegree = {x: 0 for x in range(numCourses)}
+        # graph = [[] for _ in range(numCourses)]
+        # indegree = [0] * numCourses
+        for to_, from_ in prerequisites:
+            graph[from_].append(to_)
+            indegree[to_] += 1
+
+        # step2: 把入边为0的点加到queue中
+        queue = collections.deque()
+        for v in range(numCourses):
+            if indegree[v] == 0:
+                queue.append(v)
+
+        # step3: 进行拓扑排序
+        count = 0 # 记录走过的数量
+        order = [] # 可以用来记录topo_order
+        while queue:
+            v = queue.popleft()
+            count += 1
+            order.append(v)
+            for to_ in graph[v]:
+                indegree[to_] -= 1
+                if indegree[to_] == 0:
+                    queue.append(to_)
+
+        print(order) # 打印出来排序的结果
+        return count == numCourses # 根据是否记录的数量等于总课程数量
+```
 
 # 回溯
 
@@ -1466,6 +1507,48 @@ class Solution:
 ```
 
 
+[79. 单词搜索](https://leetcode.cn/problems/word-search/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```py
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        """
+        dfs(r, c, i)同时传入一个idx
+
+        时间：O(M*N*4 ^ N)
+        空间：O(L) L is len(words)
+        """
+        rows, cols = len(board), len(board[0])
+        visited = set()
+        
+        def dfs(r, c, i):
+            # Base case
+            if i == len(word):
+                return True
+            
+            # 排除的条件
+            if r < 0 or r >= rows or c < 0 or c >= cols or (r, c) in visited or board[r][c] != word[i]:
+                return False
+            
+            # 做选择
+            visited.add((r, c))
+            # Backtrack
+            res =  (dfs(r + 1, c, i + 1) or
+                    dfs(r - 1, c, i + 1) or         
+                    dfs(r, c + 1, i + 1) or         
+                    dfs(r, c - 1, i + 1)
+                  )
+            # 回溯
+            visited.remove((r, c))            
+            return res
+        
+        for r in range(rows):
+            for c in range(cols):
+                if dfs(r, c, 0):
+                    return True
+        
+        return False
+```
 
 
 
