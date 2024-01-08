@@ -191,7 +191,7 @@ class Solution:
 class Solution:
     def rotate(self, matrix: List[List[int]]) -> None:
         """
-        for each row, store the topleft first
+        for each row, store the top left first
         技巧是先把四个角交换的写出来，然后再把i加进去
 
         Time: O(N^2)
@@ -202,7 +202,7 @@ class Solution:
             for i in range(r - l): # each time, solve the outer boundary, 一轮只rotate了col-row次
                 top, bottom = l, r # two more pointers
 
-                top_left = matrix[top][l + i] # save topleft从后往前得处理，避免要存好几个tmp
+                top_left = matrix[top][l + i] # save top left从后往前得处理，避免要存好几个tmp
 
                 matrix[top][l + i] = matrix[bottom - i][l] # 先让左上角等于左下角，然后左下角等于右下角， etc
                 matrix[bottom - i][l] = matrix[bottom][r - i]
@@ -226,14 +226,14 @@ class Solution:
         Space: O(1), if doesn't consider output as extra memory
         """
         res = []
-        l, r = 0, len(matrix[0]) # r out of the bound, l and r col
-        top, bottom = 0, len(matrix) # bottom out of the bound
+        l, r = 0, len(matrix[0])  # r out of the bound, l and r col
+        top, bottom = 0, len(matrix)  # bottom out of the bound
 
         while l < r and top < bottom:
             # top row
             for i in range(l, r):
-                res.append(matrix[top][i]) # we are in the top row
-            top += 1 # shift top row down by 1
+                res.append(matrix[top][i])  # we are in the top row
+            top += 1  # shift top row down by 1
 
             # right most col
             for i in range(top, bottom):
@@ -245,9 +245,9 @@ class Solution:
                 break
 
             # bottom row
-            for i in range(r - 1, l - 1, -1): # l is not inclusive, so one step forward by l-1
+            for i in range(r - 1, l - 1, -1):  # l is not inclusive, so one step forward by l-1
                 res.append(matrix[bottom - 1][i])
-            bottom -= 1 # shift upwards
+            bottom -= 1  # shift upwards
 
             # left most col
             for i in range(bottom - 1, top - 1, -1):

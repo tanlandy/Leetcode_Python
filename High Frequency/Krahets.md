@@ -597,6 +597,228 @@ class Solution:
         return res
 ```
 
+
+# 模拟
+
+[415. 字符串相加](https://leetcode.cn/problems/add-strings/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+two pointers从后往前，用carry存进位的情况.
+value = (x1 + x2 + carry) % 10, 
+carry = (x1 + x2 + carry) // 10. 
+走到头carry不为0就再append一下，最后reverse并且转换成string即可；
+ord(string)返回unicode值, x = ord(string) - ord('0')就把'5'存成5到x里；
+a // 10 地板除，向下取整; math.ceil(a/10)就是向上取整；
+res[]存的整数反过来导出成string: ''.join(str(x) for x in res[::-1])；
+要先更新val，再更新carry
+
+时间：O(max(N1, N2)
+空间：O(max(N1, N2))
+
+```python
+class Solution:
+    def addStrings(self, num1: str, num2: str) -> str:
+        res = []
+        carry = 0
+        p1 = len(num1) - 1
+        p2 = len(num2) - 1
+        while p1 >= 0 or p2 >= 0:
+            x1 = ord(num1[p1]) - ord('0') if p1 >= 0 else 0
+            x2 = ord(num2[p2]) - ord('0') if p2 >= 0 else 0
+            value = (x1 + x2 + carry) % 10
+            carry = (x1 + x2 + carry) // 10
+            res.append(value)
+            p1 -= 1
+            p2 -= 1
+        if carry:
+            res.append(carry)
+        
+        return ''.join(str(x) for x in res[::-1])
+```
+
+
+[796. 旋转字符串](https://leetcode.cn/problems/rotate-string/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+
+```python
+
+class Solution:
+    def rotateString(self, s: str, goal: str) -> bool:
+        """
+
+        len(s) == len(goal)
+        s in goal + goal
+        """
+
+        if len(s) != len(goal):
+            return False
+        
+        return s in (goal + goal)
+
+```
+
+[28. 找出字符串中第一个匹配项的下标](https://leetcode.cn/problems/find-the-index-of-the-first-occurrence-in-a-string/description/)
+
+```python
+
+class Solution:
+    def strStr(self, haystack: str, needle: str) -> int:
+        """KMP算法   
+        """
+        m, n = len(needle), len(haystack) 
+        
+        # next array
+        next_ = [-1] * m
+        i, j = 0, -1
+        while i + 1 < m: 
+            if j == -1 or needle[i] == needle[j]:
+                i += 1
+                j += 1
+                next_[i] = j
+            else:
+                j = next_[j]
+        
+        # match
+        i, j = 0, 0
+        while i < n:  
+            if j == -1 or haystack[i] == needle[j]:
+                i += 1
+                j += 1
+            else:
+                j = next_[j]
+            if j == m:
+                return i - m
+        
+        return -1
+
+```
+
+[946. 验证栈序列](https://leetcode.cn/problems/validate-stack-sequences/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+class Solution:
+    def validateStackSequences(self, pushed: List[int], popped: List[int]) -> bool:
+        """对pushed的每个元素压栈，如果栈顶的值和popped[i]相同，则弹出。
+        """
+        stack = []
+        i = 0
+        for n in pushed:
+            stack.append(n)
+            while stack and popped[i] == stack[-1]:
+                stack.pop()
+                i += 1
+        return stack == []
+```
+
+[6. Z 字形变换](https://leetcode.cn/problems/zigzag-conversion/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+class Solution:
+    def convert(self, s: str, numRows: int) -> str:
+        """遍历s时，把每个字符填到正确的行res[i]"""
+        if numRows < 2:
+            return s
+        
+        res = ["" for _ in range(numRows)]
+        i = 0  # 当前字符对应的行索引
+        flag = -1
+
+        for ch in s:
+            res[i] += ch
+            if i == 0 or i == numRows - 1:
+                flag = -flag
+            i += flag  
+        
+        return "".join(res)
+```
+
+[54. 螺旋矩阵](https://leetcode.cn/problems/spiral-matrix/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```py
+class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        """
+        maintain the boundary using four pointers; each time finish one way, shift that boundary
+
+        Time: O(M*N)
+        Space: O(1), if doesn't consider output as extra memory
+        """
+        res = []
+        l, r = 0, len(matrix[0])  # r out of the bound, l and r col
+        top, bottom = 0, len(matrix)  # bottom out of the bound
+
+        while l < r and top < bottom:
+            # top row
+            for i in range(l, r):
+                res.append(matrix[top][i])  # we are in the top row
+            top += 1  # shift top row down by 1
+
+            # right most col
+            for i in range(top, bottom):
+                res.append(matrix[i][r - 1])
+            r -= 1
+
+            # has to check in the middle, as just updated top and r
+            if not (l < r and top < bottom): 
+                break
+
+            # bottom row
+            for i in range(r - 1, l - 1, -1):  # l is not inclusive, so one step forward by l-1
+                res.append(matrix[bottom - 1][i])
+            bottom -= 1  # shift upwards
+
+            # left most col
+            for i in range(bottom - 1, top - 1, -1):
+                res.append(matrix[i][l])
+            l += 1
+        
+        return res
+```
+
+[59. 螺旋矩阵 II](https://leetcode.cn/problems/spiral-matrix-ii/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```py
+class Solution:
+    def generateMatrix(self, n: int) -> List[List[int]]:
+        """
+        Same as LC54
+        A = [0] * 2 => [0,0]
+        A = [[0] * 2 for _ in range(2)] => [[0,0], [0,0]]
+        """
+        A = [[0] * n for _ in range(n)] # initiate matirx A filling with 0
+        
+        l, r = 0, n
+        top, bottom = 0, n
+        
+        num = 1 # start with 1
+        
+        while l < r and top < bottom:
+            for i in range(l, r):
+                A[top][i] = num
+                num += 1
+            top += 1
+            
+            for i in range(top, bottom):
+                A[i][r - 1] = num
+                num += 1
+            r -= 1
+            
+            if not (l < r and top < bottom):
+                return A
+            
+            for i in range(r - 1, l - 1, -1):
+                A[bottom - 1][i] = num
+                num += 1
+            bottom -= 1
+            
+            for i in range(bottom - 1, top - 1, -1):
+                A[i][l] = num
+                num += 1
+            l += 1
+        
+        return A
+        
+```
+
 # 查找
 
 [704. 二分查找](https://leetcode.cn/problems/binary-search/?envType=study-plan-v2&envId=selected-coding-interview)
