@@ -724,17 +724,18 @@ class Solution:
         stack = []
         
         for a in asteroids:
-            while stack and a < 0 < stack[-1]: # 条件是a是负数，同时stack[-1]是正数
-                if stack[-1] < -a:
+            a_exist = True
+            while a_exist and stack and a < 0 < stack[-1]: # 条件是a是负数，同时stack[-1]是正数
+                top = stack[-1]  # 因为可能pop掉，所以用top存储
+                if top <= -a:  # 小于或等于，都要碰撞
                     stack.pop()
-                    continue # 只有这时候才继续跳入下一个while中
-                elif stack[-1] == -a: # 不用改变状态，直接跳出break
-                    stack.pop()
-                break # 其他条件也是直接break
-            else:
+                if top >= -a:  # 大于或等于，a就要被碰撞消除掉
+                    a_exist = False
+            if a_exist:
                 stack.append(a)
         
         return stack
+
 ```
 
 
