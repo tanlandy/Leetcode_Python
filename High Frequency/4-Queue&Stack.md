@@ -204,6 +204,7 @@ class Solution:
 
                 top_left = matrix[top][l + i] # save top left从后往前得处理，避免要存好几个tmp
 
+                # 先不管+-i，写出来四个角。然后通过变化确定+-i
                 matrix[top][l + i] = matrix[bottom - i][l] # 先让左上角等于左下角，然后左下角等于右下角， etc
                 matrix[bottom - i][l] = matrix[bottom][r - i]
                 matrix[bottom][r - i] = matrix[top + i][r]
@@ -211,7 +212,6 @@ class Solution:
             
             r -= 1
             l += 1
-
 ```
 
 [54. Spiral Matrix](https://leetcode.com/problems/spiral-matrix/)

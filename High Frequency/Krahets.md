@@ -819,6 +819,80 @@ class Solution:
         
 ```
 
+[48. 旋转图像](https://leetcode.cn/problems/rotate-image/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```py
+class Solution:
+    def rotate(self, matrix: List[List[int]]) -> None:
+        """
+        for each row, store the top left first
+        技巧是先把四个角交换的写出来，然后再把i加进去
+
+        Time: O(N^2)
+        Space: O(1)
+        """
+        l, r = 0, len(matrix) - 1
+        while l < r:
+            for i in range(r - l): # each time, solve the outer boundary, 一轮只rotate了col-row次
+                top, bottom = l, r # two more pointers
+
+                top_left = matrix[top][l + i] # save top left从后往前得处理，避免要存好几个tmp
+
+                # 先不管+-i，写出来四个角。然后通过变化确定+-i
+                matrix[top][l + i] = matrix[bottom - i][l] # 先让左上角等于左下角，然后左下角等于右下角， etc
+                matrix[bottom - i][l] = matrix[bottom][r - i]
+                matrix[bottom][r - i] = matrix[top + i][r]
+                matrix[top + i][r] = top_left
+            
+            r -= 1
+            l += 1
+```
+
+[8. 字符串转换整数 (atoi)](https://leetcode.cn/problems/string-to-integer-atoi/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+用sign, res, idx，idx一直往后走，先删除空格，然后记录正负号， 最后处理数字，每次数字检查是否越界，否则res = 10*res + curDigit；越界的条件>INT_MAX // 10，或者== INT_MAX同时curDit>INT_MAX % 10，越界了就返回最大值或者最小值；最大值pow(2, 31)-1；最小值-pow(2, 31)
+
+时间：O(n)
+空间：O(1)
+
+```python
+class Solution:
+    def myAtoi(self, s: str) -> int:
+        sign = 1
+        res = 0
+        idx = 0
+        n = len(s)
+        
+        INT_MAX = pow(2, 31) - 1
+        INT_MIN = -pow(2, 31)
+        
+        # 先删除空格
+        while idx < n and s[idx] == " ":
+            idx += 1
+        
+        # 判断正负号
+        if idx < n and s[idx] == "+":
+            sign = 1
+            idx += 1
+        elif idx < n and s[idx] == "-":
+            sign = -1
+            idx += 1
+    
+        # 接下来都是数字
+        while idx < n and s[idx].isdigit():
+            digit = int(s[idx])
+            # 检查过大或过小：如果过大或过小，就返回最大值或最小值
+            # 1. res > Integer.MAX_VALUE / 10肯定会在下一个超过
+            # 2. res < Integer.MAX_VALUE / 10就不用担心
+            # 3. res == Integer.MAX_VALUE / 10，只有0-7可以满足，因为Integer.MAX_VALUE % 10 = 7
+            if (res > INT_MAX // 10) or (res == INT_MAX // 10 and digit > INT_MAX % 10):
+                return INT_MAX if sign == 1 else INT_MIN
+            res = 10 * res + digit
+            idx += 1
+        return sign * res
+```
+
+
 # 查找
 
 [704. 二分查找](https://leetcode.cn/problems/binary-search/?envType=study-plan-v2&envId=selected-coding-interview)
