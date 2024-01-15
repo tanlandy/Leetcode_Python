@@ -7,15 +7,16 @@
 ```py
 class Solution:
     def twoSum(self, nums: List[int], target: int) -> List[int]:
-        """map: {num: idx}
-        each time check if the complement is in the map, if it is, return
         """
-        hashmap = {}
-        for i in range(len(nums)):
-            complement = target - nums[i]
-            if complement in hashmap:
-                return [i, hashmap[complement]]
-            hashmap[nums[i]] = i
+        因为最后要返回idx，所以用dict()来存一下值对应的坐标
+        """
+        seen = dict() # {val: idx}
+        
+        for idx, n in enumerate(nums):
+            remain = target - n
+            if remain in seen:
+                return [idx, seen[remain]]
+            seen[n] = idx
 ```
 
 [146. LRU Cache](https://leetcode.com/problems/lru-cache/)
@@ -112,12 +113,13 @@ class LRUCache:
 
 
 [128. Longest Consecutive Sequence](https://leetcode.com/problems/longest-consecutive-sequence/)
+
 ```py
 class Solution:
     def longestConsecutive(self, nums: List[int]) -> int:
         """
         Use a hashset to find element in O(1)
-        for each num, check if (num-1) in set or not: if not in, reset and count
+        for each num, 看是否是start of array: check if (num-1) in set or not: if not in, reset and count
         
         Time: O(N) tricky: for[1,2,3,4,5,6] only 1 is valid for the loop
         Space: O(N)
@@ -134,6 +136,7 @@ class Solution:
                 longest = max(longest, cur)
         
         return longest
+
 ```
 
 [73. Set Matrix Zeroes](https://leetcode.com/problems/set-matrix-zeroes/)
@@ -237,9 +240,9 @@ class Solution:
             count = [0] * 26
             for c in s:
                 count[ord(c) - ord("a")] += 1
-            res[tuple(count)].append(s) # have to put as tuple
+            res[tuple(count)].append(s)  # have to put as tuple
         
-        return res.values() # type: dict.values(), or use list(res.values()), which type is list
+        return list(res.values()) 
 ```
 
 [350. Intersection of Two Arrays II](https://leetcode.com/problems/intersection-of-two-arrays-ii/)
@@ -631,28 +634,6 @@ class Solution:
                 squares[(r // 3, c // 3)].add(board[r][c])
         
         return True
-
-```
-
-[128. Longest Consecutive Sequence](https://leetcode.com/problems/longest-consecutive-sequence/)
-存成set，对每个数，看是否是start of array:查看是否有左边neighbor。如果没有左边的数就开始看右边neighbor来计算length
-
-时间：O(N)
-空间：O(N)
-
-```py
-class Solution:
-    def longestConsecutive(self, nums: List[int]) -> int:
-        numSet = set(nums)
-        num_set = 0
-
-        for n in nums:
-            if (n - 1) not in num_set:
-                length = 1
-                while (n + length) in num_set:
-                    length += 1
-                longest = max(length, longest)
-        return longest
 
 ```
 
