@@ -2,16 +2,6 @@
 
 # 基础知识，技巧与思路
 
-# 高频题
-
-## 知乎
-
-## Krahets精选题
-
-21，206，86，237，138
-
-# Educative
-
 ## Linked List
 
 ```Python
@@ -68,33 +58,7 @@ llist.insert_after_node(llist.head.next, "D")
 llist.print_list()  
 ```
 
-1. Swap nodes in pairs
-2. Reverse
-3. Merge Two Sorted Linked Lists
-4. Remove duplicates
-
-[237. Delete Node in a Linked List](https://leetcode.com/problems/delete-node-in-a-linked-list/)
-
-```Python
-# Definition for singly-linked list.
-# class ListNode:
-#     def __init__(self, x):
-#         self.val = x
-#         self.next = None
-
-class Solution:
-    def deleteNode(self, node):
-        """
-        实际上是删掉了node.next这个node
-        """
-        
-        node.val = node.next.val  # 把node的值变成node.next
-        node.next = node.next.next  # 把node.next删掉
-```
-
 ## Doubly Linked List
-
-Implementation
 
 ```Python
 class Node:
@@ -136,11 +100,54 @@ class DoublyLinkedList:
             print(cur.data)
             cur = cur.next
 
-
-
 ```
 
-# 基础题目
+# 高频题
+
+## 知乎
+
+24, 142, 160, 203, 237
+
+## Krahets精选题
+
+21，206，86，237，138
+
+## AlgoMonster
+
+1. Swap nodes in pairs(24)
+2. Reverse(206)
+3. Merge Two Sorted Linked Lists(21)
+4. Remove duplicates(203)
+
+# 以题型分类
+
+## 基础题目
+
+[21. Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/)
+
+```Python
+class Solution:
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+        """新建一个节点，不停往后接上list1和list2的节点，最后返回头节点即可"""
+        dummy = ListNode(-1)
+        pre = dummy
+        
+        while list1 and list2:
+            if list1.val <= list2.val:
+                pre.next = list1
+                list1 = list1.next
+            else:
+                pre.next = list2
+                list2 = list2.next
+            pre = pre.next
+        
+        if list1:
+            pre.next = list1
+        elif list2:
+            pre.next = list2
+        
+        return dummy.next
+```
 
 [203. Remove Linked List Elements](https://leetcode.com/problems/remove-linked-list-elements/)
 
@@ -168,6 +175,9 @@ class Solution:
 ```Python
 class Solution:
     def deleteNode(self, node):
+        """
+        实际上是删掉了node.next这个node
+        """
         # copy the next node to this one
         next_node = node.next
         node.val = next_node.val
@@ -184,7 +194,7 @@ class Solution:
     def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
         """
         [1,2,3,4,5] -> [5,4,3,2,1]
-        Use two ptrs. each time assign the cur.next to prev ptr, then move both cur and pre to their next node
+        Use two ptrs 从前往后走 each time assign the cur.next to prev ptr, then move both cur and pre to their next node
 
         Time: O(N)
         Space: O(1)
@@ -291,8 +301,6 @@ class Solution:
         return merge(left, right)
 ```
 
-# 进阶题目
-
 [160. Intersection of Two Linked Lists](https://leetcode.com/problems/intersection-of-two-linked-lists/)
 
 ```Python
@@ -311,63 +319,6 @@ class Solution:
             pB = pB.next if pB else headA
         
         return pA
-```
-
-## 成环问题Floyd's
-
-[141. Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/)
-
-```Python
-class Solution:
-    def hasCycle(self, head: Optional[ListNode]) -> bool:
-        """用快慢指针找到相遇的点，相遇了就说明有环"""
-        slow = fast = head
-        
-        while fast and fast.next:
-            slow = slow.next
-            fast = fast.next.next  # 这里用到了fast.next.next，所以要检查fast.next是否为空
-            if slow == fast:
-                return True
-        
-        return False
-```
-
-[142. Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/)
-
-```Python
-class Solution:
-    def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        """
-        先用快慢指针找到相遇的点。
-        然后利用Floyd's算法找到成环的点；Floyd's算法是head和快慢指针相遇点往后走，彼此相遇的点就是成环的点
-        相同时间走的距离：slow: a + b  fast: a + k * circle + b
-        走的距离有倍数关系：2 * (a + b) = a + k * circle + b
-        want a
-        等式化简得到 a = k * circle - b
-        此时cur=head和slow继续走，相遇时，cur走过的距离就是等式左边a，slow走过的距离就是等式右边k * circle - b
-        
-        时间：O(N)
-        空间：O(1)
-        """
-        slow = fast = head
-        
-        # 快慢指针找相遇点，如果fast.next为空，就说明没有环
-        while slow and fast:
-            if not fast.next:
-                return None
-            slow = slow.next
-            fast = fast.next.next  # 这里用到了fast.next.next，所以条件要有not fast.next
-            if slow == fast:
-                break
-                
-        cur = head
-        while cur != slow:
-            if not slow:
-                return None
-            cur = cur.next
-            slow = slow.next  # 这里用到了slow.next，所以条件要有not slow
-        
-        return cur
 ```
 
 [287. Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/)
@@ -491,8 +442,6 @@ class Solution:
         return head
 ```
 
-# Other problems
-
 [25. Reverse Nodes in k-Group](https://leetcode.com/problems/reverse-nodes-in-k-group/)
 
 ```Python
@@ -537,7 +486,7 @@ class Solution:
 ```Python
 class Solution:
     def swapPairs(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        """
+        """新建一个节点，然后每次调转其后2个节点的顺序
         [1,2,3,4,5] -> [2,1,4,3,5]
         """
         dummy = ListNode(-1)
@@ -596,32 +545,6 @@ class Solution:
             second = second.next
         
         return True
-```
-
-[21. Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/)
-
-```Python
-class Solution:
-    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
-        """用一个节点，不停往后接上list1和list2的节点，最后返回头节点即可"""
-        dummy = ListNode(-1)
-        pre = dummy
-        
-        while list1 and list2:
-            if list1.val <= list2.val:
-                pre.next = list1
-                list1 = list1.next
-            else:
-                pre.next = list2
-                list2 = list2.next
-            pre = pre.next
-        
-        if list1:
-            pre.next = list1
-        elif list2:
-            pre.next = list2
-        
-        return dummy.next
 ```
 
 [23. Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/)
@@ -815,14 +738,14 @@ class Solution:
 
 [138. Copy List with Random Pointer](https://leetcode.com/problems/copy-list-with-random-pointer/)
 
-```Pythonthon
+```Python
 class Solution:
     def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
         """
         Two Passes: 
-        第一遍只复制node，不管指针，形成一个map{old : new}；
+        第一遍只复制node，不管指针，形成一个map{old: new}；
         第二遍把node的指针连起来；
-        注意连的map里没考虑最后是None的情况，所以一开始map={ None : None}；遍历是while cur
+        注意连的map里没考虑最后是None的情况，所以一开始map={None: None}；遍历是while cur
 
         时间：O(N)
         空间：O(N)
@@ -892,4 +815,61 @@ class Solution:
             cur = cur.next
         
         return dummy.next
+```
+
+## 成环问题Floyd's
+
+[141. Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/)
+
+```Python
+class Solution:
+    def hasCycle(self, head: Optional[ListNode]) -> bool:
+        """用快慢指针找到相遇的点，相遇了就说明有环"""
+        slow = fast = head
+        
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next  # 这里用到了fast.next.next，所以要检查fast.next是否为空
+            if slow == fast:
+                return True
+        
+        return False
+```
+
+[142. Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/)
+
+```Python
+class Solution:
+    def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        """
+        先用快慢指针找到相遇的点。
+        然后利用Floyd's算法找到成环的点；Floyd's算法是head和快慢指针相遇点往后走，彼此相遇的点就是成环的点
+        相同时间走的距离：slow: a + b  fast: a + k * circle + b
+        走的距离有倍数关系：2 * (a + b) = a + k * circle + b
+        want a
+        等式化简得到 a = k * circle - b
+        此时cur=head和slow继续走，相遇时，cur走过的距离就是等式左边a，slow走过的距离就是等式右边k * circle - b
+        
+        时间：O(N)
+        空间：O(1)
+        """
+        slow = fast = head
+        
+        # 快慢指针找相遇点，如果fast.next为空，就说明没有环
+        while slow and fast:
+            if not fast.next:
+                return None
+            slow = slow.next
+            fast = fast.next.next  # 这里用到了fast.next.next，所以条件要有not fast.next
+            if slow == fast:
+                break
+                
+        cur = head
+        while cur != slow:
+            if not slow:
+                return None
+            cur = cur.next
+            slow = slow.next  # 这里用到了slow.next，所以条件要有not slow
+        
+        return cur
 ```
