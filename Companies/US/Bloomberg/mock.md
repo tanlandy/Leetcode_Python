@@ -1,14 +1,16 @@
 # 09/28/22
+
 ## BQ
+
 tell me about yourself
 talk more about Jenkins
 
 ## Coding
+
 via codeshare
 
 given the root of a complete binary tree, return the number of the nodes in the tree
 design an algorithm that runs in less than O(n) time complexity
-
 
 [222. Count Complete Tree Nodes](https://leetcode.com/problems/count-complete-tree-nodes/)
 

@@ -1,4 +1,5 @@
 # Practices
+
 1. For statues = [6, 2, 3, 8], the output should be
 solution(statues) = 3.
 
@@ -8,11 +9,6 @@ Ratiorg needs statues of sizes 4, 5 and 7.
 def solution(statues):
     return max(statues) - min(statues) - len(statues) + 1
 ```
-
-
-
-
-
 
 # OAs
 
@@ -42,8 +38,6 @@ Your task is to check whether it is possible to apply the swap operation at most
 For numbers = [1, 3, 900, 10], the output should be solution(numbers) = true.
 
 By choosing numbers[2] = 900 and swapping its first and third digits, the resulting number 009 is considered to be just 9. So the updated array will look like [1, 3, 9, 10], which is strictly increasing.
-
-
 
 3. You are given an array of arrays a. Your task is to group the arrays a[i] by their mean values, so that arrays with equal mean values are in the same group, and arrays with different mean values are in different groups.
 
@@ -105,4 +99,3 @@ def solution(a):
     
     return res    
 ```
-

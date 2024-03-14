@@ -1,8 +1,12 @@
 ## 06/09/22
+
 SDE Fulltime
+
 ### BQ
+
 Steps:
-1. self-introduce -> JAVA 
+
+1. self-introduce -> JAVA
    1. 教育背景
    2. 项目经历培养了自己-> team orientate, result orientened
    3. Apply knowledge to your company
@@ -23,22 +27,25 @@ Steps:
    3. 要问面试官的intro的业务相关，工作routine，有没有plan做什么东西，是否有深度和面试官深度交流
       1. 看看面试官的linkedin，做做prepare
 
-talk more about the job experience. which part you are building? how did you do the data pre-processing, what models you tested? how did you selected features? how many features? group into 500 for each patient? How did you achieve the improvement? for different group of customers? 
+talk more about the job experience. which part you are building? how did you do the data pre-processing, what models you tested? how did you selected features? how many features? group into 500 for each patient? How did you achieve the improvement? for different group of customers?
 -> 不清楚你做了什么，而不是你的team在做什么
 -> 清楚为什么做这个东西，做了什么，结果是什么 -> 知道做了什么，为什么做
 
 how process is organized? how decision making, distributing work? who is in charge of the process? did you talk this issue with the manager?
 
 ### Coding
+
 50 人 过 6、7个
 
 implement a product class has following fuctions:
+
 1. Product(int k)
 2. add(int n)
 3. get() -> return the product of last k numbers added
    1. 提问题->自己带着思路
 
 需要clarification
+
 1. 让举个例子弄明白->没有例子不答题：我举个例子你看对不对
 2. 解释solution再写code，最好用例子来举例，说下用什么数据结构，为什么用这个
 3. 写完code大概说一下

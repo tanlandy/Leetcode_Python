@@ -1,4 +1,6 @@
-Line-sweep algorithms give one a good way to geometirc problems when it comes to update and query efficiently. 
+# Sweep line
+
+Line-sweep algorithms give one a good way to geometirc problems when it comes to update and query efficiently.
 
 伪代码
 Variables: events -> list, active -> data structure to store active points
@@ -13,6 +15,7 @@ for every event in events {
 }
 
 [253. Meeting Rooms II](https://leetcode.com/problems/meeting-rooms-ii/)
+
 ```py
 class Solution:
     def minMeetingRooms(self, intervals: List[List[int]]) -> int:
@@ -43,6 +46,7 @@ class Solution:
 Heap解法待续
 
 [218. The Skyline Problem](https://leetcode.com/problems/the-skyline-problem/)
+
 ```py
 class Solution:
     def getSkyline(self, buildings: List[List[int]]) -> List[List[int]]:
@@ -80,9 +84,9 @@ class Solution:
 
 分治解法待续
 
-
 [759. Employee Free Time](https://leetcode.com/problems/employee-free-time/)
 sweep line
+
 ```py
 class Solution(object):
     def employeeFreeTime(self, schedule):
@@ -104,6 +108,7 @@ class Solution(object):
 ```
 
 minHeap
+
 ```py
 class Solution:
     def employeeFreeTime(self, schedule: '[[Interval]]') -> '[Interval]':

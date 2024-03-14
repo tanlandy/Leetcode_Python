@@ -1,8 +1,7 @@
 1. 写一个可以insert, get, addToKey(all keys + certain number), addToValue(all values + certain number)的dict
 -> 不用每次都加到key或者value上，只在insert和get的之后加上offset
 
-
-https://leetcode.com/discuss/interview-question/933426/oa-uber 
+<https://leetcode.com/discuss/interview-question/933426/oa-uber>
 
 ```py
 def solution(queryType, query):
@@ -20,8 +19,6 @@ def solution(queryType, query):
             res += hm[query[i][0] - ck] + cv
     return res
 ```
-
-
 
 2. valid sodoku LC36
 
@@ -57,4 +54,3 @@ class Solution:
 
         return True
 ```
-

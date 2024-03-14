@@ -1,3 +1,5 @@
+# OOD
+
 # 基础知识
 
 # 例题
@@ -31,8 +33,6 @@ class TimeMap:
 
 [2034. Stock Price Fluctuation](https://leetcode.com/problems/stock-price-fluctuation/)
 
-
-
 [362. Design Hit Counter](https://leetcode.com/problems/design-hit-counter/)
 
 ```py
@@ -60,6 +60,7 @@ class HitCounter:
 ```
 
 时间复杂度空间复杂度更好的方法
+
 ```py
 class HitCounter:
 
@@ -125,7 +126,6 @@ class FileSystem:
 # param_2 = obj.get(path)
 ```
 
-
 [348. Design Tic-Tac-Toe](https://leetcode.com/problems/design-tic-tac-toe/description/)
 
 ```py
@@ -157,7 +157,6 @@ class TicTacToe:
         return 0
 ```
 
-
 ## Iterator
 
 [284. Peeking Iterator](https://leetcode.com/problems/peeking-iterator/)
@@ -187,7 +186,6 @@ class PeekingIterator:
 [341. Flatten Nested List Iterator](https://leetcode.com/problems/flatten-nested-list-iterator/)
 
 [729. My Calendar I](https://leetcode.com/problems/my-calendar-i/)
-
 
 [173. Binary Search Tree Iterator](https://leetcode.com/problems/binary-search-tree-iterator/)
 
@@ -229,11 +227,6 @@ class Vector2D:
 # param_2 = obj.hasNext()
 ```
 
-
-
 [900. RLE Iterator](https://leetcode.com/problems/rle-iterator/)
 
 [1286. Iterator for Combination](https://leetcode.com/problems/iterator-for-combination/)
-
-
-

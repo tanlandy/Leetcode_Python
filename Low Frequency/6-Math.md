@@ -10,7 +10,7 @@
 
 range of primitive number in Java and C++: (32-bit number)
 [-2 ** 31, 2 ** 31 - 1]
-abs(-2**31) = 2 ** 31, which is out of bound
+abs(-2**31) = 2** 31, which is out of bound
 
 # 例题
 
@@ -282,4 +282,3 @@ class Solution:
                 return True
         return False
 ```
-

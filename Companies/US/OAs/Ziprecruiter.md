@@ -16,17 +16,16 @@ def solution(n):
     return res
 ```
 
-
 2. 第二题 replace consonant letter with the next consonant letter
 题目：给一个string，要求把string里的辅音字母替换成对应的下一个辅音字母。
 注意：
+
 - 不用替换其他字母，只需要修改辅音字母。
 - 如果一个辅音字母的下一个字母是元音字母，比如"d"，那就把"d"替换成"f"
 思路：
 - 先通过元音字母和pytho的isalnum()函数，判断当前是否是辅音字母。
 - "z"或"Z"是特例，遇到之后直接替换成题目要求的"b"或“B”
 - 如果辅音字母的下一个字母是元音字母，就要移动2位；否则只需要移动1位
-
 
 ```py
 def solution(message):
@@ -59,10 +58,10 @@ def solution(message):
 题目：给一串msgs，对于每个msg，里面包含了@id1,id3,id5这样的内容，求所有msgs中不同id出现的次数
 
 input: msgs = [
-"Hi @id1, id3, id8, today is a good day @id1", 
-"oh id2", 
+"Hi @id1, id3, id8, today is a good day @id1",
+"oh id2",
 "see ya @id8"
-], 
+],
 members = ["id1", "id2", "id8"]
 
 output: ["id8=2", "id1=1", "id2=0"]
@@ -109,7 +108,6 @@ def solution(members, messages):
     
     return res
 ```
-
 
 4. 第四题 count coverage
 题目：坐标系中给很多点，每个点以自己为中心辐射2*2的范围，求发生重叠的点有多少对

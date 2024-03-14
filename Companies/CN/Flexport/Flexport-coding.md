@@ -54,7 +54,6 @@ e.g. input: k = 2, n = 5, text
 思路：hashmap: String -‍‌‌‌‌‍‍‍‍‍‌‍‌‍‌‍‌‍‌‌> List<String> 记录每 k 个单词的所有successive words
 用StringBuilder作为队列，每次删掉最前面的单词，再加入新单词
 
-
 2. Valid IP Addresses
 一串IP检测是不是valid, valid指是否有四个数字部分，数字部分要在[0-255]范围eg:
 “12.123.1.213” true
@@ -69,6 +68,7 @@ output:
 "0.0.12.3"
 
 [468. Validate IP Address](https://leetcode.com/problems/validate-ip-address/)
+
 ```py
 class Solution:
     def validIPAddress(self, queryIP: str) -> str:
@@ -117,7 +117,6 @@ class Solution:
             if s[:i] == "0" or (s[0] != "0" and 0 < int(s[:i]) <= 255):
                 self.backtrack(res, path + s[:i] + ".", idx + 1, s[i:])
 ```
-
 
 [943. Find the Shortest Superstring](https://leetcode.com/problems/find-the-shortest-superstring/)
 
@@ -270,6 +269,7 @@ class TicTacToe:
 ```
 
 [62. Unique Paths](https://leetcode.com/problems/unique-paths/)
+
 ```py
 class Solution:
     def uniquePaths(self, m: int, n: int) -> int:
@@ -331,7 +331,6 @@ class Solution:
         return dp[0]
 ```
 
-
 第一题：假设有些order还有一些flight，根据order选flight。
 每个order会有出发日期和到达日期，flight有出发日期和到达日期，每个flight有限载量
 第二题：
@@ -350,32 +349,27 @@ part2: given a move, make a movement and update the board
 1. 给你一个webpage和里面有的link (link是另一个webpage), 让你求出通过第一个webpage能访问到的所有webpage的size, webpage里有webpage的size信息Follow up: 给一个有所有node的set, 如何求root webpage
 2。check 版本号 输入是两个string num followed by dot followed by int 看哪个更新。follow up：如何validate string
 
-
 1. 给一个byte[] read（） 让你implement byte read(int size)来read给定size的数据  让你考虑各种可能性follow up: 如果数据是  1 3 2 4 0 1要你decode 成 3 4 4 （要考虑数据很大的情况，不能直接copy，要使用iterator）follow up反过来encode题都不难 但每个题都要分析时间复杂度空间复杂度以及各种corner case和优化
 
 3 opentable 设计，就是设计data model
 4 http协议，网站访问过程，bq
 
-
-
 电面是 这里一道题 checker game
 vo四轮
+
 1. project deep dive 需要画 diagram说明
 2. coding 是一道oop 这里没有出现过 有一个shipment class有weight这个filed 然后不同weight区间对应不同rate 需要计算一个 shipment的价格这样。。
 3.debug  基本上就是string里的特殊字 replace掉 并不难但我脑子仿佛在这里卡住了= = 场面一度十分尴尬
 
-
 VO:
+
 1. checker game 没有要求写连吃的operation 提前10分钟就结束了
 2. design open table 万年不变
-
-
 
 中高难度
 沟通max
 讲中文
 coderpad
-
 
 Token card games
 Given card with cost in terms of tokens. For eg to buy some Card A, you need 3 Blue tokens and 2 Green tokens. Tokens can be of Red, Green, Blue, Black or White color.
@@ -397,15 +391,14 @@ purchase()
 player:{"Red":0,"Bule":5}
 playerCard:{"Red":2}
 
-
 每个项目都过了一遍
 
 英语自我介绍
 
-
 reverse linklist
 
 # 自己
+
 1. 计算shipment价格
 
 根据货物的指标和单价，计算总价

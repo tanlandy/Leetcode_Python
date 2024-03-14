@@ -1,4 +1,5 @@
 # Krahets精选题
+
 Pomotroid
 [Krahets精选88题](https://leetcode.cn/studyplan/selected-coding-interview/)
 
@@ -77,7 +78,6 @@ class Solution:
         return before_head.next
 
 ```
-
 
 [237. Delete Node in a Linked List](https://leetcode.cn/problems/delete-node-in-a-linked-list/description/?envType=study-plan-v2&envId=selected-coding-interview)
 
@@ -279,7 +279,6 @@ class MedianFinder:
         return self.A[0] if len(self.A) != len(self.B) else (self.A[0] - self.B[0]) / 2.0
 ```
 
-
 # 哈希表
 
 [242. 有效的字母异位词](https://leetcode.cn/problems/valid-anagram/description/?envType=study-plan-v2&envId=selected-coding-interview)
@@ -353,7 +352,6 @@ class Solution:
 
 ```
 
-
 [409. 最长回文串](https://leetcode.cn/problems/longest-palindrome/?envType=study-plan-v2&envId=selected-coding-interview)
 
 ```python
@@ -375,7 +373,6 @@ class Solution:
 ```
 
 # 双指针
-
 
 [392. 判断子序列](https://leetcode.cn/problems/is-subsequence/description/?envType=study-plan-v2&envId=selected-coding-interview)
 
@@ -597,14 +594,13 @@ class Solution:
         return res
 ```
 
-
 # 模拟
 
 [415. 字符串相加](https://leetcode.cn/problems/add-strings/description/?envType=study-plan-v2&envId=selected-coding-interview)
 
 two pointers从后往前，用carry存进位的情况.
-value = (x1 + x2 + carry) % 10, 
-carry = (x1 + x2 + carry) // 10. 
+value = (x1 + x2 + carry) % 10,
+carry = (x1 + x2 + carry) // 10.
 走到头carry不为0就再append一下，最后reverse并且转换成string即可；
 ord(string)返回unicode值, x = ord(string) - ord('0')就把'5'存成5到x里；
 a // 10 地板除，向下取整; math.ceil(a/10)就是向上取整；
@@ -635,9 +631,7 @@ class Solution:
         return ''.join(str(x) for x in res[::-1])
 ```
 
-
 [796. 旋转字符串](https://leetcode.cn/problems/rotate-string/description/?envType=study-plan-v2&envId=selected-coding-interview)
-
 
 ```python
 
@@ -891,7 +885,6 @@ class Solution:
             idx += 1
         return sign * res
 ```
-
 
 # 查找
 
@@ -1187,7 +1180,6 @@ class Solution:
 
 ```
 
-
 [426. Convert Binary Search Tree to Sorted Doubly Linked List](https://leetcode.com/problems/convert-binary-search-tree-to-sorted-doubly-linked-list/)
 
 ```python
@@ -1464,7 +1456,7 @@ class Solution:
             two = tmp
         
         return one
-```        
+```
 
 [1480. 一维数组的动态和](https://leetcode.cn/problems/running-sum-of-1d-array/description/?envType=study-plan-v2&envId=selected-coding-interview)
 
@@ -1741,7 +1733,6 @@ class Solution:
         return res
 ```
 
-
 [39. 组合总和](https://leetcode.cn/problems/combination-sum/description/?envType=study-plan-v2&envId=selected-coding-interview)
 
 ```py
@@ -1802,7 +1793,6 @@ class Solution:
 
 ```
 
-
 [79. 单词搜索](https://leetcode.cn/problems/word-search/description/?envType=study-plan-v2&envId=selected-coding-interview)
 
 ```py
@@ -1846,12 +1836,9 @@ class Solution:
         return False
 ```
 
-
-
 # 贪心
 
 [240. 搜索二维矩阵 II](https://leetcode.cn/problems/search-a-2d-matrix-ii/description/?envType=study-plan-v2&envId=selected-coding-interview)
-
 
 ```py
 class Solution:
@@ -1993,7 +1980,6 @@ class Solution:
 
 ```
 
-
 # 位运算
 
 [191. 位1的个数](https://leetcode.cn/problems/number-of-1-bits/description/?envType=study-plan-v2&envId=selected-coding-interview)
@@ -2125,7 +2111,6 @@ class Solution:
         
 ```
 
-
 [169. 多数元素](https://leetcode.cn/problems/majority-element/description/?envType=study-plan-v2&envId=selected-coding-interview)
 
 ```python
@@ -2177,7 +2162,6 @@ class Solution:
         return x if count > len(nums) // 2 else 0
 ```
 
-
 [343. 整数拆分](https://leetcode.cn/problems/integer-break/description/?envType=study-plan-v2&envId=selected-coding-interview)
 
 ```python
@@ -2197,9 +2181,7 @@ class Solution:
         return 3 ** a * 2
 ```
 
-
 [89. 格雷编码](https://leetcode.cn/problems/gray-code/description/?envType=study-plan-v2&envId=selected-coding-interview)
-
 
 ```python
 class Solution:
@@ -2217,7 +2199,6 @@ class Solution:
 
 ```
 
-
 [1823. 找出游戏的获胜者](https://leetcode.cn/problems/find-the-winner-of-the-circular-game/description/?envType=study-plan-v2&envId=selected-coding-interview)
 
 ```python
@@ -2230,9 +2211,7 @@ class Solution:
         return dp[n] + 1 # 最终解为dp[n]，返回下一个数
 ```
 
-
 [400. 第 N 位数字](https://leetcode.cn/problems/nth-digit/description/?envType=study-plan-v2&envId=selected-coding-interview)
-
 
 ```python
 
@@ -2324,6 +2303,3 @@ class Solution:
         return res
 
 ```
-
-
-

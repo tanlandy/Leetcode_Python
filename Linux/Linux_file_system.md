@@ -1,3 +1,5 @@
+# Common
+
 cd /
 cd to root
 
@@ -19,7 +21,7 @@ files necessary to boot the system
 cd /etc
 
 cd /opt
-optional software packages 
+optional software packages
 
 cd /usr
 user related programs
@@ -35,4 +37,3 @@ temporary files, deleted on reboot
 
 cd /dev
 device files
-

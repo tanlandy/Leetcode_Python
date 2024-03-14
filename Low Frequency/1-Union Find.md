@@ -1,3 +1,5 @@
+# Union Find
+
 [323. Number of Connected Components in an Undirected Graph](https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/discuss/319459/Python3-UnionFindDFSBFS-solution)
 
 ```py
@@ -64,8 +66,8 @@ class Solution:
 
 [990. Satisfiability of Equality Equations](https://leetcode.com/problems/satisfiability-of-equality-equations/)
 
-
 [305. Number of Islands II](https://leetcode.com/problems/number-of-islands-ii/)
+
 ```py
 class Solution:
     def numIslands2(self, m: int, n: int, positions: List[List[int]]) -> List[int]:
@@ -92,4 +94,3 @@ class Solution:
             res.append(count)
         return res
 ```
-

@@ -1,3 +1,4 @@
+# Array
 
 # 知乎
 
@@ -1153,7 +1154,6 @@ class Solution:
         return True
 ```
 
-
 [394. Decode String](https://leetcode.com/problems/decode-string/)
 
 ```py
@@ -1478,7 +1478,6 @@ def timeConversion(s):
 
 ## Without data structure and algorithm
 
-
 [68. Text Justification](https://leetcode.com/problems/text-justification/)
 
 ```py
@@ -1536,7 +1535,6 @@ class Solution:
         return res
 ```
 
-
 [65. Valid Number](https://leetcode.com/problems/valid-number/description/)
 
 ```python
@@ -1570,7 +1568,6 @@ class Solution:
         
         return seen_digit
 ```
-
 
 # Nums
 
@@ -1908,8 +1905,8 @@ class Solution:
 [415. Add Strings](https://leetcode.com/problems/add-strings/description/)
 
 two pointers从后往前，用carry存进位的情况.
-value = (x1 + x2 + carry) % 10, 
-carry = (x1 + x2 + carry) // 10. 
+value = (x1 + x2 + carry) % 10,
+carry = (x1 + x2 + carry) // 10.
 走到头carry不为0就再append一下，最后reverse并且转换成string即可；
 ord(string)返回unicode值, x = ord(string) - ord('0')就把'5'存成5到x里；
 a // 10 地板除，向下取整; math.ceil(a/10)就是向上取整；

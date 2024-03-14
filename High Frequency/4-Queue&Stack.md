@@ -1,12 +1,13 @@
 # Comparation
+
 | Aspects | Arrays | Linked Lists |
 | --- | --- | --- |
 | Insertion/Deletion at the beginning | O(N) | O(1) |
 | Access Element | O(1) | O(N) |
 | Contiguous Memory | Yes | No |
 
-
 # Queue
+
 [225. Implement Stack using Queues](https://leetcode.com/problems/implement-stack-using-queues/)
 
 ```py
@@ -46,7 +47,6 @@ class MyStack:
 ```
 
 [346. Moving Average from Data Stream](https://leetcode.com/problems/moving-average-from-data-stream/)
-
 
 ```python
 from collections import deque
@@ -182,8 +182,7 @@ class Solution:
 
 ```
 
-
-## Spiral Matrix 
+## Spiral Matrix
 
 [48. Rotate Image](https://leetcode.com/problems/rotate-image/)
 
@@ -302,12 +301,12 @@ class Solution:
         
 ```
 
-
-
 # Stack
 
 ## Educative
+
 Convert Decimal Integer to Binary
+
 ```py
 def convert_int_to_bin(dec_num):
     
@@ -335,10 +334,8 @@ print(convert_int_to_bin(10))
 print(int(convert_int_to_bin(56),2)==56)
 ```
 
+## Zhihu
 
-
-
-## Zhihu        
 [155. Min Stack](https://leetcode.com/problems/min-stack/)
 
 ```py
@@ -368,7 +365,9 @@ class MinStack:
     def getMin(self) -> int:
         return self.min_stack[-1]
 ```
+
 另一种方式，min_stack只放最小值，删除时候如果相等才删min_stack
+
 ```py
 class MinStack:
     def __init__(self):
@@ -507,7 +506,6 @@ class Solution:
         
         return stack[0]
 ```
-
 
 [227. Basic Calculator II](https://leetcode.com/problems/basic-calculator-ii/)
 
@@ -665,7 +663,6 @@ class BrowserHistory:
     
 ```
 
-
 [1209. Remove All Adjacent Duplicates in String II](https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string-ii/)
 
 ```py
@@ -738,10 +735,6 @@ class Solution:
 
 ```
 
-
-
-
-
 ## Other
 
 [1544. Make The String Great](https://leetcode.com/problems/make-the-string-great/description/)
@@ -762,8 +755,6 @@ class Solution:
 
         return "".join(res)
 ```
-
-
 
 [22. Generate Parentheses](https://leetcode.com/problems/generate-parentheses/)
 添加close的条件：close<open
@@ -800,8 +791,6 @@ class Solution:
 
 ```
 
-
-
 [853. Car Fleet](https://leetcode.com/problems/car-fleet/)
 
 ```py
@@ -821,7 +810,6 @@ class Solution:
         
         return len(stack)
 ```
-
 
 [84. Largest Rectangle in Histogram](https://leetcode.com/problems/largest-rectangle-in-histogram/) 再看看
 

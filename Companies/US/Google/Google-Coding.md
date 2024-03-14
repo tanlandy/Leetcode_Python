@@ -30,7 +30,6 @@ Examples:
 
 3. Given S = "cat", your function should return "c".
 
-
 两个字典分别从前后来存字母，如果出现了就直接返回
 
 ```python
@@ -56,7 +55,6 @@ def findLS(s):
         return s[0]
 
 ```
-
 
 ```python
 def findLS(S):
@@ -88,7 +86,6 @@ print(findLS("adsaass") == "adsaa")
 print(findLS("adsaasss") == "saasss")
 
 ```
-
 
 given an array consisting of N integers, returns the maximum possible number of pairs with the same sum. each array may belong to one pair only. (focus on the correctness, not the performance)
 
@@ -127,7 +124,6 @@ for i in range(2001):
 
 print(max_counter)
 ```
-
 
 Find the length of the longest substring that every character h‍as the same occurrences: input s="ababbcbc",出现次数相同的且最长的是"abab","bcbc"，长度是4
 
@@ -177,9 +173,7 @@ if __name__ == "__main__":
 
 ```
 
-
 # VO
-
 
 [670. Maximum Swap](https://leetcode.com/problems/maximum-swap/)
 
@@ -215,6 +209,7 @@ class Solution:
 # Top 200
 
 [1293. Shortest Path in a Grid with Obstacles Elimination](https://leetcode.com/problems/shortest-path-in-a-grid-with-obstacles-elimination/)
+
 ```py
 class Solution:
     def shortestPath(self, grid: List[List[int]], k: int) -> int:
@@ -370,7 +365,6 @@ class Solution:
         return res
 ```
 
-
 [2096. Step-By-Step Directions From a Binary Tree Node to Another](https://leetcode.com/problems/step-by-step-directions-from-a-binary-tree-node-to-another/)
 
 ```py
@@ -507,6 +501,7 @@ class Solution:
 ```
 
 [2128. Remove All Ones With Row and Column Flips](https://leetcode.com/problems/remove-all-ones-with-row-and-column-flips/)
+
 ```py
 class Solution:
     def removeOnes(self, grid: List[List[int]]) -> bool:
@@ -609,6 +604,7 @@ class Solution:
 ```
 
 [2013. Detect Squares](https://leetcode.com/problems/detect-squares/)
+
 ```py
 class DetectSquares:
 
@@ -633,6 +629,7 @@ class DetectSquares:
 ```
 
 [359. Logger Rate Limiter](https://leetcode.com/problems/logger-rate-limiter/)
+
 ```py
 class Logger:
 
@@ -654,6 +651,7 @@ class Logger:
 再看一下set和queue的解法
 
 [250. Count Univalue Subtrees](https://leetcode.com/problems/count-univalue-subtrees/)
+
 ```py
 class Solution:
     def countUnivalSubtrees(self, root):
@@ -753,7 +751,6 @@ class Solution(object):
             return root
 ```
 
-
 [2034. Stock Price Fluctuation](https://leetcode.com/problems/stock-price-fluctuation/)
 
 ```py
@@ -816,9 +813,11 @@ class StockPrice:
 
 相同思路用HashMap in Java
 语法上的几个区别：
+
 1. cur, timePrice都声明写在class内，在构造函数里面生成
 2. map的几个函数的使用.put(), .get(), .containsKey()
 3. map在原有数据map.put(key, map.getOrDefault(key, defaultValue) + 1)
+
 ```java
 class StockPrice {
 
@@ -861,6 +860,7 @@ class StockPrice {
 ```
 
 双Heap法
+
 ```py
 class StockPrice:
 
@@ -918,7 +918,6 @@ class StockPrice:
             
         return price
 ```
-
 
 [1146. Snapshot Array](https://leetcode.com/problems/snapshot-array/)
 
@@ -1041,6 +1040,7 @@ class Solution:
 
 [1937. Maximum Number of Points with Cost](https://leetcode.com/problems/maximum-number-of-points-with-cost/)
 类似LC931的解法
+
 ```py
 class Solution:
     def maxPoints(self, P: List[List[int]]) -> int:
@@ -1069,6 +1069,7 @@ class Solution:
 ```
 
 类似LC121和1014的解法
+
 ```py
 class Solution:
     def maxPoints(self, A: List[List[int]]) -> int:
@@ -1097,6 +1098,7 @@ class Solution:
 ```
 
 [1610. Maximum Number of Visible Points](https://leetcode.com/problems/maximum-number-of-visible-points/)
+
 ```py
 class Solution:
     def visiblePoints(self, points: List[List[int]], angle: int, location: List[int]) -> int:
@@ -1141,6 +1143,7 @@ class Solution:
 ```
 
 [1048. Longest String Chain](https://leetcode.com/problems/longest-string-chain/)
+
 ```py
 class Solution:
     def longestStrChain(self, words: List[str]) -> int:
@@ -1159,6 +1162,7 @@ class Solution:
 
         return result
 ```
+
 ```py
 class Solution:
     def longestStrChain(self, words: List[str]) -> int:
@@ -1214,6 +1218,7 @@ class Solution:
 ```
 
 [833. Find And Replace in String](https://leetcode.com/problems/find-and-replace-in-string/)
+
 ```py
 class Solution:
     def findReplaceString(self, s: str, indices: List[int], sources: List[str], targets: List[str]) -> str:
@@ -1333,9 +1338,8 @@ class Solution:
         return ans 
 ```
 
-
-
 [2158. Amount of New Area Painted Each Day](https://leetcode.com/problems/amount-of-new-area-painted-each-day/)
+
 ```py
 class Solution:
     def amountPainted(self, paint: List[List[int]]) -> List[int]:
@@ -1396,9 +1400,6 @@ class Solution:
         return res
 ```
 
-
-
-
-
 # VO
+
 [745. Prefix and Suffix Search](https://leetcode.com/problems/design-add-and-search-words-data-structure/)

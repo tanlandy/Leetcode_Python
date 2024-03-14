@@ -1,4 +1,5 @@
 # 岗位JD
+
 30k-60k
 AIGC算法工程师
 
@@ -17,11 +18,8 @@ Pytorch、Tensorflow、Keras 等，有相关工程落地
 4、熟悉多模态如 CLP、ERNIE-VL 等transformer 跨模态表征模型，有 NLP、多模态、Al生成模型等方向上实践经验优先；
 5、有良好的学习能力、清晰的逻辑思维能力和出色的沟通表达能力，对 Al 生成技术的应用抱有强烈的好奇心和兴趣；
 
-
-
 # 面试
 
 Transformer
 Bert
 自回归模型
-

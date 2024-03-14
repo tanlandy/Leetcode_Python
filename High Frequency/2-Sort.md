@@ -1,9 +1,12 @@
+# Sort
+
 # 基础知识
+
 In Java, Arrays.sort() for primitives is implemented using a variant of the Quick Sort algorithm, which has a space complexity of O(\log n)O(logn)
 In C++, the sort() function provided by STL uses a hybrid of Quick Sort, Heap Sort and Insertion Sort, with a worst case space complexity of O(\log n)O(logn)
 In Python, the sort() function is implemented using the Timsort algorithm, which has a worst-case space complexity of O(n)O(n)
 
-A stable sorting algorithm means that when two elements have the same value, their relative order is maintained. 
+A stable sorting algorithm means that when two elements have the same value, their relative order is maintained.
 
 ## Insertion sort
 
@@ -385,8 +388,8 @@ class Solution:
         return select(0, len(nums) - 1)
 ```
 
-
 [1996. The Number of Weak Characters in the Game](https://leetcode.com/problems/the-number-of-weak-characters-in-the-game/)
+
 ```py
 class Solution:
     def numberOfWeakCharacters(self, properties: List[List[int]]) -> int:
@@ -408,6 +411,7 @@ class Solution:
 ```
 
 ## Intervals
+
 ### 模版
 
 Interval的关键是找到两个区间的重合部分：overlap of two intervals
@@ -418,11 +422,13 @@ Interval的关键是找到两个区间的重合部分：overlap of two intervals
 常见的技巧是首先sort by start time
 
 两个相邻区间的三种相对位置：
+
 1. 完全重叠
 2. 部分重叠
 3. 不重叠
 
 ### 例题
+
 [56. Merge Intervals](https://leetcode.com/problems/merge-intervals/)
 
 ```py
@@ -442,8 +448,8 @@ class Solution:
         return res 
 ```
 
-
 [57. Insert Interval](https://leetcode.com/problems/insert-interval/)
+
 ```py
 class Solution:
     def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
@@ -477,6 +483,7 @@ class Solution:
 ```
 
 [1288. Remove Covered Intervals](https://leetcode.com/problems/remove-covered-intervals/)
+
 ```py
 class Solution:
     def removeCoveredIntervals(self, intervals: List[List[int]]) -> int:
@@ -497,6 +504,7 @@ class Solution:
 ```
 
 [986. Interval List Intersections](https://leetcode.com/problems/interval-list-intersections/)
+
 ```py
 class Solution:
     def intervalIntersection(self, firstList: List[List[int]], secondList: List[List[int]]) -> List[List[int]]:
@@ -539,8 +547,8 @@ class Solution:
         return True
 ```
 
-
 [253. Meeting Rooms II](https://leetcode.com/problems/meeting-rooms-ii/) 高频好题
+
 ```python
 class Solution:
     def minMeetingRooms(self, intervals: List[List[int]]) -> int:
@@ -647,6 +655,7 @@ class Solution:
 ```
 
 [280. Wiggle Sort](https://leetcode.com/problems/wiggle-sort/)
+
 ```py
 class Solution:
     def wiggleSort(self, nums: List[int]) -> None:
@@ -681,7 +690,7 @@ class Solution:
 
 ## Merge Sort
 
-https://leetcode.com/problems/reverse-pairs/discuss/97268/General-principles-behind-problems-similar-to-%22Reverse-Pairs%22 
+<https://leetcode.com/problems/reverse-pairs/discuss/97268/General-principles-behind-problems-similar-to-%22Reverse-Pairs%22>
 
 [315. Count of Smaller Numbers After Self](https://leetcode.com/problems/count-of-smaller-numbers-after-self/)
 
@@ -745,13 +754,13 @@ class Solution:
         for n in nums:
             cumsum.append(cumsum[-1]+n)
             
-		# inclusive
+  # inclusive
         def mergesort(l,r):
             if l == r:
                 return 0
             mid = (l+r)//2
             cnt = mergesort(l,mid) + mergesort(mid+1,r)
-			
+   
             i = j = mid+1
             # O(n)
             for left in cumsum[l:mid+1]:
@@ -763,7 +772,7 @@ class Solution:
                 
             cumsum[l:r+1] = sorted(cumsum[l:r+1])
             return cnt
-			
+   
         return mergesort(0,len(cumsum)-1)
 ```
 
@@ -772,6 +781,7 @@ In each round, we divide our array into two parts and sort them. So after "int c
 For example,
 left: 4 6 8 right: 1 2 3
 so we use two pointers to travel left and right parts. For each leftPart[i], if j<=e && nums[i]/2.0 > nums[j], we just continue to move j to the end, to increase rightPart[j], until it is valid. Like in our example, left's 4 can match 1 and 2; left's 6 can match 1, 2, 3, and left's 8 can match 1, 2, 3. So in this particular round, there are 8 pairs found, so we increases our total by 8.
+
 ```py
 class Solution:
     def reversePairs(self, nums):

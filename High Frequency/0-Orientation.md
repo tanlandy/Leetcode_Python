@@ -1,3 +1,5 @@
+# Orientation
+
 medium题目要在20分钟内做完，并且跑3次以内的test case
 
 LinkedIn, handshake, 海投网
@@ -11,7 +13,7 @@ LinkedIn, handshake, 海投网
 实习弱：
 实习不相关：
 
-backgroud check: 
+backgroud check:
 
 中小型公司：unpaid 类型
 contact reference
@@ -42,6 +44,7 @@ No PAIN. NO GAIN.
 努力+认真=Dream offer
 
 # 时间复杂度整理
+
 n≤30, 指数级别, dfs+剪枝，状态压缩dp
 n≤100 => O(n^3)，floyd，dp，高斯消元
 n≤1000 => O(n^2)，O(n^2logn)，dp，二分，朴素版Dijkstra、朴素版Prim、Bellman-Ford

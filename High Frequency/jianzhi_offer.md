@@ -1,6 +1,6 @@
 # 剑指offer2题目
 
-[剑指offer2精选75题](https://leetcode.cn/problem-list/xb9nqhhg/) 
+[剑指offer2精选75题](https://leetcode.cn/problem-list/xb9nqhhg/)
 
 # 1 - 数组
 
@@ -63,4 +63,3 @@ class Solution:
         return numbers[l]
 
 ```
-

@@ -133,7 +133,6 @@ class Solution:
 240. 搜索二维矩阵 II
 11. 盛最多水的容器
 
-
 [15. 3Sum](https://leetcode.com/problems/3sum/)
 
 ```py
@@ -358,7 +357,7 @@ def subarray_sum_fixed(nums: List[int], k: int) -> int:
     return res
 ```
 
-Given a string original and a string check, find the starting index of all substrings of original that is an anagram of check. 
+Given a string original and a string check, find the starting index of all substrings of original that is an anagram of check.
 Input: original = "cbaebabacd", check = "abc"
 Output: [0, 6]
 

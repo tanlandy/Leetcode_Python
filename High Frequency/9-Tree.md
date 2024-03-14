@@ -47,7 +47,6 @@ tree.root.right.right = Node(7)
 
 ## Think like a node
 
-
 two things needed to think of when writing dfs()
 
 1. Return value (Passing value up from child to parent)
@@ -59,11 +58,13 @@ two things needed to think of when writing dfs()
 
 首先思考二叉树的每一个节点需要做什么，需要在什么时候（前中后序）做。
 作为一个node，只知道两件事：
+
 1. 自己的值
 2. 到自己子节点的方式
 
 接下来二选一：
-1. 是否可以通过遍历一遍二叉树得到答案？如果可以，用一个 traverse 函数配合外部变量来实现。 
+
+1. 是否可以通过遍历一遍二叉树得到答案？如果可以，用一个 traverse 函数配合外部变量来实现。
 2. 是否可以定义一个递归函数，通过子问题（子树）的答案推导出原问题的答案？如果可以，写出这个递归函数的定，思考
    - return value: 站在这个节点，需要返回给父节点什么信息
    - states: 站在这个节点，需要父节点提供什么信息来做决策计算
@@ -114,8 +115,6 @@ def level_order_traversal(root: Node) -> List[List[int]]:
 
 
 ```
-
-
 
 ## 题目
 

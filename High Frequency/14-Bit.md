@@ -1,13 +1,16 @@
+# 位操作
+
 # 基础知识
-In computers, data are stored as bits. A bit stores either 0 or 1. 
+
+In computers, data are stored as bits. A bit stores either 0 or 1.
 A binary number is a number expressed in the base-2 system. Each digit can be 0 or 1.
 
 010101 = 1\*2^0 + 1\*2^2 + 1\*2^4
-in python: 
+in python:
 `bin(21)` returns `010101`
 
 8进制转10进制：
-720.5(8) = 7 * 8^2 + 2 * 8^1 + 0 * 8^0 + 5 * 8^-1 = 464.625
+720.5(8) = 7 *8^2 + 2* 8^1 + 0 *8^0 + 5* 8^-1 = 464.625
 
 10进制转2进制：
 50 / 2 = 25; 50 % 2 = 0
@@ -25,6 +28,7 @@ in python:
 50(10) = 110010(2)
 
 ## bitwise operation
+
 Bit-wise AND:
 compare each digit, if both are 1, then resulting digit is 1.
 
@@ -33,6 +37,7 @@ construct a binary number, such that it can turns off all digits except the 1 di
 -> 只保留自己是1的位置，把其他位置的1都掩盖掉了
 
 ### and &
+
 for corresponding bits, if both numbers are 1, the result is 1.
 0 & 0 = 0
 0 & 1 = 0
@@ -40,13 +45,15 @@ for corresponding bits, if both numbers are 1, the result is 1.
 1 & 1 = 1
 
 ### or |
-when both are 0, the result is 0. 
+
+when both are 0, the result is 0.
 0 | 0 = 0
 0 | 1 = 1
 1 | 0 = 1
 1 | 1 = 1
 
 ### XOR ^
+
 when both are the same, the result is 0
 0 ^ 0 = 0
 0 ^ 1 = 1
@@ -54,20 +61,22 @@ when both are the same, the result is 0
 1 ^ 1 = 0
 
 ### ~
+
 flip each bit
 ~ 0 = 1
 ~ 1 = 0
 
-
 ## shift operation
 
 ### <<
+
 left shift: 往左移
 29 << 2 = 116
 0001101 往左移2位得到 01110100
-同时相当于 29 * 2^2 = 29 * 4 = 116
+同时相当于 29 *2^2 = 29* 4 = 116
 
 ### >>
+
 right shift 往右移
 
 ## Properties
@@ -81,11 +90,10 @@ AND: `a & 0 = 0`
 OR: `a | 0 = a, a | (~a) = -1`
 XOR: `a ^ 0 = a, a ^ a = 0`  异或：相同为0，不同为1
 
-`a`           = 1 0 1 0 1 0 0 0 
+`a`           = 1 0 1 0 1 0 0 0
 `a - 1`       = 1 0 1 0 0 1 1 1  # 把a最后一个1变成0，最后一个1的后面的0变成1
 `a & (a - 1)` = 1 0 1 0 0 0 0 0  # 把a最后一个1变成0，其他不变
 `a & (-a)` 只保留最后一个1，其他都变成0
-
 
 ## 常用位操作
 
@@ -97,13 +105,10 @@ x &= (x - 1) ------> 把x最低位的二进制1给去掉
 x & -x -----> 得到最低位的1
 x & ~x -----> 0
 
-
-
-
-
 # 例题
 
 [1318. Minimum Flips to Make a OR b Equal to c](https://leetcode.com/problems/minimum-flips-to-make-a-or-b-equal-to-c/description/)
+
 ```py
 class Solution:
     def minFlips(self, a: int, b: int, c: int) -> int:
@@ -131,7 +136,6 @@ class Solution:
             c >>= 1
         return res
 ```
-
 
 [504. Base 7](https://leetcode.com/problems/base-7/description/)
 
@@ -217,7 +221,6 @@ class Solution:
         return right
 ```
 
-
 [231. Power of Two](https://leetcode.com/problems/power-of-two/description/)
 
 ```py
@@ -255,7 +258,6 @@ def flippingBits(n):
     return int(n) ^ int(ones, 2)
 ```
 
-
 [338. Counting Bits](https://leetcode.com/problems/counting-bits/)
 
 ```py
@@ -276,6 +278,7 @@ class Solution:
 ```
 
 [190. Reverse Bits](https://leetcode.com/problems/reverse-bits/)
+
 ```py
 class Solution:
     def reverseBits(self, n: int) -> int:
@@ -293,12 +296,10 @@ class Solution:
 
 ```
 
-
 [137. Single Number II](https://leetcode.com/problems/single-number-ii/)
 
-
-
 pseudocode for DP
+
 ```shell
 function f(int bitmask, int [] dp) {
     if calculated bitmask {
@@ -313,7 +314,8 @@ function f(int bitmask, int [] dp) {
     return dp[bitmask];
 }
 ```
-Bitmask is helpful with problems that would normally require factorial complexity (something like n!) but can instead reduce the computational complexity to 2^n by storing the dp state. 
+
+Bitmask is helpful with problems that would normally require factorial complexity (something like n!) but can instead reduce the computational complexity to 2^n by storing the dp state.
 
 [136. Single Number](https://leetcode.com/problems/single-number/)
 
@@ -368,7 +370,6 @@ class Solution:
         
         return [x, bitmask ^ x]
 ```
-
 
 [1457. Pseudo-Palindromic Paths in a Binary Tree](https://leetcode.com/problems/pseudo-palindromic-paths-in-a-binary-tree/)
 

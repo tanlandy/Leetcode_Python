@@ -1,5 +1,5 @@
-华为自有考试平台“时习知”练习地址https://shixizhi.huawei.com/iexam/1366212223726481409/open/examInfo?examId=1401820605984784386&tenant_id=1366212223726481409
-牛客网练习地址：https://www.nowcoder.com/ta/huawei
+华为自有考试平台“时习知”练习地址<https://shixizhi.huawei.com/iexam/1366212223726481409/open/examInfo?examId=1401820605984784386&tenant_id=1366212223726481409>
+牛客网练习地址：<https://www.nowcoder.com/ta/huawei>
 
 第一个是模拟地址，第二个是可以刷题的
 
@@ -11,7 +11,7 @@
 【短信/邮箱】发送机考链接:华为自有“时习知平
 台3道编程题【练习地址】
 牛客网练习，所有题型都有
-www.nowcoder.com/ta/huawe
+<www.nowcoder.com/ta/huawe>
 leetcode也可以自己找题练>
 【机考时间】
 120分钟，满分600分，100合格【卷面3道题】
@@ -41,7 +41,6 @@ need = input().upper()
 print(freq[need])
 ```
 
-
 3. 明明的随机数
 
 ```py
@@ -61,6 +60,7 @@ while True:
 ```
 
 4. 字符串分隔
+
 ```py
 msg = input()
 
@@ -212,7 +212,6 @@ res = "".join(res)
 print(res)
 ```
 
-
 10. 字符个数统计
 
 ```py
@@ -229,6 +228,7 @@ print(count_ch(str))
 ```
 
 11. 数字颠倒
+
 ```py
 num = list(input())
 
@@ -344,43 +344,43 @@ import sys
 res = [0,0,0,0,0,0,0]
 
 def puip(ip):
-    if 1 <= ip[0] <= 126:				# A类地址判断条件
+    if 1 <= ip[0] <= 126:    # A类地址判断条件
         res[0] += 1
-    elif 128 <= ip[0] <= 191:			# B类地址判断条件
+    elif 128 <= ip[0] <= 191:   # B类地址判断条件
         res[1] += 1
-    elif 192 <= ip[0] <= 223:			# C类地址判断条件
+    elif 192 <= ip[0] <= 223:   # C类地址判断条件
         res[2] += 1
-    elif 224 <= ip[0] <= 239:			# D类地址判断条件
+    elif 224 <= ip[0] <= 239:   # D类地址判断条件
         res[3] += 1
-    elif 240 <= ip[0] <= 255:			# E类地址判断条件
+    elif 240 <= ip[0] <= 255:   # E类地址判断条件
         res[4] += 1
     return
 
-def prip(ip):			# 私有IP地址判断条件
+def prip(ip):   # 私有IP地址判断条件
     if (ip[0] == 10) or (ip[0] == 172 and 16 <= ip[1] <= 32) or (ip[0] == 192 and ip[1] == 168):
         res[6] += 1
     return
 
 def ym(msk):
-    val = (msk[0] << 24) + (msk[1] << 16) + (msk[2] << 8) + msk[3]	# 获取32位的掩码表示
-    s = bin(val)[2:]												  # 去除“0b”字符，并转换成字符串
-    pos0 = s.find('0')												  # 从左往右找到0第一次出现的位置 
-    pos1 = s.rfind('1')												  # 从右往左找到1第一次出现的位置
-    if pos0 != -1 and pos1 != -1 and pos0 - pos1 == 1:				  # 判断两个位置是否相差1，且是否找不到
+    val = (msk[0] << 24) + (msk[1] << 16) + (msk[2] << 8) + msk[3] # 获取32位的掩码表示
+    s = bin(val)[2:]              # 去除“0b”字符，并转换成字符串
+    pos0 = s.find('0')              # 从左往右找到0第一次出现的位置 
+    pos1 = s.rfind('1')              # 从右往左找到1第一次出现的位置
+    if pos0 != -1 and pos1 != -1 and pos0 - pos1 == 1:      # 判断两个位置是否相差1，且是否找不到
         return True
     return False
     
 
 def judge(line):
     ip, msk = line.strip().split('~')
-    ips = [int(x) for x in filter(None, ip.split('.'))]				# 获得表示IP的列表，理论上应该包含四个元素
-    msks = [int(x) for x in filter(None, msk.split('.'))]			# 获得表示掩码的列表，理论上应该包含四个元素
-    if ips[0] == 0 or ips[0] == 127:								# 排除非法IP不计数
+    ips = [int(x) for x in filter(None, ip.split('.'))]    # 获得表示IP的列表，理论上应该包含四个元素
+    msks = [int(x) for x in filter(None, msk.split('.'))]   # 获得表示掩码的列表，理论上应该包含四个元素
+    if ips[0] == 0 or ips[0] == 127:        # 排除非法IP不计数
         return
-    if len(ips) < 4 or len(msks) < 4:								  # 判断错误掩码或错误IP
+    if len(ips) < 4 or len(msks) < 4:          # 判断错误掩码或错误IP
         res[5] += 1
         return
-    if ym(msks) == True:											# 通过掩码判断的可以进行IP判断
+    if ym(msks) == True:           # 通过掩码判断的可以进行IP判断
         puip(ips)
         prip(ips)
     else:
@@ -407,7 +407,7 @@ while True:
         msg = ' '.join([msg[0][-16:], msg[1]]) # 取后16位及行号（str[-16],num）-> (str[-16] num)  此时属性为字符串
         if msg not in dic.keys():              # 将msg记为字典的key值并判断是否存在
             ls.append(msg)                     # 不存在就将其计入列表ls
-            dic[msg] = 1                       	  # 将msg为key的value记录为1
+            dic[msg] = 1                          # 将msg为key的value记录为1
         else:
             dic[msg] += 1                         # 存在msg就在字典中对应值增加计数
     except:
@@ -634,7 +634,6 @@ while True:
         break
 ```
 
-
 29. 字符串加解密
 
 ```py
@@ -698,8 +697,6 @@ while True:
         break             
 ```
 
-
-
 31. 单次倒排
 
 ```py
@@ -717,7 +714,6 @@ s = s[::-1]
 print(' '.join(s)) # student a am I
 ```
 
-
 34. 图片整理
 
 ```py
@@ -726,13 +722,13 @@ msg = list(input())
 msg.sort()
 print("".join(msg))
 ```
-也可以把每个ch转为ascii，排序之后，再转换回来输出
 
+也可以把每个ch转为ascii，排序之后，再转换回来输出
 
 35. 蛇形矩阵
 
 input = 4
-output = 
+output =
 1 3 6 10
 2 5 9
 4 8
@@ -740,7 +736,7 @@ output =
 
 先普通设置成
 1
-2 3 
+2 3
 4 5 6
 7 8 9 10
 然后每一行取最后一个元素，形成输出的行
@@ -891,9 +887,9 @@ while True:
         break
 ```
 
-
 53. 杨辉三角变形
 从第三行开始，第一个偶数位置依次出现在2、3、2、4位
+
 ```py
 alt = [2, 3, 2, 4]
 while True:
@@ -916,8 +912,8 @@ while True:
     except:
         break
 ```
-正经面试还是要用栈
 
+正经面试还是要用栈
 
 55. 挑7
 
@@ -943,6 +939,7 @@ while True:
 56. 完全数计算
 
 simulate
+
 ```py
 n = int(input())
 count = 0
@@ -958,7 +955,6 @@ for i in range(1, n):
 print(count)
 
 ```
-
 
 57. 高精度整数加法
 
@@ -1171,6 +1167,7 @@ print(res)
 
 85. 最长回文子串
 把所有可能性都计算一次，每当找到一个回文字串就记录其长度
+
 ```py
 while True:
     try:
@@ -1465,9 +1462,9 @@ while True:
         break
 ```
 
-
 99. 自守数
 按照题目意思一个一个确定
+
 ```py
 while 1:
     try:
@@ -1493,6 +1490,7 @@ print(total)
 101. 排序后输出
 ascending
 descending
+
 ```py
 size = int(input())
 nums = list(map(int, input().split()))
@@ -1524,6 +1522,7 @@ while True:
 103. Redraiment的走法
 
 就是求最长上升子序列
+
 ```py
 """
 dp[i]: 重点为i时，最大走法
@@ -1633,4 +1632,3 @@ input: 100110, 6
 output: 找到所有小于6且和10110有交集的正整数的个数
 
 工作量分配
-

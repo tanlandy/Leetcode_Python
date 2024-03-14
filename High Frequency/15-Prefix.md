@@ -1,8 +1,10 @@
+# 前缀和
+
 # 基础知识
+
 前缀和本质上是在一个list当中，用O（N）的时间提前算好从第0个数字到第i个数字之和，在后续使用中可以在O（1）时间内计算出第i到第j个数字之和
 
 Find a number of continuous subarrays/submatrices/tree paths that sum to target
-
 
 # 题目
 
@@ -28,7 +30,6 @@ class Solution:
         
         return res
 ```
-
 
 ```py
 class Solution:
@@ -138,10 +139,10 @@ class Solution:
 
 [528. Random Pick with Weight](https://leetcode.com/problems/random-pick-with-weight/) (前缀和，可以先做一下LC53、523)
 
-
 用list存所有的前缀和。概率是w[i]/total_sum，可以用找到第一个preSum来代替；用random.random()来获得[0,1);w:[1,3]-> pre_sums:[1, 4] -> target in randomly in [0, 4); find the first index in pre_sums s.t. target < pre_sums[idx]
 时间：构造O(N)，找数O(N)
 空间：构造O(N)，找数O(1)
+
 ```python
 class Solution:
 
@@ -163,7 +164,8 @@ class Solution:
 用list存所有的前缀和。概率是w[i]/total_sum，可以用二分查找找到第一个preSum来代替；用random.random()来获得[0,1); 当右边左右的数都满足的时候，找最左满足的数，最后返回的是l
 时间：构造O(N)，找数O(logN)
 空间：构造O(N)，找数O(1)
-```python 
+
+```python
 class Solution:
     def __init__(self, w: List[int]):
         self.prefix_sums = []
@@ -186,6 +188,7 @@ class Solution:
 ```
 
 [303. Range Sum Query - Immutable](https://leetcode.com/problems/range-sum-query-immutable/)
+
 ```py
 class NumArray:
 
@@ -203,7 +206,6 @@ class NumArray:
         # return self.prefix[right] - self.prefix[left - 1]
         return self.prefix[right + 1] - self.prefix[left]
 ```
-
 
 [304. Range Sum Query 2D - Immutable](https://leetcode.com/problems/range-sum-query-2d-immutable/)
 
@@ -240,7 +242,6 @@ class NumMatrix:
         return self.prefix[row2][col2] + self.prefix[row1 - 1][col1 - 1] - self.prefix[row1 - 1][col2] - self.prefix[row2][col1 - 1]
 
 ```
-
 
 [930. Binary Subarrays With Sum](https://leetcode.com/problems/binary-subarrays-with-sum/)
 
@@ -288,15 +289,10 @@ class ProductOfNumbers:
 
 ```
 
-
 [1074. Number of Submatrices That Sum to Target](https://leetcode.com/problems/number-of-submatrices-that-sum-to-target/)
-
 
 [1423. Maximum Points You Can Obtain from Cards](https://leetcode.com/problems/maximum-points-you-can-obtain-from-cards/)
 
-
 [1031. Maximum Sum of Two Non-Overlapping Subarrays](https://leetcode.com/problems/maximum-sum-of-two-non-overlapping-subarrays/)
 
-
 [325. Maximum Size Subarray Sum Equals k](https://leetcode.com/problems/maximum-size-subarray-sum-equals-k/)
-

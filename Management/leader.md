@@ -1,12 +1,13 @@
 # educative.io
+
 ## Lecture
 
 having impact on users
-one person have so much 
+one person have so much
 
 1. what make good leader:
 good communication skill: convey, clafiry, effecitve communication
-ownership: 
+ownership:
 know when to be right to be a leader
 understand people: become people-person ask question, understand what motivate
 listener: relate what people feel
@@ -26,9 +27,7 @@ one-on-one session is gold: show you understand the bigger picture, look for opp
 4. challenges you faced
 landed a new job, right after that covid-19 happened -> you gonna know what to do the right thing
 
-
 understand you path: focu on what you want to do, ask good question, provide value, understand people their motivation
 
 any good books?
 "peopleware"
-

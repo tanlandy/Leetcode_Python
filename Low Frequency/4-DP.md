@@ -1,23 +1,27 @@
+# DP
+
 # 基础知识
 
 ## Intro
+
 Dynamic programming is an algorithmic optimization technique that breaks down a complicated problem into smaller overlapping subproblems in a recursive manner and use solutions to the subproblems to construct solution to the original problem.
 
 DP ~= Careful brute force
 DP ~= subproblems + reuse -> for graph, should be acylic
 DP ~= Recursion + Memo + GUESSING
+
 - memoize
 - reuse
 - to subproblems that can solve the problem
 Time: # of subproblems * time/subproblem
 
--> It is a simple concept of solving bigger problems using smaller problems while saving results to avoid repeated calculations. 
+-> It is a simple concept of solving bigger problems using smaller problems while saving results to avoid repeated calculations.
 
 1. The problem can be broken down into `"overlapping subproblems"` - smaller versions of the original problem that are re-used multiple times. -> subproblems are dependent
 2. The problem has an `"optimal substructure"` - an optimal solution can be formed from optimal solutions to the overlapping subproblems of the original problem.
 
-
 ### Characteristics of DP
+
 1. Optimal substructure: the problem can be divided into subproblems. And its optimal solution can be constructed from optimal solutions of the subproblems
 2. The subproblems overlap
 
@@ -27,13 +31,15 @@ Time: # of subproblems * time/subproblem
 2. 最优子结构
    - 大问题的最优解可以由若干个小问题的最优解推出
 
-
 ### Greedy vs DP
+
 In greedy, we always want to choose the best answer
 DP: is not always necessarily the best answer for every state
 
 ## When to use
+
 DP is an **optimization** method on one or more **sequences**.
+
 1. The problem asks for the maximum/longest, minimal/shortest value/cost/profit you can get from doing operations on a sequence.
 2. You've tried greedy but it sometimes gives the wrong solution. This often means you have to consider subproblems for an optimal solution.
 3. The problem asks for how many ways there are to do something. This can often be solved by DFS + memoization, i.e. top-down dynamic programming.
@@ -44,6 +50,7 @@ DP is an **optimization** method on one or more **sequences**.
    - LIS
 
 ## How to use
+
 1. Top-down: DFS + Memoization: split large problems and recursively solve smaller subproblems
    - draw the tree
    - identify states
@@ -58,15 +65,16 @@ DP is an **optimization** method on one or more **sequences**.
    - Can often save space
 
 ## How to use
+
 不论top-down还是bottom-up，都要思考
+
 1. A function or data structure that will compute/contain the answer to the problem for every given state
 
 2. A recurrence relation to transition between states: A state is a set of variables that can `sufficiently` describe a scenario. These variables are called state variables
 `finding the recurrence relation is the most difficult part of solving a DP problem`
 
 3. Bases cases
-What state(s) can I find the answer to without using dynamic programming? 
-
+What state(s) can I find the answer to without using dynamic programming?
 
 动态规划的一般形式就是求最值，求最值的核心就是穷举
 -> 列出正确的**状态转移方程**，从而正确地穷举
@@ -74,6 +82,7 @@ What state(s) can I find the answer to without using dynamic programming?
 -> 利用DP Table，优化**重叠子问题**的穷举过程
 
 框架：
+
 ```py
 # 自顶向下递归的动态规划
 def dp(状态1, 状态2, ...):
@@ -92,20 +101,23 @@ for 状态1 in 状态1的所有取值：
             dp[状态1][状态2][...] = 求最值(选择1，选择2...)
 ```
 
-### 5 steps to DP 
+### 5 steps to DP
+
 1. Define subproblems -> number of subproblems
 2. Guess(part of solution) -> choice of guess
 3. relate subproblem solutions -> time/subproblem
 4. recurse + Memo OR bottom-up tables -> check subproblem recurrence is acyclic
 5. solve the original problem
 
-
 # Problems
 
 ## Sequence时间序列型
+
 dp[i] normally means max/min/best value of the sequnce ending at index i
 给出一个序列，其中每一个元素可以认为“一天”，并且“今天”的状态只取决于“昨天”的状态
+
 ### 模版
+
 1. 定义dp[i][j]表示第i轮的第j种状态
 2. 千方百计找出来dp[i][j]与前一轮dp[i-1][j]的关系（状态转移）
 3. 最终结果是dp[-1][j]中的某种aggregation(sum, max, min, ...)
@@ -136,7 +148,6 @@ class Solution:
         
         return triangle
 ```
-
 
 [198. House Robber](https://leetcode.com/problems/house-robber/)
 
@@ -282,6 +293,7 @@ class Solution:
 ```
 
 [376. Wiggle Subsequence](https://leetcode.com/problems/wiggle-subsequence/)
+
 ```py
 class Solution:
     def wiggleMaxLength(self, nums: List[int]) -> int:
@@ -303,9 +315,8 @@ class Solution:
         return max(dp[-1])
 ```
 
-
-
 [265. Paint House II](https://leetcode.com/problems/paint-house-ii/)
+
 ```py
 class Solution:
     def minCostII(self, costs: List[List[int]]) -> int:
@@ -336,8 +347,8 @@ class Solution:
         return min(dp[-1])
 ```
 
-
 [1289. Minimum Falling Path Sum II](https://leetcode.com/problems/minimum-falling-path-sum-ii/)
+
 ```py
 class Solution:
     def minFallingPathSum(self, grid: List[List[int]]) -> int:
@@ -362,10 +373,9 @@ class Solution:
         return min(dp[-1])
 ```
 
-
-
 [487. Max Consecutive Ones II](https://leetcode.com/problems/max-consecutive-ones-ii/)
 状态：以当前为结尾且没反转过1；以当前为结尾且反转过1
+
 ```py
 class Solution:
     def findMaxConsecutiveOnes(self, nums: List[int]) -> int:
@@ -410,18 +420,18 @@ class Solution:
 ```
 
 ## 时间序列加强版
+
 给出一个序列，其中每一个元素可以认为是“一天”，“今天”的状态和之前的“某一天”有关，需要进行挑选
+
 ### 模版
+
 1. dp[i]表示第i天的状态，一般和元素i直接相关
 2. 千方百计把dp[i]和之前的dp[i']联系起来
 3. 最终结果是dp[i]中的某一个
 
 一般两层循环，时间复杂度O(N^2)
 
-
-
 ### 例题
-
 
 [1048. Longest String Chain](https://leetcode.com/problems/longest-string-chain/)
 
@@ -442,7 +452,6 @@ class Solution:
 
         return max(dp.values())
 ```
-
 
 [300. Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/)
 
@@ -506,6 +515,7 @@ class Solution:
 ```
 
 [673. Number of Longest Increasing Subsequence](https://leetcode.com/problems/number-of-longest-increasing-subsequence/)
+
 ```py
 class Solution:
     def findNumberOfLIS(self, nums: List[int]) -> int:
@@ -535,15 +545,11 @@ class Solution:
         return res
 ```
 
-
 [368. Largest Divisible Subset](https://leetcode.com/problems/largest-divisible-subset/)
 
 给一个数组，求最大子集，使里面左右元素都能互相整除
 dp[i]：在s[:i]中以s[i]结尾的，满足要求的数量
 res：max(dp)
-
-
-
 
 [1105. Filling Bookcase Shelves](https://leetcode.com/problems/filling-bookcase-shelves/)
 
@@ -552,6 +558,7 @@ res：max(dp)
 第i层有多高：取决于上一层的最后一本书在哪里
 
 [1218. Longest Arithmetic Subsequence of Given Difference](https://leetcode.com/problems/longest-arithmetic-subsequence-of-given-difference/)
+
 ```py
 class Solution:
     def longestSubsequence(self, arr: List[int], difference: int) -> int:
@@ -565,16 +572,20 @@ class Solution:
 ```
 
 ## 双序列类型
+
 给出2个序列来搞事情
 LCS
 Shortest Common Supersequence
 Edit distance
+
 ### 模板
+
 1. dp[i][j]表示针对s[:i]和t[:j]子问题的最优解
 2. 千方百计把dp[i][j]往之前的状态转移：dp[i-1][j], dp[i][j-1], dp[i-1][j-1]
 3. 最终结果是dp[-1][-1]
 
 ### 例题
+
 [1143. Longest Common Subsequence](https://leetcode.com/problems/longest-common-subsequence/)
 
 ```py
@@ -619,41 +630,46 @@ LC583
 LC712
 LC1035
 LC1216
-最少删除多少个字符能变成回文串 
+最少删除多少个字符能变成回文串
 T = S[:-1] 把不相等的删掉LCS
 LC1312
 一个字符串s最少需要添加多少个字符能变成回文串
 T = S[:-1] 找SCS
 
 ## 第一类区间类型
+
 给一个序列，要求分割成k个连续区间。要计算这些区间的某个最优性质
+
 ### 模板
+
 1. 状态：dp[i][k]表示针对s[:i]分成k个区间，此时能到的最优解
 2. 搜寻最后一个区间的起始位置j，将dp[i][k]分割成dp[j-1][k-1]和s[j:i]两部分
 3. 最终的结果是dp[-1][k]
 注意两个边界条件：dp[0][0], dp[x][0]
 
 ### 例题
+
 [1278. Palindrome Partitioning III](https://leetcode.com/problems/palindrome-partitioning-iii/)
 dp[i][k] 最小的字符变动，使得s[:i]能够恰能分成k个字串，且每串都是回文串
 
-
 [813. Largest Sum of Averages](https://leetcode.com/problems/largest-sum-of-averages/)
 
-
 [410. Split Array Largest Sum](https://leetcode.com/problems/split-array-largest-sum/)
-
 
 [1335. Minimum Difficulty of a Job Schedule](https://leetcode.com/problems/minimum-difficulty-of-a-job-schedule/)
 
 ## 第二类区间类型
+
 只给出一个序列S，求一个针对这个序列的最优解
 适用条件：无法设计一个dp[i]，使其只与dp[j] j < i有关。但大区间的最优解，可以依赖小区间的最优解
+
 ### 模板
+
 1. dp[i][j] 是对s[i:j]的子问题的求解
 2. 千方百计将dp[i][j]往小区间dp[i'][j']转移
    - 第一层循环是区间大小，第二层循环是起点
 3. 最终结果是dp[i][-1]
+
 ### 例题
 
 [516. Longest Palindromic Subsequence](https://leetcode.com/problems/longest-palindromic-subsequence/)
@@ -661,7 +677,6 @@ dp[i][k] 最小的字符变动，使得s[:i]能够恰能分成k个字串，且�
 
 [312. Burst Balloons](https://leetcode.com/problems/burst-balloons/)
 状态：照抄：dp[i][j] 戳爆s[i:j]所有气球，最大化的总得分
-
 
 [375. Guess Number Higher or Lower II](https://leetcode.com/problems/guess-number-higher-or-lower-ii/)
 
@@ -679,8 +694,11 @@ dp[i][j] 对于s[i:j]，每次删除一个回文串，最少多少次删完
 dp[i][j][k] 将区间s[i:j]归并为k堆的最小代价
 
 ## 背包类型
+
 给N件物品，每件可用可不用。求某个有上限C的代价实现最大收益
+
 ### 模板
+
 dp[i][c] 从前i件物品的子集里选择，代价为c的最大收益。 c = 1...C
 dp[i][c] 往dp[i-1][c']上看
 最终结果是 max(dp[-1][c]), c = 1...C
@@ -689,6 +707,7 @@ dp[i][c] 往dp[i-1][c']上看
 无后效性：在前4件作出的选择，和第5件没有关系：过去不依赖将来，将来不影响过去
 
 ### 例题
+
 01经典
 dp[i][c] = max(dp[i-1][c], dp[i-1][c-w_i] + v_i)
 最终结果 max(dp[-1][c]), c = 1...C
@@ -705,10 +724,7 @@ dp[i][s] 考虑前i的子集中添加正负号，得到s的方法数量
 
 [956. Tallest Billboard](https://leetcode.com/problems/tallest-billboard/)
 
-
 # 待分类
-
-
 
 [322. Coin Change](https://leetcode.com/problems/coin-change/)
 
@@ -748,11 +764,14 @@ class Solution:
         return dp[amount] if dp[amount] != float("inf") else -1
 ```
 
-
 ## Grid
+
 This is 2D version of the sequence DP. dp[i][j] means max/min/best value for matrix cell ending at index i, j
+
 ### Algo
+
 [62. Unique Paths](https://leetcode.com/problems/unique-paths/)
+
 ```py
 class Solution:
     def uniquePaths(self, m: int, n: int) -> int:
@@ -798,8 +817,8 @@ class Solution:
         return row[0] 
 ```
 
-
 [64. Minimum Path Sum](https://leetcode.com/problems/minimum-path-sum/)
+
 ```py
 class Solution:
     def minPathSum(self, grid: List[List[int]]) -> int:
@@ -830,41 +849,46 @@ class Solution:
 
 [221. Maximal Square](https://leetcode.com/problems/maximal-square/)
 
-
-
 ## Dynamic number of subproblems
+
 Similar to Sequence DP, except dp[i] depends on a dynamic number of subproblems: dp[i] = max(d[j]) from 0 to i
+
 ### Algo
 
 ## Partition
+
 This is a continuation of DFS + Memoization problems. The key is to draw the state-space tree and then traverse it
+
 ### Algo
 
 ## Interval
+
 Find subproblem defined on an interval dp[i][j]
+
 ### Algo
 
 ## Two sequences
+
 dp[i][j] represents the max/min/best value for the first sequence ending in index i and second sequence ending in index j
 可能类似Grid，之后确认
+
 ### Algo
 
 ## Game theory
+
 This asks for whether a player can win a decision game. Key is to identify winning state, and formulate a winning state as a state that returns a losing state to the opponent
+
 ### Algo
 
 ## 0-1 Knapsack
+
 ### Algo
 
 ## Bitmask
+
 Use bitmasks to reduce factorial compelxity to 2^n by encoding the dp state in bitmasks
+
 ### Algo
-
-
-
-
-
-
 
 ## Other待分类
 
@@ -939,15 +963,7 @@ class Solution:
         return cur
 ```
 
-
-
-
 [68. Text Justification](https://www.youtube.com/watch?v=ENyox7kNKeY)
-
-
-
-
-
 
 [70. Climbing Stairs](https://leetcode.com/problems/climbing-stairs/)
 
@@ -986,7 +1002,7 @@ class Solution:
             two = tmp
         
         return one
-```        
+```
 
 [746. Min Cost Climbing Stairs](https://leetcode.com/problems/min-cost-climbing-stairs/)
 
@@ -1012,10 +1028,6 @@ class Solution:
         return min(cost[0], cost[1])
 
 ```
-
-
-
-
 
 [5. Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/)
 
@@ -1184,6 +1196,7 @@ class Solution:
 ```
 
 index of the maxProduct
+
 ```py
 class Solution:
     def maxProduct(self, nums: List[int]) -> int:
@@ -1278,7 +1291,6 @@ class Solution:
         return dfs(s)
 ```
 
-
 [416. Partition Equal Subset Sum](https://leetcode.com/problems/partition-equal-subset-sum/)
 
 ```py
@@ -1324,6 +1336,7 @@ class Solution:
 ```
 
 [122. Best Time to Buy and Sell Stock II](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/)
+
 ```py
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
@@ -1340,6 +1353,7 @@ class Solution:
 ```
 
 [123. Best Time to Buy and Sell Stock III](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-iii/)
+
 ```py
 class Solution: 
     def maxProfit(self, prices: List[int]) -> int:
@@ -1376,6 +1390,7 @@ class Solution:
 ```
 
 [309. Best Time to Buy and Sell Stock with Cooldown](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/)
+
 ```py
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
@@ -1396,8 +1411,7 @@ class Solution:
             dp[i][1] = max(dp[i-1][1], dp[i-2][0] - prices[i])  # 持有
         
         return max(0, dp[-1][0])
-``` 
-
+```
 
 [276. Paint Fence](https://leetcode.com/problems/paint-fence/)
 
@@ -1467,11 +1481,10 @@ class Solution:
 
 ```
 
-
 # 待分类直通硅谷
 
-
 ## 简介
+
 给定状态S和代价函数cost(S1, S2)，计算min(f(S))的值：以状态为自变量，计算函数的值
 **f和cost只与状态S有关** 和如何到达这个状态无关
 状态可以是一个整数，一对整数等等
@@ -1481,7 +1494,8 @@ class Solution:
 第一题
 dp[n]表示s[:n]是否是好的字符串
 转移：
-1. 从s[n-1]走到s[n]: s[n-1] == 1 
+
+1. 从s[n-1]走到s[n]: s[n-1] == 1
 2. 从s[n-2]走到s[n]
 
 第二题 用ABCD构造字符串
@@ -1498,12 +1512,13 @@ dp[i][j] = min(dp[i-1][k] + cost[i][j])， k != j
 dp[x][y][z]表示左上角在[x, y]，分成z份的合法方法数
 dp[x][y][1] = 1 或0 取决于该披萨有没有苹果
 
-第四题 LC1349       
+第四题 LC1349
 dp[i][j] 表示前i行，分配人的情况为j时的最大人数
 dp[0][0] = 1
 dp[i][j] = max(dp[i-1][x] + 第j行坐的人数)
 
 一般框架：
+
 1. 定义状态：base case和状态
 2. 递推
 3. 解是什么

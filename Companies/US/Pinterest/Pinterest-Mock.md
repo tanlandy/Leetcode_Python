@@ -1,11 +1,14 @@
 # NG Software Engieer 03.07.22
+
 ## intro
+
 interview introduction
 interviewee introduction
 -> specify the internship experience
     -> what project did, your contribution
 
 ## code
+
 coderpad, 能跑
 '''
 a
@@ -19,10 +22,12 @@ an ordered diction, find alien
 [269. Alien Dictionary](https://leetcode.com/problems/alien-dictionary/)
 
 ## 问个问题给面试官
+
 1. typicall work day
 2. what's your most favorate parts of pinterest
 
 ## 问题
+
 1. 过去经历的描述，实习经历并不了解，简历上也比较潦草，缺乏细节
    -> 不能说only follow mentor
    -> 会问为什么不用其他技术，为什么用react, springboot

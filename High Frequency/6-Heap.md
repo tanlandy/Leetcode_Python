@@ -438,7 +438,7 @@ class Solution:
         return [item[0] for item in items[0:k]]
 ```
 
-[378. Kth Smallest Element in a Sorted Matrix](https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/) 
+[378. Kth Smallest Element in a Sorted Matrix](https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/)
 
 ```py
 class Solution:  # 204 ms, faster than 54.32%
@@ -465,7 +465,7 @@ class Solution:  # 204 ms, faster than 54.32%
         return res
 ```
 
-[295. Find Median from Data Stream](https://leetcode.com/problems/find-median-from-data-stream/) 
+[295. Find Median from Data Stream](https://leetcode.com/problems/find-median-from-data-stream/)
 
 ```py
 class MedianFinder: 

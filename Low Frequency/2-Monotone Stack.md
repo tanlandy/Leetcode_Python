@@ -1,3 +1,5 @@
+# Monotone Stack
+
 [496. Next Greater Element I](https://leetcode.com/problems/next-greater-element-i/)
 
 [503. Next Greater Element II](https://leetcode.com/problems/next-greater-element-ii/)
@@ -5,7 +7,6 @@
 [739. Daily Temperatures](https://leetcode.com/problems/daily-temperatures/)
 
 [907. Sum of Subarray Minimums](https://leetcode.com/problems/sum-of-subarray-minimums/)
-
 
 [1438. Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit]([Loading...](https://leetcode.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/))
 
@@ -18,7 +19,7 @@ class Solution:
         Time: O(N)
         Space: O(N)
         """
-		min_deque, max_deque = deque(), deque()
+  min_deque, max_deque = deque(), deque()
         l = r = 0
         res = 0
         
@@ -76,8 +77,6 @@ class Solution:
 
 [84. Largest Rectangle in Histogram](https://leetcode.com/problems/largest-rectangle-in-histogram/)
 
-
 [85. Maximal Rectangle](https://leetcode.com/problems/maximal-rectangle/)
-
 
 [901. Online Stock Span](https://leetcode.com/problems/online-stock-span/)

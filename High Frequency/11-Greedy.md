@@ -1,3 +1,5 @@
+# 贪心
+
 [53. Maximum Subarray](https://leetcode.com/problems/maximum-subarray/)
 Sliding window一直计算当前的window_sum，当<0的时候就清零
 
@@ -81,6 +83,7 @@ BFS把每个位置需要的步数记录下来，用l, r来记录一个window
 
 时间：O(N)
 空间：O(1)
+
 ```py
 class Solution:
     def jump(self, nums: List[int]) -> int:
@@ -119,6 +122,7 @@ class Solution:
 ```
 
 [948. Bag of Tokens](https://leetcode.com/problems/bag-of-tokens/)
+
 ```py
 class Solution:
     def bagOfTokensScore(self, tokens: List[int], power: int) -> int:

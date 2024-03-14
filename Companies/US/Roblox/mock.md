@@ -1,20 +1,26 @@
 # 10/20/2022
+
 ## Coding interview
+
 write a simple browser history funcionality for a single tab browser
 void visit(string destinationUrl)
+
 - goes to a given URL
 - starts new forward histroy
 
 string back(int steps)
+
 - goes back in browsing history by the number of steps
 - returns the URL at that point in history
 
 string forward(int steps)
+
 - goes forward in history by the number of steps
 - returns the URL at that point in history
 - note: user can only go forward after coming back in history first
 
 ## BQ
+
 查了下，roblox注重passion和
 2m introduction
 3-4道题目，每个5min，每道题侧重一个能力
@@ -25,6 +31,7 @@ string forward(int steps)
 最好是比较困难的，和之前关系完全不一样的
 
 反馈：
+
 1. test case不好：没有考虑到corner case，没有cover所有的requirement -> 写完代码主动说测试test case
 2. 代码重复太多
 3. 最好准备5个不一样类型的story
@@ -37,5 +44,3 @@ string forward(int steps)
    3. LP：碰到project，知道如何安排step，如果大project，会去lead并且和不同人沟通，主动推进每一个task
 
 肯定会问follow-up，一定是要真的发生过的事，否则是回答不上来的
-
-
