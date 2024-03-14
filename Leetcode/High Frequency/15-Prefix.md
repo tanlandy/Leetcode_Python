@@ -8,6 +8,52 @@ Find a number of continuous subarrays/submatrices/tree paths that sum to target
 
 # 题目
 
+[14. Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/)
+
+```py
+class Solution:
+    def longestCommonPrefix(self, strs: List[str]) -> str:
+        if not strs:
+            return ""
+        
+        shortest = min(strs, key = len) # find the possible one
+        
+        for i, ch in enumerate(shortest): # check idx one by one 
+            for other in strs: # compare this idx with other strs one by one
+                if other[i] != ch:
+                    return shortest[:i] # as long as find an invalid, return
+        
+        return shortest
+```
+
+[2483. Minimum Penalty for a Shop](https://leetcode.com/problems/minimum-penalty-for-a-shop/description/)
+
+```python
+class Solution:
+    def bestClosingTime(self, customers: str) -> int:
+        """
+        假设从idx=0开始闭店，一个一个往右，如果当前ch=='Y'，那么相对的penalty应该减少1。、
+        如果需要真实penalty，需要首先计算idx=0闭店的初始penalty值
+
+        时间：O(n)
+        空间：O(1)
+        """
+        cur_p = min_p = 0
+        earliest_hour = 0
+
+        for i, ch in enumerate(customers):
+            if ch == 'Y':
+                cur_p -= 1
+            else:
+                cur_p += 1
+            
+            if cur_p < min_p:
+                earliest_hour = i + 1
+                min_p = cur_p
+        
+        return earliest_hour
+```
+
 [560. Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/)
 
 ```py

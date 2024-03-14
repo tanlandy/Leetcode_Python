@@ -1,6 +1,16 @@
 # Array
 
-# 知乎
+# 基础知识，技巧与思路
+
+# 高频题
+
+## 知乎
+
+27, 271, 334
+
+## Hot100
+
+# 以题型分类
 
 [26. Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/)
 
@@ -35,6 +45,7 @@ class Solution:
 ```
 
 [271. Encode and Decode Strings](https://leetcode.com/problems/encode-and-decode-strings/)
+
 组合大文字的时候用数字+特殊字符来连接，decode时候就需要找到数字大小
 
 时间：O(N), N is num of word in words
@@ -97,7 +108,7 @@ class Solution:
         return False
 ```
 
-# Others
+## 经典
 
 [189. Rotate Array](https://leetcode.com/problems/rotate-array/)
 Given an array, rotate the array to the right by k steps, where k is non-negative.
@@ -438,7 +449,26 @@ class Solution:
         return "".join(res)
 ```
 
-## Time 相关
+## Time类型
+
+Time convertion: Given a time in -hour AM/PM format, convert it to military (24-hour) time.
+
+```py
+def timeConversion(s):
+    """
+    注意字符串的使用
+    """
+    if s[0:2] == "12":
+        if s[-2:] == "AM":
+            return "00" + s[2:-2]
+        else:
+            return s[:-2]
+    else:
+        if s[-2:] == "AM":
+            return s[:-2]
+        else:
+            return str(int(s[:2]) + 12) + s[2:-2]
+```
 
 [2224. Minimum Number of Operations to Convert Time](https://leetcode.com/problems/minimum-number-of-operations-to-convert-time/)
 
@@ -826,7 +856,7 @@ class Solution:
         return count
 ```
 
-# String
+## String
 
 [1323. Maximum 69 Number](https://leetcode.com/problems/maximum-69-number/description/)
 
@@ -1355,55 +1385,11 @@ class Solution:
             return "".join(sorted(s))
 ```
 
-## Prefix相关
+### Prefix类型
 
-[14. Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/)
+[Prefix](15-Prefix.md)
 
-```py
-class Solution:
-    def longestCommonPrefix(self, strs: List[str]) -> str:
-        if not strs:
-            return ""
-        
-        shortest = min(strs, key = len) # find the possible one
-        
-        for i, ch in enumerate(shortest): # check idx one by one 
-            for other in strs: # compare this idx with other strs one by one
-                if other[i] != ch:
-                    return shortest[:i] # as long as find an invalid, return
-        
-        return shortest
-```
-
-[2483. Minimum Penalty for a Shop](https://leetcode.com/problems/minimum-penalty-for-a-shop/description/)
-
-```python
-class Solution:
-    def bestClosingTime(self, customers: str) -> int:
-        """
-        假设从idx=0开始闭店，一个一个往右，如果当前ch=='Y'，那么相对的penalty应该减少1。、
-        如果需要真实penalty，需要首先计算idx=0闭店的初始penalty值
-
-        时间：O(n)
-        空间：O(1)
-        """
-        cur_p = min_p = 0
-        earliest_hour = 0
-
-        for i, ch in enumerate(customers):
-            if ch == 'Y':
-                cur_p -= 1
-            else:
-                cur_p += 1
-            
-            if cur_p < min_p:
-                earliest_hour = i + 1
-                min_p = cur_p
-        
-        return earliest_hour
-```
-
-## Palindrome类型
+### Palindrome类型
 
 [125. Valid Palindrome](https://leetcode.com/problems/valid-palindrome/)
 
@@ -1455,28 +1441,7 @@ determine the index of a character that can be removed to make the string a pali
 anagram:
 split into two substrings. determine the minimum number of characters to change to make the two substrings into anagrams of one another
 
-## Time相关
-
-Time convertion: Given a time in -hour AM/PM format, convert it to military (24-hour) time.
-
-```py
-def timeConversion(s):
-    """
-    注意字符串的使用
-    """
-    if s[0:2] == "12":
-        if s[-2:] == "AM":
-            return "00" + s[2:-2]
-        else:
-            return s[:-2]
-    else:
-        if s[-2:] == "AM":
-            return s[:-2]
-        else:
-            return str(int(s[:2]) + 12) + s[2:-2]
-```
-
-## Without data structure and algorithm
+### 纯代码
 
 [68. Text Justification](https://leetcode.com/problems/text-justification/)
 
@@ -1569,7 +1534,7 @@ class Solution:
         return seen_digit
 ```
 
-# Nums
+## Nums
 
 [Max Min]
 
@@ -1639,7 +1604,7 @@ class Solution:
         return res
 ```
 
-## two sum类型
+### two sum类型
 
 [1. Two Sum](https://leetcode.com/problems/two-sum/)
 
