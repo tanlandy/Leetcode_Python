@@ -2,16 +2,6 @@
 
 # 基础知识，技巧与思路
 
-# 高频题
-
-## 知乎
-
-## Krahets精选题
-
-153, 154, 704, 278, 287, 724
-
-# 基础知识
-
 ## 找一个数
 
 ```py
@@ -50,8 +40,6 @@ def find_leftmost(nums, target):
 
 ## 左侧都满足，找其中最右边满足的
 
-### 模板
-
 ```py
 def find_leftmost(nums, target):
     l, r = 0, len(nums) - 1
@@ -71,8 +59,7 @@ def find_leftmost(nums, target):
 
 ### 例题
 
-id 1351
-id 744
+744， 1351
 
 ## Bisect
 
@@ -90,11 +77,63 @@ bisect.insort_left(A, 108) # insert at the first index
 print(A)
 ```
 
-# 例题
+# 高频题
+
+## 知乎
+
+33, 81
+74, 240
+875
+
+## Krahets精选题
+
+153, 154, 704, 278, 287, 724
+
+# 以题型分类
 
 ## 显式二分法
 
 说明了是有序数组/序列，那么大概率是可以使用二分法的
+
+[704. 二分查找](https://leetcode.cn/problems/binary-search/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        l, r = 0, len(nums) - 1
+
+        while l <= r:
+            mid = (l + r) // 2
+            if nums[mid] == target:
+                return mid
+            elif nums[mid] < target:
+                l = mid + 1
+            else:
+                r = mid - 1
+        
+        return -1
+
+```
+
+[724. 寻找数组的中心下标](https://leetcode.cn/problems/find-pivot-index/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def pivotIndex(self, nums: List[int]) -> int:
+        r_sum = sum(nums)
+        l_sum = 0
+
+        for i in range(len(nums)):
+            r_sum -= nums[i]
+            if l_sum == r_sum:
+                return i
+            l_sum += nums[i]  # 因为比较时候不包括nums[i]，所以先比较，再加到l_sum
+        
+        return -1
+
+```
 
 [1351. Count Negative Numbers in a Sorted Matrix](https://leetcode.com/problems/count-negative-numbers-in-a-sorted-matrix/description/)
 
