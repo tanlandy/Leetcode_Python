@@ -1,3 +1,15 @@
+# Linkedlist
+
+# 基础知识，技巧与思路
+
+# 高频题
+
+## 知乎
+
+## Krahets精选题
+
+21，206，86，237，138
+
 # Educative
 
 ## Linked List

@@ -1,3 +1,13 @@
+# Queue&Stack
+
+# 基础知识，技巧与思路
+
+# 高频题
+
+## Krahets精选题
+
+20, 155, 232, 394, 295
+
 # Comparation
 
 | Aspects | Arrays | Linked Lists |
