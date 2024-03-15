@@ -2,321 +2,9 @@
 
 # 基础知识，技巧与思路
 
-# 高频题
+## 同向双指针(Sliding Window)
 
-## 知乎
-
-## Krahets精选题
-
-3, 15, 142, 151, 160, 167, 239, 392, 876
-
-# 背向双指针
-
-[409. Longest Palindrome](https://leetcode.com/problems/longest-palindrome/)
-
-```py
-class Solution:
-    def longestPalindrome(self, s: str) -> int:
-        """
-        the char appears odd times must be removed 1 time
-        
-        Time: O(N)
-        Space: O(1), as the size of s is fixed
-        """
-        counts = collections.Counter(s)
-        odd = 0
-        
-        for count in counts.values():
-            if count % 2:
-                odd += 1
-        
-        return len(s) if odd <= 1 else len(s) - odd + 1
-```
-
-[125. Valid Palindrome](https://leetcode.com/problems/valid-palindrome/)
-
-```python
-def isPalindrome(s: str) -> bool:
-    """
-    用相向two pointer，当不是char时候就比较; s[i].isalnum() 看是否是string或者num; s[i].lower() 返回一个小写
-    isalnum(): check if alphanumeric: (a-z) and (0-9)
-
-    时间：O(N)
-    空间：O(1)
-    """
-    l, r = 0, len(s) - 1
-    
-    while l < r:
-        while l < r and not s[l].isalnum(): # l < r的条件不能少，否则s=".,"会out of index
-            l += 1
-        while l < r and not s[r].isalnum():
-            r -= 1
-        if s[l].lower() != s[r].lower():
-            return False
-        l += 1
-        r -= 1
-    
-    return True
-```
-
-[5. Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/)
-
-```py
-class Solution:
-    def longestPalindrome(self, s: str) -> str:
-        """
-        从中间往两边扩散，同时要看以自己为中心和以自己为左半边出发的情况。最后要注意成功时候的index
-        时间：O(N^2)
-        空间：O(1)
-        """
-        res = ""
-        
-        def findPalindrome(l, r):
-            while l >= 0 and r < len(s) and s[l] == s[r]:
-                l -= 1
-                r += 1
-            
-            return s[l + 1: r]
-    
-        for i in range(len(s)):
-            s1 = findPalindrome(i, i)
-            s2 = findPalindrome(i, i + 1)            
-            
-            if len(s1) > len(res):
-                res = s1
-            if len(s2) > len(res):
-                res = s2
-        
-        return res
-```
-
-[647. Palindromic Substrings](https://leetcode.com/problems/palindromic-substrings/)
-
-```py
-class Solution:
-    def countSubstrings(self, s: str) -> int:
-        """
-        Expand Around Possible Centers: use a helper function to find the palindromic substrings
-        check one by one
-        
-        Time: O(N^2)
-        Space: O(1)
-        """
-        
-        def countPalind(l, r):
-            one_res = 0
-            while l >= 0 and r < len(s) and s[l] == s[r]:
-                one_res += 1
-                l -= 1
-                r += 1
-            return one_res
-        
-        res = 0
-        for i in range(len(s)):
-            res += countPalind(i, i)
-            res += countPalind(i, i + 1)      
-        
-        return res
-```
-
-# 相向双指针
-
-[167. Two Sum II - Input Array Is Sorted](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/)
-
-```py
-class Solution:
-    def twoSum(self, numbers: List[int], target: int) -> List[int]:
-        l, r = 0, len(numbers) - 1
-        
-        while l < r:
-            cur_sum = numbers[l] + numbers[r]
-            if cur_sum == target:
-                l += 1
-                r += 1
-                return [l, r]
-            elif cur_sum < target:
-                l += 1
-            else:
-                r -= 1
-```
-
-缩减空间思想的题目：
-167. Two Sum II - Input Array Is Sorted
-240. 搜索二维矩阵 II
-11. 盛最多水的容器
-
-[15. 3Sum](https://leetcode.com/problems/3sum/)
-
-```py
-class Solution:
-    def threeSum(self, nums: List[int]) -> List[List[int]]:
-        """
-        排序之后固定一个指针，用双指针
-        Time: O(N^2)
-        Space: O(logN), depending on how to sort
-        """
-        nums.sort()
-        res = []
-
-        for i, n in enumerate(nums):
-            if i > 0 and nums[i - 1] == nums[i]:  # avoid duplicate
-                continue
-
-            if nums[i] > 0:  # 如果最小的数都>0，那肯定没有能够满足的结果
-                break
-            
-            l, r = i + 1, len(nums) - 1
-            while l < r:
-                cur_sum = nums[i] + nums[l] + nums[r]
-                if cur_sum < 0:
-                    l += 1
-                elif cur_sum > 0:
-                    r -= 1
-                else:
-                    res.append([nums[i], nums[l], nums[r]])
-                    # keep moving to find other possibilities
-                    l += 1
-                    r -= 1
-                    while l < r and nums[l - 1] == nums[l]:  # avoid duplicate
-                        l += 1
-            
-        return res
-```
-
-[16. 3Sum Closest](https://leetcode.com/problems/3sum-closest/)
-
-```py
-class Solution:
-    def threeSumClosest(self, nums: List[int], target: int) -> int:
-        diff = float('inf')
-        nums.sort()  # 总是要排序之后才能用双指针
-        for i in range(len(nums)):
-            l, r = i + 1, len(nums) - 1  # 不用再往前看了，只需要往后看，因为前面看过了
-            while l < r:
-                total = nums[i] + nums[l] + nums[r]
-                if abs(target - total) < abs(diff):
-                    diff = target - total
-                if total < target:
-                    l += 1
-                else:
-                    r -= 1
-                if diff == 0:
-                    break
-        return target - diff
-                
-```
-
-[18. 4Sum](https://leetcode.com/problems/4sum/)
-
-```py
-class Solution:
-    def fourSum(self, nums: List[int], target: int) -> List[List[int]]:
-        """
-        先确定前两个数，然后跑后两个数
-        
-        Time: O(N^3)
-        Space: O(1)
-        """
-        nums.sort()
-        n = len(nums)
-        res = set()
-        for i in range(n):
-            for j in range(i + 1, n):
-                l, r = j + 1, n - 1
-                remain = target - nums[i] - nums[j]
-                while l < r:
-                    if nums[l] + nums[r] == remain:
-                        res.add((nums[i], nums[j], nums[l], nums[r]))
-                        l += 1
-                        r -= 1
-                    elif nums[l] + nums[r] > remain:
-                        r -= 1
-                    else:
-                        l += 1
-        return res
-```
-
-[454. 4Sum II](https://leetcode.com/problems/4sum-ii/)
-
-```py
-class Solution:
-    def fourSumCount(self, nums1: List[int], nums2: List[int], nums3: List[int], nums4: List[int]) -> int:
-        """
-        counts: {(a + b): freq}
-        then enumerate c, d, update the res if (c + d) = -(a + b)
-        
-        Time: O(N^2)
-        Space: O(N^2) for the counter
-        """
-        
-        res = 0
-        counter = collections.defaultdict(int)
-        for a in nums1:
-            for b in nums2:
-                counter[a + b] += 1
-        
-        for c in nums3:
-            for d in nums4:
-                res += counter[-(c + d)]
-        
-        return res
-        
-```
-
-[11. Container With Most Water](https://leetcode.com/problems/container-with-most-water/)
-
-```py
-class Solution:
-    def maxArea(self, height: List[int]) -> int:
-        """
-        Time: O(N)
-        Space: O(1)
-        """
-        l, r = 0, len(height) - 1
-        area = 0
-        
-        while l < r:
-            cur_area = (r - l) * min(height[l], height[r])
-            area = max(area, cur_area)
-            
-            # 移动短边，消去的面积组合肯定比当前的小
-            if height[l] < height[r]: # move the smaller edge, to make the area larger
-                l += 1
-            else:
-                r -= 1
-        
-        return area
-```
-
-[277. Find the Celebrity](https://leetcode.com/problems/find-the-celebrity/)
-
-```py
-class Solution:
-    def findCelebrity(self, n: int) -> int:
-        """
-        Step1: two pointers to find the potiential celebrity
-        Step2: check whether that one is the true celebrity
-        """
-        
-        # Step1
-        may_cele = 0
-        for nxt_per in range(1, n):
-            if knows(may_cele, nxt_per):
-                may_cele = nxt_per
-        
-        # Step2
-        for i in range(n):
-            if may_cele == i:
-                continue
-            if knows(may_cele, i) or (not knows(i, may_cele)):
-                return -1
-        
-        return may_cele
-```
-
-# 同向双指针
-
--> 扩大的条件和结果；缩小的条件和结果；更新res的条件和结果
+该类问题的关键点：扩大的条件和结果；缩小的条件和结果；更新res的条件和结果
 1、当移动right扩大窗口，即加入字符时，应该更新哪些数据？
 
 2、什么条件下，窗口应该暂停扩大，开始移动left缩小窗口？
@@ -325,12 +13,8 @@ class Solution:
 
 4、我们要的结果应该在扩大窗口时还是缩小窗口时进行更新？
 
-## Sliding Window
-
-### 教学题
-
 s = [2,2,1,3,2], d = 4, m = 2
-find how many ways to make it to d with a size of m
+find how many ways to make it sum to d with a size of m
 
 ```py
 def birthday(s, d, m):
@@ -339,7 +23,7 @@ def birthday(s, d, m):
     res = 0
     while r < len(s):
         cur_sum += s[r]
-        if r - l + 1 == m:
+        if r - l + 1 == m:  # 当window size==m
             if cur_sum == d:
                 res += 1
             cur_sum -= s[l]
@@ -396,15 +80,455 @@ def find_all_anagrams(original: str, check: str) -> List[int]:
     return res
 ```
 
-### 冲刺必做题
+# 高频题
 
-### 附加题
+## 知乎
 
-[643. Maximum Average Subarray I](https://leetcode.com/problems/maximum-average-subarray-i/)
+11, 42, 240
 
-[159. Longest Substring with At Most Two Distinct Characters](https://leetcode.com/problems/longest-substring-with-at-most-two-distinct-characters/)
+## Krahets精选题
 
-[283. Move Zeroes](https://leetcode.com/problems/move-zeroes/)
+3, 15, 142（链表）, 151, 160, 167, 239, 392, 876
+
+# 以题型分类
+
+## 背向双指针
+
+[409. Longest Palindrome](https://leetcode.cn/problems/longest-palindrome/)
+
+```py
+class Solution:
+    def longestPalindrome(self, s: str) -> int:
+        """
+        the char appears odd times must be removed 1 time
+        
+        Time: O(N)
+        Space: O(1), as the size of s is fixed
+        """
+        counts = collections.Counter(s)
+        odd = 0
+        
+        for count in counts.values():
+            if count % 2:
+                odd += 1
+        
+        return len(s) if odd <= 1 else len(s) - odd + 1
+```
+
+[125. Valid Palindrome](https://leetcode.cn/problems/valid-palindrome/)
+
+```python
+def isPalindrome(s: str) -> bool:
+    """
+    用相向two pointer，当不是char时候就比较; s[i].isalnum() 看是否是string或者num; s[i].lower() 返回一个小写
+    isalnum(): check if alphanumeric: (a-z) and (0-9)
+
+    时间：O(N)
+    空间：O(1)
+    """
+    l, r = 0, len(s) - 1
+    
+    while l < r:
+        while l < r and not s[l].isalnum(): # l < r的条件不能少，否则s=".,"会out of index
+            l += 1
+        while l < r and not s[r].isalnum():
+            r -= 1
+        if s[l].lower() != s[r].lower():
+            return False
+        l += 1
+        r -= 1
+    
+    return True
+```
+
+[5. Longest Palindromic Substring](https://leetcode.cn/problems/longest-palindromic-substring/)
+
+```py
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        """
+        从中间往两边扩散，同时要看以自己为中心和以自己为左半边出发的情况。最后要注意成功时候的index
+        时间：O(N^2)
+        空间：O(1)
+        """
+        res = ""
+        
+        def findPalindrome(l, r):
+            while l >= 0 and r < len(s) and s[l] == s[r]:
+                l -= 1
+                r += 1
+            
+            return s[l + 1: r]
+    
+        for i in range(len(s)):
+            s1 = findPalindrome(i, i)
+            s2 = findPalindrome(i, i + 1)            
+            
+            if len(s1) > len(res):
+                res = s1
+            if len(s2) > len(res):
+                res = s2
+        
+        return res
+```
+
+[647. Palindromic Substrings](https://leetcode.cn/problems/palindromic-substrings/)
+
+```py
+class Solution:
+    def countSubstrings(self, s: str) -> int:
+        """
+        Expand Around Possible Centers: use a helper function to find the palindromic substrings
+        check one by one
+        
+        Time: O(N^2)
+        Space: O(1)
+        """
+        
+        def countPalind(l, r):
+            one_res = 0
+            while l >= 0 and r < len(s) and s[l] == s[r]:
+                one_res += 1
+                l -= 1
+                r += 1
+            return one_res
+        
+        res = 0
+        for i in range(len(s)):
+            res += countPalind(i, i)
+            res += countPalind(i, i + 1)      
+        
+        return res
+```
+
+## 相向双指针
+
+### 缩减空间思想
+
+[167. Two Sum II - Input Array Is Sorted](https://leetcode.cn/problems/two-sum-ii-input-array-is-sorted/)
+
+```py
+class Solution:
+    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        l, r = 0, len(numbers) - 1
+        
+        while l < r:
+            cur_sum = numbers[l] + numbers[r]
+            if cur_sum == target:
+                l += 1
+                r += 1
+                return [l, r]
+            elif cur_sum < target:
+                l += 1
+            else:
+                r -= 1
+```
+
+[240. 搜索二维矩阵 II](https://leetcode.cn/problems/search-a-2d-matrix-ii/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```py
+class Solution:
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        """
+        start from top-right to bottom-left
+        
+        Time: O(M+N)
+        Space: O(1)
+        """
+        rows, cols = len(matrix), len(matrix[0])
+        r, c = 0, cols - 1
+        
+        while r < rows and c >= 0:
+            if matrix[r][c] == target:
+                return True
+            elif matrix[r][c] < target:
+                r += 1
+            else:
+                c -= 1
+        
+        return False
+```
+
+[11. Container With Most Water](https://leetcode.cn/problems/container-with-most-water/description/)
+
+```py
+class Solution:
+    def maxArea(self, height: List[int]) -> int:
+        """
+        Time: O(N)
+        Space: O(1)
+        """
+        l, r = 0, len(height) - 1
+        area = 0
+        
+        while l < r:
+            cur_area = (r - l) * min(height[l], height[r])
+            area = max(area, cur_area)
+            
+            # 移动短边，消去的面积组合肯定比当前的小
+            if height[l] < height[r]: # move the smaller edge, to make the area larger
+                l += 1
+            else:
+                r -= 1
+        
+        return area
+```
+
+[15. 3Sum](https://leetcode.cn/problems/3sum/)
+
+```py
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        """
+        排序之后固定一个指针，用双指针
+        Time: O(N^2)
+        Space: O(logN), depending on how to sort
+        """
+        nums.sort()
+        res = []
+
+        for i, n in enumerate(nums):
+            if i > 0 and nums[i - 1] == nums[i]:  # avoid duplicate
+                continue
+
+            if nums[i] > 0:  # 如果最小的数都>0，那肯定没有能够满足的结果
+                break
+            
+            l, r = i + 1, len(nums) - 1
+            while l < r:
+                cur_sum = nums[i] + nums[l] + nums[r]
+                if cur_sum < 0:
+                    l += 1
+                elif cur_sum > 0:
+                    r -= 1
+                else:
+                    res.append([nums[i], nums[l], nums[r]])
+                    # keep moving to find other possibilities
+                    l += 1
+                    r -= 1
+                    while l < r and nums[l - 1] == nums[l]:  # avoid duplicate
+                        l += 1
+            
+        return res
+```
+
+### Others
+
+[42. Trapping Rain Water](https://leetcode.cn/problems/trapping-rain-water/description/)
+
+```python
+class Solution:
+    def trap(self, height: List[int]) -> int:
+        """
+        对于位置i能存储的水: min(maxL, maxR) - h[i]；
+        相向双指针，加上两个变量maxL, maxR来时刻保存左右两边的最大值:
+        每次移动maxL, maxR之间较小那个数的指针，然后新位置i能存储的水：被移动指针之前的值-h[i]：不用考虑另外一个值，因为那个值肯定比较大；移动指针之后计算这个指针所在位置能存储的水
+
+        时间：O(N)
+        空间：O(1) -> two pointers
+        """
+        res = 0
+        if not height: # input is empty
+            return res
+
+        l, r = 0, len(height) - 1
+        max_l, max_r = height[l], height[r]
+
+        while l < r:
+            if max_l < max_r:
+                l += 1
+                max_l = max(max_l, height[l])
+                res += max_l - height[l]
+            else:
+                r -= 1
+                max_r = max(max_r, height[r])
+                res += max_r - height[r]
+
+        return res
+```
+
+[16. 3Sum Closest](https://leetcode.cn/problems/3sum-closest/)
+
+```py
+class Solution:
+    def threeSumClosest(self, nums: List[int], target: int) -> int:
+        diff = float('inf')
+        nums.sort()  # 总是要排序之后才能用双指针
+        for i in range(len(nums)):
+            l, r = i + 1, len(nums) - 1  # 不用再往前看了，只需要往后看，因为前面看过了
+            while l < r:
+                total = nums[i] + nums[l] + nums[r]
+                if abs(target - total) < abs(diff):
+                    diff = target - total
+                if total < target:
+                    l += 1
+                else:
+                    r -= 1
+                if diff == 0:
+                    break
+        return target - diff
+                
+```
+
+[18. 4Sum](https://leetcode.cn/problems/4sum/)
+
+```py
+class Solution:
+    def fourSum(self, nums: List[int], target: int) -> List[List[int]]:
+        """
+        先确定前两个数，然后跑后两个数
+        
+        Time: O(N^3)
+        Space: O(1)
+        """
+        nums.sort()
+        n = len(nums)
+        res = set()
+        for i in range(n):
+            for j in range(i + 1, n):
+                l, r = j + 1, n - 1
+                remain = target - nums[i] - nums[j]
+                while l < r:
+                    if nums[l] + nums[r] == remain:
+                        res.add((nums[i], nums[j], nums[l], nums[r]))
+                        l += 1
+                        r -= 1
+                    elif nums[l] + nums[r] > remain:
+                        r -= 1
+                    else:
+                        l += 1
+        return res
+```
+
+[454. 4Sum II](https://leetcode.cn/problems/4sum-ii/)
+
+```py
+class Solution:
+    def fourSumCount(self, nums1: List[int], nums2: List[int], nums3: List[int], nums4: List[int]) -> int:
+        """
+        counts: {(a + b): freq}
+        then enumerate c, d, update the res if (c + d) = -(a + b)
+        
+        Time: O(N^2)
+        Space: O(N^2) for the counter
+        """
+        
+        res = 0
+        counter = collections.defaultdict(int)
+        for a in nums1:
+            for b in nums2:
+                counter[a + b] += 1
+        
+        for c in nums3:
+            for d in nums4:
+                res += counter[-(c + d)]
+        
+        return res
+        
+```
+
+[277. Find the Celebrity](https://leetcode.cn/problems/find-the-celebrity/)
+
+```py
+class Solution:
+    def findCelebrity(self, n: int) -> int:
+        """
+        Step1: two pointers to find the potiential celebrity
+        Step2: check whether that one is the true celebrity
+        """
+        
+        # Step1
+        may_cele = 0
+        for nxt_per in range(1, n):
+            if knows(may_cele, nxt_per):
+                may_cele = nxt_per
+        
+        # Step2
+        for i in range(n):
+            if may_cele == i:
+                continue
+            if knows(may_cele, i) or (not knows(i, may_cele)):
+                return -1
+        
+        return may_cele
+```
+
+## 同向双指针
+
+[151. 反转字符串中的单词](https://leetcode.cn/problems/reverse-words-in-a-string/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def reverseWords(self, s: str) -> str:
+        s = s.strip()
+
+        i = j = len(s) - 1  # 从右往左的同向双指针
+        res = []
+        while i >= 0:
+            while i >= 0 and s[i] != ' ':  # 从右往左找空格
+                i -= 1
+            res.append(s[i + 1: j + 1])  # 左闭右开区间
+            while i >= 0 and s[i] == ' ':
+                i -= 1
+            j = i
+        return ' '.join(res)
+
+```
+
+[160. 相交链表](https://leetcode.cn/problems/intersection-of-two-linked-lists/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> Optional[ListNode]:
+        pA, pB = headA, headB
+        
+        while pA != pB:
+            pA = pA.next if pA else headB
+            pB = pB.next if pB else headA
+        
+        return pA
+
+```
+
+[876. 链表的中间结点](https://leetcode.cn/problems/middle-of-the-linked-list/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+
+class Solution:
+    def middleNode(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        fast = slow = head
+
+        while fast and fast.next:
+            fast = fast.next.next
+            slow = slow.next
+
+        return slow
+
+```
+
+[392. 判断子序列](https://leetcode.cn/problems/is-subsequence/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```python
+class Solution:
+    def isSubsequence(self, s: str, t: str) -> bool:
+        p1 = p2 = 0
+        while p1 < len(s) and p2 < len(t):
+            if s[p1] == t[p2]:
+                p1 += 1
+                p2 += 1
+            else:
+                p2 += 1
+        
+        return p1 == len(s)
+```
+
+[643. Maximum Average Subarray I](https://leetcode.cn/problems/maximum-average-subarray-i/)
+
+[159. Longest Substring with At Most Two Distinct Characters](https://leetcode.cn/problems/longest-substring-with-at-most-two-distinct-characters/)
+
+[283. Move Zeroes](https://leetcode.cn/problems/move-zeroes/)
 
 ```py
 class Solution:
@@ -429,7 +553,7 @@ class Solution:
         return nums
 ```
 
-[26. Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/)
+[26. Remove Duplicates from Sorted Array](https://leetcode.cn/problems/remove-duplicates-from-sorted-array/)
 
 ```py
 class Solution:
@@ -451,7 +575,7 @@ class Solution:
         return slow + 1
 ```
 
-[424. Longest Repeating Character Replacement](https://leetcode.com/problems/longest-repeating-character-replacement/)
+[424. Longest Repeating Character Replacement](https://leetcode.cn/problems/longest-repeating-character-replacement/)
 
 ```py
 class Solution:
@@ -484,7 +608,7 @@ class Solution:
         return res
 ```
 
-[76. Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring/)
+[76. Minimum Window Substring](https://leetcode.cn/problems/minimum-window-substring/)
 
 ```py
 class Solution:
@@ -522,7 +646,7 @@ class Solution:
         return s[minStart: minStart + minLen] if minLen != float("inf") else ""
 ```
 
-[3. Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
+[3. Longest Substring Without Repeating Characters](https://leetcode.cn/problems/longest-substring-without-repeating-characters/description/)
 
 ```python
 class Solution:
@@ -548,7 +672,7 @@ class Solution:
         return res
 ```
 
-[121. Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)
+[121. Best Time to Buy and Sell Stock](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock/)
 同向双指针,L=buy, R=sell：当buy>sell，L=R，否则移动R，同时一直更新profit
 
 时间：O(N)
@@ -572,7 +696,7 @@ class Solution:
         return res
 ```
 
-[53. Maximum Subarray](https://leetcode.com/problems/maximum-subarray/)
+[53. Maximum Subarray](https://leetcode.cn/problems/maximum-subarray/)
 Sliding window一直计算当前的window_sum，当<0的时候就清零
 
 ```py
@@ -593,7 +717,7 @@ class Solution:
         return res
 ```
 
-[567. Permutation in String](https://leetcode.com/problems/permutation-in-string/)
+[567. Permutation in String](https://leetcode.cn/problems/permutation-in-string/)
 
 ```python
 class Solution:
@@ -622,7 +746,7 @@ class Solution:
         return False
 ```
 
-[438. Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/)
+[438. Find All Anagrams in a String](https://leetcode.cn/problems/find-all-anagrams-in-a-string/)
 
 ```py
 class Solution:
@@ -651,7 +775,7 @@ class Solution:
         return res
 ```
 
-[209. Minimum Size Subarray Sum](https://leetcode.com/problems/minimum-size-subarray-sum/)
+[209. Minimum Size Subarray Sum](https://leetcode.cn/problems/minimum-size-subarray-sum/)
 
 ```py
 class Solution:
@@ -671,7 +795,7 @@ class Solution:
         return 0 if res == float("inf") else res
 ```
 
-[395. Longest Substring with At Least K Repeating Characters](https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/)
+[395. Longest Substring with At Least K Repeating Characters](https://leetcode.cn/problems/longest-substring-with-at-least-k-repeating-characters/)
 
 ```py
 class Solution:
@@ -712,7 +836,7 @@ class Solution:
         return max(longest_h_unique_at_least_k_repeat(s, k, i) for i in range(1, unique_letters + 1))
 ```
 
-[340. Longest Substring with At Most K Distinct Characters](https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/)
+[340. Longest Substring with At Most K Distinct Characters](https://leetcode.cn/problems/longest-substring-with-at-most-k-distinct-characters/)
 
 ```py
 class Solution:
@@ -734,7 +858,7 @@ class Solution:
         return res
 ```
 
-[1004. Max Consecutive Ones III](https://leetcode.com/problems/max-consecutive-ones-iii/)
+[1004. Max Consecutive Ones III](https://leetcode.cn/problems/max-consecutive-ones-iii/)
 
 ```py
 class Solution:
@@ -759,7 +883,7 @@ class Solution:
         return res
 ```
 
-[487. Max Consecutive Ones II](https://leetcode.com/problems/max-consecutive-ones-ii/)
+[487. Max Consecutive Ones II](https://leetcode.cn/problems/max-consecutive-ones-ii/)
 
 ```py
 class Solution:
@@ -781,7 +905,7 @@ class Solution:
         return res
 ```
 
-[1052. Grumpy Bookstore Owner](https://leetcode.com/problems/grumpy-bookstore-owner/description/)
+[1052. Grumpy Bookstore Owner](https://leetcode.cn/problems/grumpy-bookstore-owner/description/)
 
 ```py
 class Solution:
@@ -805,9 +929,9 @@ class Solution:
         return satis + trik_satis
 ```
 
-# Others
+## Others
 
-[31. Next Permutation](https://leetcode.com/problems/next-permutation/)
+[31. Next Permutation](https://leetcode.cn/problems/next-permutation/)
 
 ```python
 class Solution:
@@ -841,7 +965,7 @@ class Solution:
             r -= 1
 ```
 
-[88. Merge Sorted Array]([Loading...](https://leetcode.com/problems/merge-sorted-array/))
+[88. Merge Sorted Array]([Loading...](https://leetcode.cn/problems/merge-sorted-array/))
 
 ```py
 class Solution:
@@ -864,7 +988,7 @@ class Solution:
         nums1[:n] = nums2[:n]
 ```
 
-[1099. Two Sum Less Than K](https://leetcode.com/problems/two-sum-less-than-k/)
+[1099. Two Sum Less Than K](https://leetcode.cn/problems/two-sum-less-than-k/)
 
 ```py
 class Solution:
@@ -893,7 +1017,7 @@ class Solution:
         return  res
 ```
 
-[259. 3Sum Smaller](https://leetcode.com/problems/3sum-smaller/)
+[259. 3Sum Smaller](https://leetcode.cn/problems/3sum-smaller/)
 
 ```py
 class Solution:
@@ -928,7 +1052,7 @@ class Solution:
                 
 ```
 
-[905. Sort Array By Parity](https://leetcode.com/problems/sort-array-by-parity/)
+[905. Sort Array By Parity](https://leetcode.cn/problems/sort-array-by-parity/)
 
 Two pass
 时间：O(N)
@@ -963,40 +1087,7 @@ class Solution:
         return nums
 ```
 
-[42. Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/)
-
-```python
-class Solution:
-    def trap(self, height: List[int]) -> int:
-        """
-        对于位置i能存储的水: min(maxL, maxR) - h[i]；相向双指针，加上两个变量maxL, maxR来时刻保存左右两边的最大值；每次移动maxL, maxR之间较小那个数的指针，然后新位置i能存储的水：被移动指针之前的值-h[i]：不用考虑另外一个值，因为那个值肯定比较大；移动指针之后计算这个指针所在位置能存储的水
-
-        时间：O(N)
-        空间：O(1) -> two pointers
-        """
-        res = 0
-        if not height: # input is empty
-            return res
-
-        l, r = 0, len(height) - 1
-        max_l, max_r = height[l], height[r]
-
-        while l < r:
-            if max_l < max_r:
-                l += 1
-                max_l = max(max_l, height[l])
-                res += max_l - height[l]
-            else:
-                r -= 1
-                max_r = max(max_r, height[r])
-                res += max_r - height[r]
-
-        return res
-```
-
-## Other
-
-[161. One Edit Distance](https://leetcode.com/problems/one-edit-distance/)
+[161. One Edit Distance](https://leetcode.cn/problems/one-edit-distance/)
 
 ```py
 class Solution(object):

@@ -123,7 +123,7 @@ class DoublyLinkedList:
 
 ## 基础题目
 
-[21. Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/)
+[21. Merge Two Sorted Lists](https://leetcode.cn/problems/merge-two-sorted-lists/)
 
 ```Python
 class Solution:
@@ -149,7 +149,7 @@ class Solution:
         return dummy.next
 ```
 
-[203. Remove Linked List Elements](https://leetcode.com/problems/remove-linked-list-elements/)
+[203. Remove Linked List Elements](https://leetcode.cn/problems/remove-linked-list-elements/)
 
 ```Python
 class Solution:
@@ -170,7 +170,7 @@ class Solution:
         return dummy.next
 ```
 
-[237. Delete Node in a Linked List](https://leetcode.com/problems/delete-node-in-a-linked-list/)
+[237. Delete Node in a Linked List](https://leetcode.cn/problems/delete-node-in-a-linked-list/)
 
 ```Python
 class Solution:
@@ -187,7 +187,7 @@ class Solution:
         next_node.next = None
 ```
 
-[206. Reverse Linked List](https://leetcode.com/problems/reverse-linked-list/)
+[206. Reverse Linked List](https://leetcode.cn/problems/reverse-linked-list/)
 
 ```Python
 class Solution:
@@ -210,7 +210,7 @@ class Solution:
         return prev
 ```
 
-[876. Middle of the Linked List](https://leetcode.com/problems/middle-of-the-linked-list/)
+[876. Middle of the Linked List](https://leetcode.cn/problems/middle-of-the-linked-list/)
 
 ```Python
 class Solution:
@@ -229,7 +229,7 @@ class Solution:
         return slow
 ```
 
-[86. Partition List](https://leetcode.com/problems/partition-list/)
+[86. Partition List](https://leetcode.cn/problems/partition-list/)
 
 ```Python
 class Solution:
@@ -256,7 +256,7 @@ class Solution:
         return before_head.next
 ```
 
-[148. Sort List](https://leetcode.com/problems/sort-list/)
+[148. Sort List](https://leetcode.cn/problems/sort-list/)
 
 ```Python
 class Solution:
@@ -301,7 +301,7 @@ class Solution:
         return merge(left, right)
 ```
 
-[160. Intersection of Two Linked Lists](https://leetcode.com/problems/intersection-of-two-linked-lists/)
+[160. Intersection of Two Linked Lists](https://leetcode.cn/problems/intersection-of-two-linked-lists/)
 
 ```Python
 class Solution:
@@ -321,7 +321,7 @@ class Solution:
         return pA
 ```
 
-[287. Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/)
+[287. Find the Duplicate Number](https://leetcode.cn/problems/find-the-duplicate-number/)
 
 ```Python
 class Solution:
@@ -343,7 +343,7 @@ class Solution:
                 return slow
 ```
 
-[2. Add Two Numbers](https://leetcode.com/problems/add-two-numbers/)
+[2. Add Two Numbers](https://leetcode.cn/problems/add-two-numbers/)
 
 ```Python
 class Solution:
@@ -375,7 +375,7 @@ class Solution:
         return dummy.next
 ```
 
-[92. Reverse Linked List II](https://leetcode.com/problems/reverse-linked-list-ii/)
+[92. Reverse Linked List II](https://leetcode.cn/problems/reverse-linked-list-ii/)
 
 ```Python
 
@@ -414,7 +414,7 @@ class Solution:
 
 ```
 
-[328. Odd Even Linked List](https://leetcode.com/problems/odd-even-linked-list/)
+[328. Odd Even Linked List](https://leetcode.cn/problems/odd-even-linked-list/)
 
 ```Python
 class Solution:
@@ -442,7 +442,7 @@ class Solution:
         return head
 ```
 
-[25. Reverse Nodes in k-Group](https://leetcode.com/problems/reverse-nodes-in-k-group/)
+[25. Reverse Nodes in k-Group](https://leetcode.cn/problems/reverse-nodes-in-k-group/)
 
 ```Python
 class Solution:
@@ -481,7 +481,7 @@ class Solution:
         return dummy.next
 ```
 
-[24. Swap Nodes in Pairs](https://leetcode.com/problems/swap-nodes-in-pairs/)
+[24. Swap Nodes in Pairs](https://leetcode.cn/problems/swap-nodes-in-pairs/)
 
 ```Python
 class Solution:
@@ -506,7 +506,7 @@ class Solution:
         return dummy.next
 ```
 
-[234. Palindrome Linked List](https://leetcode.com/problems/palindrome-linked-list/)
+[234. Palindrome Linked List](https://leetcode.cn/problems/palindrome-linked-list/)
 
 ```Python
 class Solution:
@@ -547,7 +547,7 @@ class Solution:
         return True
 ```
 
-[23. Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/)
+[23. Merge k Sorted Lists](https://leetcode.cn/problems/merge-k-sorted-lists/)
 
 ```Python
 class Solution:
@@ -631,7 +631,7 @@ class Solution:
         return dummy.next
 ```
 
-[143. Reorder List](https://leetcode.com/problems/reorder-list/)
+[143. Reorder List](https://leetcode.cn/problems/reorder-list/)
 Input: head = [1,2,3,4,5]
 Output: [1,5,2,4,3]
 
@@ -673,7 +673,7 @@ class Solution:
             second = tmp2
 ```
 
-[19. Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)
+[19. Remove Nth Node From End of List](https://leetcode.cn/problems/remove-nth-node-from-end-of-list/)
 
 ```Python
 class Solution:
@@ -736,7 +736,7 @@ class Solution:
 
 ```
 
-[138. Copy List with Random Pointer](https://leetcode.com/problems/copy-list-with-random-pointer/)
+[138. Copy List with Random Pointer](https://leetcode.cn/problems/copy-list-with-random-pointer/)
 
 ```Python
 class Solution:
@@ -768,7 +768,7 @@ class Solution:
         return old_new[head]   
 ```
 
-[83. Remove Duplicates from Sorted List](https://leetcode.com/problems/remove-duplicates-from-sorted-list/)
+[83. Remove Duplicates from Sorted List](https://leetcode.cn/problems/remove-duplicates-from-sorted-list/)
 
 ```Python
 class Solution:
@@ -789,7 +789,7 @@ class Solution:
         return head         
 ```
 
-[203. Remove Linked List Elements](https://leetcode.com/problems/remove-linked-list-elements/)
+[203. Remove Linked List Elements](https://leetcode.cn/problems/remove-linked-list-elements/)
 
 ```Python
 # Definition for singly-linked list.
@@ -819,7 +819,7 @@ class Solution:
 
 ## 成环问题Floyd's
 
-[141. Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/)
+[141. Linked List Cycle](https://leetcode.cn/problems/linked-list-cycle/)
 
 ```Python
 class Solution:
@@ -836,7 +836,7 @@ class Solution:
         return False
 ```
 
-[142. Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/)
+[142. Linked List Cycle II](https://leetcode.cn/problems/linked-list-cycle-ii/)
 
 ```Python
 class Solution:
