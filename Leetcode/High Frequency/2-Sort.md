@@ -77,7 +77,7 @@ def bubbleSort(nums):
 时间：O(NlogN)
 空间：O(N)
 
-[912. Sort an Array](https://leetcode.com/problems/sort-an-array/)
+[912. Sort an Array](https://leetcode.cn/problems/sort-an-array/)
 
 ```py
 def mergesort(seq):
@@ -149,13 +149,25 @@ def partition(nums, l, r):
 
 ## Youtube
 
-912 Quick Sort
-23 Merge Sort
-215, 347, 973 Quick Select
+### Quick Sort
+
+[912. 排序数组]
+
+### Merge Sort
+
+[23. 合并 K 个升序链表]
+
+### Quick Select
+
+[215. 数组中的第K个最大元素]
+[347. 前 K 个高频元素]
+[973. 最接近原点的 K 个点]
 
 # 例题
 
-[148. Sort List](https://leetcode.com/problems/sort-list/)
+[912. 排序数组](https://leetcode.cn/problems/sort-an-array/description/)
+
+[148. Sort List](https://leetcode.cn/problems/sort-list/)
 
 ```py
 # Definition for singly-linked list.
@@ -205,7 +217,7 @@ class Solution:
         return merge(left, right)
 ```
 
-[27. Remove Element](https://leetcode.com/problems/remove-element/)
+[27. Remove Element](https://leetcode.cn/problems/remove-element/)
 
 ```py
 class Solution:
@@ -224,7 +236,7 @@ class Solution:
         return slow
 ```
 
-[179. Largest Number](https://leetcode.com/problems/largest-number/)
+[179. Largest Number](https://leetcode.cn/problems/largest-number/)
 
 ```py
 class Solution:
@@ -258,7 +270,7 @@ class Solution:
         return res
 ```
 
-[75. Sort Colors](https://leetcode.com/problems/sort-colors/)
+[75. Sort Colors](https://leetcode.cn/problems/sort-colors/)
 
 ```py
 class Solution:
@@ -313,7 +325,7 @@ class Solution:
         return nums
 ```
 
-[215. Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/)
+[215. 数组中的第K个最大元素](https://leetcode.cn/problems/kth-largest-element-in-an-array/)
 
 ```python
 class Solution:
@@ -402,7 +414,7 @@ class Solution:
         return select(0, len(nums) - 1)
 ```
 
-[1996. The Number of Weak Characters in the Game](https://leetcode.com/problems/the-number-of-weak-characters-in-the-game/)
+[1996. The Number of Weak Characters in the Game](https://leetcode.cn/problems/the-number-of-weak-characters-in-the-game/)
 
 ```py
 class Solution:
@@ -443,7 +455,7 @@ Interval的关键是找到两个区间的重合部分：overlap of two intervals
 
 ### 例题
 
-[56. Merge Intervals](https://leetcode.com/problems/merge-intervals/)
+[56. Merge Intervals](https://leetcode.cn/problems/merge-intervals/)
 
 ```py
 class Solution:
@@ -462,7 +474,7 @@ class Solution:
         return res 
 ```
 
-[57. Insert Interval](https://leetcode.com/problems/insert-interval/)
+[57. Insert Interval](https://leetcode.cn/problems/insert-interval/)
 
 ```py
 class Solution:
@@ -496,7 +508,7 @@ class Solution:
         return res
 ```
 
-[1288. Remove Covered Intervals](https://leetcode.com/problems/remove-covered-intervals/)
+[1288. Remove Covered Intervals](https://leetcode.cn/problems/remove-covered-intervals/)
 
 ```py
 class Solution:
@@ -517,7 +529,7 @@ class Solution:
         return count
 ```
 
-[986. Interval List Intersections](https://leetcode.com/problems/interval-list-intersections/)
+[986. Interval List Intersections](https://leetcode.cn/problems/interval-list-intersections/)
 
 ```py
 class Solution:
@@ -546,7 +558,7 @@ class Solution:
         return res
 ```
 
-[252. Meeting Rooms](https://leetcode.com/problems/meeting-rooms/)
+[252. Meeting Rooms](https://leetcode.cn/problems/meeting-rooms/)
 
 ```py
 class Solution:
@@ -561,7 +573,7 @@ class Solution:
         return True
 ```
 
-[253. Meeting Rooms II](https://leetcode.com/problems/meeting-rooms-ii/) 高频好题
+[253. Meeting Rooms II](https://leetcode.cn/problems/meeting-rooms-ii/) 高频好题
 
 ```python
 class Solution:
@@ -614,7 +626,7 @@ class Solution:
         return len(min_heap)
 ```
 
-[1229. Meeting Scheduler](https://leetcode.com/problems/meeting-scheduler/) 高频好题
+[1229. Meeting Scheduler](https://leetcode.cn/problems/meeting-scheduler/) 高频好题
 
 ```py
 class Solution:
@@ -668,7 +680,7 @@ class Solution:
         return []
 ```
 
-[280. Wiggle Sort](https://leetcode.com/problems/wiggle-sort/)
+[280. Wiggle Sort](https://leetcode.cn/problems/wiggle-sort/)
 
 ```py
 class Solution:
@@ -689,7 +701,7 @@ class Solution:
                 nums[i], nums[i+1] = nums[i+1], nums[i]
 ```
 
-[324. Wiggle Sort II](https://leetcode.com/problems/wiggle-sort-ii/)
+[324. Wiggle Sort II](https://leetcode.cn/problems/wiggle-sort-ii/)
 
 ```py
 class Solution:
@@ -706,7 +718,13 @@ class Solution:
 
 <https://leetcode.com/problems/reverse-pairs/discuss/97268/General-principles-behind-problems-similar-to-%22Reverse-Pairs%22>
 
-[315. Count of Smaller Numbers After Self](https://leetcode.com/problems/count-of-smaller-numbers-after-self/)
+[23. 合并 K 个升序链表](https://leetcode.cn/problems/merge-k-sorted-lists/description/)
+
+[347. 前 K 个高频元素](https://leetcode.cn/problems/top-k-frequent-elements/description/)
+
+[973. 最接近原点的 K 个点](https://leetcode.cn/problems/k-closest-points-to-origin/description/)
+
+[315. Count of Smaller Numbers After Self](https://leetcode.cn/problems/count-of-smaller-numbers-after-self/)
 
 ```py
 class Solution:
@@ -757,7 +775,7 @@ class Solution:
         return result
 ```
 
-[327. Count of Range Sum](https://leetcode.com/problems/count-of-range-sum/)
+[327. Count of Range Sum](https://leetcode.cn/problems/count-of-range-sum/)
 
 ```py
 class Solution:
@@ -790,7 +808,7 @@ class Solution:
         return mergesort(0,len(cumsum)-1)
 ```
 
-[493. Reverse Pairs](https://leetcode.com/problems/reverse-pairs/)
+[493. Reverse Pairs](https://leetcode.cn/problems/reverse-pairs/)
 In each round, we divide our array into two parts and sort them. So after "int cnt = mergeSort(nums, s, mid) + mergeSort(nums, mid+1, e); ", the left part and the right part are sorted and now our only job is to count how many pairs of number (leftPart[i], rightPart[j]) satisfies leftPart[i] <= 2*rightPart[j].
 For example,
 left: 4 6 8 right: 1 2 3
