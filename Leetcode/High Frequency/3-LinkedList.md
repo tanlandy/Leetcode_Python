@@ -119,6 +119,10 @@ class DoublyLinkedList:
 3. Merge Two Sorted Linked Lists(21)
 4. Remove duplicates(203)
 
+## Youtube
+
+206, 2, 328
+
 # 以题型分类
 
 ## 基础题目

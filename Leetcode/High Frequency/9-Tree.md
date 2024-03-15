@@ -116,6 +116,20 @@ def level_order_traversal(root: Node) -> List[List[int]]:
 
 ```
 
+## 高频题
+
+### 知乎
+
+### Krahets精选题
+
+### AlgoMonster
+
+### Youtube
+
+144, 145, 102, 314, 94
+
+101, 25, 21, 509, 124(Recursion)
+
 ## 题目
 
 [226. Invert Binary Tree](https://leetcode.com/problems/invert-binary-tree/)
@@ -1913,6 +1927,20 @@ Dynamic hash tables usually have a lot of unused memory in order to make the ins
 
 基本性质：对于每个node，左子树节点的值都更小，右子树节点的值都更大；中序遍历结果是有序的
 
+## 高频题
+
+### 知乎
+
+### Krahets精选题
+
+### AlgoMonster
+
+### Youtube
+
+450, 285, 98, 1008, 230
+
+## 题目
+
 [653. Two Sum IV - Input is a BST](https://leetcode.com/problems/two-sum-iv-input-is-a-bst/)
 
 ```py
@@ -2359,6 +2387,16 @@ def ternary_tree_paths(root: Node) -> List[str]:
     return res
 ```
 
+## 高频题
+
+### 知乎
+
+### Krahets精选题
+
+### AlgoMonster
+
+### Youtube
+
 ## 题目
 
 [1490. Clone N-ary Tree](https://leetcode.com/problems/clone-n-ary-tree/)
@@ -2459,6 +2497,20 @@ class Trie:
         return True
         
 ```
+
+## 高频题
+
+### 知乎
+
+### Krahets精选题
+
+### AlgoMonster
+
+### Youtube
+
+208, 211, 212, 1268
+
+## 题目
 
 [211. Design Add and Search Words Data Structure](https://leetcode.com/problems/design-add-and-search-words-data-structure/)
 
@@ -2882,7 +2934,19 @@ def minimum_spanning_tree(n : int, edges : List[edge]) -> int:
     return ret
 ```
 
-## 例题
+## 高频题
+
+### 知乎
+
+### Krahets精选题
+
+### AlgoMonster
+
+### Youtube
+
+1135
+
+## 题目
 
 [1584. Min Cost to Connect All Points](https://leetcode.com/problems/min-cost-to-connect-all-points/)
 

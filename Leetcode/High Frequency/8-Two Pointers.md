@@ -90,6 +90,11 @@ def find_all_anagrams(original: str, check: str) -> List[int]:
 
 3, 15, 142（链表）, 151, 160, 167, 239, 392, 876
 
+## Youtube
+
+11, 15, 31, 125, 75
+3, 239, 209 (Sliding window)
+
 # 以题型分类
 
 ## 背向双指针

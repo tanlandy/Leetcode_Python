@@ -408,7 +408,6 @@ class Solution(object):
         return image
 ```
 
-
 [1197. Minimum Knight Moves](https://leetcode.com/problems/minimum-knight-moves/)
 
 ```py
@@ -552,9 +551,6 @@ class Solution:
 
         return -1
 ```
-
-
-
 
 [1905. Count Sub Islands](https://leetcode.com/problems/count-sub-islands/)
 
@@ -717,7 +713,6 @@ class Solution:
         
         return -1
 ```
-
 
 [323. Number of Connected Components in an Undirected Graph](https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/)
 
@@ -1432,7 +1427,6 @@ class Solution:
         return res
 ```
 
-
 [695. Max Area of Island](https://leetcode.com/problems/max-area-of-island/)
 
 ```py
@@ -1466,7 +1460,6 @@ class Solution:
                     area = max(area, dfs(r, c)) # compare the area of different islands
         return area                 
 ```
-
 
 [1020. Number of Enclaves](https://leetcode.com/problems/number-of-enclaves/)
 
@@ -1515,7 +1508,6 @@ class Solution:
 
         return count
 ```
-
 
 [1254. Number of Closed Islands](https://leetcode.com/problems/number-of-closed-islands/)
 
@@ -1910,7 +1902,6 @@ class Solution:
         
         return res
 ```
-
 
 [261. Graph Valid Tree](https://leetcode.com/problems/graph-valid-tree/)
 
@@ -2381,7 +2372,7 @@ Topological sort or topological ordering of a directed graph is an ordering of n
 
 Topological sort is not unique
 
-Graph with cycles do not havfe topological ordering
+Graph with cycles do not have topological ordering
 
 ## 模版：Kahn's Algorithm
 
@@ -2410,7 +2401,19 @@ S ← 入度为零的节点的集合
 
 和BFS的区别是，Topological sort只push入度为0的点到queue，而BFS把所有的邻居都push到queue
 
-## 例题
+## 高频题
+
+### 知乎
+
+### Krahets精选题
+
+### AlgoMonster
+
+### Youtube
+
+207/210
+
+## 题目
 
 [207. Course Schedule](https://leetcode.com/problems/course-schedule/)
 

@@ -1,5 +1,19 @@
 # 贪心
 
+# 高频题
+
+## 知乎
+
+## Krahets精选题
+
+## AlgoMonster
+
+## Youtube
+
+253， 1363，Minimum Cost to Connect Sticks, 122, 435
+
+# 以题型分类
+
 [53. Maximum Subarray](https://leetcode.com/problems/maximum-subarray/)
 Sliding window一直计算当前的window_sum，当<0的时候就清零
 

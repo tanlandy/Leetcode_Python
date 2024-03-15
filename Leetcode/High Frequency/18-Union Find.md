@@ -1,5 +1,17 @@
 # Union Find
 
+# 高频题
+
+## 知乎
+
+## Krahets精选题
+
+## AlgoMonster
+
+## Youtube
+
+737, 323, 684, 261
+
 [323. Number of Connected Components in an Undirected Graph](https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/discuss/319459/Python3-UnionFindDFSBFS-solution)
 
 ```py

@@ -89,6 +89,14 @@ print(A)
 
 153, 154, 704, 278, 287, 724
 
+## Youtube
+
+[704]Binary Search
+[33/81]Search in Rotated Sorted Array
+[34]Find First and Last Position of Element in Sorted Array
+[74]Search a 2D Matrix
+[162]Find Peak Element
+
 # 以题型分类
 
 ## 显式二分法

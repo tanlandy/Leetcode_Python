@@ -6,6 +6,18 @@
 
 Find a number of continuous subarrays/submatrices/tree paths that sum to target
 
+# 高频题
+
+## 知乎
+
+## Krahets精选题
+
+## AlgoMonster
+
+## Youtube
+
+560, 238, 523, 370, 974
+
 # 题目
 
 [14. Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/)

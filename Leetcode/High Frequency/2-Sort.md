@@ -139,6 +139,20 @@ def partition(nums, l, r):
     return p
 ```
 
+# 高频题
+
+## 知乎
+
+## Krahets精选题
+
+## AlgoMonster
+
+## Youtube
+
+912 Quick Sort
+23 Merge Sort
+215, 347, 973 Quick Select
+
 # 例题
 
 [148. Sort List](https://leetcode.com/problems/sort-list/)
