@@ -2,13 +2,7 @@
 
 # 基础知识，技巧与思路
 
-# 高频题
-
-## Krahets精选题
-
-20, 155, 232, 394, 295
-
-# Comparation
+## Comparation
 
 | Aspects | Arrays | Linked Lists |
 | --- | --- | --- |
@@ -16,9 +10,19 @@
 | Access Element | O(1) | O(N) |
 | Contiguous Memory | Yes | No |
 
+# 高频题
+
+## 知乎
+
+735
+
+## Krahets精选题
+
+20, 155, 232, 295, 394
+
 # Queue
 
-[225. Implement Stack using Queues](https://leetcode.com/problems/implement-stack-using-queues/)
+[225. Implement Stack using Queues](https://leetcode.cn/problems/implement-stack-using-queues/)
 
 ```py
 class MyStack:
@@ -56,7 +60,7 @@ class MyStack:
 # param_4 = obj.empty()
 ```
 
-[346. Moving Average from Data Stream](https://leetcode.com/problems/moving-average-from-data-stream/)
+[346. Moving Average from Data Stream](https://leetcode.cn/problems/moving-average-from-data-stream/)
 
 ```python
 from collections import deque
@@ -97,7 +101,7 @@ print(param_3)
 # param_1 = obj.next(val)
 ```
 
-[281. Zigzag Iterator](https://leetcode.com/problems/zigzag-iterator/)
+[281. Zigzag Iterator](https://leetcode.cn/problems/zigzag-iterator/)
 
 ```py
 class ZigzagIterator:
@@ -127,7 +131,7 @@ class ZigzagIterator:
 # while i.hasNext(): v.append(i.next())
 ```
 
-[1429. First Unique Number](https://leetcode.com/problems/first-unique-number/)
+[1429. First Unique Number](https://leetcode.cn/problems/first-unique-number/)
 
 ```py
 class FirstUnique:
@@ -164,7 +168,7 @@ class FirstUnique:
 
 ## Monotonic Deque
 
-[239. Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/)
+[239. Sliding Window Maximum](https://leetcode.cn/problems/sliding-window-maximum/)
 
 ```py
 class Solution:
@@ -194,7 +198,7 @@ class Solution:
 
 ## Spiral Matrix
 
-[48. Rotate Image](https://leetcode.com/problems/rotate-image/)
+[48. Rotate Image](https://leetcode.cn/problems/rotate-image/)
 
 ```py
 class Solution:
@@ -223,7 +227,7 @@ class Solution:
             l += 1
 ```
 
-[54. Spiral Matrix](https://leetcode.com/problems/spiral-matrix/)
+[54. Spiral Matrix](https://leetcode.cn/problems/spiral-matrix/)
 
 ```py
 class Solution:
@@ -266,7 +270,7 @@ class Solution:
         return res
 ```
 
-[59. Spiral Matrix II](https://leetcode.com/problems/spiral-matrix-ii/)
+[59. Spiral Matrix II](https://leetcode.cn/problems/spiral-matrix-ii/)
 
 ```py
 class Solution:
@@ -346,7 +350,7 @@ print(int(convert_int_to_bin(56),2)==56)
 
 ## Zhihu
 
-[155. Min Stack](https://leetcode.com/problems/min-stack/)
+[155. Min Stack](https://leetcode.cn/problems/min-stack/)
 
 ```py
 class MinStack:
@@ -403,7 +407,7 @@ class MinStack:
             return self.min_stack[-1]
 ```
 
-[716. Max Stack](https://leetcode.com/problems/max-stack/)
+[716. Max Stack](https://leetcode.cn/problems/max-stack/)
 
 ```py
 class MaxStack:
@@ -455,7 +459,7 @@ class MaxStack:
 # param_5 = obj.popMax()
 ```
 
-[232. Implement Queue using Stacks](https://leetcode.com/problems/implement-queue-using-stacks/)
+[232. Implement Queue using Stacks](https://leetcode.cn/problems/implement-queue-using-stacks/)
 
 ```py
 class MyQueue:
@@ -469,11 +473,6 @@ class MyQueue:
         self.stack1.append(x)
 
     def pop(self) -> int:
-        # """to pop, get from stack2; if empty, push the entire stack1 into stack2"""
-        # if not self.stack2:
-        #     while self.stack1:
-        #         self.stack2.append(self.stack1.pop())
-        # return self.stack2.pop()
         """直接peek一下把stack1压栈到stack2，然后返回最上面的那个值"""
         self.peek()  
         return self.stack2.pop()
@@ -492,7 +491,7 @@ class MyQueue:
         return True
 ```
 
-[150. Evaluate Reverse Polish Notation](https://leetcode.com/problems/evaluate-reverse-polish-notation/)
+[150. Evaluate Reverse Polish Notation](https://leetcode.cn/problems/evaluate-reverse-polish-notation/)
 
 ```py
 class Solution:
@@ -517,7 +516,7 @@ class Solution:
         return stack[0]
 ```
 
-[227. Basic Calculator II](https://leetcode.com/problems/basic-calculator-ii/)
+[227. Basic Calculator II](https://leetcode.cn/problems/basic-calculator-ii/)
 
 用Stack存数字，每次如果是+-就直接压进去，如果是*/就压进去相对应的数，最后弹栈相加；-3//2地板除会得到-2而不是想要的-1，所以用int(-3/2)这样就可以得到-1;检查是否是数字: s[i].isdigit()；把长串string转成对应的数字num=num*10+int(s[i]);如果是"+-*/": if s[i] in "+-*/"；sign的条件：如果是sign或者走到最后一位；相加stack的所有数字：sum(stack)；每次检查完sign之后要更新num和sign；最后还有把最后的数放进stack里
 时间：O(N)
@@ -549,7 +548,7 @@ class Solution:
         return sum(stack)
 ```
 
-[224. Basic Calculator](https://leetcode.com/problems/basic-calculator/)
+[224. Basic Calculator](https://leetcode.cn/problems/basic-calculator/)
 
 当看到"("就从下一位call自己，看到")"就返回"()"之间的值
 
@@ -581,7 +580,7 @@ class Solution:
         return sum(stack)
 ```
 
-[772. Basic Calculator III](https://leetcode.com/problems/basic-calculator-iii/)
+[772. Basic Calculator III](https://leetcode.cn/problems/basic-calculator-iii/)
 
 ```python
 class Solution:
@@ -616,7 +615,7 @@ class Solution:
         return sum(stack)
 ```
 
-[20. Valid Parentheses](https://leetcode.com/problems/valid-parentheses/)
+[20. Valid Parentheses](https://leetcode.cn/problems/valid-parentheses/)
 
 ```py
 class Solution:
@@ -639,7 +638,7 @@ class Solution:
         return stack == []  # 最后要检查stack是否为空
 ```
 
-[1472. Design Browser History](https://leetcode.com/problems/design-browser-history/)
+[1472. Design Browser History](https://leetcode.cn/problems/design-browser-history/)
 
 ```py
 class BrowserHistory:
@@ -673,7 +672,7 @@ class BrowserHistory:
     
 ```
 
-[1209. Remove All Adjacent Duplicates in String II](https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string-ii/)
+[1209. Remove All Adjacent Duplicates in String II](https://leetcode.cn/problems/remove-all-adjacent-duplicates-in-string-ii/)
 
 ```py
 class Solution:
@@ -694,7 +693,7 @@ class Solution:
         return "".join(c * n for c, n in stack)
 ```
 
-[1249. Minimum Remove to Make Valid Parentheses](https://leetcode.com/problems/minimum-remove-to-make-valid-parentheses/)
+[1249. Minimum Remove to Make Valid Parentheses](https://leetcode.cn/problems/minimum-remove-to-make-valid-parentheses/)
 
 ```python
 class Solution:
@@ -723,7 +722,7 @@ class Solution:
         return "".join(s)
 ```
 
-[735. Asteroid Collision](https://leetcode.com/problems/asteroid-collision/)
+[735. Asteroid Collision](https://leetcode.cn/problems/asteroid-collision/)
 
 ```py
 class Solution:
@@ -747,7 +746,40 @@ class Solution:
 
 ## Other
 
-[1544. Make The String Great](https://leetcode.com/problems/make-the-string-great/description/)
+[394. 字符串解码](https://leetcode.cn/problems/decode-string/description/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```py
+class Solution:
+    def decodeString(self, s: str) -> str:
+        """
+        When we hit an open bracket, we know we have parsed k for the contents of the bracket, so 
+        push (current_string, k) to the stack, so we can pop them on closing bracket to duplicate
+        the enclosed string k times.
+        """
+        stack = []
+        res = ""
+        k = 0
+
+        for char in s:
+            if char == "[":
+                # Just finished parsing this k, save current string and k for when we pop
+                stack.append((res, k))
+                # Reset current_string and k for this new frame
+                res = ""  # res一旦遇到[就全新开始
+                k = 0
+            elif char == "]":
+                # We have completed this frame, get the last current_string and k from when the frame 
+                last_string, last_k = stack.pop(-1)
+                res = last_string + last_k * res
+            elif char.isdigit():
+                k = k * 10 + int(char)
+            else:
+                res += char
+
+        return res
+```
+
+[1544. Make The String Great](https://leetcode.cn/problems/make-the-string-great/description/)
 
 ```py
 class Solution:
@@ -766,7 +798,7 @@ class Solution:
         return "".join(res)
 ```
 
-[22. Generate Parentheses](https://leetcode.com/problems/generate-parentheses/)
+[22. Generate Parentheses](https://leetcode.cn/problems/generate-parentheses/)
 添加close的条件：close<open
 
 ```py
@@ -801,7 +833,7 @@ class Solution:
 
 ```
 
-[853. Car Fleet](https://leetcode.com/problems/car-fleet/)
+[853. Car Fleet](https://leetcode.cn/problems/car-fleet/)
 
 ```py
 class Solution:
@@ -821,7 +853,7 @@ class Solution:
         return len(stack)
 ```
 
-[84. Largest Rectangle in Histogram](https://leetcode.com/problems/largest-rectangle-in-histogram/) 再看看
+[84. Largest Rectangle in Histogram](https://leetcode.cn/problems/largest-rectangle-in-histogram/) 再看看
 
 ```py
 class Solution:
@@ -850,7 +882,7 @@ class Solution:
 
 ```
 
-[316. Remove Duplicate Letters](https://leetcode.com/problems/remove-duplicate-letters/)
+[316. Remove Duplicate Letters](https://leetcode.cn/problems/remove-duplicate-letters/)
 
 ```py
 class Solution:
@@ -880,7 +912,7 @@ class Solution:
 
 ## Monotonic stack
 
-[2104. Sum of Subarray Ranges](https://leetcode.com/problems/sum-of-subarray-ranges/description/)
+[2104. Sum of Subarray Ranges](https://leetcode.cn/problems/sum-of-subarray-ranges/description/)
 
 ```py
 class Solution:
@@ -897,7 +929,7 @@ class Solution:
         return res
 ```
 
-[739. Daily Temperatures](https://leetcode.com/problems/daily-temperatures/)
+[739. Daily Temperatures](https://leetcode.cn/problems/daily-temperatures/)
 
 ```python
 class Solution:

@@ -261,9 +261,16 @@ class Solution:
 
 ```python
 class MedianFinder:
+    """
+    A是min_heap，保存较大的一半，堆顶是A内的最小值
+    B保存较小的一半，同时A size比B大1或和B相等
+    找平均数的时候，要么直接看A，要么就是看二者的平均数
+
+    时间：addNum: O(logN)，找数O(1)
+    空间：O(N)
+    """
 
     def __init__(self):
-        # A保存较大的一半，B保存较小的一半，同时A size比B大1或和B相等
         self.A, self.B = [], []
 
     def addNum(self, num: int) -> None:

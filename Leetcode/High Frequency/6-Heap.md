@@ -41,7 +41,7 @@ len(minHeap)
 
 # Categorized
 
-[973. K Closest Points to Origin](https://leetcode.com/problems/k-closest-points-to-origin/)
+[973. K Closest Points to Origin](https://leetcode.cn/problems/k-closest-points-to-origin/)
 
 ```py
 class Solution:
@@ -107,7 +107,7 @@ class Solution:
         return select(0, len(points) - 1)
 ```
 
-[347. Top K Frequent Elements](https://leetcode.com/problems/top-k-frequent-elements/)
+[347. Top K Frequent Elements](https://leetcode.cn/problems/top-k-frequent-elements/)
 
 ```python
 class Solution:
@@ -193,7 +193,7 @@ class Solution:
         return res
 ```
 
-[23. Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/)
+[23. Merge k Sorted Lists](https://leetcode.cn/problems/merge-k-sorted-lists/)
 
 ```py
 class Solution:
@@ -272,7 +272,7 @@ class Solution:
         return dummy.next
 ```
 
-[264. Ugly Number II](https://leetcode.com/problems/ugly-number-ii/)
+[264. Ugly Number II](https://leetcode.cn/problems/ugly-number-ii/)
 
 ```py
 class Solution:
@@ -321,7 +321,7 @@ class Solution:
         return ugly[-1]
 ```
 
-[1086. High Five](https://leetcode.com/problems/high-five)
+[1086. High Five](https://leetcode.cn/problems/high-five)
 
 ```py
 class Solution:
@@ -347,7 +347,7 @@ class Solution:
         return res
 ```
 
-[88. Merge Sorted Array](https://leetcode.com/problems/merge-sorted-array/)
+[88. Merge Sorted Array](https://leetcode.cn/problems/merge-sorted-array/)
 
 ```py
 class Solution:
@@ -370,7 +370,7 @@ class Solution:
         nums1[:n] = nums2[:n]
 ```
 
-[692. Top K Frequent Words]([Loading...](https://leetcode.com/problems/top-k-frequent-words/))
+[692. Top K Frequent Words]([Loading...](https://leetcode.cn/problems/top-k-frequent-words/))
 
 ```py
 class Solution:
@@ -438,7 +438,7 @@ class Solution:
         return [item[0] for item in items[0:k]]
 ```
 
-[378. Kth Smallest Element in a Sorted Matrix](https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/)
+[378. Kth Smallest Element in a Sorted Matrix](https://leetcode.cn/problems/kth-smallest-element-in-a-sorted-matrix/)
 
 ```py
 class Solution:  # 204 ms, faster than 54.32%
@@ -465,51 +465,36 @@ class Solution:  # 204 ms, faster than 54.32%
         return res
 ```
 
-[295. Find Median from Data Stream](https://leetcode.com/problems/find-median-from-data-stream/)
+[295. Find Median from Data Stream](https://leetcode.cn/problems/find-median-from-data-stream/)
 
-```py
-class MedianFinder: 
-"""
-用两个size最多差1的Heap，每次新数字先加到minHeap，然后pop minHeap到maxHeap，最后永远保证minHeap的大小比maxHeap大于等于1；找数的时候，要么直接看minHeap，要么就是看二者的平均数
+```python
+class MedianFinder:
+    """
+    A是min_heap，保存较大的一半，堆顶是A内的最小值
+    B保存较小的一半，同时A size比B大1或和B相等
+    找平均数的时候，要么直接看A，要么就是看二者的平均数
 
-always maintain a min_heap and a max_heap, where elems in min_heap > max_heap: to make this come true, each new num should be put into min_heap first, then pop the smallest in min_heap to max_heap.
-in order to find the median, each time, push the largest in max_heap back to min_heap
-
-时间：addNum: O(logN)，找数O(1)
-空间：O(N)
-"""
+    时间：addNum: O(logN)，找数O(1)
+    空间：O(N)
+    """
 
     def __init__(self):
-        # all nums in max_heap < all nums in min_heap
-        self.max_heap, self.min_heap = [], []
+        self.A, self.B = [], []
 
     def addNum(self, num: int) -> None:
-        # add each element to minHeap first
-        # pop minHeap and add it to maxHeap 
-        # balance the size 
-        # In this case, all nums in max_heap < min_heap
-        heapq.heappush(self.min_heap, num)
-        elem = heapq.heappop(self.min_heap)
-        heapq.heappush(self.max_heap, -elem)
-        
-        if len(self.max_heap) > len(self.min_heap):
-            elem = heapq.heappop(self.max_heap)
-            heapq.heappush(self.min_heap, -elem)
+        # B[0]是较小的一半的最大值，只要是和B有关的操作，都要取反
+        if len(self.A) != len(self.B):  # 这个数加到B
+            heappush(self.A, num)
+            heappush(self.B, -heappop(self.A))
+        else:  # 这个数加到A
+            heappush(self.B, -num)
+            heappush(self.A, -heappop(self.B))
 
     def findMedian(self) -> float:
-        if len(self.maxHeap) < len(self.minHeap):
-            return self.min_heap[0]
-        else:
-            return (self.min_heap[0] - self.max_heap[0]) / 2
-
-
-# Your MedianFinder object will be instantiated and called as such:
-# obj = MedianFinder()
-# obj.addNum(num)
-# param_2 = obj.findMedian()
+        return self.A[0] if len(self.A) != len(self.B) else (self.A[0] - self.B[0]) / 2.0
 ```
 
-[767. Reorganize String]([Loading...](https://leetcode.com/problems/reorganize-string/))
+[767. Reorganize String]([Loading...](https://leetcode.cn/problems/reorganize-string/))
 
 ```py
 class Solution:
@@ -542,7 +527,7 @@ class Solution:
         return ''.join(res)
 ```
 
-[1438. Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit]([Loading...](https://leetcode.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/))
+[1438. Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit]([Loading...](https://leetcode.cn/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/))
 
 ```py
 class Solution:
@@ -560,7 +545,7 @@ class Solution:
         return res
 ```
 
-[895. Maximum Frequency Stack]([Loading...](https://leetcode.com/problems/maximum-frequency-stack/))
+[895. Maximum Frequency Stack]([Loading...](https://leetcode.cn/problems/maximum-frequency-stack/))
 
 ```py
 class FreqStack:
@@ -593,7 +578,7 @@ class FreqStack:
 
 # Others
 
-[703. Kth Largest Element in a Stream](https://leetcode.com/problems/kth-largest-element-in-a-stream/)
+[703. Kth Largest Element in a Stream](https://leetcode.cn/problems/kth-largest-element-in-a-stream/)
 
 ```py
 class KthLargest:
@@ -628,7 +613,7 @@ class KthLargest:
 # param_1 = obj.add(val)
 ```
 
-[1046. Last Stone Weight](https://leetcode.com/problems/last-stone-weight/)
+[1046. Last Stone Weight](https://leetcode.cn/problems/last-stone-weight/)
 用一个maxHeap。每次先取出来2个数，然后如果不同就加进来他们的差，最后要注意为空的情况
 
 ```py
@@ -648,7 +633,7 @@ class Solution:
         return abs(maxHeap[0])  
 ```
 
-[215. Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/)
+[215. Kth Largest Element in an Array](https://leetcode.cn/problems/kth-largest-element-in-an-array/)
 
 用maxHeap
 时间 O(N) + O(kLogN)
@@ -705,7 +690,7 @@ class Solution:
         return select(0, len(nums) - 1)
 ```
 
-[621. Task Scheduler](https://leetcode.com/problems/task-scheduler/)
+[621. Task Scheduler](https://leetcode.cn/problems/task-scheduler/)
 每次都先处理max_freq的task：每次都要最大值->maxHeap；另外用一个queue存
 
 时间：O(N*M) N is len(tasks), M is idleTime
@@ -735,7 +720,7 @@ class Solution:
         return time
 ```
 
-[355. Design Twitter](https://leetcode.com/problems/design-twitter/)
+[355. Design Twitter](https://leetcode.cn/problems/design-twitter/)
 
 ```py
 class Twitter:
@@ -776,13 +761,13 @@ class Twitter:
             self.followMap[followerId].remove(followeeId)
 ```
 
-[1337. The K Weakest Rows in a Matrix]([Loading...](https://leetcode.com/problems/the-k-weakest-rows-in-a-matrix/))
+[1337. The K Weakest Rows in a Matrix]([Loading...](https://leetcode.cn/problems/the-k-weakest-rows-in-a-matrix/))
 
 ```py
 
 ```
 
-[1642. Furthest Building You Can Reach](https://leetcode.com/problems/furthest-building-you-can-reach/)
+[1642. Furthest Building You Can Reach](https://leetcode.cn/problems/furthest-building-you-can-reach/)
 
 ```py
 class Solution:
@@ -881,7 +866,7 @@ class Solution:
         return r
 ```
 
-[1229. Meeting Scheduler](https://leetcode.com/problems/meeting-scheduler/)
+[1229. Meeting Scheduler](https://leetcode.cn/problems/meeting-scheduler/)
 
 ```py
 class Solution:
