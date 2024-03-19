@@ -50,7 +50,7 @@ class Solution:
 
 ```
 
-[127. Word Ladder](https://leetcode.com/problems/word-ladder/)
+[127. Word Ladder](https://leetcode.cn/problems/word-ladder/)
 
 ```python
 class Solution:
@@ -98,7 +98,7 @@ class Solution:
         return 0
 ```
 
-[126. Word Ladder II](https://leetcode.com/problems/word-ladder-ii/)
+[126. Word Ladder II](https://leetcode.cn/problems/word-ladder-ii/)
 
 ```py
 class Solution:
@@ -135,7 +135,9 @@ class Solution:
         return paths
 ```
 
-[490. The Maze](https://leetcode.com/problems/the-maze/)
+[490. The Maze](https://leetcode.cn/problems/the-maze/)
+[787. 迷宫](https://www.lintcode.com/problem/787/)
+
 一次走到底的情况
 
 ```py
@@ -177,7 +179,6 @@ class Solution:
         rows, cols = len(maze), len(maze[0])
         visited = set()
         dirs = [(1, 0), (-1, 0), (0, 1), (0, -1)]
-        res = float("inf")
 
         queue = collections.deque([(start[0], start[1], 0)])
         while queue:
@@ -200,7 +201,7 @@ class Solution:
         return -1
 ```
 
-[505. The Maze II](https://leetcode.com/problems/the-maze-ii/)
+[505. The Maze II](https://leetcode.cn/problems/the-maze-ii/)
 
 ```py
 class Solution:
@@ -249,7 +250,7 @@ class Solution:
         return min(res) if res else -1
 ```
 
-[994. Rotting Oranges](https://leetcode.com/problems/rotting-oranges/)
+[994. Rotting Oranges](https://leetcode.cn/problems/rotting-oranges/)
 
 ```py
 class Solution:
@@ -275,16 +276,16 @@ class Solution:
 
         dirs = [[0, 1], [0, -1], [1, 0], [-1, 0]]
 
-        while queue and fresh > 0:
+        while queue and fresh > 0:  # 加上fresh>0的条件
             for i in range(len(queue)):
                 r, c = queue.popleft()
 
-                for dr, dc in dirs:
-                    row, col = r + dr, c + dc
+                for dx, dy in dirs:
+                    nei_r, nei_c = r + dx, c + dy
                     # if in bounds and fresh, make it rotten
-                    if row in range(rows) and col in range(cols) and grid[row][col] == 1:
-                        grid[row][col] = 2
-                        queue.append((row, col))
+                    if 0 <= nei_r < rows and 0 <= nei_c < cols and grid[nei_r][nei_c] == 1:
+                        grid[nei_r][nei_c] = 2
+                        queue.append((nei_r, nei_c))
                         fresh -= 1
 
             time += 1
@@ -292,7 +293,8 @@ class Solution:
         return time if fresh == 0 else -1
 ```
 
-[1730. Shortest Path to Get Food](https://leetcode.com/problems/shortest-path-to-get-food/)
+[1730. Shortest Path to Get Food](https://leetcode.cn/problems/shortest-path-to-get-food/)
+[3719 获取奶茶的最短路径](https://www.lintcode.com/problem/3719/)
 
 ```py
 class Solution:
@@ -317,10 +319,10 @@ class Solution:
                 if grid[r][c] == "#":
                     return step
                 for dx, dy in dirs:
-                    nr, nc = r + dx, c + dy
-                    if nr in range(rows) and nc in range(cols) and (nr, nc) not in visited and grid[nr][nc] != "X":
-                        queue.append((nr, nc))
-                        visited.add((nr, nc))
+                    nei_r, nei_c = r + dx, c + dy
+                    if 0 <= nei_r < rows and 0 <= nei_c < cols and (nei_r, nei_c) not in visited and grid[nei_r][nei_c] != "X":
+                        queue.append((nei_r, nei_c))
+                        visited.add((nei_r, nei_c))
             step += 1
         
         return -1
