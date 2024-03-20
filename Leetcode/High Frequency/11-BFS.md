@@ -10,7 +10,11 @@
 
 ## Youtube
 
-103, 127/126, 490/505, 994, 1730
+[103. 二叉树的锯齿形层序遍历]
+[127. 单词接龙]/[126. 单词接龙 II]
+[490. 迷宫]/[505. 迷宫 II]
+[994. 腐烂的橘子]
+[1730. 获取食物的最短路径]
 
 # 例题
 
@@ -50,7 +54,7 @@ class Solution:
 
 ```
 
-[127. Word Ladder](https://leetcode.cn/problems/word-ladder/)
+[127. 单词接龙](https://leetcode.cn/problems/word-ladder/)
 
 ```python
 class Solution:
@@ -98,7 +102,7 @@ class Solution:
         return 0
 ```
 
-[126. Word Ladder II](https://leetcode.cn/problems/word-ladder-ii/)
+[126. 单词接龙 II](https://leetcode.cn/problems/word-ladder-ii/)
 
 ```py
 class Solution:
@@ -135,7 +139,7 @@ class Solution:
         return paths
 ```
 
-[490. The Maze](https://leetcode.cn/problems/the-maze/)
+[490. 迷宫](https://leetcode.cn/problems/the-maze/)
 [787. 迷宫](https://www.lintcode.com/problem/787/)
 
 一次走到底的情况
@@ -201,7 +205,7 @@ class Solution:
         return -1
 ```
 
-[505. The Maze II](https://leetcode.cn/problems/the-maze-ii/)
+[505. 迷宫 II](https://leetcode.cn/problems/the-maze-ii/)
 
 ```py
 class Solution:
@@ -250,7 +254,7 @@ class Solution:
         return min(res) if res else -1
 ```
 
-[994. Rotting Oranges](https://leetcode.cn/problems/rotting-oranges/)
+[994. 腐烂的橘子](https://leetcode.cn/problems/rotting-oranges/)
 
 ```py
 class Solution:
@@ -293,7 +297,7 @@ class Solution:
         return time if fresh == 0 else -1
 ```
 
-[1730. Shortest Path to Get Food](https://leetcode.cn/problems/shortest-path-to-get-food/)
+[1730. 获取食物的最短路径](https://leetcode.cn/problems/shortest-path-to-get-food/)
 [3719 获取奶茶的最短路径](https://www.lintcode.com/problem/3719/)
 
 ```py

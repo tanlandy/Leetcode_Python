@@ -84,16 +84,37 @@ def find_all_anagrams(original: str, check: str) -> List[int]:
 
 ## 知乎
 
-11, 42, 240
+[11. 盛最多水的容器]
+[42. 接雨水]
+[240. 搜索二维矩阵 II]
 
 ## Krahets精选题
 
-3, 15, 142（链表）, 151, 160, 167, 239, 392, 876
+[3. 无重复字符的最长子串]
+[15. 三数之和]
+[142. 环形链表 II]
+[151. 反转字符串中的单词]
+[160. 相交链表]
+[167. 两数之和 II - 输入有序数组]
+[239. 滑动窗口最大值]
+[392. 判断子序列]
+[876. 链表的中间结点]
 
 ## Youtube
 
-11, 15, 31, 125, 75
-3, 239, 209 (Sliding window)
+### Sliding window
+
+[3. 无重复字符的最长子串]
+[209. 长度最小的子数组]
+[239. 滑动窗口最大值]
+
+### Others
+
+[11. 盛最多水的容器]
+[15. 三数之和]
+[31. 下一个排列]
+[75. 颜色分类]
+[125. 验证回文串]
 
 # 以题型分类
 
@@ -210,7 +231,7 @@ class Solution:
 
 ### 缩减空间思想
 
-[167. Two Sum II - Input Array Is Sorted](https://leetcode.cn/problems/two-sum-ii-input-array-is-sorted/)
+[167. 两数之和 II - 输入有序数组](https://leetcode.cn/problems/two-sum-ii-input-array-is-sorted/)
 
 ```py
 class Solution:
@@ -254,7 +275,7 @@ class Solution:
         return False
 ```
 
-[11. Container With Most Water](https://leetcode.cn/problems/container-with-most-water/description/)
+[11. 盛最多水的容器](https://leetcode.cn/problems/container-with-most-water/description/)
 
 ```py
 class Solution:
@@ -279,7 +300,7 @@ class Solution:
         return area
 ```
 
-[15. 3Sum](https://leetcode.cn/problems/3sum/)
+[15. 三数之和](https://leetcode.cn/problems/3sum/)
 
 ```py
 class Solution:
@@ -319,7 +340,7 @@ class Solution:
 
 ### Others
 
-[42. Trapping Rain Water](https://leetcode.cn/problems/trapping-rain-water/description/)
+[42. 接雨水](https://leetcode.cn/problems/trapping-rain-water/description/)
 
 ```python
 class Solution:
@@ -651,7 +672,7 @@ class Solution:
         return s[minStart: minStart + minLen] if minLen != float("inf") else ""
 ```
 
-[3. Longest Substring Without Repeating Characters](https://leetcode.cn/problems/longest-substring-without-repeating-characters/description/)
+[3. 无重复字符的最长子串](https://leetcode.cn/problems/longest-substring-without-repeating-characters/description/)
 
 ```python
 class Solution:
@@ -780,7 +801,7 @@ class Solution:
         return res
 ```
 
-[209. Minimum Size Subarray Sum](https://leetcode.cn/problems/minimum-size-subarray-sum/)
+[209. 长度最小的子数组](https://leetcode.cn/problems/minimum-size-subarray-sum/)
 
 ```py
 class Solution:
@@ -936,7 +957,7 @@ class Solution:
 
 ## Others
 
-[31. Next Permutation](https://leetcode.cn/problems/next-permutation/)
+[31. 下一个排列](https://leetcode.cn/problems/next-permutation/)
 
 ```python
 class Solution:

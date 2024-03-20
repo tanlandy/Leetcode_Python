@@ -132,7 +132,7 @@ def level_order_traversal(root: Node) -> List[List[int]]:
 
 ## 题目
 
-[226. Invert Binary Tree](https://leetcode.com/problems/invert-binary-tree/)
+[226. Invert Binary Tree](https://leetcode.cn/problems/invert-binary-tree/)
 
 ```py
 class Solution:
@@ -170,7 +170,7 @@ class Solution:
         return root
 ```
 
-[103. Binary Tree Zigzag Level Order Traversal](https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/)
+[103. Binary Tree Zigzag Level Order Traversal](https://leetcode.cn/problems/binary-tree-zigzag-level-order-traversal/)
 
 ```python
 class Solution:
@@ -204,7 +204,7 @@ class Solution:
         return res
 ```
 
-[543. Diameter of Binary Tree](https://leetcode.com/problems/diameter-of-binary-tree/)
+[543. Diameter of Binary Tree](https://leetcode.cn/problems/diameter-of-binary-tree/)
 
 ```py
 class Solution:
@@ -231,7 +231,7 @@ class Solution:
         return res[0]
 ```
 
-[104. Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
+[104. Maximum Depth of Binary Tree](https://leetcode.cn/problems/maximum-depth-of-binary-tree/)
 
 ```py
 class Solution:
@@ -266,7 +266,7 @@ class Solution:
         return res
 ```
 
-[199. Binary Tree Right Side View](https://leetcode.com/problems/binary-tree-right-side-view/)
+[199. Binary Tree Right Side View](https://leetcode.cn/problems/binary-tree-right-side-view/)
 
 ```py
 class Solution:
@@ -316,7 +316,7 @@ class Solution:
         return res
 ```
 
-[652. Find Duplicate Subtrees](https://leetcode.com/problems/find-duplicate-subtrees/)
+[652. Find Duplicate Subtrees](https://leetcode.cn/problems/find-duplicate-subtrees/)
 
 每个节点要做什么：
 
@@ -351,7 +351,7 @@ class Solution:
         return res
 ```
 
-[654. Maximum Binary Tree](https://leetcode.com/problems/maximum-binary-tree/)
+[654. Maximum Binary Tree](https://leetcode.cn/problems/maximum-binary-tree/)
 
 ```py
 class Solution:
@@ -403,7 +403,7 @@ class Solution:
         return stack[0]
 ```
 
-[116. Populating Next Right Pointers in Each Node](https://leetcode.com/problems/populating-next-right-pointers-in-each-node/)
+[116. Populating Next Right Pointers in Each Node](https://leetcode.cn/problems/populating-next-right-pointers-in-each-node/)
 
 ```py
 class Solution:
@@ -487,7 +487,7 @@ class Solution:
         return root
 ```
 
-[111. Minimum Depth of Binary Tree](https://leetcode.com/problems/minimum-depth-of-binary-tree/)
+[111. Minimum Depth of Binary Tree](https://leetcode.cn/problems/minimum-depth-of-binary-tree/)
 
 ```py
 class Solution:
@@ -545,7 +545,7 @@ class Solution:
         return root
 ```
 
-[314. Binary Tree Vertical Order Traversal](https://leetcode.com/problems/binary-tree-vertical-order-traversal/)
+[314. Binary Tree Vertical Order Traversal](https://leetcode.cn/problems/binary-tree-vertical-order-traversal/)
 
 ```python
 from collections import deque
@@ -588,7 +588,7 @@ class Solution:
         """
 ```
 
-[987. Vertical Order Traversal of a Binary Tree](https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/)
+[987. Vertical Order Traversal of a Binary Tree](https://leetcode.cn/problems/vertical-order-traversal-of-a-binary-tree/)
 
 ```python
 class Solution(object):
@@ -621,9 +621,9 @@ class Solution(object):
         return res
 ```
 
-[310. Minimum Height Trees](https://leetcode.com/problems/minimum-height-trees/)
+[310. Minimum Height Trees](https://leetcode.cn/problems/minimum-height-trees/)
 
-[105. Construct Binary Tree from Preorder and Inorder Traversal](https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
+[105. Construct Binary Tree from Preorder and Inorder Traversal](https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
 
 先找到根节点位置，然后分治左右
 
@@ -654,7 +654,7 @@ class Solution:
 
 ```
 
-[106. Construct Binary Tree from Inorder and Postorder Traversal](https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)
+[106. Construct Binary Tree from Inorder and Postorder Traversal](https://leetcode.cn/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)
 
 先找到根节点位置，然后分治左右
 
@@ -679,7 +679,7 @@ class Solution:
         return root
 ```
 
-[889. Construct Binary Tree from Preorder and Postorder Traversal](https://leetcode.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/)
+[889. Construct Binary Tree from Preorder and Postorder Traversal](https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-postorder-traversal/)
 
 ```py
 class Solution:
@@ -705,7 +705,7 @@ class Solution:
         return root
 ```
 
-[297. Serialize and Deserialize Binary Tree](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/)
+[297. Serialize and Deserialize Binary Tree](https://leetcode.cn/problems/serialize-and-deserialize-binary-tree/)
 
 ```python
 class Codec:
@@ -795,7 +795,7 @@ class Codec:
         return root
 ```
 
-[298. Binary Tree Longest Consecutive Sequence](https://leetcode.com/problems/binary-tree-longest-consecutive-sequence/)
+[298. Binary Tree Longest Consecutive Sequence](https://leetcode.cn/problems/binary-tree-longest-consecutive-sequence/)
 
 ```py
 class Solution:
@@ -827,9 +827,9 @@ class Solution:
         return res[0]
 ```
 
-[1130. Minimum Cost Tree From Leaf Values](https://leetcode.com/problems/minimum-cost-tree-from-leaf-values/)
+[1130. Minimum Cost Tree From Leaf Values](https://leetcode.cn/problems/minimum-cost-tree-from-leaf-values/)
 
-[1485. Clone Binary Tree With Random Pointer](https://leetcode.com/problems/clone-binary-tree-with-random-pointer/)
+[1485. Clone Binary Tree With Random Pointer](https://leetcode.cn/problems/clone-binary-tree-with-random-pointer/)
 
 ```py
 class Solution:
@@ -851,7 +851,7 @@ class Solution:
         return dfs(root)
 ```
 
-[863. All Nodes Distance K in Binary Tree](https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/)
+[863. All Nodes Distance K in Binary Tree](https://leetcode.cn/problems/all-nodes-distance-k-in-binary-tree/)
 
 ```py
 class Solution:
@@ -883,7 +883,7 @@ class Solution:
         return res
 ```
 
-[114. Flatten Binary Tree to Linked List](https://leetcode.com/problems/flatten-binary-tree-to-linked-list/)
+[114. Flatten Binary Tree to Linked List](https://leetcode.cn/problems/flatten-binary-tree-to-linked-list/)
 LC官方讲解好
 
 ```py
@@ -926,7 +926,7 @@ class Solution:
         self.flattenTree(root)
 ```
 
-[104. Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
+[104. Maximum Depth of Binary Tree](https://leetcode.cn/problems/maximum-depth-of-binary-tree/)
 
 ```py
 class Node:
@@ -986,7 +986,7 @@ class Solution:
         return res
 ```
 
-[1448. Count Good Nodes in Binary Tree](https://leetcode.com/problems/count-good-nodes-in-binary-tree/)
+[1448. Count Good Nodes in Binary Tree](https://leetcode.cn/problems/count-good-nodes-in-binary-tree/)
 
 ```py
 class Solution:
@@ -1037,7 +1037,7 @@ class Solution:
         return node_height(root) != -1
 ```
 
-[101. Symmetric Tree](https://leetcode.com/problems/symmetric-tree/)
+[101. Symmetric Tree](https://leetcode.cn/problems/symmetric-tree/)
 
 ```py
 class Solution:
@@ -1082,7 +1082,7 @@ class Solution:
         return True
 ```
 
-[951. Flip Equivalent Binary Trees](https://leetcode.com/problems/flip-equivalent-binary-trees/)
+[951. Flip Equivalent Binary Trees](https://leetcode.cn/problems/flip-equivalent-binary-trees/)
 
 ```py
 class Solution:
@@ -1109,7 +1109,7 @@ class Solution:
         return dfs(root1, root2)
 ```
 
-[572. Subtree of Another Tree](https://leetcode.com/problems/subtree-of-another-tree/)
+[572. Subtree of Another Tree](https://leetcode.cn/problems/subtree-of-another-tree/)
 
 ```py
 class Solution:
@@ -1147,9 +1147,9 @@ class Solution:
         return (self.sameTree(p.left, q.left) and self.sameTree(p.right, q.right))
 ```
 
-[863. All Nodes Distance K in Binary Tree](https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/)
+[863. All Nodes Distance K in Binary Tree](https://leetcode.cn/problems/all-nodes-distance-k-in-binary-tree/)
 
-[1110. Delete Nodes And Return Forest](https://leetcode.com/problems/delete-nodes-and-return-forest/)
+[1110. Delete Nodes And Return Forest](https://leetcode.cn/problems/delete-nodes-and-return-forest/)
 
 ```py
 class Solution:
@@ -1180,7 +1180,7 @@ class Solution:
         return res
 ```
 
-[270. Closest Binary Search Tree Value](https://leetcode.com/problems/closest-binary-search-tree-value/)
+[270. Closest Binary Search Tree Value](https://leetcode.cn/problems/closest-binary-search-tree-value/)
 
 ```py
 class Solution:
@@ -1209,7 +1209,7 @@ class Solution:
         return res[0]
 ```
 
-[669. Trim a Binary Search Tree](https://leetcode.com/problems/trim-a-binary-search-tree/)
+[669. Trim a Binary Search Tree](https://leetcode.cn/problems/trim-a-binary-search-tree/)
 
 ```py
 class Solution:
@@ -1263,7 +1263,7 @@ class Solution:
                 self.isSameTree(p.right, q.right))
 ```
 
-[1448. Count Good Nodes in Binary Tree](https://leetcode.com/problems/count-good-nodes-in-binary-tree/)
+[1448. Count Good Nodes in Binary Tree](https://leetcode.cn/problems/count-good-nodes-in-binary-tree/)
 
 时间：O(N)
 空间：O(H)
@@ -1287,7 +1287,7 @@ class Solution:
         return dfs(root, root.val)
 ```
 
-[1457. Pseudo-Palindromic Paths in a Binary Tree](https://leetcode.com/problems/pseudo-palindromic-paths-in-a-binary-tree/)
+[1457. Pseudo-Palindromic Paths in a Binary Tree](https://leetcode.cn/problems/pseudo-palindromic-paths-in-a-binary-tree/)
 
 ```py
 class Solution:
@@ -1383,7 +1383,7 @@ class Solution:
         return res[0]
 ```
 
-[872. Leaf-Similar Trees](https://leetcode.com/problems/leaf-similar-trees/description/)
+[872. Leaf-Similar Trees](https://leetcode.cn/problems/leaf-similar-trees/description/)
 
 ```py
 class Solution:
@@ -1406,7 +1406,7 @@ class Solution:
 
 ### Path系列
 
-[257. Binary Tree Paths](https://leetcode.com/problems/binary-tree-paths/)
+[257. Binary Tree Paths](https://leetcode.cn/problems/binary-tree-paths/)
 
 ```py
 class Solution:
@@ -1433,7 +1433,7 @@ class Solution:
         return res
 ```
 
-[988. Smallest String Starting From Leaf](https://leetcode.com/problems/smallest-string-starting-from-leaf/)
+[988. Smallest String Starting From Leaf](https://leetcode.cn/problems/smallest-string-starting-from-leaf/)
 
 ```py
 class Solution:
@@ -1459,7 +1459,7 @@ class Solution:
         return res[0]
 ```
 
-[1022. Sum of Root To Leaf Binary Numbers](https://leetcode.com/problems/sum-of-root-to-leaf-binary-numbers/)
+[1022. Sum of Root To Leaf Binary Numbers](https://leetcode.cn/problems/sum-of-root-to-leaf-binary-numbers/)
 
 ```py
 class Solution:
@@ -1486,7 +1486,7 @@ class Solution:
         return res[0]
 ```
 
-[112. Path Sum](https://leetcode.com/problems/path-sum/)
+[112. Path Sum](https://leetcode.cn/problems/path-sum/)
 
 ```py
 class Solution:
@@ -1505,7 +1505,7 @@ class Solution:
         return self.hasPathSum(root.left, targetSum) or self.hasPathSum(root.right, targetSum)
 ```
 
-[113. Path Sum II](https://leetcode.com/problems/path-sum-ii/)
+[113. Path Sum II](https://leetcode.cn/problems/path-sum-ii/)
 
 ```py
 class Solution:
@@ -1537,7 +1537,7 @@ class Solution:
         return res
 ```
 
-[437. Path Sum III](https://leetcode.com/problems/path-sum-iii/)
+[437. Path Sum III](https://leetcode.cn/problems/path-sum-iii/)
 
 ```py
 class Solution:
@@ -1598,7 +1598,7 @@ class Solution:
         return res[0]
 ```
 
-[129. Sum Root to Leaf Numbers](https://leetcode.com/problems/sum-root-to-leaf-numbers/)
+[129. Sum Root to Leaf Numbers](https://leetcode.cn/problems/sum-root-to-leaf-numbers/)
 
 ```py
 class Solution:
@@ -1620,7 +1620,7 @@ class Solution:
         return res[0]
 ```
 
-[687. Longest Univalue Path](https://leetcode.com/problems/longest-univalue-path/)
+[687. Longest Univalue Path](https://leetcode.cn/problems/longest-univalue-path/)
 
 ```py
 class Solution:
@@ -1647,7 +1647,7 @@ class Solution:
         return res[0]
 ```
 
-[124. Binary Tree Maximum Path Sum](https://leetcode.com/problems/binary-tree-maximum-path-sum/)
+[124. Binary Tree Maximum Path Sum](https://leetcode.cn/problems/binary-tree-maximum-path-sum/)
 
 ```py
 class Solution:
@@ -1682,7 +1682,7 @@ class Solution:
 
 ### 公共祖先系列
 
-[236. Lowest Common Ancestor of a Binary Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/)
+[236. Lowest Common Ancestor of a Binary Tree](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree/)
 
 ```python
 
@@ -1717,7 +1717,7 @@ class Solution:
             return left or right # Case 3：其中一个子树包含节点 
 ```
 
-[1676. Lowest Common Ancestor of a Binary Tree IV](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iv/)
+[1676. Lowest Common Ancestor of a Binary Tree IV](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree-iv/)
 
 ```py
 class Solution:
@@ -1747,7 +1747,7 @@ class Solution:
         return dfs(root)
 ```
 
-[1644. Lowest Common Ancestor of a Binary Tree II](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-ii/)
+[1644. Lowest Common Ancestor of a Binary Tree II](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree-ii/)
 
 ```py
 class Solution:
@@ -1783,7 +1783,7 @@ class Solution:
         return lca
 ```
 
-[235. Lowest Common Ancestor of a Binary Search Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)
+[235. Lowest Common Ancestor of a Binary Search Tree](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-search-tree/)
 
 ```py
 class Solution:
@@ -1807,7 +1807,7 @@ class Solution:
                 return cur
 ```
 
-[1650. Lowest Common Ancestor of a Binary Tree III](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iii/)
+[1650. Lowest Common Ancestor of a Binary Tree III](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree-iii/)
 
 ```python
     def lowestCommonAncestor(self, p: 'Node', q: 'Node') -> 'Node':
@@ -1846,7 +1846,7 @@ class Solution:
         return p      
 ```
 
-[1367. Linked List in Binary Tree](https://leetcode.com/problems/linked-list-in-binary-tree/)
+[1367. Linked List in Binary Tree](https://leetcode.cn/problems/linked-list-in-binary-tree/)
 
 ```py
 class Solution:
@@ -1880,7 +1880,7 @@ class Solution:
         return False
 ```
 
-[623. Add One Row to Tree](https://leetcode.com/problems/add-one-row-to-tree/)
+[623. Add One Row to Tree](https://leetcode.cn/problems/add-one-row-to-tree/)
 
 ```py
 # Definition for a binary tree node.
@@ -1937,11 +1937,15 @@ Dynamic hash tables usually have a lot of unused memory in order to make the ins
 
 ### Youtube
 
-450, 285, 98, 1008, 230
+[98. 验证二叉搜索树]
+[230. 二叉搜索树中第K小的元素]
+[285. 二叉搜索树中的中序后继]
+[450. 删除二叉搜索树中的节点]
+[1008. 前序遍历构造二叉搜索树]
 
 ## 题目
 
-[653. Two Sum IV - Input is a BST](https://leetcode.com/problems/two-sum-iv-input-is-a-bst/)
+[653. Two Sum IV - Input is a BST](https://leetcode.cn/problems/two-sum-iv-input-is-a-bst/)
 
 ```py
 class Solution:
@@ -1974,7 +1978,7 @@ class Solution:
         return False
 ```
 
-[938. Range Sum of BST](https://leetcode.com/problems/range-sum-of-bst/description/)
+[938. Range Sum of BST](https://leetcode.cn/problems/range-sum-of-bst/description/)
 
 ```py
 class Solution:
@@ -1999,7 +2003,7 @@ class Solution:
         return res
 ```
 
-[285. Inorder Successor in BST](https://leetcode.com/problems/inorder-successor-in-bst/)
+[285. 二叉搜索树中的中序后继](https://leetcode.cn/problems/inorder-successor-in-bst/)
 
 ```py
 class Solution:
@@ -2020,7 +2024,7 @@ class Solution:
         return successor
 ```
 
-[510. Inorder Successor in BST II](https://leetcode.com/problems/inorder-successor-in-bst-ii/)
+[510. Inorder Successor in BST II](https://leetcode.cn/problems/inorder-successor-in-bst-ii/)
 
 ```py
 
@@ -2042,7 +2046,7 @@ class Solution:
         return node.parent
 ```
 
-[1214. Two Sum BSTs](https://leetcode.com/problems/two-sum-bsts/)
+[1214. Two Sum BSTs](https://leetcode.cn/problems/two-sum-bsts/)
 
 ```py
 class Solution:
@@ -2113,7 +2117,7 @@ class Solution:
         return False
 ```
 
-[230. Kth Smallest Element in a BST](https://leetcode.com/problems/kth-smallest-element-in-a-bst/)
+[230. Kth Smallest Element in a BST](https://leetcode.cn/problems/kth-smallest-element-in-a-bst/)
 
 ```py
 class Solution:
@@ -2141,7 +2145,7 @@ class Solution:
             cur = cur.right      
 ```
 
-[538. Convert BST to Greater Tree](https://leetcode.com/problems/convert-bst-to-greater-tree/)
+[538. Convert BST to Greater Tree](https://leetcode.cn/problems/convert-bst-to-greater-tree/)
 
 ```py
 class Solution:
@@ -2167,7 +2171,7 @@ class Solution:
         return root
 ```
 
-[98. Validate Binary Search Tree](https://leetcode.com/problems/validate-binary-search-tree/)
+[98. Validate Binary Search Tree](https://leetcode.cn/problems/validate-binary-search-tree/)
 
 ```py
 class Solution:
@@ -2194,7 +2198,7 @@ class Solution:
         return valid(root, float("-inf"), float("inf"))     
 ```
 
-[700. Search in a Binary Search Tree](https://leetcode.com/problems/search-in-a-binary-search-tree/)
+[700. Search in a Binary Search Tree](https://leetcode.cn/problems/search-in-a-binary-search-tree/)
 
 ```py
     def searchBST(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
@@ -2208,7 +2212,7 @@ class Solution:
         return root # 要么是找到了，要么是就没有
 ```
 
-[701. Insert into a Binary Search Tree](https://leetcode.com/problems/insert-into-a-binary-search-tree/)
+[701. Insert into a Binary Search Tree](https://leetcode.cn/problems/insert-into-a-binary-search-tree/)
 
 ```py
 class Solution:
@@ -2234,7 +2238,7 @@ class Solution:
         return TreeNode(val)
 ```
 
-[450. Delete Node in a BST](https://leetcode.com/problems/delete-node-in-a-bst/)
+[450. 删除二叉搜索树中的节点](https://leetcode.cn/problems/delete-node-in-a-bst/)
 
 ```py
 class Solution:
@@ -2271,7 +2275,7 @@ class Solution:
         return root
 ```
 
-[222. Count Complete Tree Nodes](https://leetcode.com/problems/count-complete-tree-nodes/)
+[222. Count Complete Tree Nodes](https://leetcode.cn/problems/count-complete-tree-nodes/)
 
 ```py
 class Solution:
@@ -2295,7 +2299,7 @@ class Solution:
         return 1 + self.countNodes(root.left) + self.countNodes(root.right)
 ```
 
-[108. Convert Sorted Array to Binary Search Tree](https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/)
+[108. Convert Sorted Array to Binary Search Tree](https://leetcode.cn/problems/convert-sorted-array-to-binary-search-tree/)
 
 ```py
 class Solution:
@@ -2320,7 +2324,7 @@ class Solution:
         return helper(0, len(nums) - 1)
 ```
 
-[333. Largest BST Subtree](https://leetcode.com/problems/largest-bst-subtree/) 类似LC98
+[333. Largest BST Subtree](https://leetcode.cn/problems/largest-bst-subtree/) 类似LC98
 
 ```py
 class SubTree(object):
@@ -2399,7 +2403,7 @@ def ternary_tree_paths(root: Node) -> List[str]:
 
 ## 题目
 
-[1490. Clone N-ary Tree](https://leetcode.com/problems/clone-n-ary-tree/)
+[1490. Clone N-ary Tree](https://leetcode.cn/problems/clone-n-ary-tree/)
 
 ```py
 class Solution:
@@ -2418,7 +2422,7 @@ class Solution:
         return new
 ```
 
-[559. Maximum Depth of N-ary Tree](https://leetcode.com/problems/maximum-depth-of-n-ary-tree/)
+[559. Maximum Depth of N-ary Tree](https://leetcode.cn/problems/maximum-depth-of-n-ary-tree/)
 
 ```py
 """
@@ -2447,7 +2451,7 @@ class Solution:
 
 # Trie Tree
 
-[208. Implement Trie (Prefix Tree)](https://leetcode.com/problems/implement-trie-prefix-tree/)
+[208. Implement Trie (Prefix Tree)](https://leetcode.cn/problems/implement-trie-prefix-tree/)
 
 从root开始构建trie tree：每个letter是一个node，叶子节点要另外注明是一个单词的结束。
 
@@ -2512,7 +2516,7 @@ class Trie:
 
 ## 题目
 
-[211. Design Add and Search Words Data Structure](https://leetcode.com/problems/design-add-and-search-words-data-structure/)
+[211. Design Add and Search Words Data Structure](https://leetcode.cn/problems/design-add-and-search-words-data-structure/)
 
 回溯的方式解决.的情况
 
@@ -2621,11 +2625,11 @@ class Solution:
         return list(res)
 ```
 
-[1268. Search Suggestions System](https://leetcode.com/problems/search-suggestions-system/)
+[1268. Search Suggestions System](https://leetcode.cn/problems/search-suggestions-system/)
 
 以上是必须掌握题
 
-[820. Short Encoding of Words](https://leetcode.com/problems/short-encoding-of-words/)
+[820. Short Encoding of Words](https://leetcode.cn/problems/short-encoding-of-words/)
 
 ```py
 class Solution:
@@ -2645,7 +2649,7 @@ class Solution:
         return sum(depth for node, depth in leaves if len(node) == 0)
 ```
 
-[2135. Count Words Obtained After Adding a Letter](https://leetcode.com/problems/count-words-obtained-after-adding-a-letter/)
+[2135. Count Words Obtained After Adding a Letter](https://leetcode.cn/problems/count-words-obtained-after-adding-a-letter/)
 
 ```py
 class TrieNode:
@@ -2697,7 +2701,7 @@ class Solution:
 
 也可以用bitmask
 
-[f20. Longest Word in Dictionary](https://leetcode.com/problems/longest-word-in-dictionary/)
+[f20. Longest Word in Dictionary](https://leetcode.cn/problems/longest-word-in-dictionary/)
 
 ```py
 class TrieNode(object):
@@ -2736,7 +2740,7 @@ class Solution(object):
         return trie.bfs()
 ```
 
-[745. Prefix and Suffix Search](https://leetcode.com/problems/design-add-and-search-words-data-structure/)
+[745. Prefix and Suffix Search](https://leetcode.cn/problems/design-add-and-search-words-data-structure/)
 
 # Segment Tree
 
@@ -2764,11 +2768,11 @@ each node contains: left, sum, right
 
 range query problems like finding minimum, maximum, sum, greatest common divisor, least common denominator in array in logarithmic time.
 
-<https://leetcode.com/articles/a-recursive-approach-to-segment-trees-range-sum-queries-lazy-propagation/>
+<https://leetcode.cn/articles/a-recursive-approach-to-segment-trees-range-sum-queries-lazy-propagation/>
 
 ## 例题
 
-[307. Range Sum Query - Mutable](https://leetcode.com/problems/range-sum-query-mutable/)
+[307. Range Sum Query - Mutable](https://leetcode.cn/problems/range-sum-query-mutable/)
 
 ```py
 class Node(object):
@@ -2948,7 +2952,7 @@ def minimum_spanning_tree(n : int, edges : List[edge]) -> int:
 
 ## 题目
 
-[1584. Min Cost to Connect All Points](https://leetcode.com/problems/min-cost-to-connect-all-points/)
+[1584. Min Cost to Connect All Points](https://leetcode.cn/problems/min-cost-to-connect-all-points/)
 
 ```py
 class Solution:
@@ -2988,7 +2992,7 @@ class Solution:
         return res
 ```
 
-[1135. Connecting Cities With Minimum Cost](https://leetcode.com/problems/connecting-cities-with-minimum-cost/)
+[1135. Connecting Cities With Minimum Cost](https://leetcode.cn/problems/connecting-cities-with-minimum-cost/)
 
 ```py
 class Solution:
