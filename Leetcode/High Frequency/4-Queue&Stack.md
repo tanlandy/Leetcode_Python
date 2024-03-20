@@ -14,17 +14,23 @@
 
 ## 知乎
 
-735
+[735. 小行星碰撞]
 
 ## Krahets精选题
 
-155, 232, 295, 394
 [20. 有效的括号]
+[155. 最小栈]
+[232. 用栈实现队列]
+[232. 用栈实现队列]
+[295. 数据流的中位数]
 
 ## Youtube
 
-224/227/772, 735, 84, 739
 [20. 有效的括号]
+[84. 柱状图中最大的矩形]
+[224. 基本计算器]/[227. 基本计算器 II]/[772. 基本计算器 III]
+[735. 小行星碰撞]
+[739. 每日温度]
 
 # Queue
 
@@ -356,7 +362,7 @@ print(int(convert_int_to_bin(56),2)==56)
 
 ## Zhihu
 
-[155. Min Stack](https://leetcode.cn/problems/min-stack/)
+[155. 最小栈](https://leetcode.cn/problems/min-stack/)
 
 ```py
 class MinStack:
@@ -465,7 +471,7 @@ class MaxStack:
 # param_5 = obj.popMax()
 ```
 
-[232. Implement Queue using Stacks](https://leetcode.cn/problems/implement-queue-using-stacks/)
+[232. 用栈实现队列](https://leetcode.cn/problems/implement-queue-using-stacks/)
 
 ```py
 class MyQueue:
@@ -522,7 +528,7 @@ class Solution:
         return stack[0]
 ```
 
-[227. Basic Calculator II](https://leetcode.cn/problems/basic-calculator-ii/)
+[227. 基本计算器 II](https://leetcode.cn/problems/basic-calculator-ii/)
 
 用Stack存数字，每次如果是+-就直接压进去，如果是*/就压进去相对应的数，最后弹栈相加；-3//2地板除会得到-2而不是想要的-1，所以用int(-3/2)这样就可以得到-1;检查是否是数字: s[i].isdigit()；把长串string转成对应的数字num=num*10+int(s[i]);如果是"+-*/": if s[i] in "+-*/"；sign的条件：如果是sign或者走到最后一位；相加stack的所有数字：sum(stack)；每次检查完sign之后要更新num和sign；最后还有把最后的数放进stack里
 时间：O(N)
@@ -554,7 +560,7 @@ class Solution:
         return sum(stack)
 ```
 
-[224. Basic Calculator](https://leetcode.cn/problems/basic-calculator/)
+[224. 基本计算器](https://leetcode.cn/problems/basic-calculator/)
 
 当看到"("就从下一位call自己，看到")"就返回"()"之间的值
 
@@ -586,7 +592,7 @@ class Solution:
         return sum(stack)
 ```
 
-[772. Basic Calculator III](https://leetcode.cn/problems/basic-calculator-iii/)
+[772. 基本计算器 III](https://leetcode.cn/problems/basic-calculator-iii/)
 
 ```python
 class Solution:
@@ -728,7 +734,7 @@ class Solution:
         return "".join(s)
 ```
 
-[735. Asteroid Collision](https://leetcode.cn/problems/asteroid-collision/)
+[735. 小行星碰撞](https://leetcode.cn/problems/asteroid-collision/)
 
 ```py
 class Solution:
@@ -859,7 +865,7 @@ class Solution:
         return len(stack)
 ```
 
-[84. Largest Rectangle in Histogram](https://leetcode.cn/problems/largest-rectangle-in-histogram/) 再看看
+[84. 柱状图中最大的矩形](https://leetcode.cn/problems/largest-rectangle-in-histogram/) 再看看
 
 ```py
 class Solution:
@@ -935,7 +941,7 @@ class Solution:
         return res
 ```
 
-[739. Daily Temperatures](https://leetcode.cn/problems/daily-temperatures/)
+[739. 每日温度](https://leetcode.cn/problems/daily-temperatures/)
 
 ```python
 class Solution:

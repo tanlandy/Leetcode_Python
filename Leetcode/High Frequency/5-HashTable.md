@@ -8,11 +8,15 @@
 
 ## Krahets精选题
 
-205, 242, 266, 387, 409, 
+[205. 同构字符串]
+[242. 有效的字母异位词]
+[266. 回文排列]
+[387. 字符串中的第一个唯一字符]
+[409. 最长回文串]
 
 # 例题
 
-[1. Two Sum](https://leetcode.com/problems/two-sum/)
+[1. Two Sum](https://leetcode.cn/problems/two-sum/)
 
 ```py
 class Solution:
@@ -29,7 +33,7 @@ class Solution:
             seen[n] = idx
 ```
 
-[146. LRU Cache](https://leetcode.com/problems/lru-cache/)
+[146. LRU Cache](https://leetcode.cn/problems/lru-cache/)
 
 ```py
 """
@@ -118,9 +122,9 @@ class LRUCache:
 # obj.put(key,value)
 ```
 
-[460. LFU Cache](https://leetcode.com/problems/lfu-cache/)
+[460. LFU Cache](https://leetcode.cn/problems/lfu-cache/)
 
-[128. Longest Consecutive Sequence](https://leetcode.com/problems/longest-consecutive-sequence/)
+[128. Longest Consecutive Sequence](https://leetcode.cn/problems/longest-consecutive-sequence/)
 
 ```py
 class Solution:
@@ -147,7 +151,7 @@ class Solution:
 
 ```
 
-[73. Set Matrix Zeroes](https://leetcode.com/problems/set-matrix-zeroes/)
+[73. Set Matrix Zeroes](https://leetcode.cn/problems/set-matrix-zeroes/)
 
 ```py
 class Solution:
@@ -191,7 +195,7 @@ class Solution:
                 matrix[r][0] = 0
 ```
 
-[380. Insert Delete GetRandom O(1)](https://leetcode.com/problems/insert-delete-getrandom-o1/)
+[380. Insert Delete GetRandom O(1)](https://leetcode.cn/problems/insert-delete-getrandom-o1/)
 
 ```py
 class RandomizedSet:
@@ -227,7 +231,7 @@ class RandomizedSet:
 
 ```
 
-[49. Group Anagrams](https://leetcode.com/problems/group-anagrams/)
+[49. Group Anagrams](https://leetcode.cn/problems/group-anagrams/)
 
 ```python
 class Solution:
@@ -254,7 +258,7 @@ class Solution:
         return list(res.values()) 
 ```
 
-[350. Intersection of Two Arrays II](https://leetcode.com/problems/intersection-of-two-arrays-ii/)
+[350. Intersection of Two Arrays II](https://leetcode.cn/problems/intersection-of-two-arrays-ii/)
 
 ```py
 class Solution:
@@ -310,7 +314,7 @@ class Solution:
         return nums1[:k]
 ```
 
-[299. Bulls and Cows](https://leetcode.com/problems/bulls-and-cows/)
+[299. Bulls and Cows](https://leetcode.cn/problems/bulls-and-cows/)
 
 ```py
 class Solution:
@@ -362,7 +366,7 @@ class Solution:
 
 ## Hashset
 
-[217. Contains Duplicate](https://leetcode.com/problems/contains-duplicate/)
+[217. Contains Duplicate](https://leetcode.cn/problems/contains-duplicate/)
 
 ```py
 class Solution:
@@ -377,7 +381,7 @@ class Solution:
         return False
 ```
 
-[219. Contains Duplicate II](https://leetcode.com/problems/contains-duplicate-ii/)
+[219. Contains Duplicate II](https://leetcode.cn/problems/contains-duplicate-ii/)
 
 ```py
 class Solution:
@@ -394,9 +398,9 @@ class Solution:
         return False
 ```
 
-[220. Contains Duplicate III](https://leetcode.com/problems/contains-duplicate-iii/)
+[220. Contains Duplicate III](https://leetcode.cn/problems/contains-duplicate-iii/)
 
-[1207. Unique Number of Occurrences](https://leetcode.com/problems/unique-number-of-occurrences/)
+[1207. Unique Number of Occurrences](https://leetcode.cn/problems/unique-number-of-occurrences/)
 
 ```py
 class Solution:
@@ -415,7 +419,7 @@ class Solution:
         return True
 ```
 
-[2133. Check if Every Row and Column Contains All Numbers](https://leetcode.com/problems/check-if-every-row-and-column-contains-all-numbers/)
+[2133. Check if Every Row and Column Contains All Numbers](https://leetcode.cn/problems/check-if-every-row-and-column-contains-all-numbers/)
 
 ```py
 class Solution:
@@ -442,7 +446,7 @@ class Solution:
 
 ## Tic-Tac-Toe
 
-[348. Design Tic-Tac-Toe](https://leetcode.com/problems/design-tic-tac-toe/)
+[348. Design Tic-Tac-Toe](https://leetcode.cn/problems/design-tic-tac-toe/)
 
 ```py
 class TicTacToe:
@@ -474,7 +478,7 @@ class TicTacToe:
         return 0
 ```
 
-[1275. Find Winner on a Tic Tac Toe Game](https://leetcode.com/problems/find-winner-on-a-tic-tac-toe-game/)
+[1275. Find Winner on a Tic Tac Toe Game](https://leetcode.cn/problems/find-winner-on-a-tic-tac-toe-game/)
 
 ```py
 class Solution:
@@ -507,7 +511,7 @@ class Solution:
         return "Draw" if len(moves) == n * n else "Pending"
 ```
 
-[794. Valid Tic-Tac-Toe State](https://leetcode.com/problems/valid-tic-tac-toe-state/)
+[794. Valid Tic-Tac-Toe State](https://leetcode.cn/problems/valid-tic-tac-toe-state/)
 
 ```py
 class Solution:
@@ -557,7 +561,7 @@ class Solution:
 
 # Others
 
-[535. Encode and Decode TinyURL](https://leetcode.com/problems/encode-and-decode-tinyurl/)
+[535. Encode and Decode TinyURL](https://leetcode.cn/problems/encode-and-decode-tinyurl/)
 两个字典，分别存{long:short}和{short:long}
 
 ```python
@@ -587,7 +591,7 @@ class Codec:
 
 ```
 
-[238. Product of Array Except Self](https://leetcode.com/problems/product-of-array-except-self/)
+[238. Product of Array Except Self](https://leetcode.cn/problems/product-of-array-except-self/)
 
 走左右两遍
 
@@ -612,7 +616,7 @@ class Solution:
         return res
 ```
 
-[36. Valid Sudoku](https://leetcode.com/problems/valid-sudoku/)
+[36. Valid Sudoku](https://leetcode.cn/problems/valid-sudoku/)
 
 ```py
 class Solution:
@@ -643,7 +647,7 @@ class Solution:
 
 ```
 
-[205. Isomorphic Strings](https://leetcode.com/problems/isomorphic-strings/)
+[205. 同构字符串](https://leetcode.cn/problems/isomorphic-strings/)
 
 ```py
 class Solution:
@@ -673,7 +677,7 @@ class Solution:
         return True
 ```
 
-[242. Valid Anagram](https://leetcode.com/problems/valid-anagram/)
+[242. 有效的字母异位词](https://leetcode.cn/problems/valid-anagram/)
 
 ```py
 class Solution:

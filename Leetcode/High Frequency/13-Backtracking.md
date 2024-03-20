@@ -8,7 +8,11 @@
 
 ## Youtube
 
-79, 22, 140, 39/40/216, 46/47
+[79. 单词搜索]
+[22. 括号生成]
+[140. 单词拆分 II]
+[39. 组合总和]/[40. 组合总和 II]/[216. 组合总和 III]
+[46. 全排列]/[47. 全排列 II]
 
 # 回溯
 
@@ -98,7 +102,7 @@ for i in range(len(nums)):
 
 # 例题
 
-[22. Generate Parentheses](https://leetcode.cn/problems/generate-parentheses/)
+[22. 括号生成](https://leetcode.cn/problems/generate-parentheses/)
 
 ```py
 class Solution:
@@ -205,7 +209,7 @@ class Solution:
         return res
 ```
 
-[46. Permutations](https://leetcode.cn/problems/permutations/) 排列（元素无重不可复选）
+[46. 全排列](https://leetcode.cn/problems/permutations/) 排列（元素无重不可复选）
 
 Given an array nums of distinct integers, return all the possible permutations. You can return the answer in any order.
 
@@ -275,7 +279,7 @@ class Solution:
         return res
 ```
 
-[39. Combination Sum](https://leetcode.cn/problems/combination-sum/)
+[39. 组合总和](https://leetcode.cn/problems/combination-sum/)
 
 Given an array of distinct integers candidates and a target integer target, return a list of all unique combinations of candidates where the chosen numbers sum to target. You may return the combinations in any order.
 
@@ -308,7 +312,7 @@ class Solution:
         return res
 ```
 
-[40. Combination Sum II](https://leetcode.cn/problems/combination-sum-ii/)
+[40. 组合总和 II](https://leetcode.cn/problems/combination-sum-ii/)
 
 Given a collection of candidate numbers (candidates) and a target number (target), find all unique combinations in candidates where the candidate numbers sum to target.
 
@@ -380,7 +384,7 @@ class Solution:
         return res
 ```
 
-[47. Permutations II](https://leetcode.cn/problems/permutations-ii/)
+[47. 全排列 II](https://leetcode.cn/problems/permutations-ii/)
 
 Given a collection of numbers, nums, that might contain duplicates, return all possible unique permutations in any order.
 
@@ -421,7 +425,7 @@ class Solution:
         return res
 ```
 
-[79. Word Search](https://leetcode.cn/problems/word-search/)
+[79. 单词搜索](https://leetcode.cn/problems/word-search/)
 
 ```py
 class Solution:
@@ -665,7 +669,7 @@ class Solution:
 
 # DFS + Memorization
 
-[140. Word Break II](https://leetcode.cn/problems/word-break-ii/)
+[140. 单词拆分 II](https://leetcode.cn/problems/word-break-ii/)
 
 ```python
 class Solution(object):

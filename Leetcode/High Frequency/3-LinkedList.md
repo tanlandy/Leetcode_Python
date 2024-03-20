@@ -106,18 +106,26 @@ class DoublyLinkedList:
 
 ## 知乎
 
-24, 142, 160, 203, 237
+[24. 两两交换链表中的节点]
+[142. 环形链表 II]
+[160. 相交链表]
+[203. 移除链表元素]
+[237. 删除链表中的节点]
 
 ## Krahets精选题
 
-21，206，86，237，138
+[21. 合并两个有序链表]
+[86. 分隔链表]
+[138. 随机链表的复制]
+[206. 反转链表]
+[237. 删除链表中的节点]
 
 ## AlgoMonster
 
-1. Swap nodes in pairs(24)
-2. Reverse(206)
-3. Merge Two Sorted Linked Lists(21)
-4. Remove duplicates(203)
+[24. 两两交换链表中的节点]
+[206. 反转链表]
+[21. 合并两个有序链表]
+[203. 移除链表元素]
 
 ## Youtube
 
@@ -153,7 +161,7 @@ class Solution:
         return dummy.next
 ```
 
-[203. Remove Linked List Elements](https://leetcode.cn/problems/remove-linked-list-elements/)
+[203. 移除链表元素](https://leetcode.cn/problems/remove-linked-list-elements/)
 
 ```Python
 class Solution:
@@ -174,7 +182,7 @@ class Solution:
         return dummy.next
 ```
 
-[237. Delete Node in a Linked List](https://leetcode.cn/problems/delete-node-in-a-linked-list/)
+[237. 删除链表中的节点](https://leetcode.cn/problems/delete-node-in-a-linked-list/)
 
 ```Python
 class Solution:
@@ -191,7 +199,7 @@ class Solution:
         next_node.next = None
 ```
 
-[206. Reverse Linked List](https://leetcode.cn/problems/reverse-linked-list/)
+[206. 反转链表](https://leetcode.cn/problems/reverse-linked-list/)
 
 ```Python
 class Solution:
@@ -233,7 +241,7 @@ class Solution:
         return slow
 ```
 
-[86. Partition List](https://leetcode.cn/problems/partition-list/)
+[86. 分隔链表](https://leetcode.cn/problems/partition-list/)
 
 ```Python
 class Solution:
@@ -305,7 +313,7 @@ class Solution:
         return merge(left, right)
 ```
 
-[160. Intersection of Two Linked Lists](https://leetcode.cn/problems/intersection-of-two-linked-lists/)
+[160. 相交链表](https://leetcode.cn/problems/intersection-of-two-linked-lists/)
 
 ```Python
 class Solution:
@@ -485,7 +493,7 @@ class Solution:
         return dummy.next
 ```
 
-[24. Swap Nodes in Pairs](https://leetcode.cn/problems/swap-nodes-in-pairs/)
+[24. 两两交换链表中的节点](https://leetcode.cn/problems/swap-nodes-in-pairs/)
 
 ```Python
 class Solution:
@@ -740,7 +748,7 @@ class Solution:
 
 ```
 
-[138. Copy List with Random Pointer](https://leetcode.cn/problems/copy-list-with-random-pointer/)
+[138. 随机链表的复制](https://leetcode.cn/problems/copy-list-with-random-pointer/)
 
 ```Python
 class Solution:
@@ -840,7 +848,7 @@ class Solution:
         return False
 ```
 
-[142. Linked List Cycle II](https://leetcode.cn/problems/linked-list-cycle-ii/)
+[142. 环形链表 II](https://leetcode.cn/problems/linked-list-cycle-ii/)
 
 ```Python
 class Solution:

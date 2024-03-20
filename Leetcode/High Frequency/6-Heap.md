@@ -7,7 +7,11 @@
 
 ## Youtube
 
-347, 973, 295, 1102, 378
+[295. 数据流的中位数]
+[347. 前 K 个高频元素]
+[378. 有序矩阵中第 K 小的元素]
+[973. 最接近原点的 K 个点]
+[1102. 得分最高的路径]
 
 # Recap
 
@@ -52,7 +56,7 @@ len(minHeap)
 
 # Categorized
 
-[973. K Closest Points to Origin](https://leetcode.cn/problems/k-closest-points-to-origin/)
+[973. 最接近原点的 K 个点](https://leetcode.cn/problems/k-closest-points-to-origin/)
 
 ```py
 class Solution:
@@ -118,7 +122,7 @@ class Solution:
         return select(0, len(points) - 1)
 ```
 
-[347. Top K Frequent Elements](https://leetcode.cn/problems/top-k-frequent-elements/)
+[347. 前 K 个高频元素](https://leetcode.cn/problems/top-k-frequent-elements/)
 
 ```python
 class Solution:
@@ -449,7 +453,7 @@ class Solution:
         return [item[0] for item in items[0:k]]
 ```
 
-[378. Kth Smallest Element in a Sorted Matrix](https://leetcode.cn/problems/kth-smallest-element-in-a-sorted-matrix/)
+[378. 有序矩阵中第 K 小的元素](https://leetcode.cn/problems/kth-smallest-element-in-a-sorted-matrix/)
 
 ```py
 class Solution:  # 204 ms, faster than 54.32%

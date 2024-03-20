@@ -6,13 +6,15 @@
 
 ## 知乎
 
-27, 271, 334
+[27. 移除元素]
+[271. 字符串的解码与编码]
+[334. 递增的三元子序列]
 
 ## Hot100
 
 # 以题型分类
 
-[26. Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/)
+[26. Remove Duplicates from Sorted Array](https://leetcode.cn/problems/remove-duplicates-from-sorted-array/)
 
 ```py
 class Solution:
@@ -30,7 +32,7 @@ class Solution:
         return slow + 1
 ```
 
-[27. Remove Element](https://leetcode.com/problems/remove-element/)
+[27. 移除元素](https://leetcode.cn/problems/remove-element/)
 
 ```py
 class Solution:
@@ -44,7 +46,7 @@ class Solution:
         return slow
 ```
 
-[271. Encode and Decode Strings](https://leetcode.com/problems/encode-and-decode-strings/)
+[271. 字符串的解码与编码](https://leetcode.cn/problems/encode-and-decode-strings/)
 
 组合大文字的时候用数字+特殊字符来连接，decode时候就需要找到数字大小
 
@@ -83,7 +85,7 @@ class Codec:
 # codec.decode(codec.encode(strs))
 ```
 
-[334. Increasing Triplet Subsequence](https://leetcode.com/problems/increasing-triplet-subsequence/)
+[334. 递增的三元子序列](https://leetcode.cn/problems/increasing-triplet-subsequence/)
 
 ```py
 class Solution:
@@ -110,7 +112,7 @@ class Solution:
 
 ## 经典
 
-[189. Rotate Array](https://leetcode.com/problems/rotate-array/)
+[189. Rotate Array](https://leetcode.cn/problems/rotate-array/)
 Given an array, rotate the array to the right by k steps, where k is non-negative.
 
 ```py
@@ -349,7 +351,7 @@ print(output_str)
 print(type(output_str))
 ```
 
-[8. String to Integer (atoi)](https://leetcode.com/problems/string-to-integer-atoi/)
+[8. String to Integer (atoi)](https://leetcode.cn/problems/string-to-integer-atoi/)
 
 用sign, res, idx，idx一直往后走，先删除空格，然后记录正负号， 最后处理数字，每次数字检查是否越界，否则res = 10*res + curDigit；越界的条件>INT_MAX // 10，或者== INT_MAX同时curDit>INT_MAX % 10，越界了就返回最大值或者最小值；最大值pow(2, 31)-1；最小值-pow(2, 31)
 
@@ -393,7 +395,7 @@ class Solution:
         return sign * res
 ```
 
-[976. Largest Perimeter Triangle](https://leetcode.com/problems/largest-perimeter-triangle/)
+[976. Largest Perimeter Triangle](https://leetcode.cn/problems/largest-perimeter-triangle/)
 
 ```py
 class Solution:
@@ -409,7 +411,7 @@ class Solution:
         return 0
 ```
 
-[13. Roman to Integer](https://leetcode.com/problems/roman-to-integer/)
+[13. Roman to Integer](https://leetcode.cn/problems/roman-to-integer/)
 
 ```py
 class Solution:
@@ -428,7 +430,7 @@ class Solution:
         return res
 ```
 
-[12. Integer to Roman](https://leetcode.com/problems/integer-to-roman/)
+[12. Integer to Roman](https://leetcode.cn/problems/integer-to-roman/)
 
 ```py
 class Solution:
@@ -470,7 +472,7 @@ def timeConversion(s):
             return str(int(s[:2]) + 12) + s[2:-2]
 ```
 
-[2224. Minimum Number of Operations to Convert Time](https://leetcode.com/problems/minimum-number-of-operations-to-convert-time/)
+[2224. Minimum Number of Operations to Convert Time](https://leetcode.cn/problems/minimum-number-of-operations-to-convert-time/)
 
 ```py
 class Solution:
@@ -512,7 +514,7 @@ def timeConversion(s):
             return str(int(s[0:2]) + 12) + s[2:-2]
 ```
 
-[681. Next Closest Time](https://leetcode.com/problems/next-closest-time/)
+[681. Next Closest Time](https://leetcode.cn/problems/next-closest-time/)
 
 ```py
 class Solution(object):
@@ -548,7 +550,7 @@ class Solution(object):
         return two_digit_values[0] + ":" + two_digit_values[0]
 ```
 
-[14. Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/)
+[14. Longest Common Prefix](https://leetcode.cn/problems/longest-common-prefix/)
 先找到最短的字符串，然后依次和其他比较，比较时候发现不相同就返回那个长度，最后返回最短的字符串（只有一个字符串的情况）；本题要点是min(strs, key = len)的使用方法
 
 时间：O(N*S)
@@ -574,7 +576,7 @@ class Solution:
         return shortest
 ```
 
-[171. Excel Sheet Column Number](https://leetcode.com/problems/excel-sheet-column-number/)
+[171. Excel Sheet Column Number](https://leetcode.cn/problems/excel-sheet-column-number/)
 学会使用ord("A")，以及递归的思路
 
 ```py
@@ -589,7 +591,7 @@ class Solution:
         return res
 ```
 
-[1047. Remove All Adjacent Duplicates In String](https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/)
+[1047. Remove All Adjacent Duplicates In String](https://leetcode.cn/problems/remove-all-adjacent-duplicates-in-string/)
 
 ```py
 class Solution:
@@ -608,7 +610,7 @@ class Solution:
         return "".join(stack)
 ```
 
-[1209. Remove All Adjacent Duplicates in String II](https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string-ii/)
+[1209. Remove All Adjacent Duplicates in String II](https://leetcode.cn/problems/remove-all-adjacent-duplicates-in-string-ii/)
 
 ```py
 class Solution:
@@ -629,7 +631,7 @@ class Solution:
         return "".join(c * n for c, n in stack)
 ```
 
-[5. Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/)
+[5. Longest Palindromic Substring](https://leetcode.cn/problems/longest-palindromic-substring/)
 
 ```py
 class Solution:
@@ -660,7 +662,7 @@ class Solution:
         return res
 ```
 
-[1332. Remove Palindromic Subsequences](https://leetcode.com/problems/remove-palindromic-subsequences/)
+[1332. Remove Palindromic Subsequences](https://leetcode.cn/problems/remove-palindromic-subsequences/)
 
 ```py
 class Solution:
@@ -677,7 +679,7 @@ class Solution:
         return 2
 ```
 
-[2239. Find Closest Number to Zero](https://leetcode.com/problems/find-closest-number-to-zero/)
+[2239. Find Closest Number to Zero](https://leetcode.cn/problems/find-closest-number-to-zero/)
 
 ```py
 class Solution:
@@ -688,7 +690,7 @@ class Solution:
         return max([(-abs(a), a) for a in nums])[1]
 ```
 
-[1362. Closest Divisors](https://leetcode.com/problems/closest-divisors/)
+[1362. Closest Divisors](https://leetcode.cn/problems/closest-divisors/)
 
 ```py
 class Solution:
@@ -706,13 +708,13 @@ class Solution:
                 return [n, (num + 2) // n]
 ```
 
-[287. Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/)
+[287. Find the Duplicate Number](https://leetcode.cn/problems/find-the-duplicate-number/)
 
-[41. First Missing Positive](https://leetcode.com/problems/first-missing-positive/)
+[41. First Missing Positive](https://leetcode.cn/problems/first-missing-positive/)
 
-<https://leetcode.com/problems/longest-palindromic-substring/discuss/2030458/Python>
+<https://leetcode.cn/problems/longest-palindromic-substring/discuss/2030458/Python>
 
-[1354. Construct Target Array With Multiple Sums](https://leetcode.com/problems/construct-target-array-with-multiple-sums/)
+[1354. Construct Target Array With Multiple Sums](https://leetcode.cn/problems/construct-target-array-with-multiple-sums/)
 
 ```py
 class Solution:
@@ -739,7 +741,7 @@ class Solution:
             heapq.heappush(A, -a)
 ```
 
-[665. Non-decreasing Array](https://leetcode.com/problems/non-decreasing-array/)
+[665. Non-decreasing Array](https://leetcode.cn/problems/non-decreasing-array/)
 
 ```py
 class Solution:
@@ -784,7 +786,7 @@ class Solution:
         return idx in [-1, 0, len(nums) - 2] or nums[idx - 1] <= nums[idx + 1] or nums[idx] <= nums[idx + 2]
 ```
 
-[1010. Pairs of Songs With Total Durations Divisible by 60](https://leetcode.com/problems/pairs-of-songs-with-total-durations-divisible-by-60/)
+[1010. Pairs of Songs With Total Durations Divisible by 60](https://leetcode.cn/problems/pairs-of-songs-with-total-durations-divisible-by-60/)
 
 ```py
 class Solution:
@@ -808,7 +810,7 @@ class Solution:
         return res
 ```
 
-[1465. Maximum Area of a Piece of Cake After Horizontal and Vertical Cuts](https://leetcode.com/problems/maximum-area-of-a-piece-of-cake-after-horizontal-and-vertical-cuts/)
+[1465. Maximum Area of a Piece of Cake After Horizontal and Vertical Cuts](https://leetcode.cn/problems/maximum-area-of-a-piece-of-cake-after-horizontal-and-vertical-cuts/)
 
 ```py
 class Solution:
@@ -832,7 +834,7 @@ class Solution:
         return max_h * max_w % (10 ** 9 + 7)
 ```
 
-[376. Wiggle Subsequence](https://leetcode.com/problems/wiggle-subsequence/)
+[376. Wiggle Subsequence](https://leetcode.cn/problems/wiggle-subsequence/)
 有些类似于LC121
 
 ```py
@@ -858,7 +860,7 @@ class Solution:
 
 ## String
 
-[1323. Maximum 69 Number](https://leetcode.com/problems/maximum-69-number/description/)
+[1323. Maximum 69 Number](https://leetcode.cn/problems/maximum-69-number/description/)
 
 ```py
 class Solution:
@@ -875,7 +877,7 @@ class Solution:
         return num
 ```
 
-[1592. Rearrange Spaces Between Words](https://leetcode.com/problems/rearrange-spaces-between-words/)
+[1592. Rearrange Spaces Between Words](https://leetcode.cn/problems/rearrange-spaces-between-words/)
 
 ```py
 class Solution:
@@ -888,7 +890,7 @@ class Solution:
         return (' ' * gap).join(words) + ' ' * trailing_spaces   
 ```
 
-[929. Unique Email Addresses](https://leetcode.com/problems/unique-email-addresses/)
+[929. Unique Email Addresses](https://leetcode.cn/problems/unique-email-addresses/)
 
 ```py
 class Solution:
@@ -903,7 +905,7 @@ class Solution:
         return len(uniqueEmails)
 ```
 
-[243. Shortest Word Distance](https://leetcode.com/problems/shortest-word-distance/)
+[243. Shortest Word Distance](https://leetcode.cn/problems/shortest-word-distance/)
 
 ```py
 class Solution:
@@ -928,7 +930,7 @@ class Solution:
         return res
 ```
 
-[244. Shortest Word Distance II](https://leetcode.com/problems/shortest-word-distance-ii/)
+[244. Shortest Word Distance II](https://leetcode.cn/problems/shortest-word-distance-ii/)
 
 ```py
 class WordDistance:
@@ -958,7 +960,7 @@ class WordDistance:
 
 ```
 
-[339. Nested List Weight Sum](https://leetcode.com/problems/nested-list-weight-sum/)
+[339. Nested List Weight Sum](https://leetcode.cn/problems/nested-list-weight-sum/)
 
 ```python
 class Solution:
@@ -1003,7 +1005,7 @@ class Solution:
         return total
 ```
 
-[364. Nested List Weight Sum II](https://leetcode.com/problems/nested-list-weight-sum-ii/)
+[364. Nested List Weight Sum II](https://leetcode.cn/problems/nested-list-weight-sum-ii/)
 
 ```py
 class Solution:
@@ -1064,7 +1066,7 @@ class Solution:
         return res
 ```
 
-[792. Number of Matching Subsequences](https://leetcode.com/problems/number-of-matching-subsequences/)
+[792. Number of Matching Subsequences](https://leetcode.cn/problems/number-of-matching-subsequences/)
 
 ```py
 class Solution:
@@ -1135,7 +1137,7 @@ class Solution:
         return count
 ```
 
-[1554. Strings Differ by One Character](https://leetcode.com/problems/strings-differ-by-one-character/)
+[1554. Strings Differ by One Character](https://leetcode.cn/problems/strings-differ-by-one-character/)
 
 ```py
 class Solution:
@@ -1153,7 +1155,7 @@ class Solution:
         return False
 ```
 
-[777. Swap Adjacent in LR String](https://leetcode.com/problems/swap-adjacent-in-lr-string/)
+[777. Swap Adjacent in LR String](https://leetcode.cn/problems/swap-adjacent-in-lr-string/)
 
 ```py
 class Solution:
@@ -1184,7 +1186,7 @@ class Solution:
         return True
 ```
 
-[394. Decode String](https://leetcode.com/problems/decode-string/)
+[394. Decode String](https://leetcode.cn/problems/decode-string/)
 
 ```py
 class Solution:
@@ -1217,7 +1219,7 @@ class Solution:
         return res
 ```
 
-[541. Reverse String II](https://leetcode.com/problems/reverse-string-ii/)
+[541. Reverse String II](https://leetcode.cn/problems/reverse-string-ii/)
 
 ```py
 class Solution:
@@ -1235,7 +1237,7 @@ class Solution:
         return "".join(slist)
 ```
 
-[557. Reverse Words in a String III](https://leetcode.com/problems/reverse-words-in-a-string-iii/)
+[557. Reverse Words in a String III](https://leetcode.cn/problems/reverse-words-in-a-string-iii/)
 
 ```py
 class Solution:
@@ -1255,7 +1257,7 @@ class Solution:
         return "".join(slist)
 ```
 
-[821. Shortest Distance to a Character](https://leetcode.com/problems/shortest-distance-to-a-character/)
+[821. Shortest Distance to a Character](https://leetcode.cn/problems/shortest-distance-to-a-character/)
 
 ```py
 class Solution(object):
@@ -1269,7 +1271,7 @@ class Solution(object):
             return res  
 ```
 
-[838. Push Dominoes](https://leetcode.com/problems/push-dominoes/)
+[838. Push Dominoes](https://leetcode.cn/problems/push-dominoes/)
 
 ```py
 class Solution(object):
@@ -1305,7 +1307,7 @@ class Solution(object):
         return ''.join(lst)
 ```
 
-[1328. Break a Palindrome](https://leetcode.com/problems/break-a-palindrome/)
+[1328. Break a Palindrome](https://leetcode.cn/problems/break-a-palindrome/)
 
 ```py
 class Solution:
@@ -1346,7 +1348,7 @@ def caesarCipher(s, k):
     return "".join(s)
 ```
 
-[1662. Check If Two String Arrays are Equivalent](https://leetcode.com/problems/check-if-two-string-arrays-are-equivalent/)
+[1662. Check If Two String Arrays are Equivalent](https://leetcode.cn/problems/check-if-two-string-arrays-are-equivalent/)
 
 ```py
 class Solution:
@@ -1370,7 +1372,7 @@ class Solution:
         return w1 == len(word1) and w2 == len(word2)
 ```
 
-[899. Orderly Queue](https://leetcode.com/problems/orderly-queue/description/)
+[899. Orderly Queue](https://leetcode.cn/problems/orderly-queue/description/)
 
 ```py
 class Solution:
@@ -1391,7 +1393,7 @@ class Solution:
 
 ### Palindrome类型
 
-[125. Valid Palindrome](https://leetcode.com/problems/valid-palindrome/)
+[125. Valid Palindrome](https://leetcode.cn/problems/valid-palindrome/)
 
 ```py
 class Solution:
@@ -1412,7 +1414,7 @@ class Solution:
         return True
 ```
 
-[680. Valid Palindrome II](https://leetcode.com/problems/valid-palindrome-ii/)
+[680. Valid Palindrome II](https://leetcode.cn/problems/valid-palindrome-ii/)
 
 ```py
 class Solution:
@@ -1443,7 +1445,7 @@ split into two substrings. determine the minimum number of characters to change 
 
 ### 纯代码
 
-[68. Text Justification](https://leetcode.com/problems/text-justification/)
+[68. Text Justification](https://leetcode.cn/problems/text-justification/)
 
 ```py
 class Solution:
@@ -1500,7 +1502,7 @@ class Solution:
         return res
 ```
 
-[65. Valid Number](https://leetcode.com/problems/valid-number/description/)
+[65. Valid Number](https://leetcode.cn/problems/valid-number/description/)
 
 ```python
 class Solution:
@@ -1581,7 +1583,7 @@ def getTotalX(a, b):
     return res
 ```
 
-[228. Summary Ranges](https://leetcode.com/problems/summary-ranges/)
+[228. Summary Ranges](https://leetcode.cn/problems/summary-ranges/)
 
 ```py
 class Solution:
@@ -1606,7 +1608,7 @@ class Solution:
 
 ### two sum类型
 
-[1. Two Sum](https://leetcode.com/problems/two-sum/)
+[1. Two Sum](https://leetcode.cn/problems/two-sum/)
 
 ```py
 class Solution:
@@ -1623,7 +1625,7 @@ class Solution:
             seen[n] = idx
 ```
 
-[1679. Max Number of K-Sum Pairs](https://leetcode.com/problems/max-number-of-k-sum-pairs/description/?envType=study-plan-v2&envId=leetcode-75)
+[1679. Max Number of K-Sum Pairs](https://leetcode.cn/problems/max-number-of-k-sum-pairs/description/?envType=study-plan-v2&envId=leetcode-75)
 
 ```py
 class Solution:
@@ -1644,7 +1646,7 @@ class Solution:
         return count
 ```
 
-[167. Two Sum II - Input Array Is Sorted](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/)
+[167. Two Sum II - Input Array Is Sorted](https://leetcode.cn/problems/two-sum-ii-input-array-is-sorted/)
 
 ```py
 class Solution:
@@ -1670,7 +1672,7 @@ class Solution:
         return [-1, -1]
 ```
 
-[170. Two Sum III - Data structure design](https://leetcode.com/problems/two-sum-iii-data-structure-design/)
+[170. Two Sum III - Data structure design](https://leetcode.cn/problems/two-sum-iii-data-structure-design/)
 
 ```py
 class TwoSum:
@@ -1699,7 +1701,7 @@ class TwoSum:
         return False
 ```
 
-[653. Two Sum IV - Input is a BST](https://leetcode.com/problems/two-sum-iv-input-is-a-bst/)
+[653. Two Sum IV - Input is a BST](https://leetcode.cn/problems/two-sum-iv-input-is-a-bst/)
 
 ```py
 class Solution:
@@ -1732,7 +1734,7 @@ class Solution:
         return False
 ```
 
-[15. 3Sum](https://leetcode.com/problems/3sum/)
+[15. 3Sum](https://leetcode.cn/problems/3sum/)
 
 ```py
 class Solution:
@@ -1762,7 +1764,7 @@ class Solution:
         return res
 ```
 
-[16. 3Sum Closest](https://leetcode.com/problems/3sum-closest/) 好题，逻辑比较丰富
+[16. 3Sum Closest](https://leetcode.cn/problems/3sum-closest/) 好题，逻辑比较丰富
 
 ```py
 class Solution:
@@ -1794,7 +1796,7 @@ class Solution:
         return one_diff
 ```
 
-[259. 3Sum Smaller](https://leetcode.com/problems/3sum-smaller/)
+[259. 3Sum Smaller](https://leetcode.cn/problems/3sum-smaller/)
 
 ```py
 class Solution:
@@ -1824,7 +1826,7 @@ class Solution:
         return count
 ```
 
-[985. Sum of Even Numbers After Queries](https://leetcode.com/problems/sum-of-even-numbers-after-queries/)
+[985. Sum of Even Numbers After Queries](https://leetcode.cn/problems/sum-of-even-numbers-after-queries/)
 
 ```py
 class Solution:
@@ -1850,7 +1852,7 @@ class Solution:
         return res
 ```
 
-[9. Palindrome Number](https://leetcode.com/problems/palindrome-number/)
+[9. Palindrome Number](https://leetcode.cn/problems/palindrome-number/)
 
 ```py
 class Solution:
@@ -1867,7 +1869,7 @@ class Solution:
         return True if (x == result or x == result // 10) else False
 ```
 
-[415. Add Strings](https://leetcode.com/problems/add-strings/description/)
+[415. Add Strings](https://leetcode.cn/problems/add-strings/description/)
 
 two pointers从后往前，用carry存进位的情况.
 value = (x1 + x2 + carry) % 10,
