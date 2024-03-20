@@ -292,7 +292,7 @@ class Solution:
 
 ## 例题
 
-[2352. Equal Row and Column Pairs](https://leetcode.com/problems/equal-row-and-column-pairs/description/)
+[2352. Equal Row and Column Pairs](https://leetcode.cn/problems/equal-row-and-column-pairs/description/)
 
 ```py
 class Solution:
@@ -323,7 +323,7 @@ class Solution:
         return count
 ```
 
-[36. Valid Sudoku](https://leetcode.com/problems/valid-sudoku/)
+[36. Valid Sudoku](https://leetcode.cn/problems/valid-sudoku/)
 
 ```py
 class Solution:
@@ -361,7 +361,7 @@ class Solution:
         return True
 ```
 
-[733. Flood Fill](https://leetcode.com/problems/flood-fill/)
+[733. Flood Fill](https://leetcode.cn/problems/flood-fill/)
 
 ```py
 class Solution:
@@ -408,7 +408,7 @@ class Solution(object):
         return image
 ```
 
-[1197. Minimum Knight Moves](https://leetcode.com/problems/minimum-knight-moves/)
+[1197. Minimum Knight Moves](https://leetcode.cn/problems/minimum-knight-moves/)
 
 ```py
 class Solution:
@@ -473,7 +473,7 @@ class Solution:
         return -1
 ```
 
-[286. Walls and Gates](https://leetcode.com/problems/walls-and-gates/)
+[286. Walls and Gates](https://leetcode.cn/problems/walls-and-gates/)
 
 ```py
 class Solution:
@@ -511,7 +511,7 @@ class Solution:
             dist += 1
 ```
 
-[1293. Shortest Path in a Grid with Obstacles Elimination](https://leetcode.com/problems/shortest-path-in-a-grid-with-obstacles-elimination/)
+[1293. Shortest Path in a Grid with Obstacles Elimination](https://leetcode.cn/problems/shortest-path-in-a-grid-with-obstacles-elimination/)
 
 ```py
 class Solution:
@@ -552,7 +552,7 @@ class Solution:
         return -1
 ```
 
-[1905. Count Sub Islands](https://leetcode.com/problems/count-sub-islands/)
+[1905. Count Sub Islands](https://leetcode.cn/problems/count-sub-islands/)
 
 ```py
 class Solution:
@@ -596,7 +596,7 @@ class Solution:
         return count
 ```
 
-[694. Number of Distinct Islands](https://leetcode.com/problems/number-of-distinct-islands/)
+[694. Number of Distinct Islands](https://leetcode.cn/problems/number-of-distinct-islands/)
 
 ```py
 class Solution:
@@ -634,7 +634,7 @@ class Solution:
         return len(count)
 ```
 
-[130. Surrounded Regions](https://leetcode.com/problems/surrounded-regions/)
+[130. Surrounded Regions](https://leetcode.cn/problems/surrounded-regions/)
 
 ```py
 class Solution:
@@ -680,7 +680,7 @@ class Solution:
                     board[r][c] = "O"
 ```
 
-[1730. Shortest Path to Get Food](https://leetcode.com/problems/shortest-path-to-get-food/)
+[1730. Shortest Path to Get Food](https://leetcode.cn/problems/shortest-path-to-get-food/)
 
 ```py
 class Solution:
@@ -714,7 +714,7 @@ class Solution:
         return -1
 ```
 
-[323. Number of Connected Components in an Undirected Graph](https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/)
+[323. Number of Connected Components in an Undirected Graph](https://leetcode.cn/problems/number-of-connected-components-in-an-undirected-graph/)
 
 ```py
 class Solution:
@@ -745,7 +745,7 @@ class Solution:
         return count
 ```
 
-[1091. Shortest Path in Binary Matrix](https://leetcode.com/problems/shortest-path-in-binary-matrix/)
+[1091. Shortest Path in Binary Matrix](https://leetcode.cn/problems/shortest-path-in-binary-matrix/)
 
 ```python
 class Solution:
@@ -832,7 +832,7 @@ def superDigit(n, k):
     return a
 ```
 
-[766. Toeplitz Matrix](https://leetcode.com/problems/toeplitz-matrix/)
+[766. Toeplitz Matrix](https://leetcode.cn/problems/toeplitz-matrix/)
 
 ```py
 class Solution:
@@ -857,7 +857,7 @@ class Solution:
 Follow-up:
 当流数据每次只能来一行的时候，用一个deque存expected values，每次把最右边的删掉，然后把下一行第一个放到最左边
 
-[1706. Where Will the Ball Fall](https://leetcode.com/problems/where-will-the-ball-fall/)
+[1706. Where Will the Ball Fall](https://leetcode.cn/problems/where-will-the-ball-fall/)
 
 ```py
 class Solution:
@@ -885,7 +885,7 @@ class Solution:
 
 ### 迷宫问题
 
-[490. The Maze](https://leetcode.com/problems/the-maze/)
+[490. The Maze](https://leetcode.cn/problems/the-maze/)
 一次走到底的情况
 
 ```py
@@ -980,7 +980,7 @@ class Solution:
         return -1
 ```
 
-[505. The Maze II](https://leetcode.com/problems/the-maze-ii/)
+[505. The Maze II](https://leetcode.cn/problems/the-maze-ii/)
 
 ```py
 class Solution:
@@ -1062,13 +1062,13 @@ class Solution:
         return -1
 ```
 
-[341. Flatten Nested List Iterator](https://leetcode.com/problems/flatten-nested-list-iterator/)
+[341. Flatten Nested List Iterator](https://leetcode.cn/problems/flatten-nested-list-iterator/)
 
-[339. Nested List Weight Sum](https://leetcode.com/problems/nested-list-weight-sum/)
+[339. Nested List Weight Sum](https://leetcode.cn/problems/nested-list-weight-sum/)
 
-[364. Nested List Weight Sum II](https://leetcode.com/problems/nested-list-weight-sum-ii/)
+[364. Nested List Weight Sum II](https://leetcode.cn/problems/nested-list-weight-sum-ii/)
 
-[419. Battleships in a Board](https://leetcode.com/problems/battleships-in-a-board/)
+[419. Battleships in a Board](https://leetcode.cn/problems/battleships-in-a-board/)
 
 ```py
 class Solution:
@@ -1113,7 +1113,7 @@ class Solution:
         return count
 ```
 
-[531. Lonely Pixel I](https://leetcode.com/problems/lonely-pixel-i/)
+[531. Lonely Pixel I](https://leetcode.cn/problems/lonely-pixel-i/)
 
 ```py
 class Solution:
@@ -1143,7 +1143,7 @@ class Solution:
 
 ### Matrix
 
-[59. Spiral Matrix II](https://leetcode.com/problems/spiral-matrix-ii/)
+[59. Spiral Matrix II](https://leetcode.cn/problems/spiral-matrix-ii/)
 
 ```py
 class Solution:
@@ -1174,7 +1174,7 @@ class Solution:
         return res
 ```
 
-[542. 01 Matrix](https://leetcode.com/problems/01-matrix/)
+[542. 01 Matrix](https://leetcode.cn/problems/01-matrix/)
 
 ```py
 class Solution:
@@ -1317,7 +1317,7 @@ def maxSum(mat):
     return Sum
 ```
 
-[200. Number of Islands](https://leetcode.com/problems/number-of-islands/)
+[200. Number of Islands](https://leetcode.cn/problems/number-of-islands/)
 BFS
 
 ```py
@@ -1385,7 +1385,7 @@ class Solution:
         return count
 ```
 
-[417. Pacific Atlantic Water Flow](https://leetcode.com/problems/pacific-atlantic-water-flow/)
+[417. Pacific Atlantic Water Flow](https://leetcode.cn/problems/pacific-atlantic-water-flow/)
 
 ```py
 class Solution:
@@ -1427,7 +1427,7 @@ class Solution:
         return res
 ```
 
-[695. Max Area of Island](https://leetcode.com/problems/max-area-of-island/)
+[695. Max Area of Island](https://leetcode.cn/problems/max-area-of-island/)
 
 ```py
 class Solution:
@@ -1461,7 +1461,7 @@ class Solution:
         return area                 
 ```
 
-[1020. Number of Enclaves](https://leetcode.com/problems/number-of-enclaves/)
+[1020. Number of Enclaves](https://leetcode.cn/problems/number-of-enclaves/)
 
 ```py
 class Solution:
@@ -1509,7 +1509,7 @@ class Solution:
         return count
 ```
 
-[1254. Number of Closed Islands](https://leetcode.com/problems/number-of-closed-islands/)
+[1254. Number of Closed Islands](https://leetcode.cn/problems/number-of-closed-islands/)
 
 ```py
 class Solution:
@@ -1558,7 +1558,7 @@ class Solution:
 
 # Implicit Graph
 
-[752. Open the Lock](https://leetcode.com/problems/open-the-lock/)
+[752. Open the Lock](https://leetcode.cn/problems/open-the-lock/)
 
 ```py
 class Solution:
@@ -1600,7 +1600,7 @@ class Solution:
         return -1 
 ```
 
-[994. Rotting Oranges](https://leetcode.com/problems/rotting-oranges/)
+[994. Rotting Oranges](https://leetcode.cn/problems/rotting-oranges/)
 
 ```py
 class Solution:
@@ -1680,7 +1680,7 @@ class Solution:
         return timer - 1 if timer > 0 else 0 # 如果有的话，每次最后都会多走一个timer，所以要-1。其他的bfs题目都是提前在while queue里面就返回了，不会再走一个多的timer+=1
 ```
 
-[773. Sliding Puzzle](https://leetcode.com/problems/sliding-puzzle/)
+[773. Sliding Puzzle](https://leetcode.cn/problems/sliding-puzzle/)
 
 ```py
 class Solution:
@@ -1765,7 +1765,7 @@ class Solution:
         return sliding_puzzle_any_size(board, 3, 2, final)  
 ```
 
-[261. Graph Valid Tree](https://leetcode.com/problems/graph-valid-tree/)
+[261. Graph Valid Tree](https://leetcode.cn/problems/graph-valid-tree/)
 
 ```py
 class Solution:
@@ -1798,7 +1798,7 @@ class Solution:
         return len(seen) == n     
 ```
 
-[815. Bus Routes](https://leetcode.com/problems/bus-routes/)
+[815. Bus Routes](https://leetcode.cn/problems/bus-routes/)
 
 ```py
 class Solution:
@@ -1836,7 +1836,7 @@ class Solution:
         return -1
 ```
 
-[841. Keys and Rooms](https://leetcode.com/problems/keys-and-rooms/)
+[841. Keys and Rooms](https://leetcode.cn/problems/keys-and-rooms/)
 
 ```py
 class Solution:
@@ -1857,7 +1857,7 @@ class Solution:
         return len(visited) == len(rooms)
 ```
 
-[1376. Time Needed to Inform All Employees](https://leetcode.com/problems/time-needed-to-inform-all-employees/)
+[1376. Time Needed to Inform All Employees](https://leetcode.cn/problems/time-needed-to-inform-all-employees/)
 
 ```py
 
@@ -1879,7 +1879,7 @@ class Solution:
 
 # Un-weighted Graph
 
-[1615. Maximal Network Rank](https://leetcode.com/problems/maximal-network-rank/description/)
+[1615. Maximal Network Rank](https://leetcode.cn/problems/maximal-network-rank/description/)
 
 ```py
 class Solution:
@@ -1903,7 +1903,7 @@ class Solution:
         return res
 ```
 
-[261. Graph Valid Tree](https://leetcode.com/problems/graph-valid-tree/)
+[261. Graph Valid Tree](https://leetcode.cn/problems/graph-valid-tree/)
 
 ```py
 class Solution:
@@ -1943,7 +1943,7 @@ class Solution:
 
 ## 图的遍历
 
-[797. All Paths From Source to Target](https://leetcode.com/problems/all-paths-from-source-to-target/)
+[797. All Paths From Source to Target](https://leetcode.cn/problems/all-paths-from-source-to-target/)
 
 ```py
 class Solution:
@@ -1970,7 +1970,7 @@ class Solution:
         return res
 ```
 
-[785. Is Graph Bipartite?](https://leetcode.com/problems/is-graph-bipartite/)
+[785. Is Graph Bipartite?](https://leetcode.cn/problems/is-graph-bipartite/)
 
 ```py
 class Solution(object):
@@ -2004,7 +2004,7 @@ class Solution(object):
         return True
 ```
 
-[886. Possible Bipartition](https://leetcode.com/problems/possible-bipartition/)
+[886. Possible Bipartition](https://leetcode.cn/problems/possible-bipartition/)
 
 ```py
 class Solution:
@@ -2039,7 +2039,7 @@ class Solution:
         return True
 ```
 
-[133. Clone Graph](https://leetcode.com/problems/clone-graph/)
+[133. Clone Graph](https://leetcode.cn/problems/clone-graph/)
 
 ```python
 class Solution:
@@ -2073,7 +2073,7 @@ class Solution:
         return dfs(node)
 ```
 
-[1059. All Paths from Source Lead to Destination](https://leetcode.com/problems/all-paths-from-source-lead-to-destination/)
+[1059. All Paths from Source Lead to Destination](https://leetcode.cn/problems/all-paths-from-source-lead-to-destination/)
 
 ```py
 class Solution:
@@ -2200,7 +2200,7 @@ def shortest_path(graph: List[List[Tuple[int, int]]], a: int, b: int) -> int:
 
 ## 例题
 
-[743. Network Delay Time](https://leetcode.com/problems/network-delay-time/)
+[743. Network Delay Time](https://leetcode.cn/problems/network-delay-time/)
 
 ```py
 class Solution:
@@ -2237,7 +2237,7 @@ class Solution:
         return res if len(visited) == n else -1
 ```
 
-[1135. Connecting Cities With Minimum Cost](https://leetcode.com/problems/connecting-cities-with-minimum-cost/)
+[1135. Connecting Cities With Minimum Cost](https://leetcode.cn/problems/connecting-cities-with-minimum-cost/)
 也可以用MST来做
 
 ```py
@@ -2268,9 +2268,9 @@ class Solution:
         return res if len(visited) == n else -1
 ```
 
-[1514. Path with Maximum Probability](https://leetcode.com/problems/path-with-maximum-probability/)
+[1514. Path with Maximum Probability](https://leetcode.cn/problems/path-with-maximum-probability/)
 
-[1631. Path With Minimum Effort](https://leetcode.com/problems/path-with-minimum-effort/)
+[1631. Path With Minimum Effort](https://leetcode.cn/problems/path-with-minimum-effort/)
 
 ```py
 class Solution:
@@ -2362,7 +2362,7 @@ output: min weight of path btw every two nodes
 | have negative   | Bellman           | V*O(VE) = $V^2E$                       | $V^4$                               |
 | any pos/neg     | Floyd-warshall    | $O(V^3)$                               | $V^3$                               |
 
-[1334. Find the City With the Smallest Number of Neighbors at a Threshold Distance]([Loading...](https://leetcode.com/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/))
+[1334. Find the City With the Smallest Number of Neighbors at a Threshold Distance]([Loading...](https://leetcode.cn/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/))
 
 # Topological Sort
 
@@ -2415,7 +2415,7 @@ S ← 入度为零的节点的集合
 
 ## 题目
 
-[207. Course Schedule](https://leetcode.com/problems/course-schedule/)
+[207. Course Schedule](https://leetcode.cn/problems/course-schedule/)
 
 ```py
 class Solution:
@@ -2501,7 +2501,7 @@ class Solution:
         return True
 ```
 
-[210. Course Schedule II](https://leetcode.com/problems/course-schedule-ii/)
+[210. Course Schedule II](https://leetcode.cn/problems/course-schedule-ii/)
 
 ```py
 class Solution:
@@ -2538,7 +2538,7 @@ class Solution:
         return order if count == numCourses else [] # 根据是否记录的数量等于总课程数量
 ```
 
-[444. Sequence Reconstruction](https://leetcode.com/problems/sequence-reconstruction/)
+[444. Sequence Reconstruction](https://leetcode.cn/problems/sequence-reconstruction/)
 
 ```py
 class Solution:
@@ -2580,7 +2580,7 @@ class Solution:
         return len(res) == len(nums)
 ```
 
-[953. Verifying an Alien Dictionary](https://leetcode.com/problems/verifying-an-alien-dictionary/)
+[953. Verifying an Alien Dictionary](https://leetcode.cn/problems/verifying-an-alien-dictionary/)
 
 ```python
 class Solution:
@@ -2613,7 +2613,7 @@ class Solution:
         return True
 ```
 
-[269. Alien Dictionary](https://leetcode.com/problems/alien-dictionary/) 先做LC953
+[269. Alien Dictionary](https://leetcode.cn/problems/alien-dictionary/) 先做LC953
 
 ```py
 class Solution:
@@ -2724,7 +2724,7 @@ class Solution:
         return "".join(res)
 ```
 
-[2115. Find All Possible Recipes from Given Supplies](https://leetcode.com/problems/find-all-possible-recipes-from-given-supplies/)
+[2115. Find All Possible Recipes from Given Supplies](https://leetcode.cn/problems/find-all-possible-recipes-from-given-supplies/)
 
 ```py
 class Solution:
@@ -2801,7 +2801,7 @@ class Solution:
         return True
 ```
 
-[329. Longest Increasing Path in a Matrix](https://leetcode.com/problems/longest-increasing-path-in-a-matrix/)
+[329. Longest Increasing Path in a Matrix](https://leetcode.cn/problems/longest-increasing-path-in-a-matrix/)
 
 ```py
 class Solution:
@@ -2850,7 +2850,7 @@ class Solution:
         return res
 ```
 
-[310. Minimum Height Trees](https://leetcode.com/problems/minimum-height-trees/)
+[310. Minimum Height Trees](https://leetcode.cn/problems/minimum-height-trees/)
 
 ```py
 class Solution:
@@ -2895,7 +2895,7 @@ class Solution:
 
 ## 例题
 
-[433. Minimum Genetic Mutation](https://leetcode.com/problems/minimum-genetic-mutation/)
+[433. Minimum Genetic Mutation](https://leetcode.cn/problems/minimum-genetic-mutation/)
 
 ```py
 class Solution:
@@ -2918,7 +2918,7 @@ class Solution:
         return -1
 ```
 
-[290. Word Pattern](https://leetcode.com/problems/word-pattern/)
+[290. Word Pattern](https://leetcode.cn/problems/word-pattern/)
 
 ```py
 class Solution:
@@ -2943,9 +2943,9 @@ class Solution:
         return True
 ```
 
-[291. Word Pattern II](https://leetcode.com/problems/word-pattern-ii/)
+[291. Word Pattern II](https://leetcode.cn/problems/word-pattern-ii/)
 
-[139. Word Break](https://leetcode.com/problems/word-break/)
+[139. Word Break](https://leetcode.cn/problems/word-break/)
 
 ```py
 class Solution:
@@ -3004,7 +3004,7 @@ class Solution:
         return dfs(s)
 ```
 
-[140. Word Break II](https://leetcode.com/problems/word-break-ii/)
+[140. Word Break II](https://leetcode.cn/problems/word-break-ii/)
 
 ```python
 class Solution(object):
@@ -3025,7 +3025,7 @@ class Solution(object):
         return res
 ```
 
-[79. Word Search](https://leetcode.com/problems/word-search/)
+[79. Word Search](https://leetcode.cn/problems/word-search/)
 
 ```py
 class Solution:
@@ -3068,7 +3068,7 @@ class Solution:
         return False
 ```
 
-[127. Word Ladder](https://leetcode.com/problems/word-ladder/)
+[127. Word Ladder](https://leetcode.cn/problems/word-ladder/)
 
 ```python
 class Solution:
@@ -3116,7 +3116,7 @@ class Solution:
         return 0
 ```
 
-[126. Word Ladder II](https://leetcode.com/problems/word-ladder-ii/)
+[126. Word Ladder II](https://leetcode.cn/problems/word-ladder-ii/)
 
 ```py
 class Solution:

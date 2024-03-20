@@ -73,7 +73,7 @@ for i in range(len(nums)):
         continue
 
     used[i] = True
-    one_res.append(nums[i]
+    one_res.append(nums[i])
     backtrack(one_res)
     one_res.pop()
     used[i] = False
@@ -98,8 +98,7 @@ for i in range(len(nums)):
 
 # 例题
 
-[22. Generate Parentheses](https://leetcode.com/problems/generate-parentheses/)
-添加close的条件：close<open
+[22. Generate Parentheses](https://leetcode.cn/problems/generate-parentheses/)
 
 ```py
 class Solution:
@@ -113,26 +112,26 @@ class Solution:
         stack = []
         res = []
         
-        def backtrack(openN, closedN):
-            if openN == closedN == n: # base case
+        def backtrack(open_n, close_n):
+            if open_n == close_n == n: # base case
                 res.append("".join(stack))
                 return
             
-            if openN < n:
+            if open_n < n:  # 增加枝叶和减少枝叶的条件
                 stack.append("(")
-                backtrack(openN + 1, closedN)
+                backtrack(open_n + 1, close_n)
                 stack.pop()
             
-            if closedN < openN:
+            if close_n < open_n:
                 stack.append(")")
-                backtrack(openN, closedN + 1)
+                backtrack(open_n, close_n + 1)
                 stack.pop()
         
         backtrack(0, 0)
         return res
 ```
 
-[78. Subsets](https://leetcode.com/problems/subsets/)（子集 元素无重不可复选）
+[78. Subsets](https://leetcode.cn/problems/subsets/)（子集 元素无重不可复选）
 Given an integer array nums of unique elements, return all possible subsets (the power set).
 Input: nums = [1,2,3]
 Output: [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
@@ -164,7 +163,7 @@ class Solution:
         return res
 ```
 
-[77. Combinations](https://leetcode.com/problems/combinations/) （组合 元素无重不可复选）
+[77. Combinations](https://leetcode.cn/problems/combinations/) （组合 元素无重不可复选）
 Given two integers n and k, return all possible combinations of k numbers out of the range [1, n].
 
 You may return the answer in any order.
@@ -206,7 +205,7 @@ class Solution:
         return res
 ```
 
-[46. Permutations](https://leetcode.com/problems/permutations/) 排列（元素无重不可复选）
+[46. Permutations](https://leetcode.cn/problems/permutations/) 排列（元素无重不可复选）
 
 Given an array nums of distinct integers, return all the possible permutations. You can return the answer in any order.
 
@@ -244,7 +243,7 @@ class Solution:
         return res
 ```
 
-[90. Subsets II](https://leetcode.com/problems/subsets-ii/)
+[90. Subsets II](https://leetcode.cn/problems/subsets-ii/)
 Given an integer array nums that may contain duplicates, return all possible subsets (the power set).
 
 The solution set must not contain duplicate subsets. Return the solution in any order.
@@ -276,7 +275,40 @@ class Solution:
         return res
 ```
 
-[40. Combination Sum II](https://leetcode.com/problems/combination-sum-ii/)
+[39. Combination Sum](https://leetcode.cn/problems/combination-sum/)
+
+Given an array of distinct integers candidates and a target integer target, return a list of all unique combinations of candidates where the chosen numbers sum to target. You may return the combinations in any order.
+
+Input: candidates = [2,3,6,7], target = 7
+Output: [[2,2,3],[7]]
+
+```py
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        res = []
+        candidates.sort() # 元素可重复，所以要排序
+        
+        def backtrack(one_res, start, target):
+            if target < 0:
+                return
+            
+            if target == 0:
+                res.append(one_res.copy())
+                return
+            
+            for i in range(start, len(candidates)):
+                # 与LC40不同点：不怕重复，所以不需要选择条件
+                one_res.append(candidates[i])
+                target -= candidates[i]
+                backtrack(one_res, i, target) # 与LC40不同点，可以重复，所以从i再用一次
+                one_res.pop()
+                target += candidates[i]
+        
+        backtrack([], 0, target)
+        return res
+```
+
+[40. Combination Sum II](https://leetcode.cn/problems/combination-sum-ii/)
 
 Given a collection of candidate numbers (candidates) and a target number (target), find all unique combinations in candidates where the candidate numbers sum to target.
 
@@ -308,12 +340,12 @@ class Solution:
                 res.append(one_res.copy())
             
             for i in range(start, len(candidates)):
-                if i > start and candidates[i] == candidates[i - 1]:
+                if i > start and candidates[i] == candidates[i - 1]:  # 相比LC39，变化1:跳过重复的元素
                     continue
                 
                 one_res.append(candidates[i])
                 target -= candidates[i]
-                backtrack(one_res, i + 1, target)  # 从i+1开始，因为每个元素只能用一次
+                backtrack(one_res, i + 1, target)  # 相比LC39，变化2:从i+1开始，因为每个元素只能用一次
                 one_res.pop()
                 target += candidates[i]
         
@@ -321,40 +353,34 @@ class Solution:
         return res
 ```
 
-[39. Combination Sum](https://leetcode.com/problems/combination-sum/)
+[216. 组合总和 III](https://leetcode.cn/problems/combination-sum-iii/description/)
 
-Given an array of distinct integers candidates and a target integer target, return a list of all unique combinations of candidates where the chosen numbers sum to target. You may return the combinations in any order.
-
-Input: candidates = [2,3,6,7], target = 7
-Output: [[2,2,3],[7]]
-
-```py
+```python
 class Solution:
-    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
-        res = []
-        candidates.sort() # 元素可重复，所以要排序
-        
-        def backtrack(one_res, start, target):
+    def combinationSum3(self, k: int, n: int) -> List[List[int]]:
+        nums = [i for i in range(1, 10)]
+
+        def dfs(one_res, start, target):
             if target < 0:
                 return
-            
+
             if target == 0:
-                res.append(one_res.copy())
+                if len(one_res) == k:  # 相比LC40的变化，加进来的时候看长度是否满足条件
+                    res.append(one_res.copy())
                 return
             
-            for i in range(start, len(candidates)):
-                # 与LC40不同点：不怕重复，所以不需要选择条件
-                one_res.append(candidates[i])
-                target -= candidates[i]
-                backtrack(i, target) # 与LC40不同点，可以重复，所以从i再用一次
+            for i in range(start, len(nums)):
+                one_res.append(nums[i])
+                target -= nums[i]
+                dfs(one_res, i + 1, target)
                 one_res.pop()
-                target += candidates[i]
-        
-        backtrack([], 0, target)
+                target += nums[i]
+        res = []
+        dfs([], 0, n)
         return res
 ```
 
-[47. Permutations II](https://leetcode.com/problems/permutations-ii/)
+[47. Permutations II](https://leetcode.cn/problems/permutations-ii/)
 
 Given a collection of numbers, nums, that might contain duplicates, return all possible unique permutations in any order.
 
@@ -385,9 +411,9 @@ class Solution:
                 if i > 0 and nums[i] == nums[i-1] and not used[i-1]:
                     continue
                     
-                used[i] = True
                 one_res.append(nums[i])
-                backtrack()
+                used[i] = True
+                backtrack(one_res)
                 one_res.pop()
                 used[i] = False
         
@@ -395,7 +421,7 @@ class Solution:
         return res
 ```
 
-[79. Word Search](https://leetcode.com/problems/word-search/)
+[79. Word Search](https://leetcode.cn/problems/word-search/)
 
 ```py
 class Solution:
@@ -415,7 +441,7 @@ class Solution:
                 return True
             
             # 排除的条件
-            if r < 0 or r >= rows or c < 0 or c >= cols or (r, c) in visited or board[r][c] != word[i]:
+            if not 0 <= r < rows or not 0 <= c < cols or (r, c) in visited or board[r][c] != word[i]:
                 return False
             
             # 做选择
@@ -438,7 +464,7 @@ class Solution:
         return False
 ```
 
-[131. Palindrome Partitioning](https://leetcode.com/problems/palindrome-partitioning/)
+[131. Palindrome Partitioning](https://leetcode.cn/problems/palindrome-partitioning/)
 
 ```py
 class Solution:
@@ -507,7 +533,7 @@ class Solution:
         return res
 ```
 
-[51. N-Queens](https://leetcode.com/problems/n-queens/)
+[51. N-Queens](https://leetcode.cn/problems/n-queens/)
 
 ```py
 class Solution:
@@ -559,7 +585,7 @@ class Solution:
 
 ```
 
-[698. Partition to K Equal Sum Subsets](https://leetcode.com/problems/partition-to-k-equal-sum-subsets/)
+[698. Partition to K Equal Sum Subsets](https://leetcode.cn/problems/partition-to-k-equal-sum-subsets/)
 
 ```py
 class Solution:
@@ -598,7 +624,7 @@ class Solution:
         return backtrack(0, k, 0)
 ```
 
-[93. Restore IP Addresses](https://leetcode.com/problems/restore-ip-addresses/)
+[93. Restore IP Addresses](https://leetcode.cn/problems/restore-ip-addresses/)
 
 ```py
 class Solution:
@@ -639,7 +665,28 @@ class Solution:
 
 # DFS + Memorization
 
-[91. Decode Ways](https://leetcode.com/problems/decode-ways/)
+[140. Word Break II](https://leetcode.cn/problems/word-break-ii/)
+
+```python
+class Solution(object):
+    def wordBreak(self, s, wordDict):
+        def backtrack(res, one_res, s):
+            if len(s) == 0:
+                res.append(" ".join(one_res))
+                return
+            
+            for word in wordDict:
+                if s.startswith(word):
+                    one_res.append(word)
+                    backtrack(res, one_res, s[len(word):])
+                    one_res.pop()
+                    
+        res = []
+        backtrack(res, [], s)
+        return res
+```
+
+[91. Decode Ways](https://leetcode.cn/problems/decode-ways/)
 
 ```py
 class Solution:
@@ -712,7 +759,7 @@ class Solution:
         return dfs(0)        
 ```
 
-[97. Interleaving String](https://leetcode.com/problems/interleaving-string/)
+[97. Interleaving String](https://leetcode.cn/problems/interleaving-string/)
 
 ```py
 class Solution:
@@ -754,7 +801,7 @@ class Solution:
         return dfs(0, 0, 0)
 ```
 
-[526. Beautiful Arrangement](https://leetcode.com/problems/beautiful-arrangement/)
+[526. Beautiful Arrangement](https://leetcode.cn/problems/beautiful-arrangement/)
 
 ```py
 class Solution:
@@ -782,7 +829,7 @@ class Solution:
         return helper(tuple(range(1, N+1)))
 ```
 
-[[698. Partition to K Equal Sum Subsets](https://leetcode.com/problems/partition-to-k-equal-sum-subsets/) 好题
+[[698. Partition to K Equal Sum Subsets](https://leetcode.cn/problems/partition-to-k-equal-sum-subsets/) 好题
 ]
 
 ```py
@@ -847,8 +894,8 @@ class Solution:
         return backtrack(0, 0, 0)
 ```
 
-<https://leetcode.com/problems/longest-increasing-path-in-a-matrix/discuss/2052360/Python%3A-Beginner-Friendly-%22Recursion-to-DP%22-Intuition-Explained>
+<https://leetcode.cn/problems/longest-increasing-path-in-a-matrix/discuss/2052360/Python%3A-Beginner-Friendly-%22Recursion-to-DP%22-Intuition-Explained>
 
-<https://leetcode.com/problems/out-of-boundary-paths/discuss/1293697/python-easy-to-understand-explanation-recursion-and-memoization-with-time-and-space-complexity>
+<https://leetcode.cn/problems/out-of-boundary-paths/discuss/1293697/python-easy-to-understand-explanation-recursion-and-memoization-with-time-and-space-complexity>
 
-<https://leetcode.com/problems/number-of-matching-subsequences/discuss/1289549/python-explained-all-possible-solutions-with-time-and-space-complexity>
+<https://leetcode.cn/problems/number-of-matching-subsequences/discuss/1289549/python-explained-all-possible-solutions-with-time-and-space-complexity>
