@@ -780,23 +780,26 @@ class Solution:
         """
         Similar to LC567
         """
-        counter = collections.Counter(p)
-        l = r = 0
-        to_match = len(p)
-        res = []
+        target = collections.defaultdict(int)
+        seen = collections.defaultdict(int)
+        for ch in p:
+            target[ch] += 1
+            seen[ch] = 0
         
+        res = []
+        l = r = 0
         while r < len(s):
-            if counter[s[r]] > 0:
-                to_match -= 1
-            counter[s[r]] -= 1
-            r += 1
-            if (r - l) == len(p):
-                if to_match == 0:
-                    res.append(l)
-                counter[s[l]] += 1
-                if counter[s[l]] > 0:
-                    to_match += 1
+            ch_r = s[r]
+            seen[ch_r] += 1
+            if r - l + 1 > len(p):
+                ch_l = s[l]
                 l += 1
+                seen[ch_l] -= 1
+                if ch_l in seen and seen[ch_l] == 0:
+                    del seen[ch_l]
+            if seen == target:
+                res.append(l)            
+            r += 1
         
         return res
 ```

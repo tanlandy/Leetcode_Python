@@ -1005,35 +1005,52 @@ class Solution:
 
 [560. Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/)
 
-Given an array of integers nums and an integer k, return the total number of subarrays whose sum equals to k.
-
-Input: nums = [1,1,1], k = 2
-Output: 2
-
-思路一：
-双指针，第一个指针一次走一步，另一个指针走到头
-时间：O(n^2)
-空间：O(1)
-
-用一个{}存{preSum:count}前缀和以及出现的次数，同时把{0:1}放进去，然后每次看curSum-K在不在map里，在的话就res+=count；更新res：res+=preSum.get(diff, 0); 形成{preSum:count}的dict：preSum[curSum]=1+preSum.get(curSum, 0)
-时间：O(N)
-空间：O(N)
-
-```python
+```py
 class Solution:
     def subarraySum(self, nums: List[int], k: int) -> int:
+        """
+        双指针，第一个指针一次走一步，另一个指针走到头
+        Time: O(N^2)
+        Space: O(1)
+        """
         res = 0
-        curSum = 0
-        prefixSums = { 0 : 1 }
+        
+        for i in range(len(nums)):
+            cur_sum = 0
+            
+            for j in range(i, len(nums)):
+                cur_sum += nums[j]
+                if cur_sum == k:
+                    res += 1
+        
+        return res
+```
 
+```py
+class Solution:
+    def subarraySum(self, nums: List[int], k: int) -> int:
+        """
+        Prefix Sum
+        用一个{}存{preSum:count}前缀和以及出现的次数
+        每遇到一个数，看curSum-K在不在map里
+        Time: O(N)
+        Space: O(N)
+        """
+        cur_sum = 0
+        count = 0
+        prefix_freq = collections.defaultdict(int)
+        
         for n in nums:
-            curSum += n
-            diff = curSum - k
-
-            res += prefixSums.get(diff, 0)
-            prefixSums[curSum] = 1 + prefixSums.get(curSum, 0)
-
-        return res 
+            cur_sum += n
+            # 第一种情况：从第一个数开始到现在这个数，总和等于k
+            if cur_sum == k: 
+                count += 1
+            # 第二种情况：之前某个数i的从第一个树开始前缀和是cur_sum - k，那么从i开始到现在这个数的和就是cur_sum - (cur_sum - k) = k
+            # 换句话说，两个前缀和的差为k的时候，+=一下
+            count += prefix_freq[cur_sum - k] 
+            prefix_freq[cur_sum] += 1 # 存下来当前前缀和出现的次数
+        
+        return count
 ```
 
 [227. Basic Calculator II](https://leetcode.com/problems/basic-calculator-ii/)

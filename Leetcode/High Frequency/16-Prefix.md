@@ -72,7 +72,7 @@ class Solution:
 class Solution:
     def subarraySum(self, nums: List[int], k: int) -> int:
         """
-        BF
+        双指针，第一个指针一次走一步，另一个指针走到头
         Time: O(N^2)
         Space: O(1)
         """
@@ -94,6 +94,8 @@ class Solution:
     def subarraySum(self, nums: List[int], k: int) -> int:
         """
         Prefix Sum
+        用一个{}存{preSum:count}前缀和以及出现的次数
+        每遇到一个数，看curSum-K在不在map里
         Time: O(N)
         Space: O(N)
         """
@@ -103,9 +105,12 @@ class Solution:
         
         for n in nums:
             cur_sum += n
-            if cur_sum == k: # 第一种情况：从第一个数开始前缀和等于k
+            # 第一种情况：从第一个数开始到现在这个数，总和等于k
+            if cur_sum == k: 
                 count += 1
-            count += prefix_freq[cur_sum - k] # 第二种情况：之前某个数i的从零开始前缀和是cur_sum - k，那么从i开始到这个数的和就是cur_sum - (cur_sum - k) = k
+            # 第二种情况：之前某个数i的从第一个树开始前缀和是cur_sum - k，那么从i开始到现在这个数的和就是cur_sum - (cur_sum - k) = k
+            # 换句话说，两个前缀和的差为k的时候，+=一下
+            count += prefix_freq[cur_sum - k] 
             prefix_freq[cur_sum] += 1 # 存下来当前前缀和出现的次数
         
         return count
