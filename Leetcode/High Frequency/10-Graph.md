@@ -2443,17 +2443,15 @@ class Solution:
 
         # step3: 进行拓扑排序
         count = 0 # 记录走过的数量
-        order = [] # 可以用来记录topo_order
+
         while queue:
             v = queue.popleft()
             count += 1
-            order.append(v)
             for to_ in graph[v]:
                 indegree[to_] -= 1
                 if indegree[to_] == 0:
                     queue.append(to_)
 
-        print(order) # 打印出来排序的结果
         return count == numCourses # 根据是否记录的数量等于总课程数量
 ```
 

@@ -1471,6 +1471,7 @@ class Solution:
 
 class Solution:
     def runningSum(self, nums: List[int]) -> List[int]:
+        # dp[i] = dp[i-1] + nums[i]
         dp = [0] * len(nums)
         dp[0] = nums[0]
 
@@ -1620,12 +1621,12 @@ class Solution:
         Time: O(N^2)
         Space: O(N)
         """
-        dp = [1 for _ in range(len(nums))]
+        dp = [1] * len(nums)
 
-        for i in range(len(nums)):
-            for j in range(i):
-                if nums[j] < nums[i]:  # nums[i]可以接在nums[j]之后
-                    dp[i] = max(dp[i], dp[j] + 1)
+        for end in range(len(nums)):
+            for i in range(end):
+                if nums[i] < nums[end]:  # nums[end]可以接在nums[i]之后
+                    dp[end] = max(dp[end], dp[i] + 1)
         
         return max(dp)
 ```

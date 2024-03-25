@@ -287,55 +287,6 @@ class Solution:
         return dummy.next
 ```
 
-[264. Ugly Number II](https://leetcode.cn/problems/ugly-number-ii/)
-
-```py
-class Solution:
-    def nthUglyNumber(self, n: int) -> int:
-        """
-        starting from 1, in each cycle, pop the top of the heap and insert back that number multiplied by 2, 3, 5 into the heap (if that number wasn't in the heap already)
-        """
-        primes = (2, 3, 5)
-        minHeap = [1]
-        used = set([1])
-
-        for i in range(n - 1):
-            val = heapq.heappop(minHeap)
-            for prime in primes:
-                new_ugly = prime * val
-                if new_ugly not in used:
-                    heapq.heappush(minHeap, new_ugly)
-                    used.add(new_ugly)
-
-        return minHeap[0]
-```
-
-```py
-class Solution:
-
-    def nthUglyNumber(self, n):
-        """
-        use three pointers, each time only moves the smallest one, generate all ugly nunmbers
-
-        Time: O(N)
-        Space: O(N)
-        """
-        ugly = [1]
-        i2, i3, i5 = 0, 0, 0
-        while n > 1:
-            u2, u3, u5 = 2 * ugly[i2], 3 * ugly[i3], 5 * ugly[i5]
-            umin = min((u2, u3, u5))
-            if umin == u2:
-                i2 += 1
-            if umin == u3:
-                i3 += 1
-            if umin == u5:
-                i5 += 1
-            ugly.append(umin)
-            n -= 1
-        return ugly[-1]
-```
-
 [1086. High Five](https://leetcode.cn/problems/high-five)
 
 ```py
