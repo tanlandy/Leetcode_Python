@@ -518,6 +518,36 @@ class Solution:
 
 ```
 
+[239. 滑动窗口最大值](https://leetcode.cn/problems/sliding-window-maximum/?envType=study-plan-v2&envId=selected-coding-interview)
+
+```py
+class Solution:
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        """
+        单调递减栈
+        时间：O(N)
+        空间：O(N)
+        """
+        res = []
+        queue = deque()  # queue存index, nums[queue[0]]总是窗口的最大值
+        l = r = 0
+
+        while r < len(nums):
+            while queue and nums[r] > nums[queue[-1]]:  # 比较次大值，保证是单调递减栈
+                queue.pop()
+            queue.append(r)
+        
+            if l > queue[0]:  # 便于比较queue[0]对应的数是否还在窗口里面
+                queue.popleft()  # 如果不在，那就把queue[0]删除掉，此时次大值queue[1]变成最大值
+            
+            if r - l + 1 == k:
+                res.append(nums[queue[0]])
+                l += 1
+            r += 1
+        
+        return res
+```
+
 [876. 链表的中间结点](https://leetcode.cn/problems/middle-of-the-linked-list/description/?envType=study-plan-v2&envId=selected-coding-interview)
 
 ```python
@@ -642,34 +672,37 @@ class Solution:
         """
         用count_remain来记录需要配对的剩余的量
         当counter[c] > 0，说明找到一个合适的，如果是在expand时候遇到就要count_remain-=1，如果是在shrink时候遇到就要+=1
+
+        时间：O(S+T)
+        空间：O(S+T)
         """
-        countMap = collections.Counter(t)
+        counter = collections.Counter(t)
 
         l = r = 0
-        minStart = 0
-        minLen = float("inf")
+        min_start = 0
+        min_len = float("inf")
         count_remain = len(t)
 
         while r < len(s):
             # 扩大窗口
-            ch = s[r]
-            if countMap[ch] > 0:
+            ch_r = s[r]
+            if counter[ch_r] > 0:
                 count_remain -= 1
-            countMap[ch] -= 1 # 扩大的结果
+            counter[ch_r] -= 1 # 扩大的结果
             r += 1
 
             # 缩小窗口
             while count_remain == 0: # 缩小的条件
-                if minLen > r - l: # 更新res
-                    minStart = l
-                    minLen = r - l
-                ch2 = s[l] # 缩小的结果
-                countMap[ch2] += 1 # 相互对称，先扩大一个再更新窗口
-                if countMap[ch2] > 0:
+                if min_len > r - l: # 更新res
+                    min_start = l
+                    min_len = r - l
+                ch_l_ = s[l] # 缩小的结果
+                counter[ch_l_] += 1 # 相互对称，先扩大一个再更新窗口
+                if counter[ch_l_] > 0:
                     count_remain += 1
                 l += 1
 
-        return s[minStart: minStart + minLen] if minLen != float("inf") else ""
+        return s[min_start: min_start + min_len] if min_len != float("inf") else ""
 ```
 
 [3. 无重复字符的最长子串](https://leetcode.cn/problems/longest-substring-without-repeating-characters/description/)

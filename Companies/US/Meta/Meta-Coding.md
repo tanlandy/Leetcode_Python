@@ -2720,42 +2720,45 @@ class Solution:
         return "".join(res)
 ```
 
-[76. Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring/)
+[76. Minimum Window Substring](https://leetcode.cn/problems/minimum-window-substring/)
 
-用一个dict记录每个字母的出现次数，然后用counter记录剩下需要的，滑动窗口如果dict剩余的次数>0就counter-=1，每次也要更新dict；初始化countMap = collections.Counter(t)
-
-时间：O(S+T)
-空间：O(S+T)
-
-```python
+```py
 class Solution:
     def minWindow(self, s: str, t: str) -> str:
-        countMap = collections.Counter(t)
-        
+        """
+        用count_remain来记录需要配对的剩余的量
+        当counter[c] > 0，说明找到一个合适的，如果是在expand时候遇到就要count_remain-=1，如果是在shrink时候遇到就要+=1
+
+        时间：O(S+T)
+        空间：O(S+T)
+        """
+        counter = collections.Counter(t)
+
         l = r = 0
-        minStart = 0
-        minLen = float("inf")
-        counter = len(t)
-        
+        min_start = 0
+        min_len = float("inf")
+        count_remain = len(t)
+
         while r < len(s):
-            ch = s[r]
-            if countMap[ch] > 0:
-                counter -= 1
-            countMap[ch] -= 1
+            # 扩大窗口
+            ch_r = s[r]
+            if counter[ch_r] > 0:
+                count_remain -= 1
+            counter[ch_r] -= 1 # 扩大的结果
             r += 1
-            
-            while counter == 0:
-                if minLen > r - l:
-                    minStart = l
-                    minLen = r - l
-                ch2 = s[l]
-                countMap[ch2] += 1
-                if countMap[ch2] > 0:
-                    counter += 1
+
+            # 缩小窗口
+            while count_remain == 0: # 缩小的条件
+                if min_len > r - l: # 更新res
+                    min_start = l
+                    min_len = r - l
+                ch_l_ = s[l] # 缩小的结果
+                counter[ch_l_] += 1 # 相互对称，先扩大一个再更新窗口
+                if counter[ch_l_] > 0:
+                    count_remain += 1
                 l += 1
-        
-        return s[minStart: minStart + minLen] if minLen != float("inf") else ""
-        
+
+        return s[min_start: min_start + min_len] if min_len != float("inf") else ""
 ```
 
 [426. Convert Binary Search Tree to Sorted Doubly Linked List](https://leetcode.com/problems/convert-binary-search-tree-to-sorted-doubly-linked-list/)
