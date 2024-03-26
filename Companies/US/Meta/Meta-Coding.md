@@ -1,4 +1,4 @@
-[125. Valid Palindrome](https://leetcode.com/problems/valid-palindrome/)
+[125. Valid Palindrome](https://leetcode.cn/problems/valid-palindrome/)
 用相向two pointer，当不是char时候就比较; s[i].isalnum() 看是否是string或者num; s[i].lower() 返回一个小写
 
 时间：O(N)
@@ -22,7 +22,7 @@ print(isPalindrome("dafsad"))
 
 ```
 
-[1047. Remove All Adjacent Duplicates In String](https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/)
+[1047. Remove All Adjacent Duplicates In String](https://leetcode.cn/problems/remove-all-adjacent-duplicates-in-string/)
 用Stack，如果相同就pop，不同就放进来，最后转换成string
 
 时间：O(N)
@@ -40,7 +40,7 @@ class Solution:
         return ''.join(stack) # stack导出为string的方法
 ```
 
-[766. Toeplitz Matrix](https://leetcode.com/problems/toeplitz-matrix/)
+[766. Toeplitz Matrix](https://leetcode.cn/problems/toeplitz-matrix/)
 
 比较m[i][j]和m[i+1][j+1]即可
 
@@ -79,7 +79,7 @@ At most we have one "row" in memory;
 If you notice a pattern here that when moving from r->l we incrementally compare values;
 I'll leave it to you to think how you can extend this to fewer columns.
 
-[346. Moving Average from Data Stream](https://leetcode.com/problems/moving-average-from-data-stream/)
+[346. Moving Average from Data Stream](https://leetcode.cn/problems/moving-average-from-data-stream/)
 
 ```python
 from collections import deque
@@ -120,7 +120,7 @@ print(param_3)
 # param_1 = obj.next(val)
 ```
 
-[246. Strobogrammatic Number](https://leetcode.com/problems/strobogrammatic-number/)
+[246. Strobogrammatic Number](https://leetcode.cn/problems/strobogrammatic-number/)
 思路：
 先确定满足条件的strobogrammatic nums; 然后用hashmap一一对应起来; 用相向two pointers一一比对，注意条件有2个：满足strobogrammatic num并且要pointers指向对应
 
@@ -143,7 +143,7 @@ class Solution:
         return True
 ```
 
-[266. Palindrome Permutation](https://leetcode.com/problems/palindrome-permutation/)
+[266. Palindrome Permutation](https://leetcode.cn/problems/palindrome-permutation/)
 放进map里{char: count}数个数，如果偶数就可以，奇数的话只能至多一个是奇数; 注意map[item] = map.get(item, 0) + 1的使用方法
 
 时间：O(N)
@@ -165,7 +165,7 @@ class Solution:
         return True
 ```
 
-[953. Verifying an Alien Dictionary](https://leetcode.com/problems/verifying-an-alien-dictionary/)
+[953. Verifying an Alien Dictionary](https://leetcode.cn/problems/verifying-an-alien-dictionary/)
 用map存{letter: rank}，然后比较相邻的word，不符合的条件有两个：1，前面相同时len(words[i]) > len(words[i+1]；2，不同时候rank不对。如果不同但是满足，可以就直接break这两个word的比较；enumerate(string)返回(index, val)
 
 时间：O(M)； M is total number of char in words
@@ -196,7 +196,7 @@ class Solution:
         return True
 ```
 
-[199. Binary Tree Right Side View](https://leetcode.com/problems/binary-tree-right-side-view/)
+[199. Binary Tree Right Side View](https://leetcode.cn/problems/binary-tree-right-side-view/)
 
 from collections import deque; queue放元素：queue = deque([root])
 
@@ -251,7 +251,7 @@ class Solution:
 
 ```
 
-[896. Monotonic Array](https://leetcode.com/problems/monotonic-array/)
+[896. Monotonic Array](https://leetcode.cn/problems/monotonic-array/)
 
 思路一：
 走两遍，all()函数返回真假all(nums[i]<=nums[i+1] for i in range(len(nums) - 1))
@@ -277,7 +277,7 @@ class Solution:
         return increase or decrease
 ```
 
-[824. Goat Latin](https://leetcode.com/problems/goat-latin/)
+[824. Goat Latin](https://leetcode.cn/problems/goat-latin/)
 思路：
 straight forward；str.split()方法的使用；' '.join(str)的使用
 
@@ -295,7 +295,7 @@ class Solution:
         return ' '.join(res)
 ```
 
-[724. Find Pivot Index](https://leetcode.com/problems/find-pivot-index/)
+[724. Find Pivot Index](https://leetcode.cn/problems/find-pivot-index/)
 
 思路：
 分别表示出来l_sum和r_sum
@@ -314,7 +314,7 @@ class Solution:
         return -1
 ```
 
-[163. Missing Ranges](https://leetcode.com/problems/missing-ranges/)
+[163. Missing Ranges](https://leetcode.cn/problems/missing-ranges/)
 
 思路：
 用一个函数来把需要补充的值放进去，注意可能是需要补充一个值，或者是一系列值；用cur=nums[i]，一次比较pre+1和cur-1的大小，然后把pre=cur；同时走到底之后,cur=upper+1；注意lower的起点是lower - 1
@@ -337,7 +337,7 @@ class Solution:
         return res
 ```
 
-[977. Squares of a Sorted Array](https://leetcode.com/problems/squares-of-a-sorted-array/)
+[977. Squares of a Sorted Array](https://leetcode.cn/problems/squares-of-a-sorted-array/)
 
 思路：
 相向two pointers，依次比较，res[]从后往前；声明大小为n的[]: res = [0] * n；从后往前for i in range(n-1, -1, -1): range(start, stop, step), stop not included
@@ -359,7 +359,7 @@ class Solution:
         return res
 ```
 
-[605. Can Place Flowers](https://leetcode.com/problems/can-place-flowers/)
+[605. Can Place Flowers](https://leetcode.cn/problems/can-place-flowers/)
 
 首尾加0，用一个count来记录连续的0，如果count==3那就n-=1同时count=1; list.insert()
 
@@ -385,7 +385,7 @@ class Solution:
         return False
 ```
 
-[415. Add Strings](https://leetcode.com/problems/add-strings/)
+[415. Add Strings](https://leetcode.cn/problems/add-strings/)
 
 two pointers从后往前，用carry存进位的情况，value = (x1 + x2 + carry) % 10, carry = (x1 + x2 + carry) // 10. 走到头carry不为0就再append一下，最后reverse并且转换成string即可；ord(string)返回unicode值, x = ord(string) - ord('0')就把'5'存成5到x里；a // 10 地板除，向下取整; math.ceil(a/10)就是向上取整；res[]存的整数反过来导出成string: ''.join(str(x) for x in res[::-1])；要先更新val，再更新carry
 
@@ -413,7 +413,7 @@ class Solution:
         return ''.join(str(x) for x in res[::-1])
 ```
 
-[67. Add Binary](https://leetcode.com/problems/add-binary/)
+[67. Add Binary](https://leetcode.cn/problems/add-binary/)
 
 和415一模一样，只是换成了2进制two pointers从后往前走直到头，res每次添加(p1+p2+carry)%2的，同时carry = (p1+p2+carry)//2，最后res翻转过来
 
@@ -438,7 +438,7 @@ class Solution:
         return ''.join(str(x) for x in res[::-1])
 ```
 
-[1249. Minimum Remove to Make Valid Parentheses](https://leetcode.com/problems/minimum-remove-to-make-valid-parentheses/)
+[1249. Minimum Remove to Make Valid Parentheses](https://leetcode.cn/problems/minimum-remove-to-make-valid-parentheses/)
 
 思路：
 先把s变成list，用stack存inValid的'(',')'的index; 如何判断inValid：每次看到(就压栈，看到)要么弹要么直接换成""，最后多余在stack里的（直接换成空）。最后把s导出成string：直接换成空：s[idx] = ""， 最后list变成str: "".join(s)
@@ -465,7 +465,7 @@ class Solution:
         return "".join(s)
 ```
 
-[680. Valid Palindrome II](https://leetcode.com/problems/valid-palindrome-ii/)
+[680. Valid Palindrome II](https://leetcode.cn/problems/valid-palindrome-ii/)
 
 two pointers分别从两头往中间走，如果不满足就再给个机会
 
@@ -493,7 +493,7 @@ class Solution:
         return True #不要忘记return True
 ```
 
-[314. Binary Tree Vertical Order Traversal](https://leetcode.com/problems/binary-tree-vertical-order-traversal/)
+[314. Binary Tree Vertical Order Traversal](https://leetcode.cn/problems/binary-tree-vertical-order-traversal/)
 
 ```python
 from collections import deque
@@ -536,7 +536,7 @@ class Solution:
         """
 ```
 
-[987. Vertical Order Traversal of a Binary Tree](https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/)
+[987. Vertical Order Traversal of a Binary Tree](https://leetcode.cn/problems/vertical-order-traversal-of-a-binary-tree/)
 
 ```python
 class Solution(object):
@@ -569,7 +569,7 @@ class Solution(object):
         return res
 ```
 
-[1762. Buildings With an Ocean View](https://leetcode.com/problems/buildings-with-an-ocean-view/)
+[1762. Buildings With an Ocean View](https://leetcode.cn/problems/buildings-with-an-ocean-view/)
 
 There are n buildings in a line. You are given an integer array heights of size n that represents the heights of the buildings in the line.
 
@@ -594,7 +594,7 @@ class Solution:
         return res
 ```
 
-[1570. Dot Product of Two Sparse Vectors](https://leetcode.com/problems/dot-product-of-two-sparse-vectors/)
+[1570. Dot Product of Two Sparse Vectors](https://leetcode.cn/problems/dot-product-of-two-sparse-vectors/)
 
 方法一：
 直接按照array来算；
@@ -666,7 +666,7 @@ class SparseVector:
         return res
 ```
 
-[938. Range Sum of BST](https://leetcode.com/problems/range-sum-of-bst/)
+[938. Range Sum of BST](https://leetcode.cn/problems/range-sum-of-bst/)
 
 Given the root node of a binary search tree and two integers low and high, return the sum of values of all nodes with a value in the inclusive range [low, high].
 
@@ -694,7 +694,7 @@ class Solution:
         return res
 ```
 
-[1650. Lowest Common Ancestor of a Binary Tree III](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iii/)
+[1650. Lowest Common Ancestor of a Binary Tree III](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree-iii/)
 
 先求各自深度，再把深的往上走直到当前深度相同，最后一起往上走找parent；注意找深度是while p；深度就是层数root的深度是1
 时间：O(H)
@@ -728,7 +728,7 @@ class Solution:
         return p      
 ```
 
-[528. Random Pick with Weight](https://leetcode.com/problems/random-pick-with-weight/) (前缀和，可以先做一下LC53、523)
+[528. Random Pick with Weight](https://leetcode.cn/problems/random-pick-with-weight/) (前缀和，可以先做一下LC53、523)
 
 用list存所有的前缀和。概率是w[i]/total_sum，可以用找到第一个preSum来代替；用random.random()来获得[0,1);w:[1,3]-> pre_sums:[1, 4] -> target in randomly in [0, 4); find the first index in pre_sums s.t. target < pre_sums[idx]
 时间：构造O(N)，找数O(N)
@@ -782,7 +782,7 @@ class Solution:
         return l
 ```
 
-[408. Valid Word Abbreviation](https://leetcode.com/problems/valid-word-abbreviation/)
+[408. Valid Word Abbreviation](https://leetcode.cn/problems/valid-word-abbreviation/)
 
 从前往后依次比较：如果相同就往后走，如果j第一个是0就False，如果j是其他数字：当一直是数字的时候就一直往后走，同时记住总数字，然后把i也移动那么多；最后判断是否都走到底了；判断j是否是数字: abbr[i].isnumeric()，把string s="dd23ss"的转换成数字int(s[2:4])；注意if else关系；
 时间：O(N), N is word.length()
@@ -810,7 +810,7 @@ class Solution:
         return i == m and j == n
 ```
 
-[339. Nested List Weight Sum](https://leetcode.com/problems/nested-list-weight-sum/)
+[339. Nested List Weight Sum](https://leetcode.cn/problems/nested-list-weight-sum/)
 
 用dfs，如果是数字就total +=，如果不是就深度加一继续。
 时间：O(N), N is size of nestedList
@@ -830,7 +830,7 @@ class Solution:
         return dfs(nestedList, 1)
 ```
 
-[921. Minimum Add to Make Parentheses Valid](https://leetcode.com/problems/minimum-add-to-make-parentheses-valid/)
+[921. Minimum Add to Make Parentheses Valid](https://leetcode.cn/problems/minimum-add-to-make-parentheses-valid/)
 
 用left, right两个分别记录需要valid的'('和')'，如果见到'('就right++，如果见到')'就要么right--要么left++，最后返回left+right
 时间O(N)
@@ -851,7 +851,7 @@ class Solution:
         return left + right
 ```
 
-[139. Word Break](https://leetcode.com/problems/word-break/)
+[139. Word Break](https://leetcode.cn/problems/word-break/)
 
 用dp[]存每个index能否满足条件，从后往前来更新dp[]，对于每个起点i，从长度满足的wordDict来找能走到的：s[i:i+len(w)] == w，找到就能退出看下一个i
 时间：O(N*M*N) N is len(s), M is len(wordDict)
@@ -873,7 +873,7 @@ class Solution:
         return dp[0]
 ```
 
-[140. Word Break II](https://leetcode.com/problems/word-break-ii/)
+[140. Word Break II](https://leetcode.cn/problems/word-break-ii/)
 
 ```python
 class Solution(object):
@@ -894,7 +894,7 @@ class Solution(object):
         return res
 ```
 
-[124. Binary Tree Maximum Path Sum](https://leetcode.com/problems/binary-tree-maximum-path-sum/)
+[124. Binary Tree Maximum Path Sum](https://leetcode.cn/problems/binary-tree-maximum-path-sum/)
 
 dfs()在左右子树不分分叉的情况下，返回子树path最大值:return node.val + max(leftMax, rightMax); basecase是走到null的0，同时更新res[0], res[0]=max(res[0], node.val+leftMax+rightMax)
 时间: O(N) n is num of nodes
@@ -929,7 +929,7 @@ class Solution:
         return res
 ```
 
-[347. Top K Frequent Elements](https://leetcode.com/problems/top-k-frequent-elements/) 之后要看看heap的方法
+[347. Top K Frequent Elements](https://leetcode.cn/problems/top-k-frequent-elements/) 之后要看看heap的方法
 bucket sort
 i(count)  0 |  1  | 2  | 3 | 4 | 5 | ... | len(input)
 values       [100]     [1,2]
@@ -979,7 +979,7 @@ class Solution:
         return res
 ```
 
-[236. Lowest Common Ancestor of a Binary Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/)
+[236. Lowest Common Ancestor of a Binary Tree](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree/)
 
 自下而上，这个函数就返回自己左右子树满足条件的node：返回自己或者不为None的一边。base case就是找到了
 时间：O(N)
@@ -1003,7 +1003,7 @@ class Solution:
             return left or right
 ```
 
-[560. Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/)
+[560. Subarray Sum Equals K](https://leetcode.cn/problems/subarray-sum-equals-k/)
 
 ```py
 class Solution:
@@ -1053,7 +1053,7 @@ class Solution:
         return count
 ```
 
-[227. Basic Calculator II](https://leetcode.com/problems/basic-calculator-ii/)
+[227. Basic Calculator II](https://leetcode.cn/problems/basic-calculator-ii/)
 
 用Stack存数字，每次如果是+-就直接压进去，如果是*/就压进去相对应的数，最后弹栈相加；-3//2地板除会得到-2而不是想要的-1，所以用int(-3/2)这样就可以得到-1;检查是否是数字: s[i].isdigit()；把长串string转成对应的数字num=num*10+int(s[i]);如果是"+-*/": if s[i] in "+-*/"；sign的条件：如果是sign或者走到最后一位；相加stack的所有数字：sum(stack)；每次检查完sign之后要更新num和sign；最后还有把最后的数放进stack里
 时间：O(N)
@@ -1085,7 +1085,7 @@ class Solution:
         return sum(stack)
 ```
 
-[224. Basic Calculator](https://leetcode.com/problems/basic-calculator/)
+[224. Basic Calculator](https://leetcode.cn/problems/basic-calculator/)
 
 当看到"("就从下一位call自己，看到")"就返回"()"之间的值
 
@@ -1117,7 +1117,7 @@ class Solution:
         return sum(stack)
 ```
 
-[772. Basic Calculator III](https://leetcode.com/problems/basic-calculator-iii/)
+[772. Basic Calculator III](https://leetcode.cn/problems/basic-calculator-iii/)
 
 ```python
 class Solution:
@@ -1152,7 +1152,7 @@ class Solution:
         return sum(stack)
 ```
 
-[50. Pow(x, n)](https://leetcode.com/problems/powx-n/)
+[50. Pow(x, n)](https://leetcode.cn/problems/powx-n/)
 
 Input: x = 2.00000, n = 10
 Output: 1024.00000
@@ -1181,7 +1181,7 @@ def pow(x, n):
         return pow(x * x, n /2)
 ```
 
-[215. Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/)
+[215. Kth Largest Element in an Array](https://leetcode.cn/problems/kth-largest-element-in-an-array/)
 
 heapify这个array到minHeap：O(N)，然后pop()共n+1-k次=>时间O(N+(n+1-k)logN)
 
@@ -1267,7 +1267,7 @@ class Solution:
         return select(0, len(nums) - 1)
 ```
 
-[71. Simplify Path](https://leetcode.com/problems/simplify-path/)
+[71. Simplify Path](https://leetcode.cn/problems/simplify-path/)
 
 用stack: 对于每个如果是.或者空，忽略; 如果是..，当非空的时候弹栈; 如果是文件夹，直接放进去; 分割: for part in path.split("/")；最后返回"/" + "/".join(stack)
 时间：O(N)
@@ -1289,7 +1289,7 @@ class Solution:
         return res
 ```
 
-[973. K Closest Points to Origin](https://leetcode.com/problems/k-closest-points-to-origin/)
+[973. K Closest Points to Origin](https://leetcode.cn/problems/k-closest-points-to-origin/)
 
 minHeap，先计算每个点的距离。放进minHeap，然后pop K次; 初始化minHeap.append([dist, x, y]); heap化:heapq.heapify(minHeap)，弹出dist, x, y = heapq.heappop(minHeap)
 
@@ -1352,7 +1352,7 @@ class Solution:
         return select(0, len(points) - 1)
 ```
 
-[791. Custom Sort String](https://leetcode.com/problems/custom-sort-string/)
+[791. Custom Sort String](https://leetcode.cn/problems/custom-sort-string/)
 
 先统计s各个字母出现次数，然后根据order的顺序放进res里，最后把不在order里但在s里的放进去 ：统计次数：count = collections.Counter(s), count[c]就会返回char在s出现的次数；res.append(c * counter(c))
 
@@ -1374,7 +1374,7 @@ class Solution:
         return "".join(res)
 ```
 
-[65. Valid Number](https://leetcode.com/problems/valid-number/)
+[65. Valid Number](https://leetcode.cn/problems/valid-number/)
 
 要处理的东西 1. digits; 2. sign('+', '-')：必须出现在开头，或者紧跟在'e', 'E'后面; 3. exponent：必须前后都有digit，同时只出现一次； 4. dot：前面没有过expo，同时只出现一次；5. other
 
@@ -1405,31 +1405,31 @@ class Solution:
         return seenDigit
 ```
 
-[56. Merge Intervals](https://leetcode.com/problems/merge-intervals/)
+[56. Merge Intervals](https://leetcode.cn/problems/merge-intervals/)
 
-Given an array of intervals where intervals[i] = [starti, endi], merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.
-
-先根据start把intervals排序，然后一个一个看，如果重叠就更新，不重叠就加进去；排序: intervals.sort(key = lambda i : i[0]); lastEnd = res[-1][1]；遍历的时候是for start, end in intervals[1:]:
-时间：O(nlogn)
-空间：O(logn) if sorted in place
-
-```python
+```py
 class Solution:
     def merge(self, intervals: List[List[int]]) -> List[List[int]]:
-        intervals.sort(key = lambda i : i[0])  # i代表interval，：后面表示按照排序i[0]
-        res = [intervals[0]] # 一开始把第一个放进去
+        """
+        先根据start把intervals排序，然后一个一个看，如果重叠就更新，不重叠就加进去；排序: intervals.sort(key = lambda i : i[0]); lastEnd = res[-1][1]；遍历的时候是for start, end in intervals[1:]:
+        时间：O(nlogn)
+        空间：O(logn) if sorted in place
+        """
+        intervals.sort(key = lambda i: i[0])  # i代表interval，：后面表示按照排序i[0]
+        # intervals.sort()
+        res = [intervals[0]] # 一开始把第一个放进去，这样好直接进行第一次比较
 
-        for start, end in intervals[1:]: # 注意是 in intervals[1:]
-            lastEnd = res[-1][1]
-            if start <= lastEnd:
-                res[-1][1] = max(lastEnd, end)
+        for start, end in intervals[1:]:  # 注意是 in intervals[1:]
+            last_end = res[-1][1]
+            if start <= last_end:
+                res[-1][1] = max(last_end, end)
             else:
                 res.append([start, end])
-        
+
         return res 
 ```
 
-[8. String to Integer (atoi)](https://leetcode.com/problems/string-to-integer-atoi/)
+[8. String to Integer (atoi)](https://leetcode.cn/problems/string-to-integer-atoi/)
 
 用sign, res, idx，idx一直往后走，先删除空格，然后记录正负号， 最后处理数字，每次数字检查是否越界，否则res = 10*res + curDigit；越界的条件>INT_MAX // 10，或者== INT_MAX同时curDit>INT_MAX % 10，越界了就返回最大值或者最小值；最大值pow(2, 31)-1；最小值-pow(2, 31)
 
@@ -1473,7 +1473,7 @@ class Solution:
         return sign * res
 ```
 
-[21. Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/)
+[21. Merge Two Sorted Lists](https://leetcode.cn/problems/merge-two-sorted-lists/)
 
 用两个指针分别往后走，比较小的就放进来；用一个dummy，避免插入到空的链表中；需要注意其中一个没走到头。；别忘了更新自己pre = pre.next
 
@@ -1504,7 +1504,7 @@ class Solution:
         return dummy.next
 ```
 
-[23. Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/)
+[23. Merge k Sorted Lists](https://leetcode.cn/problems/merge-k-sorted-lists/)
 
 类似mergesort，当len(lists)>1的时候两两个分别比较：用一个新的onepassMerge[]然后merge到自己，这样lists的大小越来越小，时间O(logK * N)：比较了logK次，每次O(N)：最后返回lists[0]；每次走2步：for i in range(0, len(lists), 2);要判断l2不越界：l2 = lists[i + 1] if (i+1)<len(lists) else None
 
@@ -1553,7 +1553,7 @@ class Solution:
 
 ```
 
-[1891. Cutting Ribbons](https://leetcode.com/problems/cutting-ribbons/)
+[1891. Cutting Ribbons](https://leetcode.cn/problems/cutting-ribbons/)
 
 转化思路，题目要求最多切成n次，那n=1到max(ribbon)，这样满足条件的是n最大的那个时候，相当于每次都看是否满足条件，直到找到最后满足条件的值。可以用二分查找找最右侧边界；count >= k是满足的条件，count表示可以提供的数量；最后return right，因为跳出的时候left = right + 1了
 时间：O(Nlog(max(Length)))
@@ -1581,7 +1581,7 @@ class Solution:
         return count >= k  # 满足的情况，count表示可以提供的数量
 ```
 
-[146. LRU Cache](https://leetcode.com/problems/lru-cache/)
+[146. LRU Cache](https://leetcode.cn/problems/lru-cache/)
 
 需要记录的：capacity;Node: key, val, pre, next; LRU class: cap, left, right, cache还要把left, right连起来 ;如果要get在O(1)：HashMap：{val: pointer to the node}；用left, right pointer来记录LRU和Most freqently used：double linkedlist;当第三个node来了：更新hashMap， 更新left, right pointer，更新第二使用的node和这个node的双向链接；每次get: 删除，添加操作；每次put：如果存在要删除，总要添加操作，如果大小不够，就找到lru(最左），然后删除
 
@@ -1644,7 +1644,7 @@ class LRUCache:
 # obj.put(key,value)
 ```
 
-[253. Meeting Rooms II](https://leetcode.com/problems/meeting-rooms-ii/)
+[253. Meeting Rooms II](https://leetcode.cn/problems/meeting-rooms-ii/)
 
 2个[]，分别存所有的start和end；双指针比较，如果start<end就count+=1同时start往后走；如果start>=end，就移动end的指针同时count -= 1；双指针走到头的情况就是start到头了；[]存start的方法：sorted([i[0] for i in intervals])
 
@@ -1674,7 +1674,7 @@ class Solution:
 
 ```
 
-[88. Merge Sorted Array](https://leetcode.com/problems/merge-sorted-array/)
+[88. Merge Sorted Array](https://leetcode.cn/problems/merge-sorted-array/)
 
 三个指针，每次把更小的数往前走，注意走到头的情况
 
@@ -1706,7 +1706,7 @@ class Solution:
                 
 ```
 
-[249. Group Shifted Strings](https://leetcode.com/problems/group-shifted-strings/)
+[249. Group Shifted Strings](https://leetcode.cn/problems/group-shifted-strings/)
 
 用map来存{(diff):[oneRes]}:diff是字母之间的区别比如:{(1,1):["abc", "efg"]}，最后直接导出list(map.values())就可以；key用元组：key = ()，添加的时候是key += (diff % 26,)；取得字母之间的区别：diff = ord(s[i+1]) - ord(s[i])；
 
@@ -1734,7 +1734,7 @@ def groupStrings(self, strings: List[str]) -> List[List[str]]:
     return list(diff_res.values())
 ```
 
-[670. Maximum Swap](https://leetcode.com/problems/maximum-swap/)
+[670. Maximum Swap](https://leetcode.cn/problems/maximum-swap/)
 
 先把num变成一个list，从后往前，i是index，如果这个值更小，就说明可以和max_idx互换，就把他们换一下；如果这个值更大，就说明更新max_idx；最后把list转换成num；num变成list：num = [int(x) for x in str(num)]；list变num：int("".join([str(x) for x in num])
 
@@ -1765,7 +1765,7 @@ class Solution:
         return int("".join([str(x) for x in num]))
 ```
 
-[138. Copy List with Random Pointer](https://leetcode.com/problems/copy-list-with-random-pointer/)
+[138. Copy List with Random Pointer](https://leetcode.cn/problems/copy-list-with-random-pointer/)
 
 Two Passes: 第一遍只复制node，不管指针，形成一个map{old : new}；第二遍把node的指针连起来；注意连的map里没考虑最后是None的情况，所以一开始map={ None : None}；遍历是while cur
 
@@ -1793,7 +1793,7 @@ class Solution:
         return oldToCopy[head]
 ```
 
-[200. Number of Islands](https://leetcode.com/problems/number-of-islands/)
+[200. Number of Islands](https://leetcode.cn/problems/number-of-islands/)
 
 用set()记录走过的点，然后如果是“1”而且没走过，就从该点开始bfs()：把这个点放到queue里，然后如果queue不为空，就走上下左右四个方向，四个方向走的条件是不越界，是“1”而且没走过；把2d的点放进queue的办法：queue.append((r, c))；visit = set(), visit.add((r, c))；最开始检查是否是grid: if not grid: return 0；上下左右到处走的条件: for dr, dc in dirs: r, c = row + dr, col + dc; if (r in range(rows) and c in range(cols) and grid[r][c] == "1" and (r, c) not in visit
 
@@ -1863,7 +1863,7 @@ class Solution:
         return count
 ```
 
-[133. Clone Graph](https://leetcode.com/problems/clone-graph/)
+[133. Clone Graph](https://leetcode.cn/problems/clone-graph/)
 
 HashMap:{oldNode:newNode}；dfs(node)返回node对应的copy， 每次如果在map里面就直接返回copy后的node，如果不在就copy然后copy自己的neighbors；复制neighbors: for nei in node.neighbors: copy.neighbors.append(dfs(nei))
 
@@ -1892,7 +1892,7 @@ class Solution:
         return dfs(node)
 ```
 
-[695. Max Area of Island](https://leetcode.com/problems/max-area-of-island/)
+[695. Max Area of Island](https://leetcode.cn/problems/max-area-of-island/)
 
 在每个点都做一遍dfs，一个dfs返回这个点对应岛的大小：因为每个点都走一遍，所以判断是否是0就在base case来判断；dfs返回值：return (1 + dfs(r + 1, c) + dfs(r - 1, c) + dfs(r, c + 1) + dfs(r, c - 1))；每个点走的时候就area = max(area, dfs(r, c))
 
@@ -1928,7 +1928,7 @@ class Solution:
         return area
 ```
 
-[417. Pacific Atlantic Water Flow](https://leetcode.com/problems/pacific-atlantic-water-flow/)
+[417. Pacific Atlantic Water Flow](https://leetcode.cn/problems/pacific-atlantic-water-flow/)
 
 分别从pacific和atlantic ocean来找能到的点，而不是从每个点出发来找能否同时到ocean；然后同时pacific和Atlantic能到的点就是要找的点：从第一行来看其他行能否走到Pacific ocean， 从最后一行开始来看其他行能否走到Atlantic ocean：能否走到的条件就在base case里: heights[r][c] < preHeight；dfs参数：dfs(r, c, visited, preHeight)
 
@@ -1967,7 +1967,7 @@ class Solution:
         return res
 ```
 
-[286. Walls and Gates](https://leetcode.com/problems/walls-and-gates/)
+[286. Walls and Gates](https://leetcode.cn/problems/walls-and-gates/)
 
 从Gate来做bfs。先把Gate都放在queue和Visit里面，然后逐层bfs，每一层bfs做的就是取出来queue的一层的值然后变成dist，然后addRoom周围四个点，一层走完dist += 1
 
@@ -2010,7 +2010,7 @@ class Solution:
 
 ```
 
-[127. Word Ladder](https://leetcode.com/problems/word-ladder/)
+[127. Word Ladder](https://leetcode.cn/problems/word-ladder/)
 
 先用nested loop建一个adjacent list：O(N*M ^ 2)，然后用BFSO(N^2\*M)；adj: {pattern: [words]} : {\*ot: [hot, dot, lot]}；找pattern = word[:j] + "*" + word[j+1:]；res起点是1；visited和queue一开始要把beginWord放进来：visit.add([beginWord]); queue.append([beginWord])
 
@@ -2054,7 +2054,7 @@ class Solution:
         return 0
 ```
 
-[778. Swim in Rising Water](https://leetcode.com/problems/swim-in-rising-water/)
+[778. Swim in Rising Water](https://leetcode.cn/problems/swim-in-rising-water/)
 
 Dijkstra's：用一个minHeap存Front-tier:(Height, r, c)，再用一个visit来存走过的，每次存的Height是见过的最大值；每次minHeap pop出来之后看四周的neighbor；Heap取出来数字：heapq.heappop(minH)；Heap加东西：heapq.heappush(minH, [要加的])
 
@@ -2084,7 +2084,7 @@ class Solution:
         
 ```
 
-[269. Alien Dictionary](https://leetcode.com/problems/alien-dictionary/) 先做LC953
+[269. Alien Dictionary](https://leetcode.cn/problems/alien-dictionary/) 先做LC953
 
 先建adj{ch:set()}：两两word比较，得到两两letter的顺序；之后用postDFS放进来，DFS需要一个visit{ch:T/F}，每次看是否在里面，在的话就返回visit[c]，然后在dfs内部看ch的nei，如果dfs(nei)返回true就说明这条路不通，最后把res加进去；从adj的任意一个ch走dfs，最后reverse这个结果
 
@@ -2139,7 +2139,7 @@ class Solution:
         return "".join(res)
 ```
 
-[332. Reconstruct Itinerary](https://leetcode.com/problems/reconstruct-itinerary/)
+[332. Reconstruct Itinerary](https://leetcode.cn/problems/reconstruct-itinerary/)
 
 建立adj list{source:[des]]}，同时[des]需要排好序；更简单的是先把input排序，然后放进adj，这样就自动排好序了；建好表之后DFS：返回能否找到validPath，从每个src走，然后遍历这个src的nei；遍历nei的时候回溯；删除特定位置的值adj[src].pop(idx)，在特定位置插入adj[src].insert(idx, nei)
 
@@ -2183,7 +2183,7 @@ class Solution:
 
 ```
 
-[42. Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/)
+[42. Trapping Rain Water](https://leetcode.cn/problems/trapping-rain-water/)
 
 对于位置i能存储的水: min(maxL, maxR) - h[i]；相向双指针，加上两个变量maxL, maxR来时刻保存左右两边的最大值；每次移动maxL, maxR之间较小那个数的指针，然后新位置i能存储的水：被移动指针之前的值-h[i]：不用考虑另外一个值，因为那个值肯定比较大；移动指针之后计算这个指针所在位置能存储的水
 
@@ -2213,7 +2213,7 @@ class Solution:
         return res
 ```
 
-[543. Diameter of Binary Tree](https://leetcode.com/problems/diameter-of-binary-tree/)
+[543. Diameter of Binary Tree](https://leetcode.cn/problems/diameter-of-binary-tree/)
 
 从leaf来找每个节点的diameter和height；最下面的leaf的height=0；Diameter = leftHeight + rightHeight + 1 + 1(两个edge);dfs()返回树高max(leftHeight, rightHeight) + 1
 
@@ -2251,7 +2251,7 @@ class Solution:
 
 ```
 
-[523. Continuous Subarray Sum](https://leetcode.com/problems/continuous-subarray-sum/)
+[523. Continuous Subarray Sum](https://leetcode.cn/problems/continuous-subarray-sum/)
 
 map:{remainder:end_index} remainder是前缀和的mod的结果，最开始map={0:-1}这样第一个数如果能整除但不会返回true；对于每个数，计算前缀和的mod结果，如果不在map里就加进来，如果在的话：只有距离大于1才是真的满足
 
@@ -2276,7 +2276,7 @@ class Solution:
 
 ```
 
-[173. Binary Search Tree Iterator](https://leetcode.com/problems/binary-search-tree-iterator/)
+[173. Binary Search Tree Iterator](https://leetcode.cn/problems/binary-search-tree-iterator/)
 
 inorder遍历；用一个栈，建立obj的时候就把所有左子树放进来；next()就是弹栈，然后把右子节点的左右左子树压栈；只要stack不为空，就说明hasNext()
 
@@ -2318,7 +2318,7 @@ class BSTIterator:
 
 ```
 
-[297. Serialize and Deserialize Binary Tree](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/)
+[297. Serialize and Deserialize Binary Tree](https://leetcode.cn/problems/serialize-and-deserialize-binary-tree/)
 
 preorder遍历
 
@@ -2370,7 +2370,7 @@ class Codec:
 
 ```
 
-[129. Sum Root to Leaf Numbers](https://leetcode.com/problems/sum-root-to-leaf-numbers/)
+[129. Sum Root to Leaf Numbers](https://leetcode.cn/problems/sum-root-to-leaf-numbers/)
 
 preorder因为要先处理父节点，dfs()返回sum值
 时间：O(N)
@@ -2396,7 +2396,7 @@ class Solution:
 
 ```
 
-[647. Palindromic Substrings](https://leetcode.com/problems/palindromic-substrings/)
+[647. Palindromic Substrings](https://leetcode.cn/problems/palindromic-substrings/)
 
 从每个位置开始，两个指针从该位置往左往右走，这样只走了所有的奇数，然后再走所有的偶数
 
@@ -2428,7 +2428,7 @@ class Solution:
 
 ```
 
-[658. Find K Closest Elements](https://leetcode.com/problems/find-k-closest-elements/)
+[658. Find K Closest Elements](https://leetcode.cn/problems/find-k-closest-elements/)
 
 二分查找；r = len(arr) - k, 如果x > (arr[mid] + arr[mid+10] // 2，就l+=1
 
@@ -2452,7 +2452,7 @@ class Solution:
 
 ```
 
-[78. Subsets](https://leetcode.com/problems/subsets/)（子集 元素无重不可复选）
+[78. Subsets](https://leetcode.cn/problems/subsets/)（子集 元素无重不可复选）
 
 Given an integer array nums of unique elements, return all possible subsets (the power set).
 Input: nums = [1,2,3]
@@ -2481,7 +2481,7 @@ class Solution:
         return res
 ```
 
-[77. Combinations](https://leetcode.com/problems/combinations/) （组合 元素无重不可复选）
+[77. Combinations](https://leetcode.cn/problems/combinations/) （组合 元素无重不可复选）
 
 Given two integers n and k, return all possible combinations of k numbers out of the range [1, n].
 
@@ -2518,7 +2518,7 @@ class Solution:
 
 ```
 
-[46. Permutations](https://leetcode.com/problems/permutations/) 排列（元素无重不可复选）
+[46. Permutations](https://leetcode.cn/problems/permutations/) 排列（元素无重不可复选）
 
 Given an array nums of distinct integers, return all the possible permutations. You can return the answer in any order.
 
@@ -2556,7 +2556,7 @@ class Solution:
         return res
 ```
 
-[90. Subsets II](https://leetcode.com/problems/subsets-ii/)
+[90. Subsets II](https://leetcode.cn/problems/subsets-ii/)
 
 Given an integer array nums that may contain duplicates, return all possible subsets (the power set).
 
@@ -2588,7 +2588,7 @@ class Solution:
         return res
 ```
 
-[380. Insert Delete GetRandom O(1)](https://leetcode.com/problems/insert-delete-getrandom-o1/)
+[380. Insert Delete GetRandom O(1)](https://leetcode.cn/problems/insert-delete-getrandom-o1/)
 
 用HashMap存{数字:index}，这样查看是否存在的时间是O(1)，index是用一个list存的数字对应的位置。删除的操作：拿到list里的位置，然后把list最后一个数覆盖到这个要删除的树上，然后更新hashmap里最后一个数对应的index
 
@@ -2634,7 +2634,7 @@ class RandomizedSet:
 
 ```
 
-[34. Find First and Last Position of Element in Sorted Array](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/)
+[34. Find First and Last Position of Element in Sorted Array](https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/)
 
 二分查找，用一个boolean来判断是查左边还是右边，如果是左边就r=mid-1；另外用一个idx来记录最终值
 
@@ -2664,7 +2664,7 @@ class Solution:
 
 ```
 
-[739. Daily Temperatures](https://leetcode.com/problems/daily-temperatures/)
+[739. Daily Temperatures](https://leetcode.cn/problems/daily-temperatures/)
 
 单调递减栈（非增）monotonic decreasing stack；如果下一个数更大，就一直弹栈，直到找到能把这个数放进去；弹栈的时候就可以idx的差值就是被删除栈的output；如果下一个数更大，就压栈
 
@@ -2686,7 +2686,7 @@ class Solution:
         return res    
 ```
 
-[43. Multiply Strings](https://leetcode.com/problems/multiply-strings/)
+[43. Multiply Strings](https://leetcode.cn/problems/multiply-strings/)
 
 81%10=1, carry:81//10=8 用array来存结果；计算数字：取出来digit，然后res[i1+i2]+=digit, res[i1+i2+1]=res[i1+i2]//10, res[i1+i2]%=10
 
@@ -2761,7 +2761,7 @@ class Solution:
         return s[min_start: min_start + min_len] if min_len != float("inf") else ""
 ```
 
-[426. Convert Binary Search Tree to Sorted Doubly Linked List](https://leetcode.com/problems/convert-binary-search-tree-to-sorted-doubly-linked-list/)
+[426. Convert Binary Search Tree to Sorted Doubly Linked List](https://leetcode.cn/problems/convert-binary-search-tree-to-sorted-doubly-linked-list/)
 
 inorder遍历。用一个全局的prev来作为prev; 用dummy来防止为空的情况；nonlocal prev来帮助遍历里面；最后把最开始和最后的连起来: dummy.right.left = prev, prev.right = dummy.right
 
@@ -2791,7 +2791,7 @@ class Solution:
         return dummy.right
 ```
 
-[31. Next Permutation](https://leetcode.com/problems/next-permutation/)
+[31. Next Permutation](https://leetcode.cn/problems/next-permutation/)
 
 ```python
 class Solution:
@@ -2824,7 +2824,7 @@ class Solution:
             l +=1 ; r -= 1
 ```
 
-[827. Making A Large Island](https://leetcode.com/problems/making-a-large-island/)
+[827. Making A Large Island](https://leetcode.cn/problems/making-a-large-island/)
 
 先计算每个点对应island的area的值，然后计算所有0的附近左右岛面积的和；计算每个点对应island的值的时候，只覆盖该点的岛屿的idx，然后用map映射岛的大小idx_area{idx:area}。等计算0周围的和的时候，就可以直接用set来看是否是不同的岛，然后用idx_area[idx]来相加;res = max(idx_area.values() or [0])
 
@@ -2876,7 +2876,7 @@ class Solution:
         return res
 ```
 
-[1091. Shortest Path in Binary Matrix](https://leetcode.com/problems/shortest-path-in-binary-matrix/)
+[1091. Shortest Path in Binary Matrix](https://leetcode.cn/problems/shortest-path-in-binary-matrix/)
 
 就是八个方向的dfs,queue里面放dist：queue=deque([(0,0,1)])
 
@@ -2910,7 +2910,7 @@ class Solution:
         return -1
 ```
 
-[162. Find Peak Element](https://leetcode.com/problems/find-peak-element/)
+[162. Find Peak Element](https://leetcode.cn/problems/find-peak-element/)
 
 二分查找。当nums[mid]>nums[mid+1]时候，r=mid；否则l = mid + 1
 
@@ -2930,7 +2930,7 @@ class Solution:
         return l     
 ```
 
-[636. Exclusive Time of Functions](https://leetcode.com/problems/exclusive-time-of-functions/)
+[636. Exclusive Time of Functions](https://leetcode.cn/problems/exclusive-time-of-functions/)
 
 用stack，如果是start，如果stack非空，就更新之前的res，然后把值放进来；如果end：取出来最后的值，更新res。如果这时候stack非空，就把这个值的[1]跳过到最新；stack存([fun_id, fun_time])
 
@@ -2971,7 +2971,7 @@ class Solution:
         return  res
 ```
 
-[301. Remove Invalid Parentheses](https://leetcode.com/problems/remove-invalid-parentheses/)
+[301. Remove Invalid Parentheses](https://leetcode.cn/problems/remove-invalid-parentheses/)
 
 ```python
 class Solution:
@@ -3009,7 +3009,7 @@ class Solution:
         
 ```
 
-1. [721. Accounts Merge](https://leetcode.com/problems/accounts-merge/)
+1. [721. Accounts Merge](https://leetcode.cn/problems/accounts-merge/)
 
 Here N is the number of accounts and K is the maximum length of an account.
 时间：O(NKlogNK) 所有email都是同一个人的名下
@@ -3029,7 +3029,7 @@ emails_accounts_map of email to account ID
 2. DFS每个account，把所有有相同的连起来
 3. sort并导出
 
-<https://leetcode.com/problems/accounts-merge/discuss/109161/Python-Simple-DFS-with-explanation>!!!
+<https://leetcode.cn/problems/accounts-merge/discuss/109161/Python-Simple-DFS-with-explanation>!!!
 
 ```python
 class Solution(object):
@@ -3063,7 +3063,7 @@ class Solution(object):
 
 ```
 
-[498. Diagonal Traverse](https://leetcode.com/problems/diagonal-traverse/)
+[498. Diagonal Traverse](https://leetcode.cn/problems/diagonal-traverse/)
 
 对角线的点有相同的sum(idx)，用dict存相同sum对应的所有值: {diag:[3,5,7]}；最后反向添加：[res.append(x) for x in eles[::-1]]；正向添加：[res.append(x) for x in eles]
 
@@ -3097,7 +3097,7 @@ class Solution:
         return res
 ```
 
-[317. Shortest Distance from All Buildings](https://leetcode.com/problems/shortest-distance-from-all-buildings/)
+[317. Shortest Distance from All Buildings](https://leetcode.cn/problems/shortest-distance-from-all-buildings/)
 
 ```python
 class Solution:
@@ -3138,7 +3138,7 @@ class Solution:
 
 ```
 
-[708. Insert into a Sorted Circular Linked List](https://leetcode.com/problems/insert-into-a-sorted-circular-linked-list/)
+[708. Insert into a Sorted Circular Linked List](https://leetcode.cn/problems/insert-into-a-sorted-circular-linked-list/)
 
 用两个指针pre和cur遍历。分2种情况，一个是新Node在二者之前，另一个是新Node在两个之外，找到break的点然后break，最后插入就行了；注意一开始的head空情况；遍历终止条件是pre.next != head
 
@@ -3173,7 +3173,7 @@ class Solution:
         return head
 ```
 
-[986. Interval List Intersections](https://leetcode.com/problems/interval-list-intersections/)
+[986. Interval List Intersections](https://leetcode.cn/problems/interval-list-intersections/)
 
 交叉的起点是max(Astart, Bstart，终点是min(Aend, Bend);指针移动是根据终点大小
 
@@ -3205,7 +3205,7 @@ class Solution:
 
 ```
 
-[1539. Kth Missing Positive Number](https://leetcode.com/problems/kth-missing-positive-number/)
+[1539. Kth Missing Positive Number](https://leetcode.cn/problems/kth-missing-positive-number/)
 
 arr[idx]的应该是1+idx，所以missing个数是arr[idx] - 1 - idx； 找到missing个数在k左的：missing of arr[idx] < k < missing of arr[idx+1]；然后往右加差的数字：arr[idx] + k - missing of arr[idx] => arr[idx] + k - arr[idx] + 1 + idx=> k + 1 + idx
 [2,3,4,7,11], k = 5
@@ -3236,7 +3236,7 @@ class Solution:
         return k + 1 + r   
 ```
 
-[1868. Product of Two Run-Length Encoded Arrays](https://leetcode.com/problems/product-of-two-run-length-encoded-arrays/)
+[1868. Product of Two Run-Length Encoded Arrays](https://leetcode.cn/problems/product-of-two-run-length-encoded-arrays/)
 
 双指针；每次算出来min(f1, f2)然后把f1,f2剪掉，指针移动的条件是f==0；res更新要么+=freq，要么搞一个新的
 
@@ -3280,7 +3280,7 @@ class Solution:
         return res
 ```
 
-[270. Closest Binary Search Tree Value](https://leetcode.com/problems/closest-binary-search-tree-value/)
+[270. Closest Binary Search Tree Value](https://leetcode.cn/problems/closest-binary-search-tree-value/)
 
 inorder遍历；更新res：if abs(node.val - target) < abs(res - target): res = node.val
 
@@ -3337,7 +3337,7 @@ class Solution:
         return res
 ```
 
-[1004. Max Consecutive Ones III](https://leetcode.com/problems/max-consecutive-ones-iii/)
+[1004. Max Consecutive Ones III](https://leetcode.cn/problems/max-consecutive-ones-iii/)
 
 sliding window，弄清楚移动的条件和结果
 时间：O(N)
@@ -3382,7 +3382,7 @@ class Solution:
 
 ```
 
-[348. Design Tic-Tac-Toe](https://leetcode.com/problems/design-tic-tac-toe/)
+[348. Design Tic-Tac-Toe](https://leetcode.cn/problems/design-tic-tac-toe/)
 
 用hori, ver, diag1, diag2来记录对应的次数，如果下在那个位置下了棋，就在该位置+=1或+= -1，如果最后这个位置==n,说明赢了；对角线的位置row+col == n-1
 
@@ -3423,7 +3423,7 @@ class TicTacToe:
 # param_1 = obj.move(row,col,player)
 ```
 
-[721. Accounts Merge](https://leetcode.com/problems/accounts-merge/)
+[721. Accounts Merge](https://leetcode.cn/problems/accounts-merge/)
 
 分别建立一个emailToName的dict和emailToEmail的图；然后dfs遍历所有emailToName的email，看图里有没有，有的话就加进来。最后要sorted一下；graph = defaultdict(set) 避免重复；seen=set()记录见过的email
 
@@ -3520,7 +3520,7 @@ class Solution:
 
 ```
 
-[515. Find Largest Value in Each Tree Row](https://leetcode.com/problems/find-largest-value-in-each-tree-row/)
+[515. Find Largest Value in Each Tree Row](https://leetcode.cn/problems/find-largest-value-in-each-tree-row/)
 
 level-order遍历，每层track最大值；python的“最小值”: float("-inf")
 
@@ -3579,7 +3579,7 @@ class Solution:
         return res
 ```
 
-[616. Add Bold Tag in String](https://leetcode.com/problems/add-bold-tag-in-string/)
+[616. Add Bold Tag in String](https://leetcode.cn/problems/add-bold-tag-in-string/)
 
 先遍历整个words，记录下来所有s中能找到的位置，记作bold[i] = True；然后遍历s，如果是要bold，就加进来"<b>"，然后走到不为bold，加进来"</b>"；最后list转为string就可以；在s找到word之后，接下来继续从start+1找：start = s.find(word, start+1)
 
@@ -3619,7 +3619,7 @@ class Solution:
 
 ```
 
-[1382. Balance a Binary Search Tree](https://leetcode.com/problems/balance-a-binary-search-tree/)
+[1382. Balance a Binary Search Tree](https://leetcode.cn/problems/balance-a-binary-search-tree/)
 
 inorder traverse to an array, then convert the array to a BST；array里面存的是node；built_tree的时候用i,j双指针，如果i>j就返回。build_tree返回的是root
 
@@ -3653,7 +3653,7 @@ class Solution:
 
 ```
 
-[273. Integer to English Words](https://leetcode.com/problems/integer-to-english-words/)
+[273. Integer to English Words](https://leetcode.cn/problems/integer-to-english-words/)
 
 分成三部分：小于20， 小于100：二十到九十， 大于100:千，百万，十亿；如果数字是20以下，就直接返回to19数组的数；如果是100以下，就是[tens[num//10]+word(num%10)；如果1000以下，就是word(num//100)+["hundred"]+word(num%100)；如果是1000000（6个0）以下，就是word(num/1000)+["thousand"]+word(num%1000);换句话说，//和%后面的数是百、千、百万、十亿；num<1000的数是下一个位置的百、千、百万、十亿；最后" ".join(word(num))
 
@@ -3686,7 +3686,7 @@ class Solution:
         return ' '.join(word(num)) or 'Zero'
 ```
 
-[1011. Capacity To Ship Packages Within D Days](https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/)
+[1011. Capacity To Ship Packages Within D Days](https://leetcode.cn/problems/capacity-to-ship-packages-within-d-days/)
 
 l=max(weights), r=sum(weights),最后返回的是最左侧边界l；isValid: r = mid - 1；计算isValid：用一个cur，每次cur+=w，先检查是否cur+w>cap，是的话就days_need+=1, cur = 0
 
@@ -3723,7 +3723,7 @@ class Solution:
         
 ```
 
-[863. All Nodes Distance K in Binary Tree](https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/)
+[863. All Nodes Distance K in Binary Tree](https://leetcode.cn/problems/all-nodes-distance-k-in-binary-tree/)
 
 建立node和node.parent的关系，之后bfs从target找周围的k个距离的点就行
 
@@ -3780,7 +3780,7 @@ class Solution:
         return res
 ```
 
-[398. Random Pick Index](https://leetcode.com/problems/random-pick-index/)
+[398. Random Pick Index](https://leetcode.cn/problems/random-pick-index/)
 
 reservor sampling，当val == target的时候count+=1，然后从randint(1, count)==1来更新结果
 
@@ -3824,7 +3824,7 @@ class Solution:
         return res
 ```
 
-[1428. Leftmost Column with at Least a One](https://leetcode.com/problems/leftmost-column-with-at-least-a-one/)
+[1428. Leftmost Column with at Least a One](https://leetcode.cn/problems/leftmost-column-with-at-least-a-one/)
 
 每行一个二分查找最左出现，然后更新
 
@@ -3852,7 +3852,7 @@ class Solution:
         return right_most if right_most != cols else -1
 ```
 
-[536. Construct Binary Tree from String](https://leetcode.com/problems/construct-binary-tree-from-string/)
+[536. Construct Binary Tree from String](https://leetcode.cn/problems/construct-binary-tree-from-string/)
 
 用i遍历；先找到数字，形成节点，然后如果是(就放左边，然后如果再次出现(就放右边
 时间：O(N)
@@ -3883,7 +3883,7 @@ class Solution:
         return root
 ```
 
-[1344. Angle Between Hands of a Clock](https://leetcode.com/problems/angle-between-hands-of-a-clock/)
+[1344. Angle Between Hands of a Clock](https://leetcode.cn/problems/angle-between-hands-of-a-clock/)
 
 分针的角度：min *6; 小时的角度：hour%12* 30 + angle_min / 60 * 30
 
@@ -3905,7 +3905,7 @@ class Solution:
         return min(diff, 360-diff)
 ```
 
-[825. Friends Of Appropriate Ages](https://leetcode.com/problems/friends-of-appropriate-ages/)
+[825. Friends Of Appropriate Ages](https://leetcode.cn/problems/friends-of-appropriate-ages/)
 
 排序之后；对于每一个age找到自己的位置，然后找到最小的朋友的位置，之间的差就是可以添加的好友
 
@@ -3926,7 +3926,7 @@ class Solution:
         return res
 ```
 
-[556. Next Greater Element III](https://leetcode.com/problems/next-greater-element-iii/)
+[556. Next Greater Element III](https://leetcode.cn/problems/next-greater-element-iii/)
 
 找到最右下降序列的第一位，然后找到左边的那个数，从后面再找比左边那个数大的，交换。之后逆向后面的数，最后输；int变list：nums=list(str(n))
 
@@ -3965,7 +3965,7 @@ class Solution:
 
 ```
 
-[1060. Missing Element in Sorted Array](https://leetcode.com/problems/missing-element-in-sorted-array/)
+[1060. Missing Element in Sorted Array](https://leetcode.cn/problems/missing-element-in-sorted-array/)
 
 nums[i]之前的missing个数是nums[i] - nums[0] - i; 找到nums[i] < k < nums[i+1]的missing个数的位置; 返回nums[i] + k - (nums[i] - nums[0] - i) = k + nums[0] + i
 
@@ -3986,7 +3986,7 @@ class Solution:
 
 ```
 
-[958. Check Completeness of a Binary Tree](https://leetcode.com/problems/check-completeness-of-a-binary-tree/)
+[958. Check Completeness of a Binary Tree](https://leetcode.cn/problems/check-completeness-of-a-binary-tree/)
 
 BFS层序遍历，另外用一个boolean记录是否有过空，如果有过2次就说明False
 
@@ -4015,7 +4015,7 @@ class Solution:
         return True
 ```
 
-[463. Island Perimeter](https://leetcode.com/problems/island-perimeter/)
+[463. Island Perimeter](https://leetcode.cn/problems/island-perimeter/)
 
 每次见到1就+=4，然后如果左边也是就-=2，如果上面也是就-=2
 时间：O(N)
@@ -4044,7 +4044,7 @@ class Solution:
 
 ```
 
-[104. Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
+[104. Maximum Depth of Binary Tree](https://leetcode.cn/problems/maximum-depth-of-binary-tree/)
 
 注意base case之后，求左边和右边的深度；左边是1+max_height(left)；返回的是max(left, right)
 
@@ -4064,7 +4064,7 @@ class Solution:
         return max(left_height, right_height)
 ```
 
-[24. Swap Nodes in Pairs](https://leetcode.com/problems/swap-nodes-in-pairs/)
+[24. Swap Nodes in Pairs](https://leetcode.cn/problems/swap-nodes-in-pairs/)
 
 ```python
 # swap nodes in pairs: [1,2,3,4] -> [2,1,4,3]
@@ -4132,7 +4132,7 @@ def movingAverage(nums, window):
     return res
 ```
 
-[735. Asteroid Collision](https://leetcode.com/problems/asteroid-collision/)
+[735. Asteroid Collision](https://leetcode.cn/problems/asteroid-collision/)
 
 # VO2
 

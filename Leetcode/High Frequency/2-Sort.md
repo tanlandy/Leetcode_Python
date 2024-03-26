@@ -460,14 +460,19 @@ Interval的关键是找到两个区间的重合部分：overlap of two intervals
 ```py
 class Solution:
     def merge(self, intervals: List[List[int]]) -> List[List[int]]:
-        intervals.sort(key = lambda i : i[0])  # i代表interval，：后面表示按照排序i[0]
+        """
+        先根据start把intervals排序，然后一个一个看，如果重叠就更新，不重叠就加进去；排序: intervals.sort(key= lambda i: i[0]); lastEnd = res[-1][1]；遍历的时候是for start, end in intervals[1:]:
+        时间：O(nlogn)
+        空间：O(logn) if sorted in place
+        """
+        intervals.sort(key= lambda i: i[0])  # i代表interval，：后面表示按照排序i[0]
         # intervals.sort()
         res = [intervals[0]] # 一开始把第一个放进去，这样好直接进行第一次比较
 
-        for start, end in intervals[1:]:
-            lastEnd = res[-1][1]
-            if start <= lastEnd:
-                res[-1][1] = max(lastEnd, end)
+        for start, end in intervals[1:]:  # 注意是 in intervals[1:]
+            last_end = res[-1][1]
+            if start <= last_end:
+                res[-1][1] = max(last_end, end)
             else:
                 res.append([start, end])
 
@@ -516,7 +521,7 @@ class Solution:
         """
         sort the intervals by start, when start are the same, sort base on end in decreasing order
         """
-        intervals.sort(key = lambda x: (x[0], -x[1]))
+        intervals.sort(key= lambda x: (x[0], -x[1]))
         count = 0
         pre_end = 0
         
@@ -559,12 +564,13 @@ class Solution:
 ```
 
 [252. Meeting Rooms](https://leetcode.cn/problems/meeting-rooms/)
+[920 · 会议室](https://www.lintcode.com/problem/920/)
 
 ```py
 class Solution:
     def canAttendMeetings(self, intervals: List[List[int]]) -> bool:
         # intervals.sort()
-        intervals.sort(key = lambda i : i[0])
+        intervals.sort(key= lambda i: i[0])
         
         for i in range(len(intervals) - 1):
             if intervals[i][1] > intervals[i + 1][0]:
@@ -573,13 +579,43 @@ class Solution:
         return True
 ```
 
+```python
+
+"""
+Definition of Interval:
+class Interval(object):
+    def __init__(self, start, end):
+        self.start = start
+        self.end = end
+"""
+
+class Solution:
+    """
+    @param intervals: an array of meeting time intervals
+    @return: if a person could attend all meetings
+    """
+    def can_attend_meetings(self, intervals: List[Interval]) -> bool:
+        intervals.sort(key= lambda i: i.start)
+        
+        for i in range(len(intervals) - 1):
+            if intervals[i].end > intervals[i + 1].start:
+                return False
+        
+        return True
+
+```
+
 [253. Meeting Rooms II](https://leetcode.cn/problems/meeting-rooms-ii/) 高频好题
+[919 · 会议室 II](https://www.lintcode.com/problem/919/)
 
 ```python
 class Solution:
     def minMeetingRooms(self, intervals: List[List[int]]) -> int:
         """
-        2个[]，分别存所有的start和end；双指针比较，如果start<end就count+=1同时start往后走；如果start>=end，就移动end的指针同时count -= 1；双指针走到头的情况就是start到头了；[]存start的方法：sorted([i[0] for i in intervals])
+        2个[]，分别存所有的start和end；
+        双指针比较，如果start<end就count+=1同时start往后走；如果start>=end，就移动end的指针同时count -= 1；
+        双指针走到头的情况就是start到头了；
+        []存start的方法：sorted([i[0] for i in intervals])
 
         时间：O(NlogN)
         空间：O(N)
@@ -592,11 +628,11 @@ class Solution:
         s, e = 0, 0
 
         while s < len(intervals):
-            if start[s] < end[e]:
+            if start[s] < end[e]:  # 出现重叠，会议未结束，需要多一个房间
                 count += 1
                 s += 1
                 res = max(res, count)
-            else:
+            else:  # 会议已经结束
                 e += 1
                 count -= 1
         
@@ -604,29 +640,42 @@ class Solution:
 ```
 
 ```py
+
+"""
+Definition of Interval:
+class Interval(object):
+    def __init__(self, start, end):
+        self.start = start
+        self.end = end
+"""
+
 class Solution:
-    def minMeetingRooms(self, intervals: List[List[int]]) -> int:
-        """
-        判断是否需要一件新的room：check the min(end) with cur_start
-        effectively check the minimum number of all rooms allocated: min_heap with the key is the end time of the current room
-        for a new interval: if add then add, if not then update  
-        the return value is the final size of the min_heap
-        """
-        intervals.sort()
-        min_heap = []
+    """
+    @param intervals: an array of meeting time intervals
+    @return: the minimum number of conference rooms required
+    """
+    def min_meeting_rooms(self, intervals: List[Interval]) -> int:
+        # Write your code here
+        start = sorted([i.start for i in intervals])
+        end = sorted([i.end for i in intervals])
+        s, e = 0, 0
+        res, count = 0, 0
+
+        while s < len(start):
+            if start[s] < end[e]:
+                count += 1
+                res = max(res, count)
+                s += 1
+            else:
+                e += 1
+                count -= 1
         
-        heapq.heappush(min_heap, intervals[0][1])
-        
-        for interval in intervals[1:]:
-            if min_heap[0] <= interval[0]: # min_end <= cur_start: if no new room needed, free up the space(no overlap)
-                heapq.heappop(min_heap)
-            # push to room all the time
-            heapq.heappush(min_heap, interval[1])
-        
-        return len(min_heap)
+        return res
+
 ```
 
 [1229. Meeting Scheduler](https://leetcode.cn/problems/meeting-scheduler/) 高频好题
+[3653 · 安排会议时间](https://www.lintcode.com/problem/3653/description)
 
 ```py
 class Solution:
@@ -652,7 +701,7 @@ class Solution:
             start = max(s1, s2)
             end = min(e1, e2)
             
-            if start + duration <= end: # <>的比较一定要注意，总是容易弄反
+            if start + duration <= end: # 比较一定要注意，总是容易弄反
                 return [start, start + duration]
             
             if e1 < e2:
@@ -664,20 +713,44 @@ class Solution:
 ```
 
 ```py
+
+"""
+Definition of Interval:
+class Interval(object):
+    def __init__(self, start, end):
+        self.start = start
+        self.end = end
+"""
+
 class Solution:
-    def minAvailableDuration(self, slots1: List[List[int]], slots2: List[List[int]], duration: int) -> List[int]:
-        # build up a heap containing time slots last longer than duration
-        timeslots = list(filter(lambda x: x[1] - x[0] >= duration, slots1 + slots2))
-        heapq.heapify(timeslots)
+    """
+    @param slots1: The availability schedule of one.
+    @param slots2: The availability schedule of one.
+    @param duration: The expected duration of the meeting.
+    @return: The earliest and appropriate meeting time in the interval for them.
+    """
+    def earliest_appropriate_duration(self, slots1: List[Interval], slots2: List[Interval], duration: int) -> Interval:
+        slots1.sort(key= lambda x: x.start)
+        slots2.sort(key= lambda x: x.start)
+        i = j = 0
+        
+        while i < len(slots1) and j < len(slots2):
+            s1, e1 = slots1[i].start, slots1[i].end
+            s2, e2 = slots2[j].start, slots2[j].end
+            
+            begin = max(s1, s2)
+            finish = min(e1, e2)
+            
+            if begin + duration <= finish: # 比较一定要注意，总是容易弄反
+                return Interval(begin, begin + duration)
+            
+            if e1 < e2:
+                i += 1
+            else:
+                j += 1
+        
+        return Interval(-1, -1)
 
-        # 同一个的时间不可能重叠：有重叠的话就是2个人的重叠部分，就是可能的结果区间
-
-        while len(timeslots) > 1:
-            start1, end1 = heapq.heappop(timeslots) # 其中一个人
-            start2, end2 = timeslots[0] # 另一个人
-            if end1 >= start2 + duration: # 因为在构建timeslots时候，已经确保了end2 >= start2 + duration
-                return [start2, start2 + duration]
-        return []
 ```
 
 [280. Wiggle Sort](https://leetcode.cn/problems/wiggle-sort/)
