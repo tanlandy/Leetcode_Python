@@ -113,7 +113,6 @@ class Solution:
 ## 经典
 
 [189. Rotate Array](https://leetcode.cn/problems/rotate-array/)
-Given an array, rotate the array to the right by k steps, where k is non-negative.
 
 ```py
 class Solution:
@@ -148,16 +147,16 @@ class Solution:
         Time: O(N)
         Space: O(1)
         """
-        k %= len(nums)
-        self.reverse(nums, 0, len(nums)-1)
-        self.reverse(nums, 0, k-1)
-        self.reverse(nums, k, len(nums)-1)
-
-    def reverse(self, nums, start, end) -> None:
-        while start < end: 
-            nums[start], nums[end] = nums[end], nums[start]
-            start += 1
-            end -= 1
+        def reverse(l, r):
+            while l < r:
+                nums[l], nums[r] = nums[r], nums[l]
+                l += 1
+                r -= 1
+        size = len(nums)
+        k %= size
+        reverse(0, size - 1)
+        reverse(0, k - 1)
+        reverse(k, size - 1)
 ```
 
 ```py
@@ -711,6 +710,38 @@ class Solution:
 [287. Find the Duplicate Number](https://leetcode.cn/problems/find-the-duplicate-number/)
 
 [41. First Missing Positive](https://leetcode.cn/problems/first-missing-positive/)
+
+```python
+
+class Solution:
+    def firstMissingPositive(self, nums: List[int]) -> int:
+        """
+        原地哈希：把每个数i放到下标记为i-1的位置
+        第二遍遍历，发现nums[i-1] != i，就说明找到了
+
+        时间：O(N)
+        空间：O(1)
+        """
+
+        def _swap(l, r):
+            nums[l], nums[r] = nums[r], nums[l]
+
+        for i in range(len(nums)):
+            # print(f"i is {i}")
+            while 1 <= nums[i] <= len(nums) and nums[i] != nums[nums[i] - 1]:  # 位置i的数交换得到另一个数之后，被换过来的数可能没有满足条件，所以要while不能if
+                # print(f"before swap: {nums}")
+                # print(f"nums[i] is {nums[i]}")
+                # print(f"nums[nums[i] - 1] is {nums[nums[i] - 1]}")  
+                _swap(i, nums[i] - 1)
+                # print(f"after swap: {nums}\n")
+
+        for i in range(1, len(nums)):
+            if nums[i - 1] != i:
+                return i
+        
+        return len(nums)
+
+```
 
 <https://leetcode.cn/problems/longest-palindromic-substring/discuss/2030458/Python>
 
