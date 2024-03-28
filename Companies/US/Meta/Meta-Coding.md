@@ -1894,38 +1894,43 @@ class Solution:
 
 [695. Max Area of Island](https://leetcode.cn/problems/max-area-of-island/)
 
-在每个点都做一遍dfs，一个dfs返回这个点对应岛的大小：因为每个点都走一遍，所以判断是否是0就在base case来判断；dfs返回值：return (1 + dfs(r + 1, c) + dfs(r - 1, c) + dfs(r, c + 1) + dfs(r, c - 1))；每个点走的时候就area = max(area, dfs(r, c))
-
-时间：O(M*N)
-空间：O(M*N)
-
 ```python
+
 class Solution:
     def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+        """
+        find the area of each island, then return the maximum one
+        the dfs() returns the current area while traversing the island
+        Time: O(M*N)
+        Space: O(M*N)
+        """
         rows, cols = len(grid), len(grid[0])
-        visit = set()
+        visited = set()
 
-        # dfs返回area
-        def dfs(r, c):
-            # base case
-            if (r < 0 or r == rows or c < 0 or c == cols or 
-            grid[r][c] == 0 or (r, c) in visit):
-                return 0
+        def dfs(r, c):  # return the current area while traversing the island
+            if r not in range(0, rows) or c not in range(0, cols) or (r, c) in visited or grid[r][c] != 1:
+                return 0  # reach the end, the current area is 0
+
+            visited.add((r, c))
             
-            visit.add((r, c))
+            return (
+                1 +
+                dfs(r + 1, c) +
+                dfs(r - 1, c) +
+                dfs(r, c + 1) +
+                dfs(r, c - 1)            
+            )
 
-            return (1 + dfs(r + 1, c) +
-                        dfs(r - 1, c) +
-                        dfs(r, c + 1) +
-                        dfs(r, c - 1))
+        max_area = 0
         
-        area = 0
         for r in range(rows):
             for c in range(cols):
-                if grid[r][c] == 1 and (r, c) not in visit:
-                    area = max(area, dfs(r, c))
+                if grid[r][c] == 1 and (r, c) not in visited:
+                    cur_area = dfs(r, c)
+                    max_area = max(max_area, cur_area)
 
-        return area
+        return max_area
+
 ```
 
 [417. Pacific Atlantic Water Flow](https://leetcode.cn/problems/pacific-atlantic-water-flow/)
@@ -2826,54 +2831,63 @@ class Solution:
 
 [827. Making A Large Island](https://leetcode.cn/problems/making-a-large-island/)
 
-先计算每个点对应island的area的值，然后计算所有0的附近左右岛面积的和；计算每个点对应island的值的时候，只覆盖该点的岛屿的idx，然后用map映射岛的大小idx_area{idx:area}。等计算0周围的和的时候，就可以直接用set来看是否是不同的岛，然后用idx_area[idx]来相加;res = max(idx_area.values() or [0])
-
-时间：O(N*N)
-空间：O(N*N)
-
 ```python
+
 class Solution:
     def largestIsland(self, grid: List[List[int]]) -> int:
-        N = len(grid) # size of N*N
-        idx = 2
-        # idx_area -> {idx : area}
-        idx_area = collections.defaultdict(int)
-        dirs = [[1,0],[-1,0],[0,1],[0,-1]]
+        """
+        先计算每个点对应island的area的值，然后计算所有0的附近左右岛面积的和；
+        计算每个点对应island的值的时候，只覆盖该点的岛屿的idx，然后用map映射岛的大小idx_area{idx: area}。
+        等计算0周围的和的时候，就可以直接用set来看是否是不同的岛，然后用idx_area[idx]来相加;res = max(idx_area.values() or [0])
 
-        # dfs把每个位置都变成了该小岛的idx
+        时间：O(N*N)
+        空间：O(N*N)
+        """
+        rows = cols = len(grid)
+        idx_area = collections.defaultdict(int)  # 岛屿idx -> 该岛屿area
+        dirs = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+
+        # dfs把每个位置的1都变成该小岛的idx，同时计算小岛对应的大小
         def dfs(r, c, idx):
-            if r < 0 or r == N or c <  0 or c == N or grid[r][c] != 1:
+            if r not in range(0, rows) or c not in range(0, cols) or grid[r][c] != 1:
                 return
+            
             grid[r][c] = idx
             idx_area[idx] += 1
-            for dr, dc in dirs:
-                dfs(r + dr, c + dc, idx)
+            dfs(r + 1, c, idx)
+            dfs(r - 1, c, idx)
+            dfs(r, c + 1, idx)
+            dfs(r, c - 1, idx)
         
-        for r in range(N):
-            for c in range(N):
+        idx = 2  # 不能从0或者1开始，因为这样会重复
+        for r in range(rows):
+            for c in range(cols):
                 if grid[r][c] == 1:
                     dfs(r, c, idx)
                     idx += 1
         
-        res = max(idx_area.values() or [0])
-        # 对于所有的“0”，把四周小岛加起来
-        for r in range(N):
-            for c in range(N):
+        if idx_area:  # 若全是1，则下方的for循环不会进入，所以需要先计算一遍
+            max_area = max(idx_area.values())
+        else:  # 全是0，这时直接返回1即可
+            return 1
+
+         # 对于所有的“0”，把四周小岛加起来
+        for r in range(rows):
+            for c in range(cols):
                 if grid[r][c] == 0:
-                    # 用set()，避免重复加同一个岛，set()里面放所有的idx                    
-                    nei_idx = set()
-                    for dr, dc in dirs:
-                        nei_r, nei_c = r + dr, c + dc
-                        if nei_r in range(N) and nei_c in range(N) and grid[nei_r][nei_c] != 0:
-                            nei_idx.add(grid[nei_r][nei_c])
+                    island = set()  # 存储岛屿idx
+                    for dx, dy in dirs:
+                        nei_r, nei_c = dx + r, dy + c
+                        if nei_r in range(0, rows) and nei_c in range(cols) and grid[nei_r][nei_c] != 0:
+                            island.add((grid[nei_r][nei_c]))
                     
-                    one_res = 1
-                    for idx in nei_idx:
-                    # 只用加idx对应的area
-                        one_res += idx_area[idx]
-                    res = max(one_res, res)
+                    combined_area = 1  # 当前从0变成1，所以从1开始
+                    for i in island:
+                        combined_area += idx_area[i]
+                    max_area = max(max_area, combined_area)
         
-        return res
+        return max_area
+
 ```
 
 [1091. Shortest Path in Binary Matrix](https://leetcode.cn/problems/shortest-path-in-binary-matrix/)
@@ -4017,26 +4031,24 @@ class Solution:
 
 [463. Island Perimeter](https://leetcode.cn/problems/island-perimeter/)
 
-每次见到1就+=4，然后如果左边也是就-=2，如果上面也是就-=2
-时间：O(N)
-空间：O(1)
-
 ```python
 class Solution:
     def islandPerimeter(self, grid: List[List[int]]) -> int:
-        rows = len(grid)
-        cols = len(grid[0])
-        
+        """
+        先污染，后治理
+        每次见到1就+=4，然后如果左边也是就-=2，如果上面也是就-=2
+        时间：O(N)
+        空间：O(1)
+        """
+        rows, cols = len(grid), len(grid[0])        
         result = 0
         
         for r in range(rows):
             for c in range(cols):
                 if grid[r][c] == 1:
                     result += 4
-                    
                     if r > 0 and grid[r-1][c] == 1:
                         result -= 2
-                        
                     if c > 0 and grid[r][c-1] == 1:
                         result -= 2
         
